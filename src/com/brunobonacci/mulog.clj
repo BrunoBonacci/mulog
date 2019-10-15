@@ -62,8 +62,10 @@
 
 
 (defn register-publisher!
-  [buffer id publisher]
-  (swap! publishers conj [buffer id publisher]))
+  ([id publisher]
+   (register-publisher! *default-logger* id publisher))
+  ([buffer id publisher]
+   (swap! publishers conj [buffer id publisher])))
 
 
 
@@ -73,10 +75,11 @@
    (fn []
      (try
        (let [pubs @publishers
+             ;;    group-by buffer
              pubs (group-by first pubs)]
 
-         (doseq [[buf dests] pubs]
-           (doseq [[_ _ pub] dests]
+         (doseq [[buf dests] pubs]   ;; for every buffer
+           (doseq [[_ _ pub] dests]  ;; and each destination
              (let [items (rb/items @buf)
                    offset (-> items last first)]
                ;; send to the agent-buffer
@@ -91,29 +94,38 @@
 
 
 
+(defn start-publisher!
+  ([config]
+   (start-publisher! *default-logger* config))
+  ([buffer config]
+   (when-not (= :console (:type config))
+     (throw (ex-info "Unknown publisher" config)))
+   (let [publisher (p/console-publisher config)
+         period (p/publish-delay publisher)
+         _ (register-publisher! buffer (:type config) publisher)
+         stop (if (and period (> period 0))
+                (ag/recurring-task
+                 (p/publish-delay publisher)
+                 (fn []
+                   (send-off (p/agent-buffer publisher)
+                             (partial p/publish publisher)))))]
+     (fn []
+       ;;TODO: deregister
+       (stop)))))
+
+
+
 (comment
-  (reset! publishers #{})
 
-  (dispatch-publishers)
-
-  (def term
-    (p/console-publisher))
-
-  (register-publisher!
-   *default-logger* :console term)
-
-  *default-logger*
+  (def st
+    (start-publisher!
+     {:type :console}))
 
   (log :test :t (rand))
 
-  (p/agent-buffer term)
+  (st)
 
-  (def printer
-    (ag/recurring-task
-     200
-     (fn []
-       (send-off (p/agent-buffer term)
-                 (p/publish term)))))
-
-  (printer)
   )
+
+
+;

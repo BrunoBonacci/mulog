@@ -8,33 +8,44 @@
   "Publisher protocol"
 
   (agent-buffer [this]
-    "Returns the agent-buffer where items are sent to")
+    "Returns the agent-buffer where items are sent to, basically your
+    inbox.")
 
-  (publish [this]
-    "publishes the items in the buffer")
+  (publish-delay [this]
+    "The number of milliseconds between two calls to `publish` function.
+     return `nil` if you don't want mu/log call the `publish` function")
+
+  (publish [this buffer]
+    "publishes the items in the buffer and returns the new state of
+    the buffer which presumably doesn't contains the messages
+    successfully sent.")
 
   )
 
 
 
-(deftype ConsolePublisher [config buffer]
+(deftype ConsolePublisher
+    [config buffer]
+
 
   PPublisher
-  (agent-buffer [this]
+  (agent-buffer [_]
     buffer)
 
 
-  (publish [this]
-    (fn [buf]
-      (doseq [item (map second (rb/items buf))]
-        (printf "%s\n" (pr-str item)))
-      (flush)
-      (rb/clear buf)))
+  (publish-delay [_]
+    200)
 
-  )
+
+  (publish [_ buffer]
+    ;; items are pairs [offset <item>]
+    (doseq [item (map second (rb/items buffer))]
+      (printf "%s\n" (pr-str item)))
+    (flush)
+    (rb/clear buffer)))
 
 
 
 (defn console-publisher
-  []
-  (ConsolePublisher. {} (ag/buffer-agent 10000)))
+  [config]
+  (ConsolePublisher. config (ag/buffer-agent 10000)))
