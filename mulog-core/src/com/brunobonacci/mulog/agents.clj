@@ -2,13 +2,21 @@
   (:require [com.brunobonacci.mulog.buffer
              :refer [ring-buffer] :as rb])
   (:import [java.util.concurrent ScheduledThreadPoolExecutor
-            TimeUnit ScheduledFuture Future]))
+            TimeUnit ScheduledFuture Future ThreadFactory]))
 
 
 
 (defn scheduled-thread-pool
   [core-pool-size]
-  (ScheduledThreadPoolExecutor. core-pool-size))
+  (ScheduledThreadPoolExecutor.
+   ^int core-pool-size
+   ^ThreadFactory
+   (reify ThreadFactory
+     (^Thread newThread [this ^Runnable r]
+       (let [t (Thread. r)]
+         (.setName   t (str "mu/log-task-" (.getId t)))
+         (.setDaemon t true)
+         t)))))
 
 
 
