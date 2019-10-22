@@ -4,7 +4,8 @@
     com.brunobonacci.mulog.core
   (:require [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.agents :as ag]
-            [com.brunobonacci.mulog.publisher :as p]))
+            [com.brunobonacci.mulog.publisher :as p])
+  (:import [com.brunobonacci.mulog.publisher PPublisher]))
 
 
 
@@ -41,15 +42,15 @@
              pubs (group-by first pubs)]
 
          (doseq [[buf dests] pubs]   ;; for every buffer
-           (doseq [[_ _ pub] dests]  ;; and each destination
-             (let [items (rb/items @buf)
-                   offset (-> items last first)]
+           (let [items (rb/items @buf)
+                 offset (-> items last first)]
+             (doseq [[_ _ pub] dests]  ;; and each destination
                ;; send to the agent-buffer
                (send (p/agent-buffer pub)
                      (partial reduce rb/enqueue)
-                     (map second items))
+                     (map second items)))
                ;; remove items up to the offset
-               (swap! buf rb/dequeue offset)))))
+               (swap! buf rb/dequeue offset))))
        (catch Exception x
          ;; TODO:
          (.printStackTrace x))))))
@@ -58,9 +59,7 @@
 
 (defn start-publisher!
   [buffer config]
-  (when-not (= :console (:type config))
-    (throw (ex-info "Unknown publisher" config)))
-  (let [publisher (p/console-publisher config)
+  (let [^PPublisher publisher (p/publisher-factory config)
         period (p/publish-delay publisher)
         _ (register-publisher! buffer (:type config) publisher)
         stop (if (and period (> period 0))
