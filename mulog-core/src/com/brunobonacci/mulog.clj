@@ -7,7 +7,7 @@
 
 
 
-(def ^{:doc "The default logger buffers the messages in a ring buffer
+(defonce ^{:doc "The default logger buffers the messages in a ring buffer
              waiting to be dispatched to a destination like a file
              or a centralized logging management system."
        :dynamic true}
@@ -23,29 +23,49 @@
 
 
 
+
+(defonce ^{:doc "The global logging context is used to add properties
+             which are valid for all subsequent log events.  This is
+             typically set once at the beginning of the process with
+             information like the app-name, version, environment, the
+             pid and other similar info."}
+  global-context (atom {}))
+
+
+
+(def ^{:doc "The local context is local to the current thread,
+             therefore all the subsequent call to log withing the
+             given context will have the properties added as well. It
+             is typically used to add information regarding the
+             current processing in the current thread. For example
+             who is the user issuing the request and so on."
+       :dynamic true}
+  *local-context* nil)
+
+
+
+
 (defn log*
-  [logger event-name values-map]
+  [logger event-name pairs]
   (when (and logger event-name)
-    (core/enqueue! logger
-                   (assoc values-map
-                          :mulog/timestamp (System/currentTimeMillis)
-                          :mulog/event-name event-name))))
+    (core/enqueue!
+     logger
+     (list @global-context *local-context*
+           (list
+            :mulog/timestamp (System/currentTimeMillis)
+            :mulog/event-name event-name)
+           pairs)))
+  nil)
 
 
 
-(defn log
+(defmacro log
   [event-name & pairs]
-  (let [pairs (if (and (seq pairs) (not (next pairs)))
-                (cons :mulog/data pairs) pairs)]
-    (log* *default-logger* event-name (apply hash-map pairs))))
-
-
-
-(defn register-publisher!
-  ([id publisher]
-   (register-publisher! *default-logger* id publisher))
-  ([buffer id publisher]
-   (swap! core/publishers conj [buffer id publisher])))
+  (when (= 1 (rem (count pairs) 2))
+    (throw (IllegalArgumentException.
+            "You must provide a series of key/value pairs in the form: :key1 value1, :key2 value2, etc.")))
+  (let [ns# (str *ns*)]
+    `(log* *default-logger* ~event-name (list :mulog/namespace ~ns# ~@pairs))))
 
 
 
@@ -55,6 +75,24 @@
   ([buffer config]
    (core/start-publisher! buffer config)))
 
+
+
+(defn set-global-context!
+  [context]
+  (reset! global-context context))
+
+
+
+(defn update-global-context!
+  [f & args]
+  (apply swap! global-context f args))
+
+
+
+(defmacro with-context
+  [context & body]
+  `(binding [*local-context* (merge *local-context* ~context)]
+     ~@body))
 
 
 (comment

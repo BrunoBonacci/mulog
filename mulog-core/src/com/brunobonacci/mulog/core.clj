@@ -32,6 +32,12 @@
 
 
 
+(defn- merge-pairs
+  [& pairs]
+  (into {} (mapcat (fn [v] (if (sequential? v) (map vec (partition 2 v)) v)) pairs)))
+
+
+
 (defonce dispatch-publishers
   (ag/recurring-task
    200
@@ -48,7 +54,9 @@
                ;; send to the agent-buffer
                (send (p/agent-buffer pub)
                      (partial reduce rb/enqueue)
-                     (map second items)))
+                     (->> items
+                        (map second)
+                        (map (partial apply merge-pairs)))))
                ;; remove items up to the offset
                (swap! buf rb/dequeue offset))))
        (catch Exception x

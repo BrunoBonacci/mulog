@@ -9,22 +9,26 @@
   ;; perf tests
 
   (bench (u/log :test :bechmark "speed"))
-  ;; Evaluation count : 120009600 in 60 samples of 2000160 calls.
-  ;; Execution time mean : 505.318089 ns
-  ;; Execution time std-deviation : 5.400954 ns
-  ;; Execution time lower quantile : 499.397866 ns ( 2.5%)
-  ;; Execution time upper quantile : 518.259399 ns (97.5%)
-  ;; Overhead used : 1.872577 ns
+  ;; Evaluation count : 187696800 in 60 samples of 3128280 calls.
+  ;; Execution time mean : 317.913266 ns
+  ;; Execution time std-deviation : 2.305188 ns
+  ;; Execution time lower quantile : 315.034626 ns ( 2.5%)
+  ;; Execution time upper quantile : 322.766397 ns (97.5%)
+  ;; Overhead used : 2.058475 ns
   ;;
-  ;; Found 5 outliers in 60 samples (8.3333 %)
-  ;; low-severe	 4 (6.6667 %)
+  ;; Found 2 outliers in 60 samples (3.3333 %)
+  ;; low-severe	 1 (1.6667 %)
   ;; low-mild	 1 (1.6667 %)
   ;; Variance from outliers : 1.6389 % Variance is slightly inflated by outliers
 
-
   (def pbs
     (u/start-publisher! {:type :simple-file :filename "/tmp/mulog.log"}))
-
+  ;; Evaluation count : 99390120 in 60 samples of 1656502 calls.
+  ;; Execution time mean : 593.561830 ns
+  ;; Execution time std-deviation : 30.702807 ns
+  ;; Execution time lower quantile : 549.265457 ns ( 2.5%)
+  ;; Execution time upper quantile : 660.916896 ns (97.5%)
+  ;; Overhead used : 1.872577 ns
 
 
   (def buffer (agent (ring-buffer 10000) :error-mode :continue))
