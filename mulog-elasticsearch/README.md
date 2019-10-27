@@ -5,7 +5,6 @@
 
 ***μ/log*** is a micro-logging library that logs data, not words!
 
-
 > **μ**, **mu** *(Pronunciation: /mjuː/)* <br/>
 > The twelfth letter of the
 > Greek alphabet (Μ, μ), often used as a prefix for *mirco-* which is
@@ -16,35 +15,12 @@
 > <br/>
 
 
+This project contains the `publisher` for [ElasticSearch](https://www.elastic.co/products/elastic-stack)
+
+
 ## Usage
 
-In order to use the library add the dependency to your `project.clj`
-
-``` clojure
-;; Leiningen project
-[com.brunobonacci/mulog "0.1.0-SNAPSHOT"]
-
-;; deps.edn format
-{:deps { com.brunobonacci/mulog "0.1.0-SNAPSHOT" }}
-```
-
-Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog.svg)](https://clojars.org/com.brunobonacci/mulog)
-
-
-Then require the namespace:
-
-``` clojure
-(ns foo.bar
-  (:require [com.brunobonacci.mulog :as μ]))
-
-;; or for the more ASCII traditionalists
-(ns foo.bar
-  (:require [com.brunobonacci.mulog :as u]))
-```
-
-Check the [online documentation](https://cljdoc.org/d/com.brunobonacci/mulog/CURRENT)
-
-Then it's up to you...
+Please see [README](../README.md) on main page.
 
 ## License
 

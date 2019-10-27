@@ -1,5 +1,6 @@
-(defproject com.brunobonacci/mulog (-> "../ver/mulog.version" slurp .trim)
-  :description "μ/log is a micro-logging library that logs data, not words!"
+(defn ver [] (-> "../ver/mulog.version" slurp .trim))
+(defproject com.brunobonacci/mulog-elasticsearch #=(ver)
+  :description "FIXME: write description"
 
   :url "https://github.com/BrunoBonacci/mulog"
 
@@ -9,8 +10,9 @@
   :scm {:name "git" :url "https://github.com/BrunoBonacci/mulog.git"}
 
   :dependencies [[org.clojure/clojure "1.10.1"]
-                 [amalloy/ring-buffer "1.3.0"
-                  :exclusions [[org.clojure/clojurescript]]]]
+                 [com.brunobonacci/mulog #=(ver)]
+                 [clj-http "3.10.0"]
+                 [cheshire "5.9.0"]]
 
   :global-vars {*warn-on-reflection* true}
 
@@ -18,7 +20,8 @@
 
   :profiles {:dev {:dependencies [[midje "1.9.9"]
                                   [org.clojure/test.check "0.10.0"]
-                                  [criterium "0.4.5"]]
+                                  [criterium "0.4.5"]
+                                  [org.slf4j/slf4j-log4j12 "2.0.0-alpha1"]]
                    :resource-paths ["dev-resources"]
                    :plugins      [[lein-midje "3.2.1"]]}}
   )
