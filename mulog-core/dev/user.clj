@@ -41,3 +41,39 @@
 
 
   )
+
+
+
+
+(comment
+
+  (u/log ::hello :to "World!")
+
+  (u/start-publisher! {:type :console})
+
+  (u/log ::hello :to "World!" :v (rand-int 1000))
+
+  (def x (u/start-publisher! {:type :custom :fqn-function "com.brunobonacci.mulog.publishers.elasticsearch/elasticsearch-publisher"
+                              :max-items 5000 :url "http://localhost:9200/"}))
+
+  (x)
+
+  )
+
+
+
+(comment
+
+  (u/log ::hello :to "World!")
+
+  (u/start-publisher! {:type :console})
+
+  (u/log ::hello :to "World!" :v (rand-int 1000))
+
+  (def x (u/start-publisher! {:type :custom :fqn-function "com.brunobonacci.mulog.publishers.kafka/kafka-publisher"
+                              :kafka {:bootstrap.servers "localhost:9092"}}))
+
+  (x)
+
+
+  )
