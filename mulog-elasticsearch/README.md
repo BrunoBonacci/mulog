@@ -22,6 +22,14 @@ This project contains the `publisher` for [ElasticSearch](https://www.elastic.co
 
 Please see [README](../README.md) on main page.
 
+## Testing
+
+``` shell
+docker-compose rm -f && docker-compose up -d
+```
+
+Then open: http://localhost:9000/ for Kibana
+
 ## License
 
 Copyright © 2019 Bruno Bonacci - Distributed under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0)

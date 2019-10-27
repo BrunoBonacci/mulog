@@ -22,6 +22,13 @@ This project contains the `publisher` for [Apache Kafka](https://kafka.apache.or
 
 Please see [README](../README.md) on main page.
 
+## Testing
+
+``` shell
+docker-compose rm -f && docker-compose up -d
+docker exec -ti mulog-kafka_kafka_1 /opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server kafka:9092 --topic mulog
+```
+
 ## License
 
 Copyright © 2019 Bruno Bonacci - Distributed under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0)
