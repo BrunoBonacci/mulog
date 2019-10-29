@@ -99,10 +99,13 @@
 (defn simple-file-publisher
   [{:keys [filename] :as config}]
   {:pre [filename]}
-  (SimpleFilePublisher.
-   config
-   (io/writer (io/file filename) :append true)
-   (ag/buffer-agent 10000)))
+  (let [filename (io/file filename)]
+    ;; make parte dirs
+    (.mkdirs (.getParentFile filename))
+    (SimpleFilePublisher.
+     config
+     (io/writer filename :append true)
+     (ag/buffer-agent 10000))))
 
 
 

@@ -9,26 +9,31 @@
   ;; perf tests
 
   (bench (u/log :test :bechmark "speed"))
-  ;; Evaluation count : 187696800 in 60 samples of 3128280 calls.
-  ;; Execution time mean : 317.913266 ns
-  ;; Execution time std-deviation : 2.305188 ns
-  ;; Execution time lower quantile : 315.034626 ns ( 2.5%)
-  ;; Execution time upper quantile : 322.766397 ns (97.5%)
-  ;; Overhead used : 2.058475 ns
+  ;; Evaluation count : 220888320 in 60 samples of 3681472 calls.
+  ;; Execution time mean : 270.882526 ns
+  ;; Execution time std-deviation : 3.633504 ns
+  ;; Execution time lower quantile : 266.717025 ns ( 2.5%)
+  ;; Execution time upper quantile : 279.984914 ns (97.5%)
+  ;; Overhead used : 1.571562 ns
   ;;
   ;; Found 2 outliers in 60 samples (3.3333 %)
-  ;; low-severe	 1 (1.6667 %)
-  ;; low-mild	 1 (1.6667 %)
+  ;; low-severe	 2 (3.3333 %)
   ;; Variance from outliers : 1.6389 % Variance is slightly inflated by outliers
 
+
+  ;; After enabling the publisher, the performances are unaffected ;-)
   (def pbs
-    (u/start-publisher! {:type :simple-file :filename "/tmp/mulog.log"}))
-  ;; Evaluation count : 99390120 in 60 samples of 1656502 calls.
-  ;; Execution time mean : 593.561830 ns
-  ;; Execution time std-deviation : 30.702807 ns
-  ;; Execution time lower quantile : 549.265457 ns ( 2.5%)
-  ;; Execution time upper quantile : 660.916896 ns (97.5%)
-  ;; Overhead used : 1.872577 ns
+    (u/start-publisher! {:type :simple-file :filename "/tmp/bench/mulog.log"}))
+  ;; Evaluation count : 217401360 in 60 samples of 3623356 calls.
+  ;; Execution time mean : 278.147233 ns
+  ;; Execution time std-deviation : 4.550985 ns
+  ;; Execution time lower quantile : 271.739036 ns ( 2.5%)
+  ;; Execution time upper quantile : 287.976440 ns (97.5%)
+  ;; Overhead used : 1.571562 ns
+  ;;
+  ;; Found 1 outliers in 60 samples (1.6667 %)
+  ;; low-severe	 1 (1.6667 %)
+  ;; Variance from outliers : 4.2725 % Variance is slightly inflated by outliers
 
 
   (def buffer (agent (ring-buffer 10000) :error-mode :continue))
