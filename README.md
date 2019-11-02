@@ -363,6 +363,12 @@ classpath and then just add the fully qualified function name:
 For more information about how to implement custom publisher see:
 [How to write custom publishers](./doc/custom-publishers.md)
 
+## More docs
+
+  * Read about [μ/log internals](./doc/mulog-internals.md)
+  * [How to write custom publishers](./doc/custom-publishers.md)
+  * Read more on [Elasticsearch name mangling](./doc/els-name-mangling.md)
+
 ## License
 
 Copyright © 2019 Bruno Bonacci - Distributed under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0)
