@@ -132,8 +132,9 @@
 (def ^:const DEFAULT-CONFIG
   {:max-items     1000
    :publish-delay 1000
-   :kafka { ;; the comma-separated list of brokers to connect the consumer
+   :kafka {;; the comma-separated list of brokers to connect
            ;; :bootstrap.servers "localhost:9092"
+           ;; you can add more kafka connection properties here
            }
    :topic "mulog"
    ;; one of: :json, :edn

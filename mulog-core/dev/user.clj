@@ -52,8 +52,8 @@
   (u/start-publisher! {:type :console})
 
   (u/log ::hello :to "World!" :v (rand-int 1000))
-
-  (def x (u/start-publisher! {:type :custom :fqn-function "com.brunobonacci.mulog.publishers.elasticsearch/elasticsearch-publisher"
+  (u/log ::hello :to "World!" :v "ciao")
+  (def x (u/start-publisher! {:type :elasticsearch
                               :max-items 5000 :url "http://localhost:9200/"}))
 
   (x)
@@ -70,7 +70,7 @@
 
   (u/log ::hello :to "World!" :v (rand-int 1000))
 
-  (def x (u/start-publisher! {:type :custom :fqn-function "com.brunobonacci.mulog.publishers.kafka/kafka-publisher"
+  (def x (u/start-publisher! {:type :kafka
                               :kafka {:bootstrap.servers "localhost:9092"}}))
 
   (x)

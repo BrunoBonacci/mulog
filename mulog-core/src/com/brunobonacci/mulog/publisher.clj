@@ -220,3 +220,19 @@
 (defmethod publisher-factory :simple-file
   [config]
   (simple-file-publisher config))
+
+
+
+(defmethod publisher-factory :elasticsearch
+  [config]
+  (load-dynamic-publisher
+   "com.brunobonacci.mulog.publishers.elasticsearch/elasticsearch-publisher"
+   config))
+
+
+
+(defmethod publisher-factory :kafka
+  [config]
+  (load-dynamic-publisher
+   "com.brunobonacci.mulog.publishers.kafka/kafka-publisher"
+   config))
