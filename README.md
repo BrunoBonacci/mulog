@@ -338,7 +338,9 @@ The events must be serializeable in JSON format ([Cheshire](https://github.com/d
    ;; :format    :json
 
    ;; The name of the field which it will be used as partition key
-   ;; :key-field :pid
+   ;; the :puid is the process unique identifier which can be injected
+   ;; as global context
+   ;; :key-field :puid
    })
 ```
 

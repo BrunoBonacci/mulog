@@ -77,7 +77,7 @@
 
 
 (comment
-  (publish-records! {:key-field :pid :format :json :topic "mulog" :producer* kp}
+  (publish-records! {:key-field :puid :format :json :topic "mulog" :producer* kp}
                     [{:timestamp (System/currentTimeMillis) :event-name :hello :k 1}
                      {:timestamp (System/currentTimeMillis) :event-name :hello :k 2}])
   )
@@ -139,7 +139,7 @@
    :topic "mulog"
    ;; one of: :json, :edn
    :format    :json
-   :key-field :pid
+   :key-field :puid
    })
 
 
