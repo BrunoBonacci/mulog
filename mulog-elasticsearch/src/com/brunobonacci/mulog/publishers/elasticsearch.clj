@@ -73,7 +73,7 @@
     (->> records
        (mapcat (fn [{:keys [timestamp] :as r}]
                  (let [index (index* timestamp)]
-                   [(str (json/generate-string {:index {:_index index}}) \newline)
+                   [(str (json/generate-string {:index {:_index index :_type "event"}}) \newline)
                     (-> r
                        (mangler)
                        (dissoc :mulog/timestamp)
@@ -87,7 +87,7 @@
   [{:keys [url publish-delay] :as config} records]
   (http/post
    url
-   {:content-type :json
+   {:content-type "application/x-ndjson"
     :accept :json
     :as :json
     :socket-timeout publish-delay

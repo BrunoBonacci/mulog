@@ -78,10 +78,10 @@ In order to use the library add the dependency to your `project.clj`
 
 ``` clojure
 ;; Leiningen project
-[com.brunobonacci/mulog "0.1.0"]
+[com.brunobonacci/mulog "0.1.2"]
 
 ;; deps.edn format
-{:deps { com.brunobonacci/mulog "0.1.0" }}
+{:deps { com.brunobonacci/mulog "0.1.2" }}
 ```
 
 Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog.svg)](https://clojars.org/com.brunobonacci/mulog)
@@ -344,6 +344,7 @@ The events must be serializeable in JSON format ([Cheshire](https://github.com/d
    })
 ```
 
+Supported versions: `6.7+`, `7.x`
 
 ### Custom publishers
 
