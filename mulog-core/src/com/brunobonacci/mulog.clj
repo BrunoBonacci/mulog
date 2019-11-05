@@ -95,6 +95,30 @@
      ~@body))
 
 
+
+(defmacro trace
+  "Traces the execution of an operation with the outcome and the take taken in nanoseconds"
+  {:style/indent 1}
+  [event-name pairs expr]
+  `(let [ts# (System/currentTimeMillis)
+         t0# (System/nanoTime)]
+     (try
+       (let [r# ~expr]
+         (log ~event-name ~@pairs
+              :mulog/duration (- (System/nanoTime) t0#)
+              :mulog/timestamp ts#
+              :mulog/outcome :ok)
+         r#)
+       (catch Exception x#
+         (log ~event-name ~@pairs
+              :mulog/duration (- (System/nanoTime) t0#)
+              :mulog/timestamp ts#
+              :mulog/outcome :error
+              :exception x#)
+         (throw x#)))))
+
+
+
 (comment
 
   (def st
@@ -102,6 +126,10 @@
      {:type :console}))
 
   (log :test :t (rand))
+
+  (trace :test-trace
+    [:foo 1, :t (rand)]
+    (Thread/sleep (rand-int 50)))
 
   (st)
 
