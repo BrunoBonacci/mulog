@@ -99,23 +99,44 @@
 (defmacro trace
   "Traces the execution of an operation with the outcome and the take taken in nanoseconds"
   {:style/indent 1}
-  [event-name pairs expr]
-  `(let [ts# (System/currentTimeMillis)
-         t0# (System/nanoTime)]
-     (try
-       (let [r# ~expr]
-         (log ~event-name ~@pairs
-              :mulog/duration (- (System/nanoTime) t0#)
-              :mulog/timestamp ts#
-              :mulog/outcome :ok)
-         r#)
-       (catch Exception x#
-         (log ~event-name ~@pairs
-              :mulog/duration (- (System/nanoTime) t0#)
-              :mulog/timestamp ts#
-              :mulog/outcome :error
-              :exception x#)
-         (throw x#)))))
+  ([event-name pairs expr]
+   `(let [ts# (System/currentTimeMillis)
+          t0# (System/nanoTime)]
+      (try
+        (let [r# ~expr]
+          (log ~event-name ~@pairs
+               :mulog/duration (- (System/nanoTime) t0#)
+               :mulog/timestamp ts#
+               :mulog/outcome :ok)
+          r#)
+        (catch Exception x#
+          (log ~event-name ~@pairs
+               :mulog/duration (- (System/nanoTime) t0#)
+               :mulog/timestamp ts#
+               :mulog/outcome :error
+               :exception x#)
+          (throw x#)))))
+  ;; allows to provide a function which extracts values
+  ;; from the expression result.
+  ([event-name pairs result* expr]
+   `(let [ts# (System/currentTimeMillis)
+          t0# (System/nanoTime)]
+      (try
+        (let [r# ~expr]
+          (with-context (core/on-error {:mulog/result-fn :error} (~result* r#))
+            (log ~event-name ~@pairs
+                 :mulog/duration (- (System/nanoTime) t0#)
+                 :mulog/timestamp ts#
+                 :mulog/outcome :ok))
+          r#)
+        (catch Exception x#
+          (log ~event-name ~@pairs
+               :mulog/duration (- (System/nanoTime) t0#)
+               :mulog/timestamp ts#
+               :mulog/outcome :error
+               :exception x#)
+          (throw x#))))))
+
 
 
 
@@ -130,6 +151,10 @@
   (trace :test-trace
     [:foo 1, :t (rand)]
     (Thread/sleep (rand-int 50)))
+
+  (trace :test-trace
+    [:foo 1, :t (rand)]
+    {:hello "world"})
 
   (st)
 

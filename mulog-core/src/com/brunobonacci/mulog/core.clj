@@ -79,3 +79,12 @@
     (fn []
       ;;TODO: deregister
       (stop))))
+
+
+
+(defmacro on-error
+  [default & body]
+  `(try
+     ~@body
+     (catch Exception _#
+       ~default)))
