@@ -188,8 +188,8 @@ including last offset. The rest of the publisher is pretty much the same.
 
 ## Error handling
 
-So far we haven't spoke about error handling at all, that because
-there is not much to say. If the `publish` function raises an
+So far we haven't spoke about error handling at all, that it is
+because there is not much to say. If the `publish` function raises an
 exception, nothing to worry about, the publish will be retried after
 the `publish-delay` interval passed. So for example, if you are
 posting to a remote system and the system in temporarily unavailable,
