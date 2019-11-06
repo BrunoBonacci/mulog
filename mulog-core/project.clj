@@ -1,5 +1,5 @@
 (defproject com.brunobonacci/mulog (-> "../ver/mulog.version" slurp .trim)
-  :description "μ/log is a micro-logging library that logs data, not words!"
+  :description "μ/log is a micro-logging library that logs events and data, not words!"
 
   :url "https://github.com/BrunoBonacci/mulog"
 

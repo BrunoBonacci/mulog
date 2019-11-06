@@ -3,7 +3,7 @@
 
 ![mulog](./doc/mulog.png)
 
-***μ/log*** is a micro-logging library that logs data, not words!
+***μ/log*** is a micro-logging library that logs events and data, not words!
 
 
 > **μ**, **mu** *(Pronunciation: /mjuː/)* <br/>
