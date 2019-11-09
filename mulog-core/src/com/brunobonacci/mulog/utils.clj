@@ -1,6 +1,7 @@
 (ns com.brunobonacci.mulog.utils
   (:require [clojure.string :as str]
-            [clojure.pprint :as pp]))
+            [clojure.pprint :as pp]
+            [clojure.walk :as w]))
 
 
 
@@ -70,8 +71,30 @@
 
 
 
-
 (defn pprint-event
   "pretty print event"
   [m]
   (println (pprint-event-str m)))
+
+
+
+(defn exception-stacktrace
+  "returns a string representation of an exception and its stack-trace"
+  [^Exception x]
+  (prn-str x))
+
+
+
+(defn remove-nils
+  "recursively remove nils from maps, vectors and lists."
+  [m]
+  (->> m
+     (w/postwalk
+      (fn [i]
+        (cond
+          (map? i)        (into {} (remove (comp nil? second) i))
+          (map-entry? i)  i
+          (vector? i)     (into [] (remove nil? i))
+          (set? i)        (into #{} (remove nil? i))
+          (sequential? i) (remove nil? i)
+          :else           i)))))

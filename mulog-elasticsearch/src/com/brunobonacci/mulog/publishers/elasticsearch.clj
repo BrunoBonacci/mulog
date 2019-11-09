@@ -1,6 +1,7 @@
 (ns com.brunobonacci.mulog.publishers.elasticsearch
   (:require [com.brunobonacci.mulog.publisher :as p]
             [com.brunobonacci.mulog.buffer :as rb]
+            [com.brunobonacci.mulog.utils :as ut]
             [com.brunobonacci.mulog.publishers.util :as u]
             [clj-http.client :as http]
             [cheshire.core :as json]
@@ -57,6 +58,10 @@
 
 
 
+(defn- to-json
+  [m]
+  (json/generate-string m {:date-format "yyyy-MM-dd'T'HH:mm:ss.SSSZ"}))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
@@ -77,7 +82,8 @@
                        (mangler)
                        (dissoc :mulog/timestamp)
                        (assoc "@timestamp" (format-date-from-long timestamp))
-                       (json/generate-string {:date-format "yyyy-MM-dd'T'HH:mm:ss.SSSZ"})
+                       (ut/remove-nils)
+                       (to-json)
                        (#(str % \newline)))]))))))
 
 
@@ -104,7 +110,7 @@
     :index* (index-name)
     :name-mangling true}
    [{:mulog/timestamp (System/currentTimeMillis) :event-name :hello :k 1}
-    {:mulog/timestamp (System/currentTimeMillis) :event-name :hello :k 2}])
+    {:mulog/timestamp (System/currentTimeMillis) :event-name :hello :k nil}])
 
 
   (post-records
@@ -112,11 +118,8 @@
     :index* (index-name)
     :name-mangling true}
    [{:mulog/timestamp (System/currentTimeMillis) :event-name :hello :k 1 :r1 (rand) :r2 (rand-int 100)}
-    {:mulog/timestamp (System/currentTimeMillis) :event-name :hello :k 2 :r1 (rand) :r2 (rand-int 100)}])
+    {:mulog/timestamp (System/currentTimeMillis) :event-name :hello :k nil :r1 (rand) :r2 (rand-int 100)}])
   )
-
-
-
 
 
 

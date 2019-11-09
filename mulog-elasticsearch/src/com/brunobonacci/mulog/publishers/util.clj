@@ -1,5 +1,7 @@
 (ns com.brunobonacci.mulog.publishers.util
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [com.brunobonacci.mulog.utils :as ut]))
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -8,12 +10,7 @@
 ;;                                                                            ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn convert-exception
-  [^Exception x]
-  (let [out (new java.io.StringWriter)]
-    (binding [*err* out]
-      (.printStackTrace x))
-    (str out)))
+
 
 (defn snake-case
   [n]
@@ -22,6 +19,8 @@
        (str/replace #"^:" "")
        (str/replace #"/" ".")
        (str/replace #"[^\w\d_.]" "_"))))
+
+
 
 (defn snake-case-mangle
   [[k v]]
@@ -45,6 +44,6 @@
     (boolean? v)    [(str k ".b") v]
     (keyword? v)    [(str k ".k") v]
     (instance? java.util.Date v) [(str k ".t") v]
-    (instance? Exception v) [(str k ".x") (convert-exception v)]
+    (instance? Exception v) [(str k ".x") (ut/exception-stacktrace v)]
     :else e
     ))
