@@ -1,6 +1,5 @@
 (ns com.brunobonacci.mulog.publishers.elasticsearch
   (:require [com.brunobonacci.mulog.publisher :as p]
-            [com.brunobonacci.mulog.agents :as ag]
             [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.publishers.util :as u]
             [clj-http.client :as http]
@@ -170,4 +169,4 @@
      (merge DEFAULT-CONFIG $)
      (update $ :url normalize-endpoint-url)
      (assoc $ :index* (index-name (:index-pattern $))))
-   (ag/buffer-agent 20000)))
+   (rb/agent-buffer 20000)))

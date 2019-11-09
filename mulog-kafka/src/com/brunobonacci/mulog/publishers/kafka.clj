@@ -1,6 +1,5 @@
 (ns com.brunobonacci.mulog.publishers.kafka
   (:require [com.brunobonacci.mulog.publisher :as p]
-            [com.brunobonacci.mulog.agents :as ag]
             [com.brunobonacci.mulog.buffer :as rb]
             [cheshire.core :as json]
             [clojure.string :as str])
@@ -151,4 +150,4 @@
    (as-> config $
      (deep-merge DEFAULT-CONFIG $)
      (assoc $ :producer* (producer (:kafka $))))
-   (ag/buffer-agent 10000)))
+   (rb/agent-buffer 10000)))

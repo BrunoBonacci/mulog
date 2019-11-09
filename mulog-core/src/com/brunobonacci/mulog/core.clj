@@ -3,7 +3,6 @@
       "Logging library designed to log data events instead of plain words."}
     com.brunobonacci.mulog.core
   (:require [com.brunobonacci.mulog.buffer :as rb]
-            [com.brunobonacci.mulog.agents :as ag]
             [com.brunobonacci.mulog.publisher :as p])
   (:import [com.brunobonacci.mulog.publisher PPublisher]))
 
@@ -39,7 +38,7 @@
 
 
 (defonce dispatch-publishers
-  (ag/recurring-task
+  (rb/recurring-task
    200
    (fn []
      (try
@@ -71,7 +70,7 @@
         period (p/publish-delay publisher)
         _ (register-publisher! buffer (:type config) publisher)
         stop (if (and period (> period 0))
-               (ag/recurring-task
+               (rb/recurring-task
                 (p/publish-delay publisher)
                 (fn []
                   (send-off (p/agent-buffer publisher)

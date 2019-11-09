@@ -1,5 +1,7 @@
 (ns com.brunobonacci.mulog.buffer
-  (:require [amalloy.ring-buffer :as rb]))
+  (:require [amalloy.ring-buffer :as rb])
+  (:import [java.util.concurrent ScheduledThreadPoolExecutor
+            TimeUnit ScheduledFuture Future ThreadFactory]))
 
 
 
@@ -70,3 +72,40 @@
   [capacity]
   {:pre [(> capacity 0)]}
   (RingBuffer. 0 (rb/ring-buffer capacity)))
+
+
+
+(defn scheduled-thread-pool
+  [core-pool-size]
+  (ScheduledThreadPoolExecutor.
+   ^int core-pool-size
+   ^ThreadFactory
+   (reify ThreadFactory
+     (^Thread newThread [this ^Runnable r]
+      (let [t (Thread. r)]
+        (.setName   t (str "mu/log-task-" (.getId t)))
+        (.setDaemon t true)
+        t)))))
+
+
+
+(defonce timer-pool
+  (scheduled-thread-pool 2))
+
+
+
+(defn recurring-task
+  [delay-millis task]
+  (let [^ScheduledFuture ftask
+        (.scheduleAtFixedRate
+         ^ScheduledThreadPoolExecutor timer-pool
+         (fn [] (try (task) (catch Exception x))) ;; TODO log
+         delay-millis delay-millis TimeUnit/MILLISECONDS)]
+    (fn [] (.cancel ftask true))))
+
+
+
+(defn agent-buffer
+  [capacity]
+  (agent (ring-buffer capacity)
+         :error-mode :continue))

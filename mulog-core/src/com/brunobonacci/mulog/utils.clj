@@ -1,5 +1,6 @@
 (ns com.brunobonacci.mulog.utils
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [clojure.pprint :as pp]))
 
 
 
@@ -51,3 +52,26 @@
   "It returns a random 128-bit unique id"
   []
   (random-uid))
+
+
+
+(defn pprint-event-str
+  "pretty print event to a string"
+  [m]
+  (let [top [:mulog/event-name :mulog/timestamp]
+        tops (set top)
+        mks (->> (keys m) (filter #(= "mulog" (namespace %))) (remove tops) (sort))
+        oks (->> (keys m) (remove #(= "mulog" (namespace %))) (sort))
+        get-value (fn [k] (get m k))]
+    (with-out-str
+      (->> (mapcat (juxt identity get-value) (concat top mks oks))
+         (apply array-map)
+         (pp/pprint)))))
+
+
+
+
+(defn pprint-event
+  "pretty print event"
+  [m]
+  (println (pprint-event-str m)))

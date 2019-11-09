@@ -1,6 +1,5 @@
 (ns com.brunobonacci.mulog.publisher
-  (:require [com.brunobonacci.mulog.agents :as ag]
-            [com.brunobonacci.mulog.buffer :as rb]
+  (:require [com.brunobonacci.mulog.buffer :as rb]
             [clojure.java.io :as io]))
 
 
@@ -63,7 +62,7 @@
 
 (defn console-publisher
   [config]
-  (ConsolePublisher. config (ag/buffer-agent 10000)))
+  (ConsolePublisher. config (rb/agent-buffer 10000)))
 
 
 
@@ -105,7 +104,7 @@
     (SimpleFilePublisher.
      config
      (io/writer filename :append true)
-     (ag/buffer-agent 10000))))
+     (rb/agent-buffer 10000))))
 
 
 

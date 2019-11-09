@@ -57,7 +57,7 @@ events will be pushed to the downstream system you should size this
 accordingly. For example 10000 events is good size to account for a
 transient error in the target system without taking too much memory.
 We already have an agent wrapping a ring-buffer so pretty much this
-will always return `(ag/buffer-agent 10000)`.
+will always return `(rb/agent-buffer 10000)`.
 
 Next we have the `publish-deplay`, this is the delay in milliseconds
 between two consecutive calls of the `publish` function.  This is
@@ -83,8 +83,7 @@ events or to simply print them one per line.
 
 ``` clojure
 (ns my-custom.publisher
-  (:require [com.brunobonacci.mulog.agents :as ag]
-            [com.brunobonacci.mulog.buffer :as rb]
+  (:require [com.brunobonacci.mulog.buffer :as rb]
             [clojure.pprint :refer [pprint]]))
 
 
@@ -111,7 +110,7 @@ events or to simply print them one per line.
 
 (defn my-custom-publisher
   [config]
-  (MyCustomPublisher. config (ag/buffer-agent 10000)))
+  (MyCustomPublisher. config (rb/agent-buffer 10000)))
 ```
 
 That's it! That's all it takes to write a publisher.  Now to use it
@@ -176,7 +175,7 @@ at most 1000 items.
   (defn my-custom-publisher
     [{:keys [filename] :as config}]
     (let [config (merge {:pretty-print false :max-items 1000} config)]
-      (MyCustomPublisher. config (ag/buffer-agent 10000)
+      (MyCustomPublisher. config (rb/agent-buffer 10000)
                           (io/writer (io/file filename) :append true))))
 ```
 
