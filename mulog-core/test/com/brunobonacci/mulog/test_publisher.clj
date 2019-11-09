@@ -26,16 +26,20 @@
 
 (defmacro with-test-pusblisher
   [& body]
-  `(let [inbox#  (atom (rb/ring-buffer 100))
-         outbox# (atom [])
-         gbc#    @com.brunobonacci.mulog/global-context
-         _#      (reset! com.brunobonacci.mulog/global-context {})
-         tp#     (test-publisher outbox#)
-         sp#     (uc/start-publisher! inbox# tp# (keyword (str "test-" (ut/random-uid))))]
+  `(let [inbox#   (atom (rb/ring-buffer 100))
+         outbox#  (atom [])
+         gbc#     @com.brunobonacci.mulog/global-context
+         _#       (reset! com.brunobonacci.mulog/global-context {})
+         tp#      (test-publisher outbox#)
+         test-id# (keyword (str "test-" (ut/random-uid)))
+         sp#      (uc/start-publisher! inbox# tp# test-id#)]
+
      (binding [com.brunobonacci.mulog/*default-logger* inbox#]
        ~@body)
 
      (reset! com.brunobonacci.mulog/global-context gbc#)
+     ;; wait for the publisher to deliver the events
      (Thread/sleep (* 2 uc/PUBLISH-INTERVAL))
+     ;; stop the publisher
      (sp#)
      @outbox#))
