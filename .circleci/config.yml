@@ -1,0 +1,29 @@
+# Clojure CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-clojure/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/clojure:lein-2.7.1
+
+    working_directory: ~/repo
+
+    environment:
+      LEIN_ROOT: "true"
+
+    steps:
+      - checkout
+
+      - restore_cache:
+            - v1-dependencies-
+
+      - run: lein deps
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-
+
+      - run: ./bin/lein-all.sh do clean, check, midje, install
