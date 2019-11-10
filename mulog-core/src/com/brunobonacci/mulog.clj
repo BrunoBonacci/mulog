@@ -109,7 +109,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   library to log important events, but rather than logging words, add
   data points. To log a new event this is the format:
 
-  ```
+  ``` clojure
   (μ/log event-name, key1 value1, key2 value2, ... keyN valueN)
   ```
 
@@ -122,7 +122,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   For example should you want to log the event of a your login, you
   could add:
 
-  ```
+  ``` clojure
   (μ/log ::user-logged :user-id \"1234567\" :remote-ip \"1.2.3.4\"
      :auth-method :password-login)
   ```
@@ -150,11 +150,11 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   The `start-publisher!` function returns a zero-argument function
   which can be used to stop the publisher.
 
-  ```
+  ``` clojure
   (def stop (μ/start-publisher! {:type :console}))
   (μ/log ::hi)
   ;; prints something like:
-  ;; {:mulog/timestamp 1572709206048, :mulog/event-name :user/hi, :mulog/namespace "user"}
+  ;; {:mulog/timestamp 1572709206048, :mulog/event-name :user/hi, :mulog/namespace \"user\"}
 
   ;; stop the publisher
   (stop)
@@ -167,7 +167,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   Another built-in publisher is the `:simple-file` publisher which
   just outputs events to a file in EDN format.
 
-  ```
+  ``` clojure
   (μ/start-publisher! {:type :simple-file :filename \"/tmp/mulog/events.log\"})
   ```
 
@@ -232,7 +232,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   *global context*, all the properties of the *local context* and all
   *inline properties*.
 
-  ```
+  ``` clojure
   (μ/with-context {:order \"abc123\"}
     (μ/log ::item-processed :item-id \"sku-123\" :qt 2))
 
