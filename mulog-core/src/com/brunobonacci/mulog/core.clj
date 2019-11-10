@@ -1,13 +1,17 @@
 (ns ^{:author "Bruno Bonacci (@BrunoBonacci)"
       :doc
-      "Logging library designed to log data events instead of plain words."}
+      "Logging library designed to log data events instead of plain words."
+      :no-doc true}
     com.brunobonacci.mulog.core
   (:require [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.publisher :as p])
   (:import [com.brunobonacci.mulog.publisher PPublisher]))
 
 
+
 (def ^:const PUBLISH-INTERVAL 200)
+
+
 
 (defn dequeue!
   [buffer offset]
@@ -82,8 +86,8 @@
                      (->> items
                         (map second)
                         (map (partial apply merge-pairs)))))
-               ;; remove items up to the offset
-               (swap! buf rb/dequeue offset))))
+             ;; remove items up to the offset
+             (swap! buf rb/dequeue offset))))
        (catch Exception x
          ;; TODO:
          (.printStackTrace x))))))
@@ -104,10 +108,10 @@
 
          ;; register periodic call publish
          stop (rb/recurring-task
-                period
-                (fn []
-                  (send-off (p/agent-buffer publisher)
-                            (partial p/publish publisher))))]
+               period
+               (fn []
+                 (send-off (p/agent-buffer publisher)
+                           (partial p/publish publisher))))]
      (fn []
        (deregister)
        (stop)))))

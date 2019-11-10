@@ -78,10 +78,10 @@ In order to use the library add the dependency to your `project.clj`
 
 ``` clojure
 ;; Leiningen project
-[com.brunobonacci/mulog "0.1.2"]
+[com.brunobonacci/mulog "0.1.6"]
 
 ;; deps.edn format
-{:deps { com.brunobonacci/mulog "0.1.2" }}
+{:deps { com.brunobonacci/mulog "0.1.6" }}
 ```
 
 Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog.svg)](https://clojars.org/com.brunobonacci/mulog)

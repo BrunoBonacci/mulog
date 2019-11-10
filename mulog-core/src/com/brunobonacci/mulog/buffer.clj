@@ -1,4 +1,12 @@
-(ns com.brunobonacci.mulog.buffer
+(ns ^{:author "Bruno Bonacci (@BrunoBonacci)"
+      :doc "
+Logging library designed to log data events instead of plain words.
+
+This namespace contains the implementation of a ring-buffer and a
+wrapper agent used to buffer the events before their are published
+to the downstream systems by the publishers.
+"}
+    com.brunobonacci.mulog.buffer
   (:require [amalloy.ring-buffer :as rb])
   (:import [java.util.concurrent ScheduledThreadPoolExecutor
             TimeUnit ScheduledFuture Future ThreadFactory]))
