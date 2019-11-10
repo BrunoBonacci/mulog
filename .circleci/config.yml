@@ -15,15 +15,4 @@ jobs:
 
     steps:
       - checkout
-
-      - restore_cache:
-            - v1-dependencies-
-
-      - run: lein deps
-
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: v1-dependencies-
-
       - run: ./bin/lein-all.sh do clean, check, midje, install
