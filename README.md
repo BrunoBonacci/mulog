@@ -178,20 +178,22 @@ For example:
 
 Typically, you will set the global context once in your main function
 at the starting of your application with properties which are valid
-for all events emitted by the process. User `set-global-context!` to
+for all events emitted by the process. Use `set-global-context!` to
 specify a given value, or `update-global-context!` with a update
-function to change some of the values. Examples of properties you should
-consider adding in the global context are `app-name`, `version`, `environment`,
-`process-id`, `host-ip`, `os-type`, `jvm-version` etc etc
+function to change some of the values. Examples of properties you
+should consider adding in the global context are `app-name`,
+`version`, `environment`, `process-id`, `host-ip`, `os-type`,
+`jvm-version` etc etc
 
 
-The second type of context is the (thread) local context. If can be
+The second type of context is the (thread) local context. It can be
 used to inject information about the current processing and all the
 events withing the scope of the context will inherit the properties
 and their values.
 
-For example the following line will contain all the properties of the *global context*,
-all the properties of the *local context* and all *inline properties*.
+For example the following line will contain all the properties of the
+*global context*, all the properties of the *local context* and all
+*inline properties*.
 
 ``` clojure
 (μ/with-context {:order "abc123"}
