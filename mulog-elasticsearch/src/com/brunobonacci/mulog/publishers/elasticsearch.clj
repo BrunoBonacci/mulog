@@ -75,7 +75,7 @@
   [{:keys [index* name-mangling] :as config} records]
   (let [mangler (if name-mangling mangle-map identity)]
     (->> records
-       (mapcat (fn [{:keys [timestamp] :as r}]
+       (mapcat (fn [{:keys [mulog/timestamp] :as r}]
                  (let [index (index* timestamp)]
                    [(str (json/generate-string {:index {:_index index :_type "event"}}) \newline)
                     (-> r
