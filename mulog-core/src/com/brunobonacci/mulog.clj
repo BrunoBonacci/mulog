@@ -171,6 +171,20 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   (μ/start-publisher! {:type :simple-file :filename \"/tmp/mulog/events.log\"})
   ```
 
+  You can also have multiple publishers defined in one place using the `:multi`
+  publisher configuration:
+
+  ``` clojure
+  (μ/start-publisher!
+   {:type :multi
+    :publishers
+    [{:type :console}
+     {:type :simple-file :filename \"/tmp/disk1/mulog/events1.log\"}
+     {:type :simple-file :filename \"/tmp/disk2/mulog/events2.log\"}]})
+  ```
+
+  which it will start all the defined publishers all at once.
+
   For more information about available publishers and their configuration
   as well as how to write your own pulishers please check
   https://github.com/BrunoBonacci/mulog#publishers
@@ -178,8 +192,15 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   "
   ([config]
    (start-publisher! *default-logger* config))
-  ([logger config]
-   (core/start-publisher! logger config)))
+  ([logger {:keys [type publishers] :as config}]
+   (if (= :multi type)
+     ;; if multi publisher then start them all
+     (->>  publishers
+         (map (partial core/start-publisher! logger))
+         (doall)
+         ((fn [sf] (fn [] (run! #(%) sf)))))
+     ;; otherwise start the single publisher
+     (core/start-publisher! logger config))))
 
 
 

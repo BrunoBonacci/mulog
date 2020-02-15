@@ -284,6 +284,27 @@ It sends the output of each log into a file in EDN format.
 (μ/start-publisher! {:type :simple-file :filename "/tmp/mulog/events.log"})
 ```
 
+### Multi publisher (since v0.1.8)
+
+The multi publisher allows you to define multiple publishers
+configuration all in one place. It is equivalent to calling
+`μ/start-publisher!` on all the individual configurations, it is just
+provided for ease of use.
+
+``` clojure
+;; it will initialize all the configured publishers
+(def stop-all
+    (μ/start-publisher!
+     {:type :multi
+      :publishers
+      [{:type :console}
+       {:type :simple-file :filename "/tmp/disk1/mulog/events1.log"}
+       {:type :simple-file :filename "/tmp/disk2/mulog/events2.log"}]}))
+```
+
+It will initialize all the configured publishers and return a function
+with no arguments which when called will stop all the publishers.
+
 ### ElasticSearch publisher
 
 The events must be serializeable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
@@ -309,6 +330,8 @@ The events must be serializeable in JSON format ([Cheshire](https://github.com/d
    ;; :name-mangling true
    })
 ```
+
+Supported versions: `6.7+`, `7.x`
 
 Read more on [Elasticsearch name mangling](./doc/els-name-mangling.md) here.
 
@@ -345,8 +368,6 @@ The events must be serializeable in JSON format ([Cheshire](https://github.com/d
    ;; :key-field :puid
    })
 ```
-
-Supported versions: `6.7+`, `7.x`
 
 ### Custom publishers
 

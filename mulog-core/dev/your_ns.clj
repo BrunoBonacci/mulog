@@ -71,3 +71,21 @@
   (μ/with-context {:order "abc123"}
     (process-item "sku-123" 2))
   )
+
+
+
+(comment
+
+  (def stop-all
+    (μ/start-publisher!
+     {:type :multi
+      :publishers
+      [{:type :console}
+       {:type :simple-file :filename "/tmp/disk1/mulog/events1.log"}
+       {:type :simple-file :filename "/tmp/disk2/mulog/events2.log"}]}))
+
+  (μ/log ::hello :to "New World!")
+
+  (stop-all)
+
+  )
