@@ -395,6 +395,19 @@ For more information about how to implement custom publisher see:
   * [How to write custom publishers](./doc/custom-publishers.md)
   * Read more on [Elasticsearch name mangling](./doc/els-name-mangling.md)
 
+## TODOs
+
+Coming soon:
+
+  - [ ] JVM metrics sampling (GC, heap, buffers)
+  - [ ] Prometheus publisher
+  - [ ] InfluxDB publisher
+  - [ ] CloudWatch Logs/Events publisher
+  - [ ] Advanced Console publisher
+  - [ ] Advanced File publisher
+
+*PRs are welcome `;-)`*
+
 ## License
 
 Copyright © 2019 Bruno Bonacci - Distributed under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0)
