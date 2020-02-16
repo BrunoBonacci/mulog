@@ -79,15 +79,16 @@
          (doseq [[buf dests] pubs]   ;; for every buffer
            (let [items (rb/items @buf)
                  offset (-> items last first)]
-             (doseq [[_ _ pub] dests]  ;; and each destination
-               ;; send to the agent-buffer
-               (send (p/agent-buffer pub)
-                     (partial reduce rb/enqueue)
-                     (->> items
-                        (map second)
-                        (map (partial apply merge-pairs)))))
-             ;; remove items up to the offset
-             (swap! buf rb/dequeue offset))))
+             (when (seq items)
+               (doseq [[_ _ pub] dests]  ;; and each destination
+                 ;; send to the agent-buffer
+                 (send (p/agent-buffer pub)
+                       (partial reduce rb/enqueue)
+                       (->> items
+                          (map second)
+                          (map (partial apply merge-pairs)))))
+               ;; remove items up to the offset
+               (swap! buf rb/dequeue offset)))))
        (catch Exception x
          ;; TODO:
          (.printStackTrace x))))))

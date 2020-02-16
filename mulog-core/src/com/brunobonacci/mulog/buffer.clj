@@ -63,7 +63,7 @@ to the downstream systems by the publishers.
   (dequeue [this offset]
     (RingBuffer.
      counter
-     (pop-while #(<= (first %) offset) buffer)))
+     (pop-while #(<= (first %) (or offset 0)) buffer)))
 
   (clear [this]
     (RingBuffer. counter (empty buffer)))
