@@ -28,3 +28,12 @@ lein do clean, run
    field, then click on **Create index pattern**.
 5. Finally, Click on **Discover** and see the events as they arrive.
 6. The same events should be printed in the console and in Kafka topic called **mulog**.
+7. You can query the `roads-disruptions` on http://localhost:8000/ as follow:
+``` shell
+# to check the API status
+curl -si http://localhost:8000/healthcheck
+
+# to retrieve the current list of disruptions around London
+curl -si http://localhost:8000/disruptions
+```
+Every interaction is logged in ***μ/log***.
