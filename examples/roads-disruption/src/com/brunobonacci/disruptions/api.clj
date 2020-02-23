@@ -1,5 +1,6 @@
 (ns com.brunobonacci.disruptions.api
   (:require [com.brunobonacci.disruptions.tfl-api :as tfl]
+            [com.brunobonacci.mulog :as μ]
             [compojure.core :refer :all]
             [compojure.route :as route]
             [ring.middleware.json :refer [wrap-json-response]]
@@ -24,8 +25,16 @@
   [config]
   (future
     (loop []
+      ;; Log poll event
+      (μ/log :disruptions/initiated-poll)
+
       (safely
           (let [disruptions (tfl/all-disruptions config)]
+
+            ;; record the active disruptions
+            (μ/log :disruptions/poll-completed
+                   :active-disruptions (count disruptions))
+
             (swap! active-disruptions
                    (fn [old new]
                      (->>
@@ -43,16 +52,39 @@
 
 
 
+(defn wrap-events
+  "tracks api events"
+  [handler]
+  (fn [req]
+    (μ/with-context
+      {:uri (get req :uri)
+       :request-method (get req :request-method)
+       :content-type (get-in req [:headers "content-type"])
+       :content-encoding (get-in req [:headers "content-encoding"])}
+
+      (μ/trace :disruptions/http-request
+        []
+        (fn [{:keys [status]}] {:http-status status})
+        (handler req)))))
+
+
+
 (defn service-api
   [config]
-  (wrap-json-response
-   (routes
+  (wrap-events             ;; tracks all requests with μ/log
+   (wrap-json-response
+    (routes
 
-    (GET "/disruptions" []
-         {:status 200
-          :body {:status "OK"
-                 :active-disruptions
-                 @active-disruptions}})
+     (GET "/healthcheck" []
+          {:status 200
+           :body {:status "OK" :message "All good."}})
 
-    (route/not-found
-     {:status "ERROR" :message "Resource not found."}))))
+
+     (GET "/disruptions" []
+          {:status 200
+           :body {:status "OK"
+                  :active-disruptions
+                  @active-disruptions}})
+
+     (route/not-found
+      {:status "ERROR" :message "Resource not found."})))))

@@ -37,19 +37,21 @@
 
   ;; set global context
   (μ/set-global-context!
-   {:app-name "roads-disruption", :version "0.1.0", :env "local"})
+   {:app-name "roads-disruptions", :version "0.1.0", :env "local"})
 
   (μ/start-publisher! mulog))
 
 
 
 (defn- init-polling!
+  "Initiates background thread to poll TFL api"
   [config]
   (api/poll-disruptions! config))
 
 
 
 (defn- init!
+  "Initialize system"
   [config]
   (let [_       (init-events! config)
         handler (api/service-api config)
@@ -60,18 +62,10 @@
 
 
 
-(comment
-
-  (def config DEFAULT-CONFIG)
-  (def s (init! config))
-
-  )
-
-
-
 (defn -main [& args]
   (init! DEFAULT-CONFIG)
   (println "Server started on http://localhost:8000/disruptions")
+  (μ/log :disruptions/app-started)
   @(promise))
 
 

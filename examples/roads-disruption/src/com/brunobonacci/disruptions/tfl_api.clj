@@ -13,11 +13,15 @@
   [config]
   (->>
    (safely
-       (->> (http/get (get-in config [:endpoints :roads])
-                    {:as "UTF-8"
-                     :accept :json
-                     :socket-timeout 3000
-                     :connection-timeout 3000})
+       (->> (μ/trace :disruptions/remote-request
+            [:request-type :get-all-roads]
+            (fn [{:keys [status]}] {:http-status status})
+
+            (http/get (get-in config [:endpoints :roads])
+                      {:as "UTF-8"
+                       :accept :json
+                       :socket-timeout 3000
+                       :connection-timeout 3000}))
           :body
           (json/parse-string))
      :on-error
@@ -39,11 +43,16 @@
   [config road-id]
   (->>
    (safely
-       (->> (http/get ((get-in config [:endpoints :disruptions]) road-id)
-                    {:as "UTF-8"
-                     :accept :json
-                     :socket-timeout 3000
-                     :connection-timeout 3000})
+       (->> (μ/trace :disruptions/remote-request
+            [:road-id road-id :request-type :disruptions-by-road]
+            (fn [{:keys [status]}] {:http-status status})
+
+            ;; http-rest request to TFL api
+            (http/get ((get-in config [:endpoints :disruptions]) road-id)
+                      {:as "UTF-8"
+                       :accept :json
+                       :socket-timeout 3000
+                       :connection-timeout 3000}))
           :body
           (json/parse-string))
      :on-error
@@ -65,10 +74,12 @@
 (defn all-disruptions
   "Returns all the active disruptions on all the main roads around London"
   [config]
-  (->> config
-     roads
-     (map #(get % "id"))
-     (mapcat (partial disruptions config))
-     (map (juxt #(get % "id") identity))
-     (into {})
-     (map second)))
+  (μ/trace :disruptions/retrieve-disruptions
+    []
+    (->> config
+       roads
+       (map #(get % "id"))
+       (mapcat (partial disruptions config))
+       (map (juxt #(get % "id") identity))
+       (into {})
+       (map second))))
