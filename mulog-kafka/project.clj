@@ -1,6 +1,6 @@
 (defn ver [] (-> "../ver/mulog.version" slurp .trim))
 (defproject com.brunobonacci/mulog-kafka #=(ver)
-  :description "FIXME: write description"
+  :description "A publisher for μ/log to Kafka."
 
   :url "https://github.com/BrunoBonacci/mulog"
 
