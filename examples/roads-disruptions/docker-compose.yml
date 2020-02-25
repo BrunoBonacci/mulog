@@ -4,7 +4,6 @@ services:
   zookeeper:
     image: confluentinc/cp-zookeeper:5.4.0
     hostname: zookeeper
-    container_name: zookeeper
     ports:
       - "2181:2181"
     environment:
@@ -14,7 +13,6 @@ services:
   broker:
     image: confluentinc/cp-kafka:5.4.0
     hostname: broker
-    container_name: broker
     depends_on:
       - zookeeper
     ports:
@@ -31,7 +29,6 @@ services:
   schema-registry:
     image: confluentinc/cp-schema-registry:5.4.0
     hostname: schema-registry
-    container_name: schema-registry
     depends_on:
       - zookeeper
       - broker
@@ -44,7 +41,6 @@ services:
   connect:
     image: cnfldemos/kafka-connect-datagen:0.2.0-5.4.0
     hostname: connect
-    container_name: connect
     depends_on:
       - zookeeper
       - broker
@@ -75,7 +71,6 @@ services:
   ksql-server:
     image: confluentinc/cp-ksql-server:5.4.0
     hostname: ksql-server
-    container_name: ksql-server
     depends_on:
       - broker
       - connect
@@ -94,7 +89,6 @@ services:
 
   ksql-cli:
     image: confluentinc/cp-ksql-cli:5.4.0
-    container_name: ksql-cli
     depends_on:
       - broker
       - connect
@@ -109,7 +103,10 @@ services:
       - "9300:9300"
     environment:
       discovery.type: single-node
+
   kibana:
     image: docker.elastic.co/kibana/kibana:7.6.0
+    depends_on:
+      - elasticsearch
     ports:
       - "9000:5601"

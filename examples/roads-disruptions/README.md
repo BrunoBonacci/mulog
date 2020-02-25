@@ -37,3 +37,84 @@ curl -si http://localhost:8000/healthcheck
 curl -si http://localhost:8000/disruptions
 ```
 Every interaction is logged in ***μ/log***.
+
+The logs will be sent to the following destinations:
+
+  - Console standard output
+  - Filesystem: `/tmp/mulog/events.log`
+  - Kafka topic: `mulog`
+  - ElasticSearch index `mulog-YYYY.MM.DD`
+
+Here a sample of the events that will be sent:
+
+``` clojure
+;; This event is sent at the application start
+{:mulog/event-name :disruptions/app-started,
+ :mulog/timestamp 1582624436517,
+ :mulog/namespace "com.brunobonacci.disruptions.main",
+ :app-name "roads-disruptions",
+ :env "local",
+ :version "0.1.0"}
+
+;; This event is sent each time the remote api poll
+;; is initiated
+{:mulog/event-name :disruptions/initiated-poll,
+ :mulog/timestamp 1582624488062,
+ :mulog/namespace "com.brunobonacci.disruptions.api",
+ :app-name "roads-disruptions",
+ :env "local",
+ :version "0.1.0"}
+
+;; This event is sent when the application retrieve
+;; the disruptions from the TFL api
+{:mulog/event-name :disruptions/retrieve-disruptions,
+ :mulog/timestamp 1582624488063,
+ :mulog/duration 6442414196,
+ :mulog/namespace "com.brunobonacci.disruptions.tfl-api",
+ :mulog/outcome :ok,
+ :app-name "roads-disruptions",
+ :env "local",
+ :version "0.1.0"}
+
+;; This event is sent for each request to the remote
+;; service to track request rate, errors, latency etc
+{:mulog/event-name :disruptions/remote-request,
+ :mulog/timestamp 1582624494065,
+ :mulog/duration 359793125,
+ :mulog/namespace "com.brunobonacci.disruptions.tfl-api",
+ :mulog/outcome :ok,
+ :app-name "roads-disruptions",
+ :env "local",
+ :http-status 200,
+ :request-type :disruptions-by-road,
+ :road-id "western cross route",
+ :version "0.1.0"}
+
+;; This event is sent when the list of disruptions
+;; from the remote api is completed and it contains
+;; the current count of active disruptions
+{:mulog/event-name :disruptions/poll-completed,
+ :mulog/timestamp 1582624494505,
+ :mulog/namespace "com.brunobonacci.disruptions.api",
+ :active-disruptions 75,
+ :app-name "roads-disruptions",
+ :env "local",
+ :version "0.1.0"}
+
+;; This event is sent for each http user request
+;; it is used to track request rate, error rate,
+;; response type, latency distribution
+{:mulog/event-name :disruptions/http-request,
+ :mulog/timestamp 1582624531635,
+ :mulog/duration 867392,
+ :mulog/namespace "com.brunobonacci.disruptions.api",
+ :mulog/outcome :ok,
+ :app-name "roads-disruptions",
+ :content-encoding nil,
+ :content-type "application/json",
+ :env "local",
+ :http-status 200,
+ :request-method :get,
+ :uri "/disruptions",
+ :version "0.1.0"}
+```
