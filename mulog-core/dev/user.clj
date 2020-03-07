@@ -10,9 +10,11 @@
 
   (u/log ::hello :to "World!")
 
-  (u/start-publisher! {:type :console})
+  (def p1 (u/start-publisher! {:type :console}))
 
   (u/log ::hello :to "World!" :v 2)
+
+  (def p2 (u/start-publisher! {:type :simple-file :filename "/tmp/mulog.edn"}))
 
   (u/set-global-context! {:app "demo" :version 1 :env "local"})
 
@@ -43,7 +45,9 @@
     (u/with-context {:batch "b9876"}
       (process-item "sku-123" 2)))
 
-
+  ;; stop publishers
+  (p1)
+  (p2)
   )
 
 
@@ -84,6 +88,9 @@
 
 
 (comment
+  ;;
+  ;; list events by event-name in pretty-printed format
+  ;;
 
   (->> (io/file "/tmp/mulog.edn")
      slurp
