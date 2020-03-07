@@ -56,6 +56,21 @@
 
 
 
+(defn edn-str
+  "Return a EDN representation of the given value.
+   Same as `pr-str` but without ellipsis."
+  [v & {:keys [pretty?] :or {pretty? false}}]
+  (binding [*print-length* nil
+            *print-level*  nil]
+    (if pretty?
+      ;; pretty-printed representation
+      (with-out-str
+        (pp/pprint v))
+      ;; compact representation
+      (pr-str v))))
+
+
+
 (defn pprint-event-str
   "pretty print event to a string"
   [m]
@@ -64,10 +79,9 @@
         mks (->> (keys m) (filter #(= "mulog" (namespace %))) (remove tops) (sort))
         oks (->> (keys m) (remove #(= "mulog" (namespace %))) (sort))
         get-value (fn [k] (get m k))]
-    (with-out-str
-      (->> (mapcat (juxt identity get-value) (concat top mks oks))
-         (apply array-map)
-         (pp/pprint)))))
+    (->> (mapcat (juxt identity get-value) (concat top mks oks))
+       (apply array-map)
+       (#(edn-str % :pretty? true)))))
 
 
 
@@ -81,7 +95,7 @@
 (defn exception-stacktrace
   "returns a string representation of an exception and its stack-trace"
   [^Exception x]
-  (prn-str x))
+  (edn-str x))
 
 
 

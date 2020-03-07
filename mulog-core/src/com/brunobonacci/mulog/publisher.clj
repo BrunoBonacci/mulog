@@ -1,5 +1,6 @@
 (ns com.brunobonacci.mulog.publisher
   (:require [com.brunobonacci.mulog.buffer :as rb]
+            [com.brunobonacci.mulog.utils :as ut]
             [clojure.java.io :as io]))
 
 
@@ -54,7 +55,7 @@
   (publish [_ buffer]
     ;; items are pairs [offset <item>]
     (doseq [item (map second (rb/items buffer))]
-      (printf "%s\n" (pr-str item)))
+      (printf "%s\n" (ut/edn-str item)))
     (flush)
     (rb/clear buffer)))
 
@@ -89,7 +90,7 @@
   (publish [_ buffer]
     ;; items are pairs [offset <item>]
     (doseq [item (map second (rb/items buffer))]
-      (.write filewriter (prn-str item)))
+      (.write filewriter ^String (ut/edn-str item)))
     (.flush filewriter)
     (rb/clear buffer)))
 
