@@ -92,7 +92,13 @@
     (doseq [item (map second (rb/items buffer))]
       (.write filewriter ^String (ut/edn-str item)))
     (.flush filewriter)
-    (rb/clear buffer)))
+    (rb/clear buffer))
+
+
+  java.io.Closeable
+  (close [_]
+    (.flush filewriter)
+    (.close filewriter)))
 
 
 

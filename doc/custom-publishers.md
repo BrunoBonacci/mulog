@@ -169,14 +169,23 @@ at most 1000 items.
       ;; flush the buffer
       (.flush filewriter)
       ;; return the buffer minus the published elements
-      (rb/dequeue buffer last-offset))))
+      (rb/dequeue buffer last-offset)))
 
 
-  (defn my-custom-publisher
-    [{:keys [filename] :as config}]
-    (let [config (merge {:pretty-print false :max-items 1000} config)]
-      (MyCustomPublisher. config (rb/agent-buffer 10000)
-                          (io/writer (io/file filename) :append true))))
+  ;; If you need to release/close resources when the pubslisher
+  ;; is stopped you can implement the `java.io.Closeable` and
+  ;; it will be called when the publisher is stopped as last call.
+  java.io.Closeable
+  (close [_]
+    (.flush filewriter)
+    (.close filewriter)))
+
+
+(defn my-custom-publisher
+  [{:keys [filename] :as config}]
+  (let [config (merge {:pretty-print false :max-items 1000} config)]
+    (MyCustomPublisher. config (rb/agent-buffer 10000)
+                        (io/writer (io/file filename) :append true))))
 ```
 
 In the above example we can see that we take only a portion of the

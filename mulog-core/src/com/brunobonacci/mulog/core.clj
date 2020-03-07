@@ -107,15 +107,25 @@
          deregister (fn [] (deregister-publisher!
                            buffer publisher-name publisher))
 
+
+         publish (fn [] (send-off (p/agent-buffer publisher)
+                                 (partial p/publish publisher)))
          ;; register periodic call publish
-         stop (rb/recurring-task
-               period
-               (fn []
-                 (send-off (p/agent-buffer publisher)
-                           (partial p/publish publisher))))]
-     (fn []
+         stop (rb/recurring-task period publish)]
+     (fn stop-publisher
+       []
+       ;; remove publisher from listeners
        (deregister)
-       (stop)))))
+       ;; stop recurring calls to publisher
+       (stop)
+       ;; flush buffer
+       (publish)
+       ;; close publisher
+       (when (instance? java.io.Closeable publisher)
+         (send-off (p/agent-buffer publisher)
+                   (fn [_]
+                     (.close ^java.io.Closeable publisher))))
+       :stopped))))
 
 
 
