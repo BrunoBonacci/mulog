@@ -45,6 +45,12 @@ The logs will be sent to the following destinations:
   - Kafka topic: `mulog`
   - ElasticSearch index `mulog-YYYY.MM.DD`
 
+To see the events sent to kafka run:
+
+``` shell
+docker exec -ti roads-disruptions_broker_1 /usr/bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic mulog
+```
+
 Here a sample of the events that will be sent:
 
 ``` clojure
