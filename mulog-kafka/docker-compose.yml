@@ -14,7 +14,8 @@ services:
     ports:
       - "9092:9092"
     environment:
-      #KAFKA_ADVERTISED_HOST_NAME: <your-local-ip>
+      # REPLACE with your machine IP (non 127.0.0.1) if necessary
+      KAFKA_ADVERTISED_HOST_NAME: 192.168.200.200
       KAFKA_CREATE_TOPICS: "mulog:1:1"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     volumes:

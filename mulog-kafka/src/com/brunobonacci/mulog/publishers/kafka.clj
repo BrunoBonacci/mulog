@@ -53,7 +53,7 @@
 
 (comment
 
-  (def kcfg {:bootstrap.servers "localhost:9092"
+  (def kcfg {:bootstrap.servers "192.168.200.200:9092"
              :key.serializer   StringSerializer
              :value.serializer   StringSerializer})
 

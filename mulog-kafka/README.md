@@ -11,6 +11,23 @@ Please see [README](../README.md) on main page.
 
 ## Testing
 
+Create an alias with
+
+``` shell
+# on linux
+sudo ip addr add 192.168.200.200/32 dev wlan0
+
+# on Mac OSX
+sudo ifconfig en0 alias 192.168.200.200/32 up
+
+# to remove alias
+# sudo ifconfig en0 -alias 192.168.200.200/32
+```
+
+Alternatively, edit the `docker-compose.yaml` and add your local ip (non 127.0.0.1).
+This is necessary for the producer to connect to the broker.
+
+
 ``` shell
 docker-compose rm -f && docker-compose up -d
 docker exec -ti mulog-kafka_kafka_1 /opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server kafka:9092 --topic mulog

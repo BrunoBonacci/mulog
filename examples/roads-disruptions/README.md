@@ -13,6 +13,21 @@ around London.
 
 ## Testing
 
+0. Prepare the network and create an alias with
+``` shell
+# on linux
+sudo ip addr add 192.168.200.200/32 dev wlan0
+
+# on Mac OSX
+sudo ifconfig en0 alias 192.168.200.200/32 up
+
+# to remove alias
+# sudo ifconfig en0 -alias 192.168.200.200/32
+```
+
+Alternatively, edit the `docker-compose.yaml` and add your local ip (non 127.0.0.1).
+This is necessary for the producer to connect to the broker.
+
 1. Start Kafka and ElasticSearch in background
 ``` shell
 docker-compose rm -f && docker-compose up
@@ -45,10 +60,10 @@ The logs will be sent to the following destinations:
   - Kafka topic: `mulog`
   - ElasticSearch index `mulog-YYYY.MM.DD`
 
-To see the events sent to kafka run:
+To see the events sent to Kafka run:
 
 ``` shell
-docker exec -ti roads-disruptions_broker_1 /usr/bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic mulog
+docker exec -ti roads-disruptions_broker_1 /usr/bin/kafka-console-consumer --bootstrap-server localhost:9093 --topic mulog
 ```
 
 Here a sample of the events that will be sent:
