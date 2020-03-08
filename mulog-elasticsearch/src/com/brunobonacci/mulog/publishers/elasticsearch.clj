@@ -131,7 +131,7 @@
 
 
 (deftype ElasticSearchPublisher
-    [config buffer]
+    [config buffer transform]
 
 
   com.brunobonacci.mulog.publisher.PPublisher
@@ -151,7 +151,7 @@
         buffer
         ;; else send to ELS
         (do
-          (post-records config (map second items))
+          (post-records config (transform (map second items)))
           (rb/dequeue buffer last-offset))))))
 
 
@@ -160,7 +160,10 @@
   {:max-items     5000
    :publish-delay 5000
    :index-pattern "'mulog-'yyyy.MM.dd"
-   :name-mangling true})
+   :name-mangling true
+   ;; function to transform records
+   :transform identity
+   })
 
 
 
@@ -172,4 +175,5 @@
      (merge DEFAULT-CONFIG $)
      (update $ :url normalize-endpoint-url)
      (assoc $ :index* (index-name (:index-pattern $))))
-   (rb/agent-buffer 20000)))
+   (rb/agent-buffer 20000)
+   (or (:transform config) identity)))

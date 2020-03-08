@@ -51,6 +51,24 @@
   )
 
 
+;; testing transform
+(comment
+
+  (u/log ::hello :to "World!")
+
+  (u/start-publisher! {:type :console})
+
+  (u/log ::hello :to "World!" :v (rand-int 1000))
+  (def x (u/start-publisher!
+          {:type :console
+           :transform (fn [events]
+                        (->> events
+                           (filter #(< (:v %) 500))
+                           (map #(update % :v -))))}))
+
+  (x)
+
+  )
 
 
 (comment

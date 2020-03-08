@@ -36,10 +36,13 @@ Here some features and key design decisions that make ***μ/log*** special:
 
 Available publishers:
 
-  * Simple console publisher (stdout)
-  * Simple file publisher
-  * ElasticSearch
-  * Apache Kafka
+  * [Simple console publisher (stdout)](#simple-console-publisher)
+  * [Simple file publisher](#simple-file-publisher)
+  * [ElasticSearch](#elasticsearch-publisher)
+  * [Apache Kafka](#apache-kafka-publisher)
+  * [Multi-publisher](#multi-publisher)
+  * [Pluggable custom publishers](#custom-publishers)
+
 
 ## Motivation
 
@@ -268,9 +271,28 @@ Here some best practices to follow while logging events:
 
 ## Publishers
 
+Publishers allow to send the events to external system where they can
+be stored, indexed, transformed or visualized.
+
 ### Simple console publisher
 
 It outputs the events into the standard output in EDN format, mostly intended for local development.
+
+The available configuration options:
+
+``` clojure
+{:type :console
+
+ ;; a function to apply to the sequence of events before publishing.
+ ;; This transformation function can be used to filter, tranform,
+ ;; anonymise events before they are published to a external system.
+ ;; by defatult there is no transformation.  (since v0.1.8)
+ :transform identity
+ }
+
+```
+
+How to use it:
 
 ``` clojure
 (μ/start-publisher! {:type :console})
@@ -280,11 +302,34 @@ It outputs the events into the standard output in EDN format, mostly intended fo
 
 It sends the output of each log into a file in EDN format.
 
+The available configuration options:
+
+``` clojure
+{:type :simple-file
+
+ ;; the name of the file, including the path, where the logs will be written
+ ;; If the directory doesn't exists, it will try to create them, same for the file.
+ ;; If the file already exists, it will append the new events.
+ :filename "/tmp/mulog/events.log"
+
+ ;; a function to apply to the sequence of events before publishing.
+ ;; This transformation function can be used to filter, tranform,
+ ;; anonymise events before they are published to a external system.
+ ;; by defatult there is no transformation.  (since v0.1.8)
+ :transform identity
+ }
+
+```
+
+How to use it:
+
 ``` clojure
 (μ/start-publisher! {:type :simple-file :filename "/tmp/mulog/events.log"})
 ```
 
-### Multi publisher (since v0.1.8)
+
+### Multi publisher
+![since v0.1.8](https://img.shields.io/badge/since-v0.1.8-brightgreen)
 
 The multi publisher allows you to define multiple publishers
 configuration all in one place. It is equivalent to calling
@@ -293,42 +338,62 @@ provided for ease of use.
 
 ``` clojure
 ;; it will initialize all the configured publishers
-(def stop-all
-    (μ/start-publisher!
-     {:type :multi
-      :publishers
-      [{:type :console}
-       {:type :simple-file :filename "/tmp/disk1/mulog/events1.log"}
-       {:type :simple-file :filename "/tmp/disk2/mulog/events2.log"}]}))
+(μ/start-publisher!
+ {:type :multi
+  :publishers
+  [{:type :console}
+   {:type :simple-file :filename "/tmp/disk1/mulog/events1.log"}
+   {:type :simple-file :filename "/tmp/disk2/mulog/events2.log"}]}))
 ```
 
 It will initialize all the configured publishers and return a function
 with no arguments which when called will stop all the publishers.
 
+
 ### ElasticSearch publisher
 
 The events must be serializeable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
 
+The available configuration options:
+
 ``` clojure
-(μ/start-publisher!
-  {:type :elasticsearch
+{:type :elasticsearch
 
-   ;; els endpoint
-   :url  "http://localhost:9200/"
+ ;; ElasticSearch endpoint (REQUIRED)
+ :url  "http://localhost:9200/"
 
-   ;; maximum number of events in a single post
-   ;; :max-items     5000
 
-   ;; how often it will send the events to ELS (in millis)
-   ;; :publish-delay 5000
+ ;; the maximum number of events which can be sent in a single
+ ;; batch request to ElasticSearch
+ :max-items     5000
 
-   ;; the name of the index where events will be sent
-   ;; :index-pattern "'mulog-'yyyy.MM.dd"
+ ;; Interval in milliseconds between publish requests.
+ ;; μ/log will try to send the records to ElasticSearch
+ ;; with the interval specified.
+ :publish-delay 5000
+
+ ;; The index pattern to use for the events
+ :index-pattern "'mulog-'yyyy.MM.dd"
 
    ;; Whether or not to change the attribute names
    ;; to facilitate queries and avoid type clashing
-   ;; :name-mangling true
-   })
+ :name-mangling true
+
+ ;; a function to apply to the sequence of events before publishing.
+ ;; This transformation function can be used to filter, tranform,
+ ;; anonymise events before they are published to a external system.
+ ;; by defatult there is no transformation.  (since v0.1.8)
+ :transform identity
+ }
+
+```
+
+How to use it:
+
+``` clojure
+(μ/start-publisher!
+  {:type :elasticsearch
+   :url  "http://localhost:9200/"})
 ```
 
 Supported versions: `6.7+`, `7.x`
@@ -339,35 +404,51 @@ Read more on [Elasticsearch name mangling](./doc/els-name-mangling.md) here.
 
 The events must be serializeable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
 
+The available configuration options:
+
+``` clojure
+{:type :kafka
+
+ ;; kafka configuration
+ :kafka {;; the comma-separated list of brokers (REQUIRED)
+         :bootstrap.servers "localhost:9092"
+         ;; you can add more kafka connection properties here
+         }
+
+ ;; the name of the kafka topic where events will be sent
+ ;; :topic "mulog"
+
+ ;; maximum number of events in a single batch
+ ;; :max-items     1000
+
+ ;; how often it will send the events Kafka  (in millis)
+ ;; :publish-delay 1000
+
+ ;; the format of the events to send into the topic
+ ;; can be one of: :json, :edn (default :json)
+ ;; :format        :json
+
+ ;; The name of the field which it will be used as partition key
+ ;; the :puid is the process unique identifier which can be injected
+ ;; as global context
+ ;; :key-field :puid
+
+ ;; a function to apply to the sequence of events before publishing.
+ ;; This transformation function can be used to filter, tranform,
+ ;; anonymise events before they are published to a external system.
+ ;; by defatult there is no transformation.  (since v0.1.8)
+ :transform identity
+ }
+```
+
+How to use it:
+
 ``` clojure
 (μ/start-publisher!
   {:type :kafka
-
-   ;; kafka configuration
-   :kafka {;; the comma-separated list of brokers
-           ;; :bootstrap.servers "localhost:9092"
-           ;; you can add more kafka connection properties here
-           }
-
-   ;; the name of the kafka topic where events will be sent
-   ;; :topic "mulog"
-
-   ;; maximum number of events in a single batch
-   ;; :max-items     5000
-
-   ;; how often it will send the events to ELS (in millis)
-   ;; :publish-delay 5000
-
-   ;; the format of the events to send into the topic
-   ;; can be one of: :json, :edn (default :json)
-   ;; :format    :json
-
-   ;; The name of the field which it will be used as partition key
-   ;; the :puid is the process unique identifier which can be injected
-   ;; as global context
-   ;; :key-field :puid
-   })
+   :kafka {:bootstrap.servers "localhost:9092"}})
 ```
+
 
 ### Custom publishers
 
@@ -394,6 +475,7 @@ For more information about how to implement custom publisher see:
   * Read about [μ/log internals](./doc/mulog-internals.md)
   * [How to write custom publishers](./doc/custom-publishers.md)
   * Read more on [Elasticsearch name mangling](./doc/els-name-mangling.md)
+
 
 ## TODOs
 

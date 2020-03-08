@@ -103,7 +103,7 @@
 
 
 (deftype KafkaPublisher
-    [config buffer]
+    [config buffer transform]
 
 
   com.brunobonacci.mulog.publisher.PPublisher
@@ -123,7 +123,7 @@
         buffer
         ;; else send to kafka
         (do
-          (publish-records! config (map second items))
+          (publish-records! config (transform (map second items)))
           (rb/dequeue buffer last-offset))))))
 
 
@@ -139,6 +139,8 @@
    ;; one of: :json, :edn
    :format    :json
    :key-field :puid
+   ;; function to transform records
+   :transform identity
    })
 
 
@@ -150,4 +152,5 @@
    (as-> config $
      (deep-merge DEFAULT-CONFIG $)
      (assoc $ :producer* (producer (:kafka $))))
-   (rb/agent-buffer 10000)))
+   (rb/agent-buffer 10000)
+   (or (:transform config) identity)))

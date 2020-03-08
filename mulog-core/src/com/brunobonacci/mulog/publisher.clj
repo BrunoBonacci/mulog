@@ -40,7 +40,7 @@
 
 
 (deftype ConsolePublisher
-    [config buffer]
+    [config buffer transform]
 
 
   com.brunobonacci.mulog.publisher.PPublisher
@@ -54,7 +54,7 @@
 
   (publish [_ buffer]
     ;; items are pairs [offset <item>]
-    (doseq [item (map second (rb/items buffer))]
+    (doseq [item  (transform (map second (rb/items buffer)))]
       (printf "%s\n" (ut/edn-str item)))
     (flush)
     (rb/clear buffer)))
@@ -62,8 +62,8 @@
 
 
 (defn console-publisher
-  [config]
-  (ConsolePublisher. config (rb/agent-buffer 10000)))
+  [{:keys [transform] :as config}]
+  (ConsolePublisher. config (rb/agent-buffer 10000) (or transform identity)))
 
 
 
@@ -75,7 +75,7 @@
 
 
 (deftype SimpleFilePublisher
-    [config ^java.io.Writer filewriter buffer]
+    [config ^java.io.Writer filewriter buffer transform]
 
 
   com.brunobonacci.mulog.publisher.PPublisher
@@ -89,7 +89,7 @@
 
   (publish [_ buffer]
     ;; items are pairs [offset <item>]
-    (doseq [item (map second (rb/items buffer))]
+    (doseq [item (transform (map second (rb/items buffer)))]
       (.write filewriter ^String (ut/edn-str item)))
     (.flush filewriter)
     (rb/clear buffer))
@@ -103,7 +103,7 @@
 
 
 (defn simple-file-publisher
-  [{:keys [filename] :as config}]
+  [{:keys [filename transform] :as config}]
   {:pre [filename]}
   (let [filename (io/file filename)]
     ;; make parte dirs
@@ -111,7 +111,8 @@
     (SimpleFilePublisher.
      config
      (io/writer filename :append true)
-     (rb/agent-buffer 10000))))
+     (rb/agent-buffer 10000)
+     (or transform identity))))
 
 
 
@@ -197,7 +198,7 @@
 
 
 (defmulti publisher-factory
-  ""
+  "Creates a publisher of the give `:type`."
   (fn [cfg] (:type cfg)))
 
 
