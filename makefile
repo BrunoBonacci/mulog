@@ -50,7 +50,7 @@ all: clean build
 #
 # Build
 #
-build: build-core build-els
+build: build-core build-els build-kafka build-examples
 - @printf "#\n# Building μ/log Completed!\n#\n"
 
 
@@ -79,9 +79,24 @@ mulog-elasticsearch/target/mulog*.jar: $(els_src)
 #
 kafka_src = $(shell find mulog-kafka/project.clj mulog-kafka/src mulog-kafka/resources -type f)
 build-kafka: build-core mulog-kafka/target/mulog*.jar
-mulog-kafka/target/mulog*.jar: $(els_src)
+mulog-kafka/target/mulog*.jar: $(kafka_src)
 - @printf "#\n# Building mulog-kafka\n#\n"
 - (cd mulog-kafka; lein do check, midje, install)
+
+
+#
+# Build examples
+#
+build-examples: build-examples-disruptions
+
+#
+# Build Disruption example
+#
+disruptions_src = $(shell find examples/roads-disruptions/project.clj examples/roads-disruptions/src examples/roads-disruptions/resources -type f)
+build-examples-disruptions: build-core build-els build-kafka examples/roads-disruptions/target/roads-disruptions*.jar
+examples/roads-disruptions/target/roads-disruptions*.jar: $(disruptions_src)
+- @printf "#\n# Building examples/roads-disruptions\n#\n"
+- (cd examples/roads-disruptions; lein do check, test)
 
 
 #
@@ -90,6 +105,7 @@ mulog-kafka/target/mulog*.jar: $(els_src)
 .PHONY: clean
 clean:
 - @printf "#\n# Cleaning \n#\n"
-- (cd mulog-core;           rm -fr target)
-- (cd mulog-elasticsearch;  rm -fr target)
-- (cd mulog-kafka;          rm -fr target)
+- (cd mulog-core;                 rm -fr target)
+- (cd mulog-elasticsearch;        rm -fr target)
+- (cd mulog-kafka;                rm -fr target)
+- (cd examples/roads-disruptions; rm -fr target)
