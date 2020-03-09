@@ -137,7 +137,12 @@
         ;; else send to kafka
         (do
           (publish-records! config (transform (map second items)))
-          (rb/dequeue buffer last-offset))))))
+          (rb/dequeue buffer last-offset)))))
+
+
+  java.io.Closeable
+  (close [_]
+    (.close ^java.io.Closeable (:producer* config))))
 
 
 
