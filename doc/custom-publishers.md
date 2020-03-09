@@ -206,3 +206,65 @@ target system not be available for a longer period of time, nothing to
 worry about in this case as well, because the buffer will keep filling
 up until it is full and then start dropping older events ensuring that
 the system won't run out of memory.
+
+
+## Support for user-defined transformations
+
+If you are building a general purpose publisher it is good idea to
+provide the ability to take a general transformation which can be
+applied to the events.  This can be very useful for filtering which
+events you which to send to a specific publisher or for performing
+simple event transformations.  For example, the transformation could
+be used to anonymize some sensitive fields which you might not want to
+see in one destination.
+Sometimes it is useful to filter noisy events out and get only the
+events you are interested into a particular publisher.
+
+All the built-in publisher support custom transformation via the
+`:transform` configuration.
+
+If you are implementing a Publisher, consider adding the support as
+well.  To add the support is easy, just look for a function associated
+to the `:transform` key in your configuration and apply the
+transformation to the events you get from the buffer.
+
+For example, in our previous example:
+
+``` clojure
+(ns my-custom.publisher
+  (:require [com.brunobonacci.mulog.buffer :as rb]
+            [clojure.pprint :refer [pprint]]))
+
+
+(deftype MyCustomPublisher
+    [config buffer]
+
+  com.brunobonacci.mulog.publisher.PPublisher
+  (agent-buffer [_]
+    buffer)
+
+  (publish-delay [_]
+    500)
+
+  (publish [_ buffer]
+    ;; check our printer option
+    (let [printer (if (:pretty-print config) pprint prn)
+          ;; HERE: retrieve the transformation function
+          transform (:transform config)]
+      ;; items are pairs [offset <item>], APPLY HERE the transform
+      (doseq [item (transform (map second (rb/items buffer)))]
+        ;; print the item
+        (printer item)))
+    ;; return the buffer minus the published elements
+    (rb/clear buffer)))
+
+
+(defn my-custom-publisher
+  [config]
+  ;; if a `transform` function is not provided, then use identity
+  (let [config (update config :transform (fn [f] (or f identity)))]
+    (MyCustomPublisher. config (rb/agent-buffer 10000))))
+```
+
+Remember the transform if a function which applies to all events, it
+can do any sort of operation and it is optional.
