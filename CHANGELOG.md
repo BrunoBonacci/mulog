@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.1.8 - (unreleased)
+## v0.1.8 - (2020-03-09)
 
   - Added ability to configure multi-publishers
   - Added ability to provide custom transformation to built-in publishers

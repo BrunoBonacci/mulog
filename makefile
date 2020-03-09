@@ -22,6 +22,7 @@ define helpdoc
 #
 # - clean:   removes compilation outputs
 # - build:   compiles and run unit tests for each modules
+# - deploy:  it deploys the jars into clojar (FOR RELEASE ONLY)
 # - all:     same as `make clean build`
 #
 endef
@@ -97,6 +98,17 @@ build-examples-disruptions: build-core build-els build-kafka examples/roads-disr
 examples/roads-disruptions/target/roads-disruptions*.jar: $(disruptions_src)
 - @printf "#\n# Building examples/roads-disruptions\n#\n"
 - (cd examples/roads-disruptions; lein do check, test)
+
+
+#
+# Deploy jars int clojars
+#
+.PHONY: deploy
+deploy:
+- @printf "#\n# Deploying jars \n#\n"
+- (cd mulog-core;                 lein deploy clojars)
+- (cd mulog-elasticsearch;        lein deploy clojars)
+- (cd mulog-kafka;                lein deploy clojars)
 
 
 #
