@@ -94,8 +94,11 @@
 
 (defn exception-stacktrace
   "returns a string representation of an exception and its stack-trace"
-  [^Exception x]
-  (edn-str x))
+  [^Throwable x]
+  (let [sw (java.io.StringWriter.)
+        pw (java.io.PrintWriter. sw)]
+    (.printStackTrace x ^java.io.PrintWriter pw)
+    (str sw)))
 
 
 

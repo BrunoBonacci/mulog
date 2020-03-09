@@ -1,11 +1,21 @@
 (ns com.brunobonacci.mulog.publishers.kafka
   (:require [com.brunobonacci.mulog.publisher :as p]
             [com.brunobonacci.mulog.buffer :as rb]
+            [com.brunobonacci.mulog.utils :as ut]
             [cheshire.core :as json]
+            [cheshire.generate :as gen]
             [clojure.string :as str])
   (:import [java.util Map]
            [org.apache.kafka.clients.producer KafkaProducer ProducerRecord RecordMetadata]
            [org.apache.kafka.common.serialization StringSerializer Serializer]))
+
+
+;;
+;; Add Exception encoder to JSON generator
+;;
+(gen/add-encoder java.lang.Throwable
+                 (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
+                     (gen/write-string json ^String (ut/exception-stacktrace x))))
 
 
 
@@ -67,7 +77,7 @@
 
 (defn- publish-records!
   [{:keys [key-field format topic producer*] :as  config} records]
-  (let [fmt* (if (= :json format) json/generate-string pr-str)]
+  (let [fmt* (if (= :json format) json/generate-string ut/edn-str)]
     (->> records
        (map (juxt #(get % key-field) fmt*))
        (map (fn [[k v]] (send! producer* topic k v)))
