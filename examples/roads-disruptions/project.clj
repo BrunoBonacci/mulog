@@ -10,7 +10,7 @@
   :scm {:name "git" :url "https://github.com/BrunoBonacci/mulog.git"}
 
   :dependencies [[org.clojure/clojure "1.10.1"]
-                 [cheshire "5.9.0"]
+                 [cheshire "5.10.0"]
                  [compojure "1.6.1"]
                  [ring/ring-jetty-adapter "1.8.0"]
                  [ring/ring-core "1.8.0"]
@@ -18,8 +18,8 @@
                  [clj-http "3.10.0"]
                  [clj-time "0.15.2"]
                  [com.cemerick/url "0.1.1"]
-                 [com.brunobonacci/safely "0.5.0-alpha8"]
-                 [org.clojure/tools.logging "0.5.0"]
+                 [com.brunobonacci/safely "0.5.0"]
+                 [org.clojure/tools.logging "1.0.0"]
                  [com.brunobonacci/mulog #=(ver)]
                  [com.brunobonacci/mulog-elasticsearch #=(ver)]
                  [com.brunobonacci/mulog-kafka #=(ver)]
