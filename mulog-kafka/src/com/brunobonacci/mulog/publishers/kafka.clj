@@ -10,12 +10,13 @@
            [org.apache.kafka.common.serialization StringSerializer Serializer]))
 
 
+
 ;;
 ;; Add Exception encoder to JSON generator
 ;;
 (gen/add-encoder java.lang.Throwable
                  (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
-                     (gen/write-string json ^String (ut/exception-stacktrace x))))
+                   (gen/write-string json ^String (ut/exception-stacktrace x))))
 
 
 
@@ -61,11 +62,12 @@
   (.send producer (ProducerRecord. topic key value)))
 
 
+
 (comment
 
   (def kcfg {:bootstrap.servers "192.168.200.200:9092"
-             :key.serializer   StringSerializer
-             :value.serializer   StringSerializer})
+             :key.serializer    StringSerializer
+             :value.serializer  StringSerializer})
 
   (def kp (producer kcfg))
 
@@ -75,6 +77,7 @@
 
 
 
+;; TODO: handle records which can't be serialized.
 (defn- publish-records!
   [{:keys [key-field format topic producer*] :as  config} records]
   (let [fmt* (if (= :json format) json/generate-string ut/edn-str)]

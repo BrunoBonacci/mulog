@@ -58,6 +58,7 @@
 
 
 
+;; TODO: handle records which can't be serialized.
 (defn- to-json
   [m]
   (json/generate-string m {:date-format "yyyy-MM-dd'T'HH:mm:ss.SSSZ"}))
