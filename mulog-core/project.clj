@@ -8,9 +8,9 @@
 
   :scm {:name "git" :url "https://github.com/BrunoBonacci/mulog.git"}
 
+  :java-source-paths ["java"]
   :dependencies [[org.clojure/clojure "1.10.1"]
-                 [amalloy/ring-buffer "1.3.1"
-                  :exclusions [[org.clojure/clojurescript]]]]
+                 [amalloy/ring-buffer "1.3.1"]]
 
   :global-vars {*warn-on-reflection* true}
 
@@ -18,7 +18,9 @@
 
   :profiles {:dev {:dependencies [[midje "1.9.9"]
                                   [org.clojure/test.check "1.0.0"]
-                                  [criterium "0.4.5"]]
+                                  [criterium "0.4.5"]
+                                  [com.clojure-goes-fast/clj-async-profiler "0.4.0"]]
+                   :jvm-opts ["-server" "-Djdk.attach.allowAttachSelf"]
                    :resource-paths ["dev-resources"]
                    :plugins      [[lein-midje "3.2.2"]]}}
   )
