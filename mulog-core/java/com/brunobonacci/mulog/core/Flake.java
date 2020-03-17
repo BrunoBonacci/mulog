@@ -165,12 +165,6 @@ public class Flake implements Comparable<Flake> {
         'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
         'u', 'v', 'w', 'x', 'y', 'z' };
 
-    private static final int mask00000011 = 3;
-    private static final int mask00001111 = 15;
-    private static final int mask00111111 = 63;
-    private static final int mask11000000 = 192;
-    private static final int mask11110000 = 240;
-    private static final int mask11111100 = 252;
 
     /**
      *
@@ -208,10 +202,10 @@ public class Flake implements Comparable<Flake> {
         StringBuilder buf = new StringBuilder(32);
 
         for( int i = 0; i < flake.length; i += 3){
-            int b1 = (flake[i]    & mask11111100) >> 2;
-            int b2 = ((flake[i]   & mask00000011) << 4) | ((flake[i+1] & mask11110000) >> 4);
-            int b3 = ((flake[i+1] & mask00001111) << 2) | ((flake[i+2] & mask11000000) >> 6);
-            int b4 = (flake[i+2]  & mask00111111);
+            int b1 = (flake[i]    & 0b11111100) >> 2;
+            int b2 = ((flake[i]   & 0b00000011) << 4) | ((flake[i+1] & 0b11110000) >> 4);
+            int b3 = ((flake[i+1] & 0b00001111) << 2) | ((flake[i+2] & 0b11000000) >> 6);
+            int b4 = (flake[i+2]  & 0b00111111);
 
             buf.append( chars[b1] ).append( chars[b2] )
                .append( chars[b3] ).append( chars[b4] );
