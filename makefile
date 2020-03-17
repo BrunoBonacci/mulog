@@ -23,6 +23,7 @@ define helpdoc
 # - clean:   removes compilation outputs
 # - build:   compiles and run unit tests for each modules
 # - deploy:  it deploys the jars into clojar (FOR RELEASE ONLY)
+# - ancient: updates all the dependencies
 # - all:     same as `make clean build`
 #
 endef
@@ -101,7 +102,7 @@ examples/roads-disruptions/target/roads-disruptions*.jar: $(disruptions_src)
 
 
 #
-# Deploy jars int clojars
+# Deploy jars into clojars
 #
 .PHONY: deploy
 deploy:
@@ -109,6 +110,18 @@ deploy:
 - (cd mulog-core;                 lein deploy clojars)
 - (cd mulog-elasticsearch;        lein deploy clojars)
 - (cd mulog-kafka;                lein deploy clojars)
+
+
+#
+# update dependencies in project.clj
+#
+.PHONY: ancient
+ancient:
+- @printf "#\n# Deploying jars \n#\n"
+- (cd mulog-core;                 lein with-profile tools ancient upgrade ; lein do clean, install)
+- (cd mulog-elasticsearch;        lein with-profile tools ancient upgrade ; lein do clean, install)
+- (cd mulog-kafka;                lein with-profile tools ancient upgrade ; lein do clean, install)
+- (cd examples/roads-disruptions; lein with-profile tools ancient upgrade ; lein do clean, install)
 
 
 #
