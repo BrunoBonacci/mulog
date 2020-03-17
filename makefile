@@ -1,9 +1,19 @@
 define helpdoc
 # +----------------------------------------------------------------------------+
 # |                                                                            |
-# |                         ----==| μ / L O G |==----                          |
+# |                                 AW  ,,                                     |
+# |                                ,M'`7MM                                     |
+# |                                MV   MM                                     |
+# |                  MM    MM     AW    MM  ,pW"Wq.   .P"Ybmmm                 |
+# |                  MM    MM    ,M'    MM 6W'   `Wb :MI  I8                   |
+# |                  MM    MM    MV     MM 8M     M8  WmmmP"                   |
+# |                  MM    MM   AW      MM YA.   ,A9 8M                        |
+# |                  MVbgd"'Ybo,M'    .JMML.`Ybmd9'   YMMMMMb                  |
+# |                  M.        MV                    6'     dP                 |
+# |                  M8       AW                     Ybmmmd'                   |
 # |                                                                            |
 # +----------------------------------------------------------------------------+
+#
 #
 # It requires GNU make 3.82+
 #
@@ -24,7 +34,7 @@ define helpdoc
 # - build:   compiles and run unit tests for each modules
 # - deploy:  it deploys the jars into clojar (FOR RELEASE ONLY)
 # - ancient: updates all the dependencies
-# - all:     same as `make clean build`
+# - all:     same as `make ancient clean build`
 #
 endef
 
@@ -46,7 +56,7 @@ help:
 #
 # Preparing all
 #
-all: clean build
+all: ancient clean build
 
 
 #
@@ -117,7 +127,7 @@ deploy:
 #
 .PHONY: ancient
 ancient:
-- @printf "#\n# Deploying jars \n#\n"
+- @printf "#\n# Updating dependencies \n#\n"
 - (cd mulog-core;                 lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-elasticsearch;        lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-kafka;                lein with-profile tools ancient upgrade ; lein do clean, install)
