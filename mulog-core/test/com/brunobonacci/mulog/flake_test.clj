@@ -1,4 +1,4 @@
-(ns com.brunobonacci.mulog.buffer-test
+(ns com.brunobonacci.mulog.flake-test
   (:require [com.brunobonacci.mulog.flakes :as f]
             [midje.sweet :refer :all]
             [clojure.test.check :as tc]
@@ -27,7 +27,7 @@
 
 
 
-(fact "Ensures that the homomorphic-representation property is respected"
+(fact "Property: Ensures that the homomorphic-representation property is respected"
   (tc/quick-check 100000 homomorphic-representation)
   => (contains {:pass? true}))
 
@@ -49,7 +49,7 @@
    (< (compare f1 f2) 0)))
 
 
-(fact "Ensures that the monotonic property is respected"
+(fact "Property: Ensures that the monotonic property is respected"
   (tc/quick-check 1000000 monotonic-property)
   => (contains {:pass? true}))
 ;;

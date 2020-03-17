@@ -41,7 +41,7 @@
 
 
 
-(fact "Ensures that the operations on the ring-buffer are robust"
+(fact "Property: Ensures that the operations on the ring-buffer are robust"
   (tc/quick-check 1000 robust-operation-property)
   => (contains {:pass? true}))
 
