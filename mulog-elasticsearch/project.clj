@@ -12,7 +12,8 @@
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [com.brunobonacci/mulog #=(ver)]
                  [clj-http "3.10.0"]
-                 [cheshire "5.10.0"]]
+                 [cheshire "5.10.0"]
+                 [clj-time "0.15.2"]]
 
   :global-vars {*warn-on-reflection* true}
 
