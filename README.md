@@ -363,6 +363,10 @@ The available configuration options:
  :url  "http://localhost:9200/"
 
 
+ ;; The ElasticSearch version family.
+ ;; one of: `:v6.x`  `:v7.x`
+ :els-version   :v7.x
+
  ;; the maximum number of events which can be sent in a single
  ;; batch request to ElasticSearch
  :max-items     5000

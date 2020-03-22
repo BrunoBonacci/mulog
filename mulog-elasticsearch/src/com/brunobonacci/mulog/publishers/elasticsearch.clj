@@ -73,12 +73,14 @@
 
 
 (defn- prepare-records
-  [{:keys [index* name-mangling] :as config} records]
+  [{:keys [index* name-mangling els-version] :as config} records]
   (let [mangler (if name-mangling mangle-map identity)]
     (->> records
        (mapcat (fn [{:keys [mulog/timestamp] :as r}]
-                 (let [index (index* timestamp)]
-                   [(str (json/generate-string {:index {:_index index :_type "event"}}) \newline)
+                 (let [index   (index* timestamp)
+                       ;; https://www.elastic.co/guide/en/elasticsearch/reference/7.x/removal-of-types.html
+                       idx-map (if (= els-version :v6.x) {:_index index :_type "_doc"} {:_index index})]
+                   [(str (json/generate-string {:index idx-map}) \newline)
                     (-> r
                        (mangler)
                        (dissoc :mulog/timestamp)
@@ -162,6 +164,7 @@
    :publish-delay 5000
    :index-pattern "'mulog-'yyyy.MM.dd"
    :name-mangling true
+   :els-version   :v7.x   ;; one of: `:v6.x`, `:v7.x`
    ;; function to transform records
    :transform identity
    })

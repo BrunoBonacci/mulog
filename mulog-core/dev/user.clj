@@ -71,6 +71,9 @@
   )
 
 
+;;
+;; ElasticSearch
+;;
 (comment
 
   (u/log ::hello :to "World!")
@@ -80,7 +83,7 @@
   (u/log ::hello :to "World!" :v (rand-int 1000))
   (u/log ::hello :to "World!" :v "ciao")
   (def x (u/start-publisher! {:type :elasticsearch
-                              :max-items 5000 :url "http://localhost:9200/"}))
+                              :url "http://localhost:9200/"}))
 
   (x)
 

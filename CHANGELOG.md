@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.9 - (unreleased)
+  - Added flag to support ElasticSearch v6.x correctly
+
+
 ## v0.1.8 - (2020-03-09)
 
   - Added ability to configure multi-publishers
