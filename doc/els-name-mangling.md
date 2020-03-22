@@ -204,3 +204,16 @@ configuration:
  :name-mangling false
  }
 ```
+
+Other changes are made to remove reserved characters from the name and
+make it easier to run queries from Kibana.
+
+Here is the list of changes (these changes are applied *ONLY* to the
+*field names*, not the values):
+
+  - Append the type letter indicator to each field (`count` -> `count.i`)
+  - Removes semicolons `:` at the beginning of the words, like for
+    keywords (`:blue` -> `blue`)
+  - Turns slashes `/` like in namespaced keywords into dots `.`
+  - Turns any character which is not a letter, a digit or a dot `.`
+    into a underscore `_` ( `foo&bar` -> `foo_bar`)
