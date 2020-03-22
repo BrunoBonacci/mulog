@@ -15,7 +15,7 @@ However, if the inferred type is incorrect it can lead to problems.
 
 For example, if you have a record for your Order as following:
 
-``` json
+```
 {
   "orderId": 43252,
   "userId": "lksjdhskldfjhg",
@@ -29,7 +29,7 @@ For example, if you have a record for your Order as following:
 The `orderId` is a number automatically incremented by the DB.
 If you index this document in ElasticSearch with:
 
-``` json
+```
 >>> PUT http://localhost:9200/orders/_doc/43253
 >>> Content-Type: application/json
 >>>
@@ -45,7 +45,7 @@ If you index this document in ElasticSearch with:
 
 you'll get a response like:
 
-``` json
+```
 <<< HTTP/1.1 201 Created
 <<< Location: /orders/_doc/43253
 <<< content-type: application/json; charset=UTF-8
@@ -69,7 +69,7 @@ you'll get a response like:
 
 Everything looks fine so far. You can query the order with:
 
-``` json
+```
 >>> GET http://localhost:9200/orders/_doc/43253
 >>> Content-Type: application/json
 >>>
@@ -102,7 +102,7 @@ However if you decide to change the order number to be a UUID
 you will get the following error:
 
 
-``` json
+```
 >>> PUT http://localhost:9200/orders/_doc/44171829-b1e4-4272-8d08-c2d4e8db5d64
 >>> Content-Type: application/json
 >>>
@@ -160,7 +160,7 @@ names so that they won't conflict in the index.
 
 For example, our order map will be changed into
 
-``` json
+```
 {
   "orderId.i": 43252,
   "userId.s": "lksjdhskldfjhg",
@@ -177,7 +177,7 @@ application is using the same field name but with a different
 type/meaning then the two won't clash. This is how the new order could
 look like:
 
-``` json
+```
 {
   "orderId.s": "44171829-b1e4-4272-8d08-c2d4e8db5d64",
   "userId.s": "lksjdhskldfjhg",
