@@ -215,5 +215,6 @@ Here is the list of changes (these changes are applied *ONLY* to the
   - Removes semicolons `:` at the beginning of the words, like for
     keywords (`:blue` -> `blue`)
   - Turns slashes `/` like in namespaced keywords into dots `.`
+    (`:mulog/duration` -> `mulog.duration` )
   - Turns any character which is not a letter, a digit or a dot `.`
-    into a underscore `_` ( `foo&bar` -> `foo_bar`)
+    into a underscore `_` ( `event-name` -> `event_name`)
