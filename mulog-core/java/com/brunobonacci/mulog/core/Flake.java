@@ -199,19 +199,49 @@ public class Flake implements Comparable<Flake> {
     public static final String formatFlake(Flake flakeId){
 
         byte[] flake = flakeId.getBytes();
-        StringBuilder buf = new StringBuilder(32);
+        char[] buf = new char[32];
+        int bix = 0;
 
+        // TODO: maybe faster if loop is unrolled
         for( int i = 0; i < flake.length; i += 3){
             int b1 = (flake[i]    & 0b11111100) >>> 2;
             int b2 = ((flake[i]   & 0b00000011) << 4) | ((flake[i+1] & 0b11110000) >>> 4);
             int b3 = ((flake[i+1] & 0b00001111) << 2) | ((flake[i+2] & 0b11000000) >>> 6);
             int b4 = (flake[i+2]  & 0b00111111);
 
-            buf.append( chars[b1] ).append( chars[b2] )
-               .append( chars[b3] ).append( chars[b4] );
+            buf[bix++] = chars[b1];
+            buf[bix++] = chars[b2];
+            buf[bix++] = chars[b3];
+            buf[bix++] = chars[b4];
         }
 
-        return buf.toString();
+        return new String(buf);
+    }
+
+
+
+    private static final char[] hexChars = new char[]{
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+        'a', 'b', 'c', 'd', 'e', 'f' };
+
+    /**
+     * It returns a hexadecimal representation of the flake
+     * in lowercase 48 chars long
+     */
+    public static final String formatFlakeHex(Flake flakeId){
+
+        byte[] flake = flakeId.getBytes();
+        char[] buf = new char[48];
+
+        for( int i = 0; i < flake.length; i ++){
+            int b1 = (flake[i] & 0b11110000) >>> 4;
+            int b2 = (flake[i] & 0b00001111);
+
+            buf[i*2]   = hexChars[b1];
+            buf[i*2+1] = hexChars[b2];
+        }
+
+        return new String(buf);
     }
 
 }

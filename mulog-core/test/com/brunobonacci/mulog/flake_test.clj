@@ -52,4 +52,24 @@
 (fact "Property: Ensures that the monotonic property is respected"
   (tc/quick-check 1000000 monotonic-property)
   => (contains {:pass? true}))
+
+
+(def random-flake-hex
+  "Generates flake."
+  (gen/no-shrink
+   (gen/fmap (fn [_] (Flake/formatFlakeHex (Flake/flake))) (gen/return 1))))
+
+
+(def monotonic-property-hex
+  "For all flakes, if f1 happens before f2 -> then f1 < f2"
+  (prop/for-all
+   [f1 random-flake-hex
+    f2 random-flake-hex]
+   (< (compare f1 f2) 0)))
+
+
+(fact "Property: Ensures that the monotonic property is respected (hex)"
+  (tc/quick-check 1000000 monotonic-property-hex)
+  => (contains {:pass? true}))
+
 ;;

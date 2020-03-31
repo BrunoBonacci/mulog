@@ -4,7 +4,8 @@
             [com.brunobonacci.mulog.flakes :as f]
             [amalloy.ring-buffer :refer [ring-buffer]]
             [criterium.core :refer [bench quick-bench]]
-            [clj-async-profiler.core :as prof]))
+            [clj-async-profiler.core :as prof])
+  (:import com.brunobonacci.mulog.core.Flake))
 
 
 (comment
@@ -155,7 +156,6 @@
   (bench (java.util.UUID/randomUUID)) ;; 720.110052 ns
 
 
-  (import com.brunobonacci.mulog.core.Flake)
   (bench (Flake/flake))
   ;; Evaluation count : 1570017720 in 60 samples of 26166962 calls.
   ;; Execution time mean : 36.429623 ns
@@ -170,17 +170,26 @@
 
 
   (bench (.toString (Flake/flake)))
-  ;; Evaluation count : 515781720 in 60 samples of 8596362 calls.
-  ;; Execution time mean : 115.042199 ns
-  ;; Execution time std-deviation : 1.482372 ns
-  ;; Execution time lower quantile : 113.117845 ns ( 2.5%)
-  ;; Execution time upper quantile : 117.949391 ns (97.5%)
-  ;; Overhead used : 2.090673 ns
+  ;; Evaluation count : 755435400 in 60 samples of 12590590 calls.
+  ;; Execution time mean : 78.861983 ns
+  ;; Execution time std-deviation : 1.006261 ns
+  ;; Execution time lower quantile : 77.402593 ns ( 2.5%)
+  ;; Execution time upper quantile : 81.006901 ns (97.5%)
+  ;; Overhead used : 1.881732 ns
+
+
+  (bench (Flake/formatFlakeHex (Flake/flake)))
+  ;; Evaluation count : 675648240 in 60 samples of 11260804 calls.
+  ;; Execution time mean : 88.884251 ns
+  ;; Execution time std-deviation : 2.297962 ns
+  ;; Execution time lower quantile : 86.277624 ns ( 2.5%)
+  ;; Execution time upper quantile : 94.576332 ns (97.5%)
+  ;; Overhead used : 2.144793 ns
   ;;
-  ;; Found 3 outliers in 60 samples (5.0000 %)
-  ;; low-severe	 2 (3.3333 %)
+  ;; Found 5 outliers in 60 samples (8.3333 %)
+  ;; low-severe	 4 (6.6667 %)
   ;; low-mild	 1 (1.6667 %)
-  ;; Variance from outliers : 1.6389 % Variance is slightly inflated by outliers
+  ;; Variance from outliers : 12.6407 % Variance is moderately inflated by outliers
 
 
   (bench (.getTimestampNanos (Flake/flake)))
