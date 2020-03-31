@@ -202,9 +202,9 @@ public class Flake implements Comparable<Flake> {
         StringBuilder buf = new StringBuilder(32);
 
         for( int i = 0; i < flake.length; i += 3){
-            int b1 = (flake[i]    & 0b11111100) >> 2;
-            int b2 = ((flake[i]   & 0b00000011) << 4) | ((flake[i+1] & 0b11110000) >> 4);
-            int b3 = ((flake[i+1] & 0b00001111) << 2) | ((flake[i+2] & 0b11000000) >> 6);
+            int b1 = (flake[i]    & 0b11111100) >>> 2;
+            int b2 = ((flake[i]   & 0b00000011) << 4) | ((flake[i+1] & 0b11110000) >>> 4);
+            int b3 = ((flake[i+1] & 0b00001111) << 2) | ((flake[i+2] & 0b11000000) >>> 6);
             int b4 = (flake[i+2]  & 0b00111111);
 
             buf.append( chars[b1] ).append( chars[b2] )
