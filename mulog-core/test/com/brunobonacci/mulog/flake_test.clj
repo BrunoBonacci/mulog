@@ -8,6 +8,26 @@
 
 
 
+(fact "flake representation as string and bytes"
+
+  (str (Flake/makeFlake 0 0 0 ))   => "--------------------------------"
+  (str (Flake/makeFlake -1 -1 -1)) => "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
+
+  (let [bytez (byte-array 24)
+        _ (java.util.Arrays/fill bytez (byte 0))]
+    (= (Flake/makeFlake 0 0 0 ) (Flake/makeFlake bytez))) => true
+
+  (let [bytez (byte-array 24)
+        _ (java.util.Arrays/fill bytez (byte -1))]
+    (= (Flake/makeFlake -1 -1 -1) (Flake/makeFlake bytez)))
+
+  (let [flake (Flake/flake)
+        bytez (.getBytes flake)]
+    (= flake (Flake/makeFlake bytez)))
+  )
+
+
+
 (def flake
   "Generates flake."
   (gen/fmap (fn [[l1 l2 l3]] (Flake/makeFlake l1 l2 l3))

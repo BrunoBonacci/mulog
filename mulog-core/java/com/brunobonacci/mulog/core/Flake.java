@@ -141,9 +141,38 @@ public class Flake implements Comparable<Flake> {
     }
 
 
+    @Override
+    public boolean equals(Object o){
+        if( o instanceof Flake){
+            return compareTo( (Flake) o) == 0;
+        }
+        else
+            return false;
+    }
+
+
+    @Override
+    public int hashCode(){
+        return Long.hashCode( timePart )
+            ^  Long.hashCode( rand1Part )
+            ^  Long.hashCode( rand1Part );
+    }
+
+
     public static final Flake makeFlake( long time, long rand1, long rand2 ){
         return new Flake( time, rand1, rand2);
     }
+
+
+    public static final Flake makeFlake( byte[] flake ){
+
+        if( flake == null || flake.length != 24)
+            throw new IllegalArgumentException("Invalid flake length");
+
+        ByteBuffer buf = ByteBuffer.wrap(flake);
+        return new Flake(buf.getLong(), buf.getLong(), buf.getLong());
+    }
+
 
 
     /*
