@@ -2,14 +2,22 @@
   (:require [com.brunobonacci.mulog.publisher :as p]
             [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.utils :as ut]
+            [com.brunobonacci.mulog.flakes :as f :refer [flake]]
             [clj-http.client :as http]
             [cheshire.core :as json]
             [cheshire.generate :as gen]
             [clojure.string :as str]
-            [clj-time.format :as tf]
-            [clj-time.coerce :as tc]
-            [clojure.walk :as w])
-  (:import com.brunobonacci.mulog.core.Flake))
+            [com.brunobonacci.mulog :as u])
+  #_(:require [com.brunobonacci.mulog.publisher :as p]
+              [com.brunobonacci.mulog.buffer :as rb]
+              [com.brunobonacci.mulog.utils :as ut]
+              [clj-http.client :as http]
+              [cheshire.core :as json]
+              [cheshire.generate :as gen]
+              [clojure.string :as str]
+              [clj-time.format :as tf]
+              [clj-time.coerce :as tc]
+              [clojure.walk :as w]))
 
 ;;
 ;; Add Exception encoder to JSON generator
@@ -24,18 +32,22 @@
 
 
 
+;; TODO: handle records which can't be serialized.
+(defn- to-json
+  [m]
+  (json/generate-string m {:date-format "yyyy-MM-dd'T'HH:mm:ss.SSSX"}))
+
+
 (comment
 
-  (require '[com.brunobonacci.mulog.flakes :refer [flake]])
-
-  (defn sample-traces
+    (defn sample-traces
     []
     (let [t1 (flake)
           t2 (flake)
           t3 (flake)
           t4 (flake)
           tm0 (System/currentTimeMillis)]
-      [{:service "user-lookup-cache",
+      [{:app-name "user-lookup-cache",
         :mulog/duration 3541288,
         :mulog/namespace "user",
         :mulog/outcome :ok,
@@ -45,7 +57,7 @@
         :mulog/timestamp (+ tm0 142)
         :mulog/event-name :user/cache-store}
 
-       {:service "user-lookup-cache",
+       {:app-name "user-lookup-cache",
         :mulog/duration 69541288,
         :mulog/namespace "user",
         :mulog/outcome :ok,
@@ -55,7 +67,7 @@
         :mulog/timestamp (+ tm0 42)
         :mulog/event-name :user/db-lookup}
 
-       {:service "user-lookup",
+       {:app-name "user-lookup",
         :mulog/duration 150541288,
         :mulog/namespace "user",
         :mulog/outcome :ok,
@@ -69,7 +81,7 @@
         :mulog/event-name
         :user/looup-user,
         :mulog/namespace "user",
-        :service "user-lookup",
+        :app-name "user-lookup",
         :mulog/duration 154128691,
         :mulog/outcome :ok}
 
@@ -78,7 +90,7 @@
         :mulog/namespace "user",
         :to "World!"}
 
-       {:service "user-verification",
+       {:app-name "user-verification",
         :mulog/duration 160905819,
         :mulog/namespace "user",
         :mulog/outcome :ok,
@@ -94,24 +106,54 @@
 
   )
 
+;;
+;; OpenZipkin only accepts a 32 characters long ID for the root trace in hexadecimal format
+;; while it accepts 16 characters for a span ID (in hexadecimal format)
+;;
+(defn- hexify
+  "Returns an hexadecimal representation of a flake.
+  If a size of 32 is provided it will return the most significant bits.
+  If a size of 16 is provided it will return the least signification bits.
+  Other sizes will have no effect."
+  ([f sz]
+   (when f
+     (cond
+       (= sz 32) (subs (f/flake-hex f) 0 32)
+       (= sz 16) (subs (f/flake-hex f) 32 48)
+       :else     (f/flake-hex f))))
+  ([f]
+   (when f
+     (f/flake-hex f))))
 
-(def date-time-formatter
-  "the ISO8601 date format with milliseconds"
-  (tf/formatters :date-time))
 
 
+;;
+;; Converts μ/trace events into Zipkin traces and spans
+;;
+;; According to OpenZipkin api v2.
+;; https://zipkin.io/zipkin-api/
+;;
+(defn- prepare-records
+  [config events]
+  (->> events
+     (filter :mutrace/trace)
+     (map (fn [{:keys [mutrace/trace mutrace/parent-trace mutrace/root-trace
+                      mulog/duration mulog/event-name mulog/timestamp
+                      app-name] :as e}]
+            ;; zipkin IDs are much lower bits than flakes
+            {:id        (hexify trace 16)
+             :traceId   (hexify root-trace 32)
+             :parentId  (hexify parent-trace 16)
+             :name      event-name
+             :kind      "SERVER"
+             ;; timestamp in μs
+             :timestamp (* timestamp 1000)
+             ;; duration in μs
+             :duration  (quot duration 1000)
+             ;; use app-name as localEndpoint if available
+             :localEndpoint (if app-name {:serviceName app-name} {})
+             :tags      (ut/remove-nils e)}))))
 
-(defn format-date-from-long
-  [timestamp]
-  (->> timestamp
-     (tc/from-long)
-     (tf/unparse date-time-formatter)))
-
-
-;; TODO: handle records which can't be serialized.
-(defn- to-json
-  [m]
-  (json/generate-string m {:date-format "yyyy-MM-dd'T'HH:mm:ss.SSS000Z"}))
 
 
 (defn- post-records
@@ -123,78 +165,29 @@
     :as :json
     :socket-timeout publish-delay
     :connection-timeout publish-delay
-    :body records}))
+    :body (to-json records)}))
 
 
 
-(defn hexify [^Flake s]
-  (when s
-    (format "%x" (new java.math.BigInteger (.getBytes s)))))
-
-
-(defn f16 [^String s]
-  (when s (subs s 0 16)))
-
-(defn f32 [^String s]
-  (when s (subs s 0 32)))
 
 (comment
 
   (def url "http://localhost:9411/api/v2/spans")
   (def publish-delay 5000)
+  (def config {:url url :publish-delay publish-delay})
 
   (def events (sample-traces))
 
+  (def records (prepare-records config events))
+  (post-records config records)
 
-
-  (->> events
-     (filter :mutrace/trace)
-     (map (fn [{:keys [mutrace/trace mutrace/parent-trace mutrace/root-trace
-                      mulog/duration mulog/event-name mulog/timestamp] :as e}]
-            {:id       (f16 (hexify trace))
-             :traceId  (f32 (hexify root-trace))
-             :parentId (f16 (hexify parent-trace))
-             :name event-name
-             :kind "SERVER"
-             :timestamp (* timestamp 1000)
-             :duration (quot duration 1000)
-             :localEndpoint {:serviceName "test-app"}
-             :tags (ut/remove-nils e)}))
-     (to-json)
-     (def records))
-
-
-  (post-records {:url url :publish-delay publish-delay}  records)
-
-  (println records)
-
+  (-> records first :traceId)
   )
 
+
 (comment
-  ;; {
-  ;;  "id": "352bff9a74ca9ad2",
-  ;;  "traceId": "5af7183fb1d4cf5f",
-  ;;  "parentId": "6b221d5bc9e6496c",
-  ;;  "name": "get /api",
-  ;;  "timestamp": 1556604172355737,
-  ;;  "duration": 1431,
-  ;;  "kind": "SERVER",
-  ;;  "localEndpoint": {
-  ;;                    "serviceName": "backend",
-  ;;                    "ipv4": "192.168.99.1",
-  ;;                    "port": 3306
-  ;;                    },
-  ;;  "remoteEndpoint": {
-  ;;                     "ipv4": "172.19.0.2",
-  ;;                     "port": 58648
-  ;;                     },
-  ;;  "tags": {
-  ;;           "http.method": "GET",
-  ;;           "http.path": "/api"
-  ;;           }
-  ;;  }
 
-
+  ;; Annotations
 
 
   ;; {
