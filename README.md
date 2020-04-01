@@ -81,10 +81,10 @@ In order to use the library add the dependency to your `project.clj`
 
 ``` clojure
 ;; Leiningen project
-[com.brunobonacci/mulog "0.1.6"]
+[com.brunobonacci/mulog "0.1.8"]
 
 ;; deps.edn format
-{:deps { com.brunobonacci/mulog {:mvn/version "0.1.6"}}}
+{:deps { com.brunobonacci/mulog {:mvn/version "0.1.8"}}}
 ```
 
 Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog.svg)](https://clojars.org/com.brunobonacci/mulog)
@@ -379,8 +379,9 @@ The available configuration options:
  ;; The index pattern to use for the events
  :index-pattern "'mulog-'yyyy.MM.dd"
 
-   ;; Whether or not to change the attribute names
-   ;; to facilitate queries and avoid type clashing
+ ;; Whether or not to change the attribute names
+ ;; to facilitate queries and avoid type clashing
+ ;; See more on that in the link below.
  :name-mangling true
 
  ;; a function to apply to the sequence of events before publishing.
@@ -478,7 +479,6 @@ For more information about how to implement custom publisher see:
 
   * Read about [μ/log internals](./doc/mulog-internals.md)
   * [How to write custom publishers](./doc/custom-publishers.md)
-  * Read more on [Elasticsearch name mangling](./doc/els-name-mangling.md)
 
 
 ## TODOs
