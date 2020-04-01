@@ -1,6 +1,6 @@
 (ns ^{:author "Bruno Bonacci (@BrunoBonacci)"
       :doc
- "
+      "
  Flakes are like snowflakes, no two are the same.
  ------------------------------------------------
 
@@ -56,21 +56,16 @@
 
     These are the performances for creating an new Flake and turn it into a string
 
-        Evaluation count : 515781720 in 60 samples of 8596362 calls.
-        Execution time mean : 115.042199 ns
-        Execution time std-deviation : 1.482372 ns
-        Execution time lower quantile : 113.117845 ns ( 2.5%)
-        Execution time upper quantile : 117.949391 ns (97.5%)
-        Overhead used : 2.090673 ns
-
-        Found 3 outliers in 60 samples (5.0000 %)
-        low-severe  2 (3.3333 %)
-        low-mild    1 (1.6667 %)
-        Variance from outliers : 1.6389 % Variance is slightly inflated by outliers
+        Evaluation count : 755435400 in 60 samples of 12590590 calls.
+        Execution time mean : 78.861983 ns
+        Execution time std-deviation : 1.006261 ns
+        Execution time lower quantile : 77.402593 ns ( 2.5%)
+        Execution time upper quantile : 81.006901 ns (97.5%)
+        Overhead used : 1.881732 ns
 
   "}
     com.brunobonacci.mulog.flakes
-  (:import com.brunobonacci.mulog.core.Flake))
+    (:import com.brunobonacci.mulog.core.Flake))
 
 
 
@@ -81,7 +76,21 @@
 
 
 
+(defn snowflake
+  "A time-ordered, pseudo-random, Universal ID of 192 bits represented as a 32bytes strings"
+  []
+  (str (Flake/flake)))
+
+
+
 (defn flake-time
   "Returns the timestamp in nanoseconds"
   [^Flake flake]
   (.getTimestampNanos flake))
+
+
+
+(defn flake-hex
+  "Hexadecimal representation"
+  [^Flake flake]
+  (Flake/formatFlakeHex flake))

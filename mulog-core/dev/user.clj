@@ -3,7 +3,8 @@
             [clojure.java.io :as io]
             [clojure.string :as str]
             [com.brunobonacci.mulog.buffer :as rb]
-            [com.brunobonacci.mulog.utils :as ut]))
+            [com.brunobonacci.mulog.utils :as ut]
+            [com.brunobonacci.mulog.flakes :refer [flake]]))
 
 
 (comment

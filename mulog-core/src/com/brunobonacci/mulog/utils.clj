@@ -1,5 +1,6 @@
 (ns com.brunobonacci.mulog.utils
-  (:require [clojure.string :as str]
+  (:require [com.brunobonacci.mulog.flakes :refer [snowflake]]
+            [clojure.string :as str]
             [clojure.pprint :as pp]
             [clojure.walk :as w]))
 
@@ -41,18 +42,16 @@
   []
   (let [uuid (java.util.UUID/randomUUID)
         u1   (.getMostSignificantBits uuid)
-        u2   (.getLeastSignificantBits uuid)
-        u1   (if (neg? u1) (- u1) u1)
-        u2   (if (neg? u2) (- u2) u2)]
-    (str (Long/toString u1 36)
-         (Long/toString u2 36))))
+        u2   (.getLeastSignificantBits uuid)]
+    (str (Long/toUnsignedString u1 36)
+         (Long/toUnsignedString u2 36))))
 
 
 
 (defn puid
-  "It returns a random 128-bit unique id"
+  "It returns a random 192-bit unique id"
   []
-  (random-uid))
+  (snowflake))
 
 
 
