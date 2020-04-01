@@ -37,7 +37,8 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
 "}
     com.brunobonacci.mulog
   (:require [com.brunobonacci.mulog.core :as core]
-            [com.brunobonacci.mulog.buffer :as rb]))
+            [com.brunobonacci.mulog.buffer :as rb]
+            [com.brunobonacci.mulog.flakes :refer [flake]]))
 
 
 
@@ -284,42 +285,58 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   "
   {:style/indent 1}
   ([event-name pairs expr]
-   `(let [ts# (System/currentTimeMillis)
-          t0# (System/nanoTime)]
-      (try
-        (let [r# ~expr]
-          (log ~event-name ~@pairs
-               :mulog/duration (- (System/nanoTime) t0#)
-               :mulog/timestamp ts#
-               :mulog/outcome :ok)
-          r#)
-        (catch Exception x#
-          (log ~event-name ~@pairs
-               :mulog/duration (- (System/nanoTime) t0#)
-               :mulog/timestamp ts#
-               :mulog/outcome :error
-               :exception x#)
-          (throw x#)))))
+   `(let [tid#  (flake)
+          ptid# (get *local-context* :mutrace/parent-trace)
+          ts#   (System/currentTimeMillis)
+          t0#   (System/nanoTime)]
+      (with-context {:mutrace/root-trace   (or (get *local-context* :mutrace/root-trace) tid#)
+                     :mutrace/parent-trace tid#}
+        (try
+          (let [r# ~expr]
+            (log ~event-name ~@pairs
+                 :mutrace/trace  tid#
+                 :mutrace/parent-trace ptid#
+                 :mulog/duration (- (System/nanoTime) t0#)
+                 :mulog/timestamp ts#
+                 :mulog/outcome :ok)
+            r#)
+          (catch Exception x#
+            (log ~event-name ~@pairs
+                 :mutrace/trace  tid#
+                 :mutrace/parent-trace ptid#
+                 :mulog/duration (- (System/nanoTime) t0#)
+                 :mulog/timestamp ts#
+                 :mulog/outcome :error
+                 :exception x#)
+            (throw x#))))))
   ;; allows to provide a function which extracts values
   ;; from the expression result.
   ([event-name pairs result* expr]
-   `(let [ts# (System/currentTimeMillis)
-          t0# (System/nanoTime)]
-      (try
-        (let [r# ~expr]
-          (with-context (core/on-error {:mulog/result-fn :error} (~result* r#))
+   `(let [tid#  (flake)
+          ptid# (get *local-context* :mutrace/parent-trace)
+          ts#   (System/currentTimeMillis)
+          t0#   (System/nanoTime)]
+      (with-context {:mutrace/root-trace   (or (get *local-context* :mutrace/root-trace) tid#)
+                     :mutrace/parent-trace tid#}
+        (try
+          (let [r# ~expr]
+            (with-context (core/on-error {:mulog/result-fn :error} (~result* r#))
+              (log ~event-name ~@pairs
+                   :mutrace/trace  tid#
+                   :mutrace/parent-trace ptid#
+                   :mulog/duration (- (System/nanoTime) t0#)
+                   :mulog/timestamp ts#
+                   :mulog/outcome :ok))
+            r#)
+          (catch Exception x#
             (log ~event-name ~@pairs
+                 :mutrace/trace  tid#
+                 :mutrace/parent-trace ptid#
                  :mulog/duration (- (System/nanoTime) t0#)
                  :mulog/timestamp ts#
-                 :mulog/outcome :ok))
-          r#)
-        (catch Exception x#
-          (log ~event-name ~@pairs
-               :mulog/duration (- (System/nanoTime) t0#)
-               :mulog/timestamp ts#
-               :mulog/outcome :error
-               :exception x#)
-          (throw x#))))))
+                 :mulog/outcome :error
+                 :exception x#)
+            (throw x#)))))))
 
 
 
