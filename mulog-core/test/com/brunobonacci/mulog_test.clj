@@ -8,7 +8,7 @@
 (fact
  "μ/log can log events just with the event name"
 
- (tp/with-test-pusblisher
+ (tp/with-test-publisher
    (u/log :test))
 
  => (just
@@ -23,7 +23,7 @@
 (fact
  "μ/log can log events with additional properties"
 
- (tp/with-test-pusblisher
+ (tp/with-test-publisher
    (u/log :test :value1 1 :v2 "b" :v3 {:d [:e :f :g]}))
 
  => (just
@@ -37,7 +37,7 @@
 (fact
  "μ/log adds attributes from global context if set"
 
- (tp/with-test-pusblisher
+ (tp/with-test-publisher
    (u/set-global-context! {:app "demo" :version 1 :env "local"})
    (u/log :test :v1 1))
 
@@ -52,7 +52,7 @@
 (fact
  "global context can be changed, and changes are reflected"
 
- (tp/with-test-pusblisher
+ (tp/with-test-publisher
    (u/set-global-context! {:app "demo" :version 1 :env "local"})
    (u/log :test :v1 1)
    (u/set-global-context! {:app "demo" :version 2 :env "local"})
@@ -72,7 +72,7 @@
 (fact
  "global context can be update, and changes are reflected"
 
- (tp/with-test-pusblisher
+ (tp/with-test-publisher
    (u/set-global-context! {:app "demo" :version 1 :env "local"})
    (u/log :test :v1 1)
    (u/update-global-context! update :version inc)
@@ -92,7 +92,7 @@
 (fact
  "global context can be overwritten by μ/log"
 
- (tp/with-test-pusblisher
+ (tp/with-test-publisher
    (u/set-global-context! {:app "demo" :version 1 :env "local"})
    (u/log :test :app "new-app"))
 
@@ -107,7 +107,7 @@
 (fact
  "local-context: with-context can be used to add local info"
 
- (tp/with-test-pusblisher
+ (tp/with-test-publisher
    (u/with-context {:local 1}
      (u/log :test)))
 
@@ -121,7 +121,7 @@
 (fact
  "local-context: can be nested"
 
- (tp/with-test-pusblisher
+ (tp/with-test-publisher
    (u/with-context {:local 1}
      (u/with-context {:sub-local :a}
        (u/log :test))))
@@ -136,7 +136,7 @@
 (fact
  "local-context: is only valid within the scope"
 
- (tp/with-test-pusblisher
+ (tp/with-test-publisher
    (u/log :before :l 0)
    (u/with-context {:local 1}
      (u/log :ctx :l 1)
@@ -163,7 +163,7 @@
 (fact
  "local-context: can overwrite parent context"
 
- (tp/with-test-pusblisher
+ (tp/with-test-publisher
    (u/with-context {:local 1}
      (u/with-context {:local 2 :sub-local :a}
        (u/log :test))))
@@ -178,7 +178,7 @@
 (fact
  "local-context: can overwrite global context"
 
- (tp/with-test-pusblisher
+ (tp/with-test-publisher
    (u/set-global-context! {:global 1})
    (u/log :test)
    (u/with-context {:global 2 :local :a}
@@ -196,7 +196,7 @@
 (fact
  "μ/log: can overwrite local & global context"
 
- (tp/with-test-pusblisher
+ (tp/with-test-publisher
    (u/set-global-context! {:global 1})
    (u/log :test :global :overwrite)
    (u/with-context {:global 2 :local :a}
@@ -214,7 +214,7 @@
 (fact
  "μ/log: can overwrite timestamp and namespace"
 
- (tp/with-test-pusblisher
+ (tp/with-test-publisher
    (u/log :test :mulog/timestamp 1 :mulog/namespace "test"))
 
  => [#:mulog{:timestamp 1, :event-name :test, :namespace "test"}]
