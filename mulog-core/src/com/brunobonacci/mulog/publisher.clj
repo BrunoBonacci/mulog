@@ -1,5 +1,6 @@
 (ns com.brunobonacci.mulog.publisher
   (:require [com.brunobonacci.mulog.buffer :as rb]
+            [com.brunobonacci.mulog.levels :as lvl]
             [com.brunobonacci.mulog.utils :as ut]
             [clojure.java.io :as io]))
 
@@ -62,8 +63,13 @@
 
 
 (defn console-publisher
-  [{:keys [transform] :as config}]
-  (ConsolePublisher. config (rb/agent-buffer 10000) (or transform identity)))
+  [{:keys [level transform] :as config}]
+  (let [f (lvl/->filter level)
+        ->transform (fnil (fn [t] (comp t f)) f)]
+    (ConsolePublisher.
+     config
+     (rb/agent-buffer 10000)
+     (->transform transform))))
 
 
 
@@ -103,16 +109,18 @@
 
 
 (defn simple-file-publisher
-  [{:keys [filename transform] :as config}]
+  [{:keys [filename level transform] :as config}]
   {:pre [filename]}
-  (let [filename (io/file filename)]
+  (let [filename (io/file filename)
+        f (lvl/->filter level)
+        ->transform (fnil (fn [t] (comp t f)) f)]
     ;; make parte dirs
     (.mkdirs (.getParentFile filename))
     (SimpleFilePublisher.
      config
      (io/writer filename :append true)
      (rb/agent-buffer 10000)
-     (or transform identity))))
+     (->transform transform))))
 
 
 

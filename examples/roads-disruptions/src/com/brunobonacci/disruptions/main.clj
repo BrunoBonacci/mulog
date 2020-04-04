@@ -1,5 +1,6 @@
 (ns com.brunobonacci.disruptions.main
   (:require [com.brunobonacci.mulog :as μ]
+            [com.brunobonacci.mulog.levels :as lvl]
             [com.brunobonacci.disruptions.api :as api]
             [cemerick.url :refer [url url-encode]]
             [ring.adapter.jetty :as http])
@@ -22,13 +23,20 @@
    {:type :multi
     :publishers
     [ ;; send events to the stdout
-     {:type :console}
+     {:type :console
+      :level ::lvl/verbose}
      ;; send events to a file
-     {:type :simple-file :filename "/tmp/mulog/events.log"}
+     {:type :simple-file
+      :level ::lvl/debug
+      :filename "/tmp/mulog/events.log"}
      ;; send events to ELS
-     {:type :elasticsearch :url  "http://localhost:9200/"}
+     {:type :elasticsearch
+      :level ::lvl/info
+      :url  "http://localhost:9200/"}
      ;; send events to kafka
-     {:type :kafka :kafka {:bootstrap.servers "192.168.200.200:9092,127.0.0.1:9092"}}]}})
+     {:type :kafka
+      :level ::lvl/info
+      :kafka {:bootstrap.servers "192.168.200.200:9092,127.0.0.1:9092"}}]}})
 
 
 
@@ -37,7 +45,10 @@
 
   ;; set global context
   (μ/set-global-context!
-   {:app-name "roads-disruptions", :version "0.1.0", :env "local"})
+   {:mulog/level ::lvl/info
+    :app-name "roads-disruptions"
+    :version "0.1.0"
+    :env "local"})
 
   (μ/start-publisher! mulog))
 

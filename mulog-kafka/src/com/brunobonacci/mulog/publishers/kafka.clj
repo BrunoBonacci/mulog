@@ -1,6 +1,7 @@
 (ns com.brunobonacci.mulog.publishers.kafka
   (:require [com.brunobonacci.mulog.publisher :as p]
             [com.brunobonacci.mulog.buffer :as rb]
+            [com.brunobonacci.mulog.levels :as lvl]
             [com.brunobonacci.mulog.utils :as ut]
             [cheshire.core :as json]
             [cheshire.generate :as gen]
@@ -157,6 +158,7 @@
    ;; one of: :json, :edn
    :format    :json
    :key-field :puid
+   :level nil
    ;; function to transform records
    :transform identity
    })
@@ -166,9 +168,11 @@
 (defn kafka-publisher
   [config]
   {:pre [(get-in config [:kafka :bootstrap.servers])]}
-  (KafkaPublisher.
-   (as-> config $
-     (deep-merge DEFAULT-CONFIG $)
-     (assoc $ :producer* (producer (:kafka $))))
-   (rb/agent-buffer 10000)
-   (or (:transform config) identity)))
+  (let [f (lvl/->filter (:level config))
+        ->transform (fnil (fn [t] (comp t f)) f)]
+    (KafkaPublisher.
+     (as-> config $
+       (deep-merge DEFAULT-CONFIG $)
+       (assoc $ :producer* (producer (:kafka $))))
+     (rb/agent-buffer 10000)
+     (->transform (:transform config)))))

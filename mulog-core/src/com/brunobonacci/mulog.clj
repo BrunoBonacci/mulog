@@ -37,7 +37,8 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
 "}
     com.brunobonacci.mulog
   (:require [com.brunobonacci.mulog.core :as core]
-            [com.brunobonacci.mulog.buffer :as rb]))
+            [com.brunobonacci.mulog.buffer :as rb]
+            [com.brunobonacci.mulog.levels :as lvl]))
 
 
 
@@ -47,7 +48,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
        :dynamic true}
   *default-logger*
   ;; The choice of an atom against an agent it is mainly based on
-  ;; bechmarks. Items can be added to the buffer with a mean time of
+  ;; benchmarks. Items can be added to the buffer with a mean time of
   ;; 285 nanos, against the 1.2μ of the agent. The agent might be
   ;; better in cases in which the atom is heavily contended and many
   ;; retries are required in that case the agent could be better,
@@ -109,7 +110,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   library to log important events, but rather than logging words, add
   data points. To log a new event this is the format:
 
-  ``` clojure
+  ```clojure
   (μ/log event-name, key1 value1, key2 value2, ... keyN valueN)
   ```
 
@@ -122,7 +123,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   For example should you want to log the event of a your login, you
   could add:
 
-  ``` clojure
+  ```clojure
   (μ/log ::user-logged :user-id \"1234567\" :remote-ip \"1.2.3.4\"
      :auth-method :password-login)
   ```
@@ -150,7 +151,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   The `start-publisher!` function returns a zero-argument function
   which can be used to stop the publisher.
 
-  ``` clojure
+  ```clojure
   (def stop (μ/start-publisher! {:type :console}))
   (μ/log ::hi)
   ;; prints something like:
@@ -167,14 +168,14 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   Another built-in publisher is the `:simple-file` publisher which
   just outputs events to a file in EDN format.
 
-  ``` clojure
+  ```clojure
   (μ/start-publisher! {:type :simple-file :filename \"/tmp/mulog/events.log\"})
   ```
 
   You can also have multiple publishers defined in one place using the `:multi`
   publisher configuration:
 
-  ``` clojure
+  ```clojure
   (μ/start-publisher!
    {:type :multi
     :publishers
@@ -253,7 +254,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   *global context*, all the properties of the *local context* and all
   *inline properties*.
 
-  ``` clojure
+  ```clojure
   (μ/with-context {:order \"abc123\"}
     (μ/log ::item-processed :item-id \"sku-123\" :qt 2))
 
@@ -275,6 +276,26 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   [context & body]
   `(binding [*local-context* (merge *local-context* ~context)]
      ~@body))
+
+
+(defmacro verbose [event-name & pairs]
+  `(with-context {:mulog/level ::lvl/verbose}
+     (log ~event-name ~@pairs)))
+(defmacro debug [event-name & pairs]
+  `(with-context {:mulog/level ::lvl/debug}
+     (log ~event-name ~@pairs)))
+(defmacro info [event-name & pairs]
+  `(with-context {:mulog/level ::lvl/info}
+     (log ~event-name ~@pairs)))
+(defmacro warning [event-name & pairs]
+  `(with-context {:mulog/level ::lvl/warning}
+     (log ~event-name ~@pairs)))
+(defmacro error [event-name & pairs]
+  `(with-context {:mulog/level ::lvl/error}
+     (log ~event-name ~@pairs)))
+(defmacro fatal [event-name & pairs]
+  `(with-context {:mulog/level ::lvl/fatal}
+     (log ~event-name ~@pairs)))
 
 
 

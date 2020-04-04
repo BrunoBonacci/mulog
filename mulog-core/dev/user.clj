@@ -3,6 +3,7 @@
             [clojure.java.io :as io]
             [clojure.string :as str]
             [com.brunobonacci.mulog.buffer :as rb]
+            [com.brunobonacci.mulog.levels :as lvl]
             [com.brunobonacci.mulog.utils :as ut]
             [com.brunobonacci.mulog.flakes :refer [flake]]))
 
@@ -14,6 +15,32 @@
   (def p1 (u/start-publisher! {:type :console}))
 
   (u/log ::hello :to "World!" :v 2)
+
+  (p1)
+
+  (def p1 (u/start-publisher! {:type :console
+                               :level ::lvl/info}))
+
+  (u/log ::hello :to "World!")
+
+  (u/verbose ::hello :to "World!")
+  (u/debug   ::hello :to "World!")
+  (u/info    ::hello :to "World!")
+  (u/warning ::hello :to "World!")
+  (u/error   ::hello :to "World!")
+  (u/fatal   ::hello :to "World!")
+
+  (u/set-global-context! {:app "demo" :version 1 :env "local"
+                          :mulog/level ::lvl/warning})
+
+  (u/log ::hello :to "World!")
+
+  (u/verbose ::hello :to "World!")
+  (u/debug   ::hello :to "World!")
+  (u/info    ::hello :to "World!")
+  (u/warning ::hello :to "World!")
+  (u/error   ::hello :to "World!")
+  (u/fatal   ::hello :to "World!")
 
   (def p2 (u/start-publisher! {:type :simple-file :filename "/tmp/mulog.edn"}))
 
@@ -67,7 +94,45 @@
                            (filter #(< (:v %) 500))
                            (map #(update % :v -))))}))
 
+  (u/log ::hello :to "World!" :v 1000)
+  (u/log ::hello :to "World!" :v 200)
+
   (x)
+
+  (def xform1
+    (u/start-publisher!
+      {:type :console
+       :transform (fn [events]
+                    (->> events
+                         (filter #(< (:v %) 500))
+                         (map #(update % :v -))
+                         (map #(update % :mulog/level (comp str/upper-case
+                                                            name)))))}))
+
+  (u/info ::hello :to "World!" :v 1000)
+  (u/info ::hello :to "World!" :v 200)
+
+  (xform1)
+
+  (def h (-> (make-hierarchy)
+             (derive ::wockety ::wack)
+             (derive ::pockety ::wockety)
+             (derive ::hockety ::pockety)))
+
+  (def xform2 (u/start-publisher!
+                {:type :console
+                 :transform (fn [events]
+                              (->> events
+                                   ((lvl/->filter ::pockety h :log-level))
+                                   (map #(update % :v inc))))}))
+
+  (u/log ::hello :to "World!" :v 1)
+  (u/log ::hello :to "World!" :log-level ::wack    :v 1)
+  (u/log ::hello :to "World!" :log-level ::wockety :v 2)
+  (u/log ::hello :to "World!" :log-level ::pockety :v 3)
+  (u/log ::hello :to "World!" :log-level ::hockety :v 4)
+
+  (xform2)
 
   )
 

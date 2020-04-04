@@ -1,6 +1,7 @@
 (ns com.brunobonacci.mulog.publishers.elasticsearch
   (:require [com.brunobonacci.mulog.publisher :as p]
             [com.brunobonacci.mulog.buffer :as rb]
+            [com.brunobonacci.mulog.levels :as lvl]
             [com.brunobonacci.mulog.utils :as ut]
             [com.brunobonacci.mulog.publishers.util :as u]
             [clj-http.client :as http]
@@ -165,6 +166,7 @@
    :index-pattern "'mulog-'yyyy.MM.dd"
    :name-mangling true
    :els-version   :v7.x   ;; one of: `:v6.x`, `:v7.x`
+   :level nil
    ;; function to transform records
    :transform identity
    })
@@ -174,10 +176,12 @@
 (defn elasticsearch-publisher
   [{:keys [url max-items index-pattern] :as config}]
   {:pre [url]}
-  (ElasticSearchPublisher.
-   (as-> config $
-     (merge DEFAULT-CONFIG $)
-     (update $ :url normalize-endpoint-url)
-     (assoc $ :index* (index-name (:index-pattern $))))
-   (rb/agent-buffer 20000)
-   (or (:transform config) identity)))
+  (let [f (lvl/->filter (:level config))
+        ->transform (fnil (fn [t] (comp t f)) f)]
+    (ElasticSearchPublisher.
+     (as-> config $
+       (merge DEFAULT-CONFIG $)
+       (update $ :url normalize-endpoint-url)
+       (assoc $ :index* (index-name (:index-pattern $))))
+     (rb/agent-buffer 20000)
+     (->transform (:transform config)))))

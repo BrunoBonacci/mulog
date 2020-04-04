@@ -29,7 +29,7 @@ For more information about how the ***μ/log***'s internals work, please
 read [μ/log internals](./mulog-internals.md).
 
 
-``` clojure
+```clojure
 (defprotocol PPublisher
   "Publisher protocol"
 
@@ -81,7 +81,7 @@ might want to be able to pretty-print (`{:pretty-print true}`) the
 events or to simply print them one per line.
 
 
-``` clojure
+```clojure
 (ns my-custom.publisher
   (:require [com.brunobonacci.mulog.buffer :as rb]
             [clojure.pprint :refer [pprint]]))
@@ -116,7 +116,7 @@ events or to simply print them one per line.
 That's it! That's all it takes to write a publisher.  Now to use it
 you can start it with:
 
-``` clojure
+```clojure
 (u/start-publisher!
   {:type :custom
    :fqn-function "my-custom.publisher/my-custom-publisher"
@@ -131,7 +131,7 @@ system can only receive a limited number of items.
 
 Firstly let's make a version of pprint which output to a string.
 
-``` clojure
+```clojure
 (defn- pprint-str
     [v]
     (with-out-str
@@ -141,7 +141,7 @@ Firstly let's make a version of pprint which output to a string.
 Now let's amend `MyCustomPublisher` to accept the filerwriter and push
 at most 1000 items.
 
-``` clojure
+```clojure
 (deftype MyCustomPublisher
   [config buffer ^java.io.Writer filewriter]
 
@@ -230,7 +230,7 @@ transformation to the events you get from the buffer.
 
 For example, in our previous example:
 
-``` clojure
+```clojure
 (ns my-custom.publisher
   (:require [com.brunobonacci.mulog.buffer :as rb]
             [clojure.pprint :refer [pprint]]))
@@ -268,3 +268,92 @@ For example, in our previous example:
 
 Remember the transform if a function which applies to all events, it
 can do any sort of operation and it is optional.
+
+
+## Support for leveled logging
+
+Transformations as defined above allow you to implement any kind of
+filtering. You could use this mechanism to implement your own leveled
+logging system using helpers to log at any level you have defined.
+However, since 0.1.9, ***μ/log*** ships with a built-in logging
+hierarchy you could leverage easily in your custom publisher.
+
+The built-in level hierarchy is based on the usual `verbose`, `debug`,
+`info`, `debug`, `warning`, `error` and `fatal`. To each of these, a
+corresponding macro exists in the `com.brunobonacci.mulog` namespace
+to produce logs at the respective level in the hierarchy. These macros
+leverage the local context (`μ/with-context`) to add the `:mulog/level`
+key to each log event.
+
+All the built-in publishers support leveled logging via the
+`:level` configuration.
+
+If you are implementing a Publisher, consider adding the support as
+well.  To add the support is easy, just look for a level associated
+to the `:level` key in your configuration and apply the filter to the
+events you get from the buffer.  
+You can use the `com.brunobonacci.mulog.levels/->filter` helper to
+build a transformation function based on a log level and compose it
+with other transformations.
+
+For example, in our previous example:
+
+```clojure
+(ns my-custom.publisher
+  (:require [com.brunobonacci.mulog.buffer :as rb]
+            [com.brunobonacci.mulog.levels :as lvl]
+            [clojure.pprint :refer [pprint]]))
+
+
+(deftype MyCustomPublisher
+    [config buffer]
+
+  com.brunobonacci.mulog.publisher.PPublisher
+  (agent-buffer [_]
+    buffer)
+
+  (publish-delay [_]
+    500)
+
+  (publish [_ buffer]
+    ;; check our printer option
+    (let [printer (if (:pretty-print config) pprint prn)
+          ;; HERE: retrieve the transformation function
+          transform (:transform config)]
+      ;; items are pairs [offset <item>], APPLY HERE the transform
+      (doseq [item (transform (map second (rb/items buffer)))]
+        ;; print the item
+        (printer item)))
+    ;; return the buffer minus the published elements
+    (rb/clear buffer)))
+
+
+(defn my-custom-publisher
+  [config]
+  ;; `lvl/->filter` returns `identity` if `level` is not provided
+  (let [f (lvl/->filter (:level config))
+        ;; if a `transform` function is provided, compose with f
+        ->t (fnil (fn [t] (comp t f)) f)
+        config (update config :transform ->t)]
+    (MyCustomPublisher. config (rb/agent-buffer 10000))))
+```
+
+The `lvl/->filter` helper can take a specific hierarchy if the default
+one does not suit your needs. It can also search for another key than
+`:mulog/event` in each log event.
+
+Remember the built-in leveled logging can be composed with
+transformations as seen above and yield tremendous power and
+flexibility to your publisher.  
+For instance, you could replace the namespaced keyword value associated
+to the `:mulog/event` key by default, by its name. To do this, simply
+add a transformation function like so:
+
+```clojure
+(fn [events]
+  (map #(update % :mulog/level (comp str/upper-case name))
+       events))
+```
+
+And because the built-in leveled logging is it entirely optional, you
+could also ignore it completely, or implement your own from scratch.

@@ -50,15 +50,18 @@ curl -si http://localhost:8000/healthcheck
 
 # to retrieve the current list of disruptions around London
 curl -si http://localhost:8000/disruptions
+
+# to log a few events on purpose
+curl -si http://localhost:8000/{verbose,debug,info,warning,error,fatal}
 ```
 Every interaction is logged in ***μ/log***.
 
 The logs will be sent to the following destinations:
 
-  - Console standard output
-  - Filesystem: `/tmp/mulog/events.log`
-  - Kafka topic: `mulog`
-  - ElasticSearch index `mulog-YYYY.MM.DD`
+  - Console standard output (verbose and above)
+  - Filesystem: `/tmp/mulog/events.log` (debug and above)
+  - Kafka topic: `mulog` (info and above)
+  - ElasticSearch index `mulog-YYYY.MM.DD` (info and above)
 
 To see the events sent to Kafka run:
 
@@ -68,7 +71,7 @@ docker exec -ti roads-disruptions_broker_1 /usr/bin/kafka-console-consumer --boo
 
 Here a sample of the events that will be sent:
 
-``` clojure
+```clojure
 ;; This event is sent at the application start
 {:mulog/event-name :disruptions/app-started,
  :mulog/timestamp 1582624436517,

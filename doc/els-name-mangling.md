@@ -193,7 +193,7 @@ Indexed as `orderId.s` won't clash with `orderId.i`.
 The name mangling is enabled by default, but it can be disabled via
 configuration:
 
-``` clojure
+```clojure
 {:type :elasticsearch
 
  ;; ElasticSearch endpoint (REQUIRED)

@@ -13,7 +13,7 @@ which will be applied to all the events, prior the publishing.
 For example, the following snippet starts the console publisher
 with a transformation which convert the duration into milliseconds.
 
-``` clojure
+```clojure
 (μ/start-publisher!
  {:type :console
   :transform (fn [events]

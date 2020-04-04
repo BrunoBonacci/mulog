@@ -75,6 +75,36 @@
    (wrap-json-response
     (routes
 
+     (GET "/verbose" []
+          (μ/verbose ::request)
+          {:status 200
+           :body {:status "OK" :message "verbose."}})
+
+     (GET "/debug" []
+          (μ/debug ::request)
+          {:status 200
+           :body {:status "OK" :message "debug."}})
+
+     (GET "/info" []
+          (μ/info ::request)
+          {:status 200
+           :body {:status "OK" :message "info."}})
+
+     (GET "/warning" []
+          (μ/warning ::request)
+          {:status 200
+           :body {:status "OK" :message "warning."}})
+
+     (GET "/error" []
+          (μ/error ::request)
+          {:status 200
+           :body {:status "OK" :message "error."}})
+
+     (GET "/fatal" []
+          (μ/fatal ::request)
+          {:status 200
+           :body {:status "OK" :message "fatal."}})
+
      (GET "/healthcheck" []
           {:status 200
            :body {:status "OK" :message "All good."}})

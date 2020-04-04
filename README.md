@@ -29,6 +29,7 @@ Here some features and key design decisions that make ***μ/log*** special:
   * Adding publishers won't affect logging performances
   * Extremely easy to create *stateful* publishers for new systems
   * Wide range of publishers available
+  * Built-in and customizable leveled logging
   * *Event logs are useful, but not as important as process flow
     (therefore preferable to drop events rather than crashing the
     process)*
@@ -256,6 +257,61 @@ Local context works across function boundaries:
 
 ```
 
+## Leveled logging
+
+Like many logging libraries, ***μ/log*** provides a default
+hierarchy of log levels:
+
+* `verbose`
+* `debug`
+* `info`
+* `warning`
+* `error`
+* `fatal`
+
+The built-in publishers support a log level configuration
+to filter out events with an inferior level. Once a publisher is
+configured with a log level, the `μ/log` macro will still produce
+log events, but the publisher will filter them out, unless the
+`:mulog/level` key is provided with a level *greater than or equal*
+to the one specified in the publisher's configuration.
+
+The  `μ/verbose`, `μ/debug`, `μ/info`, `μ/warning`, `μ/error` and
+`μ/fatal` macros leverage the use of local contexts to provide
+a friendlier API.
+
+For example:
+
+``` clojure
+(ns your-ns
+  (:require [com.brunobonacci.mulog :as μ]
+            [com.brunobonacci.mulog.levels :as lvl]))
+
+(μ/start-publisher! {:type :console
+                     :level ::lvl/info})
+
+(μ/log ::system-started :init-time 32)
+;; nothing...
+
+;; set global context
+(μ/set-global-context! {:mulog/level ::lvl/info})
+
+(μ/log ::system-started :init-time 32)
+;; {:mulog/level :com.brunobonacci.mulog.levels/info, :mulog/timestamp 1572709206048, :mulog/event-name :your-ns/system-started, :mulog/namespace "your-ns", :init-time 32}
+
+(μ/info ::system-started :init-time 32)
+;; same as above
+
+(μ/log ::system-started :mulog/level ::lvl/warning :init-time 32)
+;; {:mulog/level :com.brunobonacci.mulog.levels/warning, :mulog/timestamp 1572709332340, :mulog/event-name :your-ns/system-started, :mulog/namespace "your-ns", :init-time 32}
+
+(μ/warning ::system-started :init-time 32)
+;; same as above
+
+(μ/debug ::system-started :init-time 32)
+;; nothing...
+```
+
 ## Best practices
 
 Here some best practices to follow while logging events:
@@ -282,6 +338,13 @@ The available configuration options:
 
 ``` clojure
 {:type :console
+
+ ;; a log level from the `levels/default-levels` hierarchy.
+ ;; This configuration will make the publisher filter out any
+ ;; log event without `:mulog/event` key or with a value which
+ ;; is not a descendant of this level.  (since v0.1.9)
+ ;; Will be composed with the transformation described below.
+ :level nil
 
  ;; a function to apply to the sequence of events before publishing.
  ;; This transformation function can be used to filter, tranform,
@@ -311,6 +374,13 @@ The available configuration options:
  ;; If the directory doesn't exists, it will try to create them, same for the file.
  ;; If the file already exists, it will append the new events.
  :filename "/tmp/mulog/events.log"
+
+ ;; a log level from the `levels/default-levels` hierarchy.
+ ;; This configuration will make the publisher filter out any
+ ;; log event without `:mulog/event` key or with a value which
+ ;; is not a descendant of this level.  (since v0.1.9)
+ ;; Will be composed with the transformation described below.
+ :level nil
 
  ;; a function to apply to the sequence of events before publishing.
  ;; This transformation function can be used to filter, tranform,
@@ -384,6 +454,13 @@ The available configuration options:
  ;; See more on that in the link below.
  :name-mangling true
 
+ ;; a log level from the `levels/default-levels` hierarchy.
+ ;; This configuration will make the publisher filter out any
+ ;; log event without `:mulog/event` key or with a value which
+ ;; is not a descendant of this level.  (since v0.1.9)
+ ;; Will be composed with the transformation described below.
+ :level nil
+
  ;; a function to apply to the sequence of events before publishing.
  ;; This transformation function can be used to filter, tranform,
  ;; anonymise events before they are published to a external system.
@@ -437,6 +514,13 @@ The available configuration options:
  ;; the :puid is the process unique identifier which can be injected
  ;; as global context
  ;; :key-field :puid
+
+ ;; a log level from the `levels/default-levels` hierarchy.
+ ;; This configuration will make the publisher filter out any
+ ;; log event without `:mulog/event` key or with a value which
+ ;; is not a descendant of this level.  (since v0.1.9)
+ ;; Will be composed with the transformation described below.
+ :level nil
 
  ;; a function to apply to the sequence of events before publishing.
  ;; This transformation function can be used to filter, tranform,
