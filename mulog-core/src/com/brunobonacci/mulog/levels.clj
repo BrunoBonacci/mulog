@@ -3,7 +3,7 @@
 Logging library designed to log data events instead of plain words.
 
 This namespace contains a hierarchy for built-in leveled logging
-as well as a helper to build an event filter.
+as well as a helper to build an event filter (transducer).
 "}
     com.brunobonacci.mulog.levels)
 
@@ -16,7 +16,7 @@ as well as a helper to build an event filter.
             see fit.
 
             `->filter` is a helper to help implementing custom
-            leveled logging mechanisms.
+            leveled logging mechanisms using transducers.
             "}
   default-levels (-> (make-hierarchy)
                      (derive ::debug    ::verbose)
@@ -28,14 +28,11 @@ as well as a helper to build an event filter.
 (defn ->filter
   "takes a logging level, a `hierarchy` (or `default-levels`)
   and an event key `k` (or `:mulog/level`) and returns a
-  transformation function which filters events on the given key
-  in the hierarchy"
+  transducer which filters events on the given key in the hierarchy"
   ([level]
    (or (some-> level (->filter default-levels :mulog/level))
-       identity))
+       (map identity)))
   ([level hierarchy k]
-   (fn [events]
-     (filter (fn [{e-level k}]
-               (isa? hierarchy e-level level))
-             events))))
+   (filter (fn [{e-level k}]
+             (isa? hierarchy e-level level)))))
 

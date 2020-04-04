@@ -221,11 +221,11 @@ Sometimes it is useful to filter noisy events out and get only the
 events you are interested into a particular publisher.
 
 All the built-in publisher support custom transformation via the
-`:transform` configuration.
+`:transform` (deprecated) or `:transduce` configuration.
 
 If you are implementing a Publisher, consider adding the support as
 well.  To add the support is easy, just look for a function associated
-to the `:transform` key in your configuration and apply the
+to the `:transduce` key in your configuration and apply the
 transformation to the events you get from the buffer.
 
 For example, in our previous example:
@@ -250,9 +250,10 @@ For example, in our previous example:
     ;; check our printer option
     (let [printer (if (:pretty-print config) pprint prn)
           ;; HERE: retrieve the transformation function
-          transform (:transform config)]
+          xform (comp (map second)
+                      (:transduce config))]
       ;; items are pairs [offset <item>], APPLY HERE the transform
-      (doseq [item (transform (map second (rb/items buffer)))]
+      (doseq [item (sequence xform (rb/items buffer))]
         ;; print the item
         (printer item)))
     ;; return the buffer minus the published elements
@@ -261,12 +262,12 @@ For example, in our previous example:
 
 (defn my-custom-publisher
   [config]
-  ;; if a `transform` function is not provided, then use identity
-  (let [config (update config :transform (fn [f] (or f identity)))]
+  ;; if a `transduce` function is not provided, then use identity
+  (let [config (update config :transduce (fn [f] (or f (map identity))))]
     (MyCustomPublisher. config (rb/agent-buffer 10000))))
 ```
 
-Remember the transform if a function which applies to all events, it
+Remember the transduce is a function which applies to all events, it
 can do any sort of operation and it is optional.
 
 
@@ -293,8 +294,8 @@ well.  To add the support is easy, just look for a level associated
 to the `:level` key in your configuration and apply the filter to the
 events you get from the buffer.  
 You can use the `com.brunobonacci.mulog.levels/->filter` helper to
-build a transformation function based on a log level and compose it
-with other transformations.
+build a transducer based on a log level and compose it with other
+transformations.
 
 For example, in our previous example:
 
@@ -319,9 +320,10 @@ For example, in our previous example:
     ;; check our printer option
     (let [printer (if (:pretty-print config) pprint prn)
           ;; HERE: retrieve the transformation function
-          transform (:transform config)]
+          xform (comp (map second)
+                      (:transduce config))]
       ;; items are pairs [offset <item>], APPLY HERE the transform
-      (doseq [item (transform (map second (rb/items buffer)))]
+      (doseq [item (sequence xform (rb/items buffer))]
         ;; print the item
         (printer item)))
     ;; return the buffer minus the published elements
@@ -334,7 +336,7 @@ For example, in our previous example:
   (let [f (lvl/->filter (:level config))
         ;; if a `transform` function is provided, compose with f
         ->t (fnil (fn [t] (comp t f)) f)
-        config (update config :transform ->t)]
+        config (update config :transduce ->t)]
     (MyCustomPublisher. config (rb/agent-buffer 10000))))
 ```
 
@@ -350,9 +352,7 @@ to the `:mulog/event` key by default, by its name. To do this, simply
 add a transformation function like so:
 
 ```clojure
-(fn [events]
-  (map #(update % :mulog/level (comp str/upper-case name))
-       events))
+(map #(update % :mulog/level (comp str/upper-case name)))
 ```
 
 And because the built-in leveled logging is it entirely optional, you

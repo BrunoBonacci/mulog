@@ -102,12 +102,10 @@
   (def xform1
     (u/start-publisher!
       {:type :console
-       :transform (fn [events]
-                    (->> events
-                         (filter #(< (:v %) 500))
-                         (map #(update % :v -))
-                         (map #(update % :mulog/level (comp str/upper-case
-                                                            name)))))}))
+       :transduce (comp (filter #(< (:v %) 500))
+                        (map #(update % :v -))
+                        (map #(update % :mulog/level (comp str/upper-case
+                                                           name))))}))
 
   (u/info ::hello :to "World!" :v 1000)
   (u/info ::hello :to "World!" :v 200)
@@ -121,10 +119,8 @@
 
   (def xform2 (u/start-publisher!
                 {:type :console
-                 :transform (fn [events]
-                              (->> events
-                                   ((lvl/->filter ::pockety h :log-level))
-                                   (map #(update % :v inc))))}))
+                 :transduce (comp (lvl/->filter ::pockety h :log-level)
+                                  (map #(update % :v inc)))}))
 
   (u/log ::hello :to "World!" :v 1)
   (u/log ::hello :to "World!" :log-level ::wack    :v 1)

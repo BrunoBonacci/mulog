@@ -18,3 +18,13 @@
  (ut/remove-nils '(1 nil 3)) => '(1 3)
  (ut/remove-nils #{1 nil 3}) => #{1 3}
  )
+
+
+
+(fact
+ "->transducer does what it says"
+
+ (sequence (ut/->transducer nil) [1 2 3]) => [1 2 3]
+ (sequence (ut/->transducer
+            (fn [coll] (map inc coll))) [1 2 3]) => [2 3 4]
+ )

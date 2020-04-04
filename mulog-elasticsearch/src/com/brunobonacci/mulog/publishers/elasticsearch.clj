@@ -135,7 +135,7 @@
 
 
 (deftype ElasticSearchPublisher
-    [config buffer transform]
+    [config buffer transducer]
 
 
   com.brunobonacci.mulog.publisher.PPublisher
@@ -150,17 +150,19 @@
   (publish [_ buffer]
     ;; items are pairs [offset <item>]
     (let [items (take (:max-items config) (rb/items buffer))
-          last-offset (-> items last first)]
+          last-offset (-> items last first)
+          items (sequence (comp (map second)
+                                transducer) items)]
       (if-not (seq items)
         buffer
         ;; else send to ELS
         (do
-          (post-records config (transform (map second items)))
+          (post-records config items)
           (rb/dequeue buffer last-offset))))))
 
 
 
-(def ^:const DEFAULT-CONFIG
+(def DEFAULT-CONFIG
   {:max-items     5000
    :publish-delay 5000
    :index-pattern "'mulog-'yyyy.MM.dd"
@@ -168,7 +170,7 @@
    :els-version   :v7.x   ;; one of: `:v6.x`, `:v7.x`
    :level nil
    ;; function to transform records
-   :transform identity
+   :transduce (map identity)
    })
 
 
@@ -176,12 +178,12 @@
 (defn elasticsearch-publisher
   [{:keys [url max-items index-pattern] :as config}]
   {:pre [url]}
-  (let [f (lvl/->filter (:level config))
-        ->transform (fnil (fn [t] (comp t f)) f)]
-    (ElasticSearchPublisher.
-     (as-> config $
-       (merge DEFAULT-CONFIG $)
-       (update $ :url normalize-endpoint-url)
-       (assoc $ :index* (index-name (:index-pattern $))))
-     (rb/agent-buffer 20000)
-     (->transform (:transform config)))))
+  (ElasticSearchPublisher.
+   (as-> config $
+         (merge DEFAULT-CONFIG $)
+         (update $ :url normalize-endpoint-url)
+         (assoc $ :index* (index-name (:index-pattern $))))
+   (rb/agent-buffer 20000)
+   (comp (lvl/->filter (:level config))
+         ;; Wrap transform in transducer for backward compatibility
+         (or (:transduce config) (ut/->transducer (:transform config))))))

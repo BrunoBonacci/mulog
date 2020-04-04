@@ -114,3 +114,87 @@
           (set? i)        (into #{} (remove nil? i))
           (sequential? i) (remove nil? i)
           :else           i)))))
+
+
+
+(defn ->transducer
+  "For backward compatibility. Takes a ***μ/log***
+  transformation function and turns it into a
+  transducer as of 0.1.9.
+
+  Up to 0.1.8, all the built-in publisher supported custom
+  transformation only via the `:transform` configuration,
+  which defaults to `identity`.
+
+  Users could provide *custom transformation functions*
+  which take events and return events to handle any
+  kind of transformation of filtering.
+
+  ```clojure
+  (fn [events]
+    (map (fn [{:keys [mulog/duration] :as e}]
+           (if duration
+             (update e :mulog/duration quot 1000000)
+             e)) events))
+  ```
+
+  As of 0.1.9, the built-in publishers have been changed
+  to support built-in leveled logging and transformation
+  functions provided as transducers, not functions, via
+  the `:transduce` configuration.
+
+  In order to maintain backward compatibility, these
+  publishers still support the `:transform` configuration.
+
+  `->transducer` takes such a function and turns it
+  into a stateful transducer suitable for publishers which
+  allow a single `transducer` parameter in place of
+  the `transform` parameter defined pre-0.1.8.
+
+  For such publishers, `:transduce`, if provided, takes
+  precedence over `:transform` which, if provided, takes
+  precedence over the default `(map identity)` transducer.
+  "
+  [transform]
+  (letfn [(->xform [transform]
+            (fn [rf]
+              (let [acc (volatile! [])]
+                (fn
+                  ([] (rf))
+                  ([result]
+                   (reduce rf [] (transform @acc)))
+                  ([result input]
+                   (vswap! acc conj input)
+                   result)))))]
+    (or (some-> transform ->xform)
+        (map identity))))
+
+
+
+(comment
+
+  (defn tx [coll]
+    (map #(do (println "inn" %)
+              (let [r (inc %)]
+                (println "out" r)
+                r))
+         coll))
+
+  (sequence (comp (map #(do (println "foo" %) %))
+                  (->transducer tx)
+                  (map #(do (println "bar" %) %))
+                  (map dec)
+                  (map #(do (println "baz" %) %)))
+            [1 2 3])
+
+  (transduce (comp (map #(do (println "foo" %) %))
+                   (->transducer tx)
+                   (map #(do (println "bar" %) %))
+                   (map dec)
+                   (map #(do (println "baz" %) %)))
+             conj
+             [1 2 3])
+
+  )
+
+

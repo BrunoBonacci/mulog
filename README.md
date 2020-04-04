@@ -346,11 +346,15 @@ The available configuration options:
  ;; Will be composed with the transformation described below.
  :level nil
 
+ ;; DEPRECATED since 0.1.9
  ;; a function to apply to the sequence of events before publishing.
  ;; This transformation function can be used to filter, tranform,
  ;; anonymise events before they are published to a external system.
  ;; by defatult there is no transformation.  (since v0.1.8)
  :transform identity
+
+ ;; like `:transform`, but is a transducer.  (since v0.1.9)
+ :transduce (map identity)
  }
 
 ```
@@ -382,11 +386,15 @@ The available configuration options:
  ;; Will be composed with the transformation described below.
  :level nil
 
+ ;; DEPRECATED since 0.1.9
  ;; a function to apply to the sequence of events before publishing.
  ;; This transformation function can be used to filter, tranform,
  ;; anonymise events before they are published to a external system.
  ;; by defatult there is no transformation.  (since v0.1.8)
  :transform identity
+
+ ;; like `:transform`, but is a transducer.  (since v0.1.9)
+ :transduce (map identity)
  }
 
 ```
@@ -461,11 +469,15 @@ The available configuration options:
  ;; Will be composed with the transformation described below.
  :level nil
 
+ ;; DEPRECATED since 0.1.9
  ;; a function to apply to the sequence of events before publishing.
  ;; This transformation function can be used to filter, tranform,
  ;; anonymise events before they are published to a external system.
  ;; by defatult there is no transformation.  (since v0.1.8)
  :transform identity
+
+ ;; like `:transform`, but is a transducer.  (since v0.1.9)
+ :transduce (map identity)
  }
 
 ```
@@ -522,11 +534,15 @@ The available configuration options:
  ;; Will be composed with the transformation described below.
  :level nil
 
+ ;; DEPRECATED since 0.1.9
  ;; a function to apply to the sequence of events before publishing.
  ;; This transformation function can be used to filter, tranform,
  ;; anonymise events before they are published to a external system.
  ;; by defatult there is no transformation.  (since v0.1.8)
  :transform identity
+
+ ;; like `:transform`, but is a transducer.  (since v0.1.9)
+ :transduce (map identity)
  }
 ```
 

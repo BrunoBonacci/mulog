@@ -117,7 +117,7 @@
 
 
 (deftype KafkaPublisher
-    [config buffer transform]
+    [config buffer transducer]
 
 
   com.brunobonacci.mulog.publisher.PPublisher
@@ -132,12 +132,14 @@
   (publish [_ buffer]
     ;; items are pairs [offset <item>]
     (let [items (take (:max-items config) (rb/items buffer))
-          last-offset (-> items last first)]
+          last-offset (-> items last first)
+          items (sequence (comp (map second)
+                                transducer) items)]
       (if-not (seq items)
         buffer
         ;; else send to kafka
         (do
-          (publish-records! config (transform (map second items)))
+          (publish-records! config items)
           (rb/dequeue buffer last-offset)))))
 
 
@@ -147,7 +149,7 @@
 
 
 
-(def ^:const DEFAULT-CONFIG
+(def DEFAULT-CONFIG
   {:max-items     1000
    :publish-delay 1000
    :kafka {;; the comma-separated list of brokers to connect
@@ -160,7 +162,7 @@
    :key-field :puid
    :level nil
    ;; function to transform records
-   :transform identity
+   :transduce (map identity)
    })
 
 
@@ -168,11 +170,11 @@
 (defn kafka-publisher
   [config]
   {:pre [(get-in config [:kafka :bootstrap.servers])]}
-  (let [f (lvl/->filter (:level config))
-        ->transform (fnil (fn [t] (comp t f)) f)]
-    (KafkaPublisher.
-     (as-> config $
-       (deep-merge DEFAULT-CONFIG $)
-       (assoc $ :producer* (producer (:kafka $))))
-     (rb/agent-buffer 10000)
-     (->transform (:transform config)))))
+  (KafkaPublisher.
+   (as-> config $
+         (deep-merge DEFAULT-CONFIG $)
+         (assoc $ :producer* (producer (:kafka $))))
+   (rb/agent-buffer 10000)
+   (comp (lvl/->filter (:level config))
+         ;; Wrap transform in transducer for backward compatibility
+         (or (:transduce config) (ut/->transducer (:transform config))))))

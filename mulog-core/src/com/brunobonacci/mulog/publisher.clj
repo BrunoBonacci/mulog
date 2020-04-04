@@ -41,7 +41,7 @@
 
 
 (deftype ConsolePublisher
-    [config buffer transform]
+    [config buffer transducer]
 
 
   com.brunobonacci.mulog.publisher.PPublisher
@@ -55,7 +55,8 @@
 
   (publish [_ buffer]
     ;; items are pairs [offset <item>]
-    (doseq [item  (transform (map second (rb/items buffer)))]
+    (doseq [item (sequence (comp (map second)
+                                 transducer) (rb/items buffer))]
       (printf "%s\n" (ut/edn-str item)))
     (flush)
     (rb/clear buffer)))
@@ -63,13 +64,13 @@
 
 
 (defn console-publisher
-  [{:keys [level transform] :as config}]
-  (let [f (lvl/->filter level)
-        ->transform (fnil (fn [t] (comp t f)) f)]
-    (ConsolePublisher.
-     config
-     (rb/agent-buffer 10000)
-     (->transform transform))))
+  [{:keys [level transform transduce] :as config}]
+  (ConsolePublisher.
+   config
+   (rb/agent-buffer 10000)
+   (comp (lvl/->filter level)
+         ;; Wrap transform in transducer for backward compatibility
+         (or transduce (ut/->transducer transform)))))
 
 
 
@@ -81,7 +82,7 @@
 
 
 (deftype SimpleFilePublisher
-    [config ^java.io.Writer filewriter buffer transform]
+    [config ^java.io.Writer filewriter buffer transducer]
 
 
   com.brunobonacci.mulog.publisher.PPublisher
@@ -95,7 +96,8 @@
 
   (publish [_ buffer]
     ;; items are pairs [offset <item>]
-    (doseq [item (transform (map second (rb/items buffer)))]
+    (doseq [item (sequence (comp (map second)
+                                 transducer) (rb/items buffer))]
       (.write filewriter ^String (ut/edn-str item)))
     (.flush filewriter)
     (rb/clear buffer))
@@ -109,18 +111,15 @@
 
 
 (defn simple-file-publisher
-  [{:keys [filename level transform] :as config}]
+  [{:keys [filename level transform transduce] :as config}]
   {:pre [filename]}
-  (let [filename (io/file filename)
-        f (lvl/->filter level)
-        ->transform (fnil (fn [t] (comp t f)) f)]
-    ;; make parte dirs
-    (.mkdirs (.getParentFile filename))
-    (SimpleFilePublisher.
-     config
-     (io/writer filename :append true)
-     (rb/agent-buffer 10000)
-     (->transform transform))))
+  (SimpleFilePublisher.
+   config
+   (io/writer filename :append true)
+   (rb/agent-buffer 10000)
+   (comp (lvl/->filter level)
+         ;; Wrap transform in transducer for backward compatibility
+         (or transduce (ut/->transducer transform)))))
 
 
 

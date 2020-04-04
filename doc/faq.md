@@ -16,9 +16,8 @@ with a transformation which convert the duration into milliseconds.
 ```clojure
 (μ/start-publisher!
  {:type :console
-  :transform (fn [events]
-               (map (fn [{:keys [mulog/duration] :as e}]
-                      (if duration
-                        (update e :mulog/duration quot 1000000)
-                        e)) events))})
+  :transduce (map (fn [{:keys [mulog/duration] :as e}]
+                    (if duration
+                      (update e :mulog/duration quot 1000000)
+                      e)))})
 ```
