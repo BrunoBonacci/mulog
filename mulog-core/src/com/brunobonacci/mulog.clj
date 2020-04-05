@@ -279,7 +279,9 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
 
 
 (defmacro trace
-  "Traces the execution of an operation with the outcome and the take taken in nanoseconds"
+  "Traces the execution of an operation with the outcome and the time taken in nanoseconds.
+   NOTE: API unstable, might change in future releases.
+  "
   {:style/indent 1}
   ([event-name pairs expr]
    `(let [ts# (System/currentTimeMillis)
