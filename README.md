@@ -38,9 +38,10 @@ Available publishers:
 
   * [Simple console publisher (stdout)](#simple-console-publisher)
   * [Simple file publisher](#simple-file-publisher)
+  * [Multi-publisher](#multi-publisher)
   * [ElasticSearch](#elasticsearch-publisher)
   * [Apache Kafka](#apache-kafka-publisher)
-  * [Multi-publisher](#multi-publisher)
+  * [OpenZipkin](#zipkin-publisher)
   * [Pluggable custom publishers](#custom-publishers)
 
 
@@ -275,6 +276,7 @@ Publishers allow to send the events to external system where they can
 be stored, indexed, transformed or visualized.
 
 ### Simple console publisher
+![since v0.1.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)
 
 It outputs the events into the standard output in EDN format, mostly intended for local development.
 
@@ -299,6 +301,7 @@ How to use it:
 ```
 
 ### Simple file publisher
+![since v0.1.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)
 
 It sends the output of each log into a file in EDN format.
 
@@ -351,6 +354,7 @@ with no arguments which when called will stop all the publishers.
 
 
 ### ElasticSearch publisher
+![since v0.1.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)
 
 The events must be serializeable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
 
@@ -405,7 +409,9 @@ Supported versions: `6.7+`, `7.x`
 
 Read more on [Elasticsearch name mangling](./doc/els-name-mangling.md) here.
 
+
 ### Apache Kafka publisher
+![since v0.1.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)
 
 The events must be serializeable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
 
@@ -452,6 +458,47 @@ How to use it:
 (μ/start-publisher!
   {:type :kafka
    :kafka {:bootstrap.servers "localhost:9092"}})
+```
+
+
+### Zipkin publisher
+![since v0.1.9](https://img.shields.io/badge/since-v0.1.9-brightgreen)
+
+The events must be serializeable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
+
+The available configuration options:
+
+``` clojure
+{:type :zipkin
+
+ ;; Zipkin endpoint (REQUIRED)
+ :url  "http://localhost:9411/"
+
+
+ ;; the maximum number of events which can be sent in a single
+ ;; batch request to Zipkin
+ :max-items     5000
+
+ ;; Interval in milliseconds between publish requests.
+ ;; μ/log will try to send the records to Zipkin
+ ;; with the interval specified.
+ :publish-delay 5000
+
+ ;; a function to apply to the sequence of events before publishing.
+ ;; This transformation function can be used to filter, tranform,
+ ;; anonymise events before they are published to a external system.
+ ;; by defatult there is no transformation.  (since v0.1.8)
+ :transform identity
+ }
+
+```
+
+How to use it:
+
+``` clojure
+(μ/start-publisher!
+  {:type :zipkin
+   :url  "http://localhost:9411/"})
 ```
 
 

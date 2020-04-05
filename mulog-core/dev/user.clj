@@ -7,6 +7,13 @@
             [com.brunobonacci.mulog.flakes :refer [flake]]))
 
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                         ----==| μ / L O G |==----                          ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (comment
 
   (u/log ::hello :to "World!")
@@ -52,6 +59,14 @@
   )
 
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                     ----==| T R A N S F O R M |==----                      ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
 ;; testing transform
 (comment
 
@@ -72,9 +87,16 @@
   )
 
 
-;;
-;; ElasticSearch
-;;
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                 ----==| E L A S T I C S E A R C H |==----                  ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (comment
 
   (u/log ::hello :to "World!")
@@ -91,6 +113,12 @@
   )
 
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                         ----==| K A F K A |==----                          ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (comment
 
@@ -109,6 +137,43 @@
   )
 
 
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                        ----==| Z I P K I N |==----                         ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(comment
+
+  (u/set-global-context! {:app-name "zipkin-test"})
+
+  (u/log ::hello :to "World!")
+
+  (u/start-publisher! {:type :console})
+
+  (def x (u/start-publisher! {:type :zipkin
+                              :url "http://localhost:9411/"}))
+
+  (let [t (rand-int 3000)]
+    (u/trace ::sleep
+      [:time t :struct {:foo 1 :bar 2}]
+      (Thread/sleep t)))
+
+
+  (x)
+
+
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                    ----==| E V E N T S   D O C |==----                     ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (comment
   ;;
   ;; list events by event-name in pretty-printed format
@@ -123,103 +188,5 @@
      (map second)
      (sort-by :mulog/timestamp)
      (run! ut/pprint-event))
-
-
-  )
-
-
-
-
-(comment
-
-  (require '[com.brunobonacci.mulog.buffer :as rb]
-           '[clojure.pprint :refer [pprint]])
-
-
-  (deftype MyCustomPublisher
-      [config buffer]
-
-
-    com.brunobonacci.mulog.publisher.PPublisher
-    (agent-buffer [_]
-      buffer)
-
-
-    (publish-delay [_]
-      500)
-
-
-    (publish [_ buffer]
-      ;; check our printer option
-      (let [printer (if (:pretty-print config) pprint prn)]
-        ;; items are pairs [offset <item>]
-        (doseq [item (map second (rb/items buffer))]
-          ;; print the item
-          (printer item)))
-      ;; return the buffer minus the published elements
-      (rb/clear buffer)))
-
-
-  (defn my-custom-publisher
-    [config]
-    (MyCustomPublisher. config (rb/agent-buffer 10000)))
-
-
-
-
-  (defn- pprint-str
-    [v]
-    (with-out-str
-      (pprint v)))
-
-
-  (deftype MyCustomPublisher
-      [config buffer ^java.io.Writer filewriter]
-
-
-    com.brunobonacci.mulog.publisher.PPublisher
-    (agent-buffer [_]
-      buffer)
-
-
-    (publish-delay [_]
-      500)
-
-
-    (publish [_ buffer]
-      ;;    check our printer option
-      (let [printer (if (:pretty-print config) pprint-str prn-str)
-            ;; take at most `:max-items` items
-            items (take (:max-items config) (rb/items buffer))
-            ;; save the offset of the last items
-            last-offset (-> items last first)]
-        ;; write the items to the file
-        (doseq [item (map second items)]
-          ;; print the item
-          (.write filewriter (printer item)))
-        ;; flush the buffer
-        (.flush filewriter)
-        ;; return the buffer minus the published elements
-        (rb/dequeue buffer last-offset))))
-
-
-  (defn my-custom-publisher
-    [{:keys [filename] :as config}]
-    (let [config (merge {:pretty-print false :max-items 1000} config)]
-      (MyCustomPublisher. config (rb/agent-buffer 10000)
-                          (io/writer (io/file filename) :append true))))
-
-
-
-  (require '[com.brunobonacci.mulog.publisher :as pl])
-
-  (def p (my-custom-publisher {:filename "/tmp/foo.txt" :max-items 2}))
-
-  (def b (-> (rb/ring-buffer 4)
-            (rb/enqueue {::a 1 ::b 2 :c 3 :d 23 :x 34 :l 345678 :z (range 10)})
-            (rb/enqueue {::a 1 ::b 2 :c 3 :d 23 :x 34 :l 345678 :z (range 10)})
-            (rb/enqueue {::a 1 ::b 2 :c 3 :d 23 :x 34 :l 345678 :z (range 10)})))
-
-  (pl/publish p b)
 
   )

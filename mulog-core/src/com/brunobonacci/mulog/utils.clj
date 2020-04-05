@@ -114,3 +114,12 @@
           (set? i)        (into #{} (remove nil? i))
           (sequential? i) (remove nil? i)
           :else           i)))))
+
+
+
+(defn map-values
+  "Applies f to all the value of the map m"
+  [f m]
+  (->> m
+       (map (fn [[k v]] [k (f v)]))
+       (into {})))

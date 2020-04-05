@@ -2,6 +2,7 @@
 
 ## v0.1.9 - (unreleased)
   - Added flag to support ElasticSearch v6.x correctly
+  - Added Zipkin publisher
 
 
 ## v0.1.8 - (2020-03-09)

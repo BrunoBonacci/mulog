@@ -141,9 +141,9 @@
              ;; duration in μs
              :duration  (quot duration 1000)
              ;; use app-name as localEndpoint if available
-             :localEndpoint (if app-name {:serviceName app-name} {})
-             :tags      (ut/remove-nils e)}))))
-
+             :localEndpoint {:serviceName (or app-name "unknown")}
+             ;; tags values must be a string (can't be maps)
+             :tags      (ut/map-values str (ut/remove-nils e))}))))
 
 
 (defn- post-records

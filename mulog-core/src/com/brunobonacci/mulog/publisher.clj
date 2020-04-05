@@ -243,3 +243,11 @@
   (load-dynamic-publisher
    "com.brunobonacci.mulog.publishers.kafka/kafka-publisher"
    config))
+
+
+
+(defmethod publisher-factory :zipkin
+  [config]
+  (load-dynamic-publisher
+   "com.brunobonacci.mulog.publishers.zipkin/zipkin-publisher"
+   config))
