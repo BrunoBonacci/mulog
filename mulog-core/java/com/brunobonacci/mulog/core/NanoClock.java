@@ -13,14 +13,14 @@ package com.brunobonacci.mulog.core;
  * With this method we can estimated a current wall-clock time with nanoseconds
  * granularity.
  *
- * ATTENTION: please be aware that this is not a High-Precision Wall Clock.
+ * ATTENTION: please be aware that this is *not* a High-Precision Wall Clock.
  *
  * The wall clock is just estimated and while the real wall clock is
  * dynamically adjusted and kept in sync with services like NTP deamon,
  * there is no such thing for monotonic clock.
  *
- * **However the monotonic clock pauses when suspended therefore over time
- * they will diverge.**
+ * **However the monotonic clock pauses when process suspended
+ * therefore over time they will diverge.**
  *
  * It is not to be used as a replacement for the wall clock.
  *
