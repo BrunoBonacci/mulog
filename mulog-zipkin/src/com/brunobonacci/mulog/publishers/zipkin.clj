@@ -7,17 +7,7 @@
             [cheshire.core :as json]
             [cheshire.generate :as gen]
             [clojure.string :as str]
-            [com.brunobonacci.mulog :as u])
-  #_(:require [com.brunobonacci.mulog.publisher :as p]
-              [com.brunobonacci.mulog.buffer :as rb]
-              [com.brunobonacci.mulog.utils :as ut]
-              [clj-http.client :as http]
-              [cheshire.core :as json]
-              [cheshire.generate :as gen]
-              [clojure.string :as str]
-              [clj-time.format :as tf]
-              [clj-time.coerce :as tc]
-              [clojure.walk :as w]))
+            [com.brunobonacci.mulog :as u]))
 
 ;;
 ;; Add Exception encoder to JSON generator
@@ -51,9 +41,9 @@
         :mulog/duration 3541288,
         :mulog/namespace "user",
         :mulog/outcome :ok,
-        :mutrace/trace t3
-        :mutrace/parent-trace t2
-        :mutrace/root-trace t1
+        :mulog/trace t3
+        :mulog/parent-trace t2
+        :mulog/root-trace t1
         :mulog/timestamp (+ tm0 142)
         :mulog/event-name :user/cache-store}
 
@@ -61,9 +51,9 @@
         :mulog/duration 69541288,
         :mulog/namespace "user",
         :mulog/outcome :ok,
-        :mutrace/trace t4
-        :mutrace/parent-trace t2
-        :mutrace/root-trace t1
+        :mulog/trace t4
+        :mulog/parent-trace t2
+        :mulog/root-trace t1
         :mulog/timestamp (+ tm0 42)
         :mulog/event-name :user/db-lookup}
 
@@ -71,9 +61,9 @@
         :mulog/duration 150541288,
         :mulog/namespace "user",
         :mulog/outcome :ok,
-        :mutrace/trace t2
-        :mutrace/parent-trace t1
-        :mutrace/root-trace t1
+        :mulog/trace t2
+        :mulog/parent-trace t1
+        :mulog/root-trace t1
         :mulog/timestamp (+ tm0 12)
         :mulog/event-name :user/lookup-user}
 
@@ -94,9 +84,9 @@
         :mulog/duration 160905819,
         :mulog/namespace "user",
         :mulog/outcome :ok,
-        :mutrace/trace t1
-        :mutrace/parent-trace nil,
-        :mutrace/root-trace t1
+        :mulog/trace t1
+        :mulog/parent-trace nil,
+        :mulog/root-trace t1
         :mulog/timestamp tm0
         :user "jonny",
         :mulog/event-name :user/remote-call}]))
@@ -136,8 +126,8 @@
 (defn- prepare-records
   [config events]
   (->> events
-     (filter :mutrace/trace)
-     (map (fn [{:keys [mutrace/trace mutrace/parent-trace mutrace/root-trace
+     (filter :mulog/trace)
+     (map (fn [{:keys [mulog/trace mulog/parent-trace mulog/root-trace
                       mulog/duration mulog/event-name mulog/timestamp
                       app-name] :as e}]
             ;; zipkin IDs are much lower bits than flakes
@@ -162,10 +152,10 @@
    url
    {:content-type "application/json"
     :accept :json
-    :as :json
-    :socket-timeout publish-delay
+    :as     :json
+    :socket-timeout     publish-delay
     :connection-timeout publish-delay
-    :body (to-json records)}))
+    :body (to-json (prepare-records config records))}))
 
 
 
@@ -177,11 +167,9 @@
   (def config {:url url :publish-delay publish-delay})
 
   (def events (sample-traces))
+  (post-records config events)
 
-  (def records (prepare-records config events))
-  (post-records config records)
-
-  (-> records first :traceId)
+  (-> events first :mulog/root-trace (f/flake-hex) (#(subs % 0 32)))
   )
 
 
@@ -200,3 +188,70 @@
   ;;
 
   )
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                        ----==| Z I P K I N |==----                         ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(deftype ZipkinPublisher
+    [config buffer transform]
+
+
+  com.brunobonacci.mulog.publisher.PPublisher
+  (agent-buffer [_]
+    buffer)
+
+
+  (publish-delay [_]
+    (:publish-delay config))
+
+
+  (publish [_ buffer]
+    ;; items are pairs [offset <item>]
+    (let [items (take (:max-items config) (rb/items buffer))
+          last-offset (-> items last first)]
+      (if-not (seq items)
+        buffer
+        ;; else send to Zipkin
+        (do
+          (post-records config (transform (map second items)))
+          (rb/dequeue buffer last-offset))))))
+
+
+
+(def ^:const DEFAULT-CONFIG
+  {;; :url endpoint for Elasticsearch
+   ;; :url "http://localhost:9200/" ;; REQUIRED
+   :max-items     5000
+   :publish-delay 5000
+   ;; function to transform records
+   :transform identity
+   })
+
+
+
+(defn- normalize-endpoint-url
+  [url]
+  (cond
+    (str/ends-with? url "/api/v2/spans") url
+    (str/ends-with? url "/") (str url "api/v2/spans")
+    :else (str url "/api/v2/spans")))
+
+
+
+(defn zipkin-publisher
+  [{:keys [url max-items] :as config}]
+  {:pre [url]}
+  (ZipkinPublisher.
+   (as-> config $
+     (merge DEFAULT-CONFIG $)
+     (update $ :url normalize-endpoint-url))
+   (rb/agent-buffer 20000)
+   (or (:transform config) identity)))

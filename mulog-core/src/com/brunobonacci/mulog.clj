@@ -286,24 +286,24 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   {:style/indent 1}
   ([event-name pairs expr]
    `(let [tid#  (flake)
-          ptid# (get *local-context* :mutrace/parent-trace)
+          ptid# (get *local-context* :mulog/parent-trace)
           ts#   (System/currentTimeMillis)
           t0#   (System/nanoTime)]
-      (with-context {:mutrace/root-trace   (or (get *local-context* :mutrace/root-trace) tid#)
-                     :mutrace/parent-trace tid#}
+      (with-context {:mulog/root-trace   (or (get *local-context* :mulog/root-trace) tid#)
+                     :mulog/parent-trace tid#}
         (try
           (let [r# ~expr]
             (log ~event-name ~@pairs
-                 :mutrace/trace  tid#
-                 :mutrace/parent-trace ptid#
+                 :mulog/trace  tid#
+                 :mulog/parent-trace ptid#
                  :mulog/duration (- (System/nanoTime) t0#)
                  :mulog/timestamp ts#
                  :mulog/outcome :ok)
             r#)
           (catch Exception x#
             (log ~event-name ~@pairs
-                 :mutrace/trace  tid#
-                 :mutrace/parent-trace ptid#
+                 :mulog/trace  tid#
+                 :mulog/parent-trace ptid#
                  :mulog/duration (- (System/nanoTime) t0#)
                  :mulog/timestamp ts#
                  :mulog/outcome :error
@@ -313,25 +313,25 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   ;; from the expression result.
   ([event-name pairs result* expr]
    `(let [tid#  (flake)
-          ptid# (get *local-context* :mutrace/parent-trace)
+          ptid# (get *local-context* :mulog/parent-trace)
           ts#   (System/currentTimeMillis)
           t0#   (System/nanoTime)]
-      (with-context {:mutrace/root-trace   (or (get *local-context* :mutrace/root-trace) tid#)
-                     :mutrace/parent-trace tid#}
+      (with-context {:mulog/root-trace   (or (get *local-context* :mulog/root-trace) tid#)
+                     :mulog/parent-trace tid#}
         (try
           (let [r# ~expr]
             (with-context (core/on-error {:mulog/result-fn :error} (~result* r#))
               (log ~event-name ~@pairs
-                   :mutrace/trace  tid#
-                   :mutrace/parent-trace ptid#
+                   :mulog/trace  tid#
+                   :mulog/parent-trace ptid#
                    :mulog/duration (- (System/nanoTime) t0#)
                    :mulog/timestamp ts#
                    :mulog/outcome :ok))
             r#)
           (catch Exception x#
             (log ~event-name ~@pairs
-                 :mutrace/trace  tid#
-                 :mutrace/parent-trace ptid#
+                 :mulog/trace  tid#
+                 :mulog/parent-trace ptid#
                  :mulog/duration (- (System/nanoTime) t0#)
                  :mulog/timestamp ts#
                  :mulog/outcome :error
