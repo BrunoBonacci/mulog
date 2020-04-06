@@ -160,13 +160,15 @@
 
 
 (def ^:const DEFAULT-CONFIG
-  {:max-items     5000
+  {;; :url endpoint for Elasticsearch
+   ;; :url "http://localhost:9200/" ;; REQUIRED
+   :max-items     5000
    :publish-delay 5000
    :index-pattern "'mulog-'yyyy.MM.dd"
    :name-mangling true
    :els-version   :v7.x   ;; one of: `:v6.x`, `:v7.x`
    ;; function to transform records
-   :transform identity
+   :transform     identity
    })
 
 
