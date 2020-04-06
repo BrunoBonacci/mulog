@@ -1,8 +1,8 @@
 # F.A.Q.
 
-## Q: How do I **μ/log** to send the `:mulog/duration` in milliseconds?
+## Q: How do I ***μ/log*** to send the `:mulog/duration` in milliseconds?
 
-**μ/log** will send the `:mulog/duration` in nanoseconds because it
+***μ/log*** will send the `:mulog/duration` in nanoseconds because it
 uses the monotonic timer with a nanoseconds precision which guarantee
 the highest precision even on very small measurement.
 

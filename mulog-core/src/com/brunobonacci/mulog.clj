@@ -3,9 +3,9 @@
       "
 Logging library designed to log data events instead of plain words.
 
-This namespace provides the core functions of **μ/log**.
+This namespace provides the core functions of ***μ/log***.
 
-The purpose of **μ/log** is provide the ability to generate events
+The purpose of ***μ/log*** is provide the ability to generate events
 directly from your code. The instrumentation process is very simple
 and similar to add a traditional log line, but instead of logging
 a message which hardly anyone will ever read, your can log an
@@ -13,7 +13,7 @@ event, a data point, with all the attributes and properties which
 make sense for that particular event and let the machine use it
 in a later time.
 
-**μ/log** provides the functions to instrument your code with minimal
+***μ/log*** provides the functions to instrument your code with minimal
 impact to performances (few nanoseconds), to buffer events and manage
 the overflow, the dispatching of the stored events to downstream
 systems where they can be processed, indexed, organized and queried to
@@ -23,12 +23,12 @@ system.
 Once you start using event-based metrics you will not want to use
 traditional metrics any more.
 
-Additionally, **μ/log** offer the possibility to trace execution with
+Additionally, ***μ/log*** offer the possibility to trace execution with
 a micro-tracing function called **μ/trace**.  It provides in app
 distributed tracing capabilities with the same simplicity.
 
 The publisher sub-system makes extremely easy to write new publishers
-for new downstream system. **μ/log** manages the hard parts like: the
+for new downstream system. ***μ/log*** manages the hard parts like: the
 buffering, the retries, the memory buffers and the publisher's state.
 It is often required only a dozen lines of code to write a new powerful
 custom publisher and use it in your system.
@@ -186,7 +186,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   which it will start all the defined publishers all at once.
 
   For more information about available publishers and their configuration
-  as well as how to write your own pulishers please check
+  as well as how to write your own publishers please check
   https://github.com/BrunoBonacci/mulog#publishers
 
   "
@@ -208,7 +208,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   "Adding events which are rich in attributes and dimensions is
   extremely useful, however it is not easy to have all the attributes
   and dimensions at your disposal everywhere in the code. To get
-  around this problem **μ/log** supports the use of context.
+  around this problem ***μ/log*** supports the use of context.
 
   There are two levels of context, a global level and a local one.
 
@@ -269,7 +269,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   ```
 
   The local context can be nested and ti will be inherited by
-  all the **μ/log** calls within nested functions as long as they
+  all the ***μ/log*** calls within nested functions as long as they
   are in the same execution thread and which the scope of the block.
   "
   [context & body]

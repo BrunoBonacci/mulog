@@ -1,6 +1,6 @@
 # μ/log
 
-Core implementation of **μ/log** library.
+Core implementation of ***μ/log*** library.
 
 ## Usage
 

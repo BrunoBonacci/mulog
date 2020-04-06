@@ -8,7 +8,7 @@
 (fact
  "a successful delivery"
 
- (tp/with-processing-pusblisher
+ (tp/with-processing-publisher
    {}
    (u/log :test))
 
@@ -22,7 +22,7 @@
 (fact
  "the inbox buffer limits the number of events"
 
- (tp/with-processing-pusblisher
+ (tp/with-processing-publisher
    {}
    (dotimes [_ 200]
      (u/log :test)))
@@ -35,7 +35,7 @@
 (fact
  "if the publisher fails it retries"
 
- (tp/with-processing-pusblisher
+ (tp/with-processing-publisher
    {:process (tp/rounds [:fail :ok]) :rounds 2}
    (u/log :test))
 
@@ -49,7 +49,7 @@
 (fact
  "if the publisher fails it retries until it succeeds"
 
- (tp/with-processing-pusblisher
+ (tp/with-processing-publisher
    {:process (tp/rounds [:fail :fail :fail :fail :ok]) :rounds 5}
    (u/log :test))
 

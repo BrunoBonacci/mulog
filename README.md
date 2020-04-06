@@ -49,7 +49,7 @@ Available publishers:
 Existing logging libraries are based on a design from the 80s and
 early 90s.  Most of the systems at the time where developed in
 standalone servers where logging messages to console or file was the
-predominant thing to do. Logging was mostly providing debbugging
+predominant thing to do. Logging was mostly providing debugging
 information and system behavioural introspection.
 
 Most of modern systems are distributed in virtualized machines that
@@ -72,7 +72,7 @@ decades.
 I believe we need the break free of these anachronistic design and use
 event loggers, *not message loggers*, which are designed for dynamic
 distributed systems living in cloud and using centralized log
-aggregators. *So here is **μ/log** designed for this very purpose.*
+aggregators. *So here is ***μ/log*** designed for this very purpose.*
 
 
 ## Usage
@@ -153,7 +153,7 @@ aggregate on it in a specialized timeseries database.
 Adding events which are rich in attributes and dimensions is extremely
 useful, however it is not easy to have all the attributes and
 dimensions at your disposal everywhere in the code. To get around
-this problem **μ/log** supports the use of context.
+this problem ***μ/log*** supports the use of context.
 
 There are two levels of context, a global level and a local one.
 
@@ -263,7 +263,7 @@ Here some best practices to follow while logging events:
   * Use namespaced keywords or qualified strings for the `event-name`
   * Log values not opaque objects, objects will be turned into strings
     which diminishes their value
-  * Do now log mutable values, since rendering is done asynchronously
+  * Do not log mutable values, since rendering is done asynchronously
     you could be logging a different state. If values are mutable
     capture the current state (deref) and log it.
   * Avoid logging deeply nested maps, they are hard to query.

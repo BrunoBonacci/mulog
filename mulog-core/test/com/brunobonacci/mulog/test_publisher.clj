@@ -30,13 +30,13 @@
 
 
 
-(defmacro with-test-pusblisher
+(defmacro with-test-publisher
   [& body]
-  `(with-processing-pusblisher {} ~@body))
+  `(with-processing-publisher {} ~@body))
 
 
 
-(defmacro with-processing-pusblisher
+(defmacro with-processing-publisher
   [config & body]
   `(let [cfg#     (merge {:process identity :rounds 1} ~config)
          inbox#   (atom (rb/ring-buffer 100))
