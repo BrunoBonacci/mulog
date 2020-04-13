@@ -17,6 +17,11 @@ docker-compose rm -f && docker-compose up -d
 
 Then open: http://localhost:9411/ for Zipkin UI
 
+Here is an example of Zipkin traces:
+
+![disruption traces](../examples/roads-disruptions/doc/images/disruption-trace.png)
+
+
 ## License
 
 Copyright © 2019-2020 Bruno Bonacci - Distributed under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0)
