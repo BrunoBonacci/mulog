@@ -110,3 +110,11 @@ services:
       - elasticsearch
     ports:
       - "9000:5601"
+
+  zipkin:
+    image: openzipkin/zipkin
+    environment:
+      - STORAGE_TYPE=elasticsearch
+      - ES_HOSTS=elasticsearch:9200
+    ports:
+      - 9411:9411

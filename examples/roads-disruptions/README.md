@@ -59,12 +59,18 @@ The logs will be sent to the following destinations:
   - Filesystem: `/tmp/mulog/events.log`
   - Kafka topic: `mulog`
   - ElasticSearch index `mulog-YYYY.MM.DD`
+  - Zipkin console http://localhost:9411/
 
 To see the events sent to Kafka run:
 
 ``` shell
 docker exec -ti roads-disruptions_broker_1 /usr/bin/kafka-console-consumer --bootstrap-server localhost:9093 --topic mulog
 ```
+
+Here is an example of Zipkin traces:
+
+![disruption traces](./doc/images/disruption-trace.png)
+
 
 Here a sample of the events that will be sent:
 

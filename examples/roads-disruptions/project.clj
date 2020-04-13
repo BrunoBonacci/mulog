@@ -16,13 +16,13 @@
                  [ring/ring-core "1.8.0"]
                  [ring/ring-json "0.5.0"]
                  [clj-http "3.10.0"]
-                 [clj-time "0.15.2"]
                  [com.cemerick/url "0.1.1"]
                  [com.brunobonacci/safely "0.5.0"]
                  [org.clojure/tools.logging "1.0.0"]
                  [com.brunobonacci/mulog #=(ver)]
                  [com.brunobonacci/mulog-elasticsearch #=(ver)]
                  [com.brunobonacci/mulog-kafka #=(ver)]
+                 [com.brunobonacci/mulog-zipkin #=(ver)]
                  [org.slf4j/slf4j-log4j12 "1.7.30"]]
 
   :main com.brunobonacci.disruptions.main

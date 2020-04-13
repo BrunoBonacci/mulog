@@ -60,6 +60,48 @@
 
 
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                       ----==| Μ / T R A C E |==----                        ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(comment
+
+  (def st
+    (start-publisher!
+     {:type :console}))
+
+  (log :test :t (rand))
+
+  (trace :test-trace
+         [:foo 1, :t (rand)]
+         (Thread/sleep (rand-int 50)))
+
+  (trace :test-trace-wth-result
+         {:pairs [:foo 1, :t (rand)] :capture #(select-keys % [:hello])}
+         {:hello "world"})
+
+  (trace :test-trace-capture-error
+         {:pairs [:foo 1, :t (rand)] :capture #(select-keys % [:hello])}
+         (rand-int 100))
+
+  (trace :test-trace-wth-result
+         {:pairs [:foo 1, :t (rand)] :capture (fn [x] {:return x})}
+         (rand-int 100))
+
+  (trace :test-syntax-error
+         (identity {:pairs [:foo 1, :t (rand)] :capture-result :hello})
+         {:hello "world"})
+
+  (st)
+
+
+  )
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
 ;;                     ----==| T R A N S F O R M |==----                      ;;

@@ -13,22 +13,22 @@
   [config]
   (->>
    (safely
-       (->> (μ/trace :disruptions/remote-request
-            [:request-type :get-all-roads]
-            (fn [{:keys [status]}] {:http-status status})
+    (->> (μ/trace :disruptions/remote-request
+           {:pairs   [:request-type :get-all-roads]
+            :capture (fn [{:keys [status]}] {:http-status status})}
 
-            (http/get (get-in config [:endpoints :roads])
-                      {:as "UTF-8"
-                       :accept :json
-                       :socket-timeout 3000
-                       :connection-timeout 3000}))
-          :body
-          (json/parse-string))
-     :on-error
-     :max-retries :forever
-     :circuit-breaker :list-roads
-     :message "Problem retrieving the list of roads"
-     :log-stacktrace false)
+           (http/get (get-in config [:endpoints :roads])
+                     {:as "UTF-8"
+                      :accept :json
+                      :socket-timeout 3000
+                      :connection-timeout 3000}))
+       :body
+       (json/parse-string))
+    :on-error
+    :max-retries :forever
+    ;;:circuit-breaker :list-roads ;;TODO: re-enable circuit-breaker
+    :message "Problem retrieving the list of roads"
+    :log-stacktrace false)
 
    ;; selecting relevant fields
    (map #(as-> % $
@@ -44,8 +44,8 @@
   (->>
    (safely
        (->> (μ/trace :disruptions/remote-request
-            [:road-id road-id :request-type :disruptions-by-road]
-            (fn [{:keys [status]}] {:http-status status})
+             {:pairs [:road-id road-id :request-type :disruptions-by-road]
+              :capture (fn [{:keys [status]}] {:http-status status})}
 
             ;; http-rest request to TFL api
             (http/get ((get-in config [:endpoints :disruptions]) road-id)
@@ -58,7 +58,7 @@
      :on-error
      :max-retries 5
      :default []
-     :circuit-breaker :disruptions
+     ;;:circuit-breaker :disruptions ;;TODO: re-enable circuit-breaker
      :message "Problem retrieving the disruptions"
      :log-stacktrace false)
 

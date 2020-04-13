@@ -63,8 +63,8 @@
        :content-encoding (get-in req [:headers "content-encoding"])}
 
       (μ/trace :disruptions/http-request
-        []
-        (fn [{:keys [status]}] {:http-status status})
+        {:pairs []
+         :capture (fn [{:keys [status]}] {:http-status status})}
         (handler req)))))
 
 
