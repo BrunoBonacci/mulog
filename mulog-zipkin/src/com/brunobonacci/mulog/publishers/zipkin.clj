@@ -41,7 +41,7 @@
         :mulog/duration 3541288,
         :mulog/namespace "user",
         :mulog/outcome :ok,
-        :mulog/trace t3
+        :mulog/trace-id t3
         :mulog/parent-trace t2
         :mulog/root-trace t1
         :mulog/timestamp (+ tm0 142)
@@ -51,7 +51,7 @@
         :mulog/duration 69541288,
         :mulog/namespace "user",
         :mulog/outcome :ok,
-        :mulog/trace t4
+        :mulog/trace-id t4
         :mulog/parent-trace t2
         :mulog/root-trace t1
         :mulog/timestamp (+ tm0 42)
@@ -61,7 +61,7 @@
         :mulog/duration 150541288,
         :mulog/namespace "user",
         :mulog/outcome :ok,
-        :mulog/trace t2
+        :mulog/trace-id t2
         :mulog/parent-trace t1
         :mulog/root-trace t1
         :mulog/timestamp (+ tm0 12)
@@ -84,7 +84,7 @@
         :mulog/duration 160905819,
         :mulog/namespace "user",
         :mulog/outcome :ok,
-        :mulog/trace t1
+        :mulog/trace-id t1
         :mulog/parent-trace nil,
         :mulog/root-trace t1
         :mulog/timestamp tm0
@@ -126,12 +126,12 @@
 (defn- prepare-records
   [config events]
   (->> events
-     (filter :mulog/trace)
-     (map (fn [{:keys [mulog/trace mulog/parent-trace mulog/root-trace
+     (filter :mulog/root-trace)
+     (map (fn [{:keys [mulog/trace-id mulog/parent-trace mulog/root-trace
                       mulog/duration mulog/event-name mulog/timestamp
                       app-name] :as e}]
             ;; zipkin IDs are much lower bits than flakes
-            {:id        (hexify trace 16)
+            {:id        (hexify trace-id 16)
              :traceId   (hexify root-trace 32)
              :parentId  (hexify parent-trace 16)
              :name      event-name
@@ -144,6 +144,7 @@
              :localEndpoint {:serviceName (or app-name "unknown")}
              ;; tags values must be a string (can't be maps)
              :tags      (ut/map-values str (ut/remove-nils e))}))))
+
 
 
 (defn- post-records

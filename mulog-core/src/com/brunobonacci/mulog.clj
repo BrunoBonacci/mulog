@@ -284,60 +284,54 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
    NOTE: API unstable, might change in future releases.
   "
   {:style/indent 1}
-  ([event-name pairs expr]
-   `(let [tid#  (flake)
-          ptid# (get *local-context* :mulog/parent-trace)
-          ts#   (System/currentTimeMillis)
-          t0#   (System/nanoTime)]
-      (with-context {:mulog/root-trace   (or (get *local-context* :mulog/root-trace) tid#)
-                     :mulog/parent-trace tid#}
-        (try
-          (let [r# ~expr]
-            (log ~event-name ~@pairs
-                 :mulog/trace  tid#
-                 :mulog/parent-trace ptid#
-                 :mulog/duration (- (System/nanoTime) t0#)
-                 :mulog/timestamp ts#
-                 :mulog/outcome :ok)
-            r#)
-          (catch Exception x#
-            (log ~event-name ~@pairs
-                 :mulog/trace  tid#
-                 :mulog/parent-trace ptid#
-                 :mulog/duration (- (System/nanoTime) t0#)
-                 :mulog/timestamp ts#
-                 :mulog/outcome :error
-                 :exception x#)
-            (throw x#))))))
-  ;; allows to provide a function which extracts values
-  ;; from the expression result.
-  ([event-name pairs result* expr]
-   `(let [tid#  (flake)
-          ptid# (get *local-context* :mulog/parent-trace)
-          ts#   (System/currentTimeMillis)
-          t0#   (System/nanoTime)]
-      (with-context {:mulog/root-trace   (or (get *local-context* :mulog/root-trace) tid#)
-                     :mulog/parent-trace tid#}
-        (try
-          (let [r# ~expr]
-            (with-context (core/on-error {:mulog/result-fn :error} (~result* r#))
-              (log ~event-name ~@pairs
-                   :mulog/trace  tid#
-                   :mulog/parent-trace ptid#
-                   :mulog/duration (- (System/nanoTime) t0#)
-                   :mulog/timestamp ts#
-                   :mulog/outcome :ok))
-            r#)
-          (catch Exception x#
-            (log ~event-name ~@pairs
-                 :mulog/trace  tid#
-                 :mulog/parent-trace ptid#
-                 :mulog/duration (- (System/nanoTime) t0#)
-                 :mulog/timestamp ts#
-                 :mulog/outcome :error
-                 :exception x#)
-            (throw x#)))))))
+  ([event-name details & body]
+   (let [ ;; pairs to associate with this trace
+         pairs (cond
+                 (vector? details) details
+                 (map? details) (:pairs details)
+                 :else (throw (ex-info "Illegal Argument, expected map or vector of pairs"
+                                       {:arg-name 'details :value details})))
 
+         ;; function which returns a map of pairs to add to the trace from the body evaluation result
+         capture (cond
+                   (vector? details) nil
+                   (map? details) (:capture details))
+
+         ;; checking parameters
+         _ (when-not (vector? pairs)
+             (throw (ex-info "Illegal Argument, expected vectors of pairs: key1 value1, key2 value2"
+                             {:arg-name 'pairs :value pairs})))
+         _ (when (not= 0 (mod (count pairs) 2))
+             (throw (ex-info "Illegal Argument, unbalanced vectors of pairs: key1 value1, key2 value2"
+                             {:arg-name 'pairs :value pairs :count (count pairs)})))]
+
+     ;; Code generation
+     `(let [;; :mulog/trace-id and :mulog/timestamp are created in here
+            ;; because the log function is called after the evaluation of body
+            ;; is completed, and the timestamp wouldn't be correct
+            tid#  (flake)
+            ptid# (get *local-context* :mulog/parent-trace)
+            ts#   (System/currentTimeMillis)
+            ;; start timer to track body execution
+            t0#   (System/nanoTime)]
+        ;; setting up the tracing re
+        (with-context {:mulog/root-trace   (or (get *local-context* :mulog/root-trace) tid#)
+                       :mulog/parent-trace tid#}
+          (try
+            (let [r# (do ~@body)]
+              ;; if there is something to capture form the evaluation result
+              ;; then use the capture function
+              (if ~capture
+                (core/log-trace-capture ~event-name tid# ptid# (- (System/nanoTime) t0#) ts# :ok
+                                   ~capture r#  ~@pairs)
+                ;; otherwise just log the outcome
+                (core/log-trace ~event-name tid# ptid# (- (System/nanoTime) t0#) ts# :ok ~@pairs))
+              ;; return the body result
+              r#)
+            ;; If and exception occur, then log the error.
+            (catch Exception x#
+              (core/log-trace ~event-name tid# ptid# (- (System/nanoTime) t0#) ts# :error :exception x# ~@pairs)
+              (throw x#))))))))
 
 
 
@@ -353,10 +347,26 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
     [:foo 1, :t (rand)]
     (Thread/sleep (rand-int 50)))
 
-  (trace :test-trace
-    [:foo 1, :t (rand)]
+  (trace :test-trace-wth-result
+    {:pairs [:foo 1, :t (rand)] :capture #(select-keys % [:hello])}
+    {:hello "world"})
+
+  (trace :test-trace-capture-error
+    {:pairs [:foo 1, :t (rand)] :capture #(select-keys % [:hello])}
+    (rand-int 100))
+
+  (trace :test-trace-wth-result
+    {:pairs [:foo 1, :t (rand)] :capture (fn [x] {:return x})}
+    (rand-int 100))
+
+  (trace :test-syntax-error
+    (identity {:pairs [:foo 1, :t (rand)] :capture-result :hello})
     {:hello "world"})
 
   (st)
+
+  (cond
+    nil (nil 1)
+    :else 1)
 
   )

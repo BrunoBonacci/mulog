@@ -4,7 +4,8 @@
       :no-doc true}
     com.brunobonacci.mulog.core
   (:require [com.brunobonacci.mulog.buffer :as rb]
-            [com.brunobonacci.mulog.publisher :as p])
+            [com.brunobonacci.mulog.publisher :as p]
+            [com.brunobonacci.mulog.core :as core])
   (:import [com.brunobonacci.mulog.publisher PPublisher]))
 
 
@@ -130,8 +131,31 @@
 
 
 (defmacro on-error
+  "internal utility macro"
   [default & body]
   `(try
      ~@body
      (catch Exception _#
        ~default)))
+
+
+
+(defmacro log-trace
+  "internal utility macro"
+  [event-name tid ptid duration ts outcome & pairs]
+  `(com.brunobonacci.mulog/log ~event-name
+        :mulog/trace-id  ~tid
+        :mulog/parent-trace ~ptid
+        :mulog/duration ~duration
+        :mulog/timestamp ~ts
+        :mulog/outcome ~outcome
+        ~@pairs))
+
+
+
+(defmacro log-trace-capture
+  "internal utility macro"
+  [event-name tid ptid duration ts outcome capture result & pairs]
+  (when capture
+    `(com.brunobonacci.mulog/with-context (core/on-error {:mulog/capture :error} (~capture ~result))
+       (core/log-trace ~event-name ~tid ~ptid ~duration ~ts ~outcome ~@pairs))))
