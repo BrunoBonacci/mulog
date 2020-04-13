@@ -28,73 +28,6 @@
   (json/generate-string m {:date-format "yyyy-MM-dd'T'HH:mm:ss.SSSX"}))
 
 
-(comment
-
-    (defn sample-traces
-    []
-    (let [t1 (flake)
-          t2 (flake)
-          t3 (flake)
-          t4 (flake)
-          tm0 (System/currentTimeMillis)]
-      [{:app-name "user-lookup-cache",
-        :mulog/duration 3541288,
-        :mulog/namespace "user",
-        :mulog/outcome :ok,
-        :mulog/trace-id t3
-        :mulog/parent-trace t2
-        :mulog/root-trace t1
-        :mulog/timestamp (+ tm0 142)
-        :mulog/event-name :user/cache-store}
-
-       {:app-name "user-lookup-cache",
-        :mulog/duration 69541288,
-        :mulog/namespace "user",
-        :mulog/outcome :ok,
-        :mulog/trace-id t4
-        :mulog/parent-trace t2
-        :mulog/root-trace t1
-        :mulog/timestamp (+ tm0 42)
-        :mulog/event-name :user/db-lookup}
-
-       {:app-name "user-lookup",
-        :mulog/duration 150541288,
-        :mulog/namespace "user",
-        :mulog/outcome :ok,
-        :mulog/trace-id t2
-        :mulog/parent-trace t1
-        :mulog/root-trace t1
-        :mulog/timestamp (+ tm0 12)
-        :mulog/event-name :user/lookup-user}
-
-       {:mulog/timestamp 1585500762833,
-        :mulog/event-name
-        :user/looup-user,
-        :mulog/namespace "user",
-        :app-name "user-lookup",
-        :mulog/duration 154128691,
-        :mulog/outcome :ok}
-
-       {:mulog/timestamp 1585500555734,
-        :mulog/event-name :user/hello,
-        :mulog/namespace "user",
-        :to "World!"}
-
-       {:app-name "user-verification",
-        :mulog/duration 160905819,
-        :mulog/namespace "user",
-        :mulog/outcome :ok,
-        :mulog/trace-id t1
-        :mulog/parent-trace nil,
-        :mulog/root-trace t1
-        :mulog/timestamp tm0
-        :user "jonny",
-        :mulog/event-name :user/remote-call}]))
-
-  (sample-traces)
-
-
-  )
 
 ;;
 ;; OpenZipkin only accepts a 32 characters long ID for the root trace in hexadecimal format
@@ -167,7 +100,7 @@
   (def publish-delay 5000)
   (def config {:url url :publish-delay publish-delay})
 
-  (def events (sample-traces))
+  (def events user/sample-traces)
   (post-records config events)
 
   (-> events first :mulog/root-trace (f/flake-hex) (#(subs % 0 32)))

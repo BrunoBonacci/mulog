@@ -71,32 +71,55 @@
 (comment
 
   (def st
-    (start-publisher!
+    (u/start-publisher!
      {:type :console}))
 
-  (log :test :t (rand))
+  (def st2
+    (u/start-publisher!
+     {:type :zipkin :url "http://localhost:9411/"}))
 
-  (trace :test-trace
-         [:foo 1, :t (rand)]
-         (Thread/sleep (rand-int 50)))
+  (u/log :test :t (rand))
 
-  (trace :test-trace-wth-result
-         {:pairs [:foo 1, :t (rand)] :capture #(select-keys % [:hello])}
-         {:hello "world"})
+  (u/trace :test-trace
+    [:foo 1, :t (rand)]
+    (Thread/sleep (rand-int 50)))
 
-  (trace :test-trace-capture-error
-         {:pairs [:foo 1, :t (rand)] :capture #(select-keys % [:hello])}
-         (rand-int 100))
+  (u/trace :test-trace-wth-result
+    {:pairs [:foo 1, :t (rand)] :capture #(select-keys % [:hello])}
+    {:hello "world" :capture "test"})
 
-  (trace :test-trace-wth-result
-         {:pairs [:foo 1, :t (rand)] :capture (fn [x] {:return x})}
-         (rand-int 100))
+  (u/trace :test-trace-capture-error
+    {:pairs [:foo 1, :t (rand)] :capture #(select-keys % [:hello])}
+    (rand-int 100))
 
-  (trace :test-syntax-error
-         (identity {:pairs [:foo 1, :t (rand)] :capture-result :hello})
-         {:hello "world"})
+  (u/trace :test-trace-wth-result
+    {:pairs [:foo 1, :t (rand)] :capture (fn [x] {:return x})}
+    (rand-int 100))
 
-  (st)
+  (u/trace :test-syntax-error
+    (identity {:pairs [:foo 1, :t (rand)] :capture-result :hello})
+    {:hello "world"})
+
+  (u/trace :big-operation
+    [:v 1 :level 0]
+    (Thread/sleep (rand-int 2000))
+
+    (u/trace :small-operation
+      [:level 1 :seq 1]
+      (Thread/sleep (rand-int 2000)))
+
+    (u/trace :small-operation
+      [:level 1 :seq 2]
+      (Thread/sleep (rand-int 2000))
+
+      (u/trace :operation
+        [:level 3]
+        (Thread/sleep (rand-int 1000)))
+
+      (Thread/sleep (rand-int 10)))
+    (Thread/sleep (rand-int 200)))
+
+  (st2)
 
 
   )

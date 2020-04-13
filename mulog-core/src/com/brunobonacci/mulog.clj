@@ -281,54 +281,162 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
 
 (defmacro trace
   "Traces the execution of an operation with the outcome and the time taken in nanoseconds.
-   NOTE: API unstable, might change in future releases.
+
+  *NOTE: API unstable, might change in future releases.*
+
+  ***μ/trace*** will generate a trace object which can be understood by
+  distributed tracing systems.
+
+  It computes the duration in nanoseconds of the current trace/span
+  and it links via the context to the parent trace and root traces.
+
+  It tracks the `:outcome` of the evaluation of the `body`.  If the
+  evaluation it throws an exception `:outcome` will be `:error`
+  otherwise it will be `:ok`
+
+  The trace information will be tracked across function calls as long as
+  the execution is in the same thread. If the execution spans more threads
+  or more processes the context must be passed forward.
+
+  Example of usage:
+
+  ``` Clojure
+  (u/trace ::availability
+    [:product-id product-id, :order order-id, :user user-id]
+    (product-availability product-id))
+  ```
+
+  Will produce an event as follow:
+
+  ``` Clojure
+  {:mulog/trace-id \"4VIKxhMPB2eS0uc1EV9M9a5G7MYn3TMs\",
+   :mulog/event-name :your-ns/availability,
+   :mulog/timestamp 1586804894278,
+   :mulog/duration 253303600,
+   :mulog/namespace \"your-ns\",
+   :mulog/outcome :ok,
+   :mulog/root-trace \"4VILF82cx_mFKlbKN-PUTezsRdsn8XOY\",
+   :mulog/parent-trace \"4VILL47ifjeHTaaG3kAWtZoELvk9AGY9\",
+   :order \"34896-34556\",
+   :product-id \"2345-23-545\",
+   :user \"709-6567567\"}
+  ```
+
+  Note the `:mulog/duration` and `:mulog/outcome` reporting
+  respectively the duration of the execution of `product-availablity`
+  in **nanoseconds** as well as the outcome (`:ok` or `:error`). If an
+  exception is raised within the body an additional field is added
+  `:exception` with the exception raised.
+
+  The `:pairs` present in the vector are added in the event, but they
+  are not propagated to nested traces, use `with-context` for that.
+
+  Finally, `:mulog/trace-id`, `:mulog/parent-trace` and
+  `:mulog/root-trace` identify respectively this trace, the outer
+  trace wrapping this trace if present otherwise `nil` and the
+  `:mulog/root-trace` is the outer-most trace with not parents.  Keep
+  in mind that *parent-trace* and *root-trace* might come from another
+  system and they are propagated by the context.
+
+
+  Sometimes it is useful to add to the trace pairs which come from the
+  result of the body's evaluation. For example to capture the http
+  response status or other valuable metrics from the response.
+  ***μ/trace*** offers the possibility to pass a function to capture
+  such info from the evaluation result.
+  To achieve this, instead of passing a simple vector of pairs
+  you need to provide a map which contains a `:capture` function
+  in addition to the `:pairs`.
+
+  The `capture` function is a function which takes one argument,
+  *the result* of the evaluation and returns a map of key-value pairs
+  which need to be added to the trace. The `capture` function will only
+  run when the `:mulog/outcome :ok`
+
+  Example of usage:
+
+  ``` Clojure
+  (u/trace ::availability
+    {:pairs [:product-id product-id, :order order-id, :user user-id]
+     :capture (fn [r] {:http-status (:status r)
+                      :etag (get-in r [:headers \"etag\"])})
+    (product-availability product-id))
+  ```
+
+  Will produce an event as follow:
+
+  ``` Clojure
+  {:mulog/trace-id \"4VIKxhMPB2eS0uc1EV9M9a5G7MYn3TMs\",
+   :mulog/event-name :your-ns/availability,
+   :mulog/timestamp 1586804894278,
+   :mulog/duration 253303600,
+   :mulog/namespace \"your-ns\",
+   :mulog/outcome :ok,
+   :mulog/root-trace \"4VILF82cx_mFKlbKN-PUTezsRdsn8XOY\",
+   :mulog/parent-trace \"4VILL47ifjeHTaaG3kAWtZoELvk9AGY9\",
+   :order \"34896-34556\",
+   :product-id \"2345-23-545\",
+   :user \"709-6567567\",
+   :http-status 200,
+   :etag \"1dfb-2686-4cba2686fb8b1\"}
+  ```
+
+  Note that in addition to the pairs like in the previous example
+  this one containse `:http-status` and `:etag` which where extracted
+  from the http response of `product-availability` evaluation.
+
+  Should the execution of the `capture` function fail for any reason
+  the pair will be added to this trace with `:mulog/capture :error`
+  to signal the execution error.
+
   "
-  {:style/indent 1}
-  ([event-name details & body]
-   (let [ ;; pairs to associate with this trace
-         pairs (cond
-                 (vector? details) details
-                 (map? details) (:pairs details)
-                 :else (throw (ex-info "Illegal Argument, expected map or vector of pairs"
-                                       {:arg-name 'details :value details})))
+  {:style/indent 1
+   :arglists '([event-name pairs & body] [event-name {:keys [pairs capture]} & body])}
+  [event-name details & body]
+  (let [;; pairs to associate with this trace
+        pairs (cond
+                (vector? details) details
+                (map? details) (:pairs details)
+                :else (throw (ex-info "Illegal Argument, expected map or vector of pairs"
+                                      {:arg-name 'details :value details})))
 
-         ;; function which returns a map of pairs to add to the trace from the body evaluation result
-         capture (cond
-                   (vector? details) nil
-                   (map? details) (:capture details))
+        ;; function which returns a map of pairs to add to the trace from the body evaluation result
+        capture (cond
+                  (vector? details) nil
+                  (map? details) (:capture details))
 
-         ;; checking parameters
-         _ (when-not (vector? pairs)
-             (throw (ex-info "Illegal Argument, expected vectors of pairs: key1 value1, key2 value2"
-                             {:arg-name 'pairs :value pairs})))
-         _ (when (not= 0 (mod (count pairs) 2))
-             (throw (ex-info "Illegal Argument, unbalanced vectors of pairs: key1 value1, key2 value2"
-                             {:arg-name 'pairs :value pairs :count (count pairs)})))]
+        ;; checking parameters
+        _ (when-not (vector? pairs)
+            (throw (ex-info "Illegal Argument, expected vectors of pairs: key1 value1, key2 value2"
+                            {:arg-name 'pairs :value pairs})))
+        _ (when (not= 0 (mod (count pairs) 2))
+            (throw (ex-info "Illegal Argument, unbalanced vectors of pairs: key1 value1, key2 value2"
+                            {:arg-name 'pairs :value pairs :count (count pairs)})))]
 
-     ;; Code generation
-     `(let [;; :mulog/trace-id and :mulog/timestamp are created in here
-            ;; because the log function is called after the evaluation of body
-            ;; is completed, and the timestamp wouldn't be correct
-            tid#  (flake)
-            ptid# (get *local-context* :mulog/parent-trace)
-            ts#   (System/currentTimeMillis)
-            ;; start timer to track body execution
-            t0#   (System/nanoTime)]
-        ;; setting up the tracing re
-        (with-context {:mulog/root-trace   (or (get *local-context* :mulog/root-trace) tid#)
-                       :mulog/parent-trace tid#}
-          (try
-            (let [r# (do ~@body)]
-              ;; if there is something to capture form the evaluation result
-              ;; then use the capture function
-              (if ~capture
-                (core/log-trace-capture ~event-name tid# ptid# (- (System/nanoTime) t0#) ts# :ok
-                                   ~capture r#  ~@pairs)
-                ;; otherwise just log the outcome
-                (core/log-trace ~event-name tid# ptid# (- (System/nanoTime) t0#) ts# :ok ~@pairs))
-              ;; return the body result
-              r#)
-            ;; If and exception occur, then log the error.
-            (catch Exception x#
-              (core/log-trace ~event-name tid# ptid# (- (System/nanoTime) t0#) ts# :error :exception x# ~@pairs)
-              (throw x#))))))))
+    ;; Code generation
+    `(let [ ;; :mulog/trace-id and :mulog/timestamp are created in here
+           ;; because the log function is called after the evaluation of body
+           ;; is completed, and the timestamp wouldn't be correct
+           tid#  (flake)
+           ptid# (get *local-context* :mulog/parent-trace)
+           ts#   (System/currentTimeMillis)
+           ;; start timer to track body execution
+           t0#   (System/nanoTime)]
+       ;; setting up the tracing re
+       (with-context {:mulog/root-trace   (or (get *local-context* :mulog/root-trace) tid#)
+                      :mulog/parent-trace tid#}
+         (try
+           (let [r# (do ~@body)]
+             ;; if there is something to capture form the evaluation result
+             ;; then use the capture function
+             (if ~capture
+               (core/log-trace-capture ~event-name tid# ptid# (- (System/nanoTime) t0#) ts# :ok
+                                       ~capture r#  ~@pairs)
+               ;; otherwise just log the outcome
+               (core/log-trace ~event-name tid# ptid# (- (System/nanoTime) t0#) ts# :ok ~@pairs))
+             ;; return the body result
+             r#)
+           ;; If and exception occur, then log the error.
+           (catch Exception x#
+             (core/log-trace ~event-name tid# ptid# (- (System/nanoTime) t0#) ts# :error :exception x# ~@pairs)
+             (throw x#)))))))

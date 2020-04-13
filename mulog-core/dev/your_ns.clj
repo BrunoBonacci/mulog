@@ -94,6 +94,22 @@
 
 
 
+(comment
+
+  (defn product-availability [product-id]
+    (Thread/sleep (rand-int 500)))
+  (def product-id "2345-23-545")
+  (def order-id   "34896-34556")
+  (def user-id    "709-6567567")
+
+  (μ/trace ::availability
+    [:product-id product-id, :order order-id, :user user-id]
+    (product-availability product-id))
+
+
+  )
+
+
 
 
 (comment
