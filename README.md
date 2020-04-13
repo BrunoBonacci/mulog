@@ -528,9 +528,15 @@ For more information about how to implement custom publisher see:
   * [How to write custom publishers](./doc/custom-publishers.md)
 
 
-## TODOs
+## Contributions
 
-Coming soon:
+I do consider the core pretty much feature complete, therefore I won't
+accept changes in the core module. However, there is loads of work
+to be done on supporting libraries and publishers for various systems,
+Here your help if welcome, you can have a look at the list of open issues
+marked as [help wanted](https://github.com/BrunoBonacci/mulog/labels/help%20wanted).
+
+For example:
 
   - [ ] JVM metrics sampling (GC, heap, buffers)
   - [ ] Prometheus publisher
@@ -540,6 +546,13 @@ Coming soon:
   - [ ] Advanced File publisher
 
 *PRs are welcome `;-)`*
+
+To contribute:
+
+  - pick a issue you would like to work on.
+  - drop a message to the issue so that I know someone else is working on it
+  - follow the guidelines in the ticket
+  - in doubt, just ask!
 
 ## License
 
