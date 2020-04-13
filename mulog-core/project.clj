@@ -8,6 +8,7 @@
 
   :scm {:name "git" :url "https://github.com/BrunoBonacci/mulog.git"}
 
+  :javac-options ["-target" "1.8" "-source" "1.8" "-Xlint:-options"]
   :java-source-paths ["java"]
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [amalloy/ring-buffer "1.3.1"]]

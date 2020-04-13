@@ -17,7 +17,6 @@
 
   :global-vars {*warn-on-reflection* true}
 
-  :java-cmd "/Library/Java/JavaVirtualMachines/graalvm-ce-java8-19.3.0.2/Contents/Home/bin/java"
   :jvm-opts ["-server"]
 
   :profiles {:dev {:dependencies [[midje "1.9.9"]

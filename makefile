@@ -62,7 +62,7 @@ all: ancient clean build
 #
 # Build
 #
-build: build-core build-els build-kafka build-examples
+build: build-core build-els build-kafka build-zipkin build-examples
 - @printf "#\n# Building μ/log Completed!\n#\n"
 
 
@@ -97,6 +97,16 @@ mulog-kafka/target/mulog*.jar: $(kafka_src)
 
 
 #
+# Build zipkin
+#
+zipkin_src = $(shell find mulog-zipkin/project.clj mulog-zipkin/src mulog-zipkin/resources -type f)
+build-zipkin: build-core mulog-zipkin/target/mulog*.jar
+mulog-zipkin/target/mulog*.jar: $(zipkin_src)
+- @printf "#\n# Building mulog-zipkin\n#\n"
+- (cd mulog-zipkin; lein do check, midje, install)
+
+
+#
 # Build examples
 #
 build-examples: build-examples-disruptions
@@ -105,7 +115,7 @@ build-examples: build-examples-disruptions
 # Build Disruption example
 #
 disruptions_src = $(shell find examples/roads-disruptions/project.clj examples/roads-disruptions/src examples/roads-disruptions/resources -type f)
-build-examples-disruptions: build-core build-els build-kafka examples/roads-disruptions/target/roads-disruptions*.jar
+build-examples-disruptions: build-core build-els build-kafka build-zipkin examples/roads-disruptions/target/roads-disruptions*.jar
 examples/roads-disruptions/target/roads-disruptions*.jar: $(disruptions_src)
 - @printf "#\n# Building examples/roads-disruptions\n#\n"
 - (cd examples/roads-disruptions; lein do check, test)
@@ -131,6 +141,7 @@ ancient:
 - (cd mulog-core;                 lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-elasticsearch;        lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-kafka;                lein with-profile tools ancient upgrade ; lein do clean, install)
+- (cd mulog-zipkin;               lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd examples/roads-disruptions; lein with-profile tools ancient upgrade ; lein do clean, install)
 
 
@@ -143,4 +154,5 @@ clean:
 - (cd mulog-core;                 rm -fr target)
 - (cd mulog-elasticsearch;        rm -fr target)
 - (cd mulog-kafka;                rm -fr target)
+- (cd mulog-zipkin;               rm -fr target)
 - (cd examples/roads-disruptions; rm -fr target)
