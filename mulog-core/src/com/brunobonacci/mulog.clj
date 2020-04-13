@@ -382,7 +382,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   ```
 
   Note that in addition to the pairs like in the previous example
-  this one containse `:http-status` and `:etag` which where extracted
+  this one contains `:http-status` and `:etag` which where extracted
   from the http response of `product-availability` evaluation.
 
   Should the execution of the `capture` function fail for any reason
