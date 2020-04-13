@@ -59,7 +59,7 @@ The logs will be sent to the following destinations:
   - Filesystem: `/tmp/mulog/events.log`
   - Kafka topic: `mulog`
   - ElasticSearch index `mulog-YYYY.MM.DD`
-  - Zipkin console http://localhost:9411/
+  - Zipkin + ElasticSearch (console http://localhost:9411/)
 
 To see the events sent to Kafka run:
 
