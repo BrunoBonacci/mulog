@@ -3,10 +3,10 @@
 
 ![mulog](./doc/mulog.png)
 
-***μ/log*** is a micro-logging library that logs events and data, not words!
+***μ/log*** *(Pronounced: /mjuːlog/)* is a micro-logging library that logs events and data, not words!
 
 
-> **μ**, **mu** *(Pronunciation: /mjuː/)* <br/>
+> From the Greek letter **μ**, **mu** *(Pronunciation: /mjuː/)* <br/>
 > The twelfth letter of the
 > Greek alphabet (Μ, μ), often used as a prefix for *mirco-* which is
 > 10<sup>-6</sup> in the SI (System of Unis). Lowercase letter "`u`" is often
