@@ -4,11 +4,14 @@
   (:require [clojure.spec.alpha :as s]
             [clojure.string :as str])
   (:import  [java.lang.management MemoryMXBean
+                                  MemoryManagerMXBean
                                   MemoryPoolMXBean
-                                  MemoryUsage]))
+                                  MemoryUsage
+                                  GarbageCollectorMXBean]))
 
 (defn jvm-sample [opts] nil)
 
+;; FIXME maybe move the specs elsewhere?
 (s/def :memory/total.init int?)
 (s/def :memory/total.used int?)
 (s/def :memory/total.max int?)
@@ -43,8 +46,8 @@
 (defn- get-usage-ratio [^MemoryUsage usage]
   (/ (.getUsed usage) (.getMax usage)))
 
-(defn- get-pool-name [^MemoryMXBean pool]
-  (-> pool
+(defn- get-bean-name [^MemoryManagerMXBean bean]
+  (-> bean
       .getName
       (str/replace #"\s+" "-")
       str/lower-case))
@@ -84,10 +87,21 @@
 (defn- capture-memory-pools [pools]
   (into {}
     (for [^MemoryPoolMXBean pool pools
-          :let [pname (get-pool-name pool)
+          :let [pname (get-bean-name pool)
                 usage (.getUsage pool)]]
       [(keyword (str pname ".usage"))
        (/ (.getUsed usage)
           (if (= (.getMax usage) -1)
             (.getCommitted usage)
             (.getMax usage)))])))
+
+(s/fdef capture-garbage-collector
+  :args (s/cat :gc (s/coll-of (partial instance? GarbageCollectorMXBean)))
+  :ret  (s/map-of keyword? int?))
+
+(defn- capture-garbage-collector [gc]
+  (apply merge
+    (for [^GarbageCollectorMXBean mxbean gc
+          :let [name (get-bean-name mxbean)]]
+      {(keyword (str name ".count")) (.getCollectionCount mxbean)
+       (keyword (str name ".time"))  (.getCollectionTime mxbean)})))

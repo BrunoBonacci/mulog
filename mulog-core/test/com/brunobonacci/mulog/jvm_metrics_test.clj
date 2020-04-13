@@ -2,10 +2,11 @@
   (:require [com.brunobonacci.mulog.jvm-metrics :refer [jvm-sample]]
             [midje.sweet :refer [facts fact => contains anything]]
             [clojure.spec.test.alpha :as st])
-  (:import (java.lang.management ManagementFactory)))
+  (:import  [java.lang.management ManagementFactory]))
 
 (st/instrument 'com.brunobonacci.mulog.jvm-metrics/capture-memory)
 (st/instrument 'com.brunobonacci.mulog.jvm-metrics/capture-memory-pools)
+(st/instrument 'com.brunobonacci.mulog.jvm-metrics/capture-garbage-collector)
 
 (fact "it should capture JVM metrics for some key groups"
   (jvm-sample {:memory {:heap true
@@ -22,9 +23,17 @@
   (let [mxbean (ManagementFactory/getMemoryMXBean)
         pools (into [] (ManagementFactory/getMemoryPoolMXBeans))]
     (fact "from mxbean"
-      (#'com.brunobonacci.mulog.jvm-metrics/capture-memory mxbean) =>
+      (#'com.brunobonacci.mulog.jvm-metrics/capture-memory mxbean)
+      =>
       anything)
 
     (fact "from memory pool"
-      (#'com.brunobonacci.mulog.jvm-metrics/capture-memory-pools pools) =>
+      (#'com.brunobonacci.mulog.jvm-metrics/capture-memory-pools pools)
+      =>
       anything)))
+
+(fact "can capture garbage collector metrics"
+  (let [gc (into [] (ManagementFactory/getGarbageCollectorMXBeans))]
+    (#'com.brunobonacci.mulog.jvm-metrics/capture-garbage-collector gc)
+    =>
+    anything))
