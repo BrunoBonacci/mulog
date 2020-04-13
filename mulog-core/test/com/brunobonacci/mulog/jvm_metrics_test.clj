@@ -1,6 +1,6 @@
 (ns com.brunobonacci.mulog.jvm-metrics-test
   (:require [com.brunobonacci.mulog.jvm-metrics :refer [jvm-sample]]
-            [midje.sweet :refer [facts fact => just anything]]
+            [midje.sweet :refer [facts fact => contains anything]]
             [clojure.spec.test.alpha :as st])
   (:import (java.lang.management ManagementFactory)))
 
@@ -12,10 +12,11 @@
                         :buffers true}
                :gc {:collections true
                     :duration true}})
-  => {:memory {:used_heap 3487563
-               :max_heap 345364567}
-      :gc {:collections 45
-           :duration 345323}})
+  => (contains
+       {:memory {:used_heap int?
+                 :max_heap int?}
+        :gc {:collections int?
+             :duration int?}}))
 
 (facts "can capture memory usage"
   (let [mxbean (ManagementFactory/getMemoryMXBean)
