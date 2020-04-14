@@ -2,11 +2,14 @@
   (:require [com.brunobonacci.mulog.jvm-metrics :refer [jvm-sample]]
             [midje.sweet :refer [facts fact => contains anything]]
             [clojure.spec.test.alpha :as st])
-  (:import  [java.lang.management ManagementFactory]))
+  (:import  [java.lang.management ManagementFactory]
+            [javax.management ObjectName]))
 
 (st/instrument 'com.brunobonacci.mulog.jvm-metrics/capture-memory)
 (st/instrument 'com.brunobonacci.mulog.jvm-metrics/capture-memory-pools)
 (st/instrument 'com.brunobonacci.mulog.jvm-metrics/capture-garbage-collector)
+(st/instrument 'com.brunobonacci.mulog.jvm-metrics/capture-jvm-attrs)
+(st/instrument 'com.brunobonacci.mulog.jvm-metrics/capture-jvx-attrs)
 
 (fact "it should capture JVM metrics for some key groups"
   (jvm-sample {:memory {:heap true
@@ -37,3 +40,26 @@
     (#'com.brunobonacci.mulog.jvm-metrics/capture-garbage-collector gc)
     =>
     anything))
+
+(fact "can capture JVM attributes"
+  (let [runtime (ManagementFactory/getRuntimeMXBean)]
+    (#'com.brunobonacci.mulog.jvm-metrics/capture-jvm-attrs runtime)
+    =>
+    anything))
+
+
+(fact "can capture threads states"
+  (let [threads (ManagementFactory/getThreadMXBean)]
+    (#'com.brunobonacci.mulog.jvm-metrics/capture-thread-states threads)
+    =>
+    (contains
+      {:deadlocks map?
+       :waiting.count int?
+       :blocked.count int?
+       :timed_waiting.count int?
+       :runnable.count int?
+       :deadlock.count int?
+       :count int?
+       :daemon.count int?
+       :new.count int?
+       :terminated.count int?})))
