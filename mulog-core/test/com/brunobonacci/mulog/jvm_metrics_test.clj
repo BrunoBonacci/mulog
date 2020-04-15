@@ -2,8 +2,7 @@
   (:require [com.brunobonacci.mulog.jvm-metrics :refer [jvm-sample]]
             [midje.sweet :refer [facts fact => contains anything]]
             [clojure.spec.test.alpha :as st])
-  (:import  [java.lang.management ManagementFactory]
-            [javax.management ObjectName]))
+  (:import  [java.lang.management ManagementFactory]))
 
 (st/instrument 'com.brunobonacci.mulog.jvm-metrics/capture-memory)
 (st/instrument 'com.brunobonacci.mulog.jvm-metrics/capture-memory-pools)
