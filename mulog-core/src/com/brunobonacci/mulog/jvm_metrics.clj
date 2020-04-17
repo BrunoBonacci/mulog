@@ -2,7 +2,8 @@
       :doc "Module for sampling some JVM metrics"}
  com.brunobonacci.mulog.jvm-metrics
   (:require [clojure.spec.alpha :as s]
-            [clojure.string :as str])
+            [clojure.string :as str]
+            [com.brunobonacci.mulog.utils :refer [os-java-pid]])
   (:import  [java.lang.management MemoryMXBean
              MemoryPoolMXBean
              MemoryUsage
@@ -53,14 +54,21 @@
   (-> bean
       get-name
       (str/replace #"\s+" "-")
+      (str/replace #"'" "")
       str/lower-case))
 
+(s/def :opts/heap boolean?)
+(s/def :opts/total boolean?)
+(s/def :opts/non-heap boolean?)
+(s/def ::capture-memory-opts
+  (s/keys :opt [:opts/total :opts/heap :opts/non-heap]))
+
 (s/fdef capture-memory
-  :args (s/cat :mxbean (partial instance? MemoryMXBean) :opts ())
+  :args (s/cat :mxbean (partial instance? MemoryMXBean)
+               :opts ::capture-memory-opts)
   :ret ::captured-memory)
 
-;; FIXME: Maybe this is not the shape we would like.
-(defn- capture-memory [^MemoryMXBean mxbean & {:keys [total heap non-heap]}]
+(defn- capture-memory [^MemoryMXBean mxbean {:keys [total heap non-heap]}]
   (letfn [(get-total []
             {:total {:init (+ (-> mxbean .getHeapMemoryUsage .getInit)
                               (-> mxbean .getNonHeapMemoryUsage .getInit))
@@ -99,7 +107,7 @@
         (for [^MemoryPoolMXBean pool pools
               :let [pname (get-bean-name pool)
                     usage (.getUsage pool)]]
-          [(keyword (str pname ".usage"))
+          [(keyword (str pname "-usage"))
            (/ (.getUsed usage)
               (if (= (.getMax usage) -1)
                 (.getCommitted usage)
@@ -113,22 +121,24 @@
   (apply merge
          (for [^GarbageCollectorMXBean mxbean gc
                :let [name (get-bean-name mxbean)]]
-           {(keyword (str name ".count")) (.getCollectionCount mxbean)
-            (keyword (str name ".time"))  (.getCollectionTime mxbean)})))
+           {(keyword (str name "-count")) (.getCollectionCount mxbean)
+            (keyword (str name "-time"))  (.getCollectionTime mxbean)})))
 
 (s/def :attrs/name string?)
 (s/def :attrs/vendor string?)
+(s/def ::attrs/jvm-version string?)
+(s/def ::attrs/process-id int?)
 (s/fdef capture-jvm-attrs
   :args (s/cat :runtime (partial instance? RuntimeMXBean))
-  :ret (s/keys :req [:attrs/name :attrs/vendor]))
+  :ret (s/keys :req [:attrs/name :attrs/vendor :attrs/jvm-version :attrs/process-id]))
 
 (defn- capture-jvm-attrs [^RuntimeMXBean runtime]
   {:name (.getName runtime)
-   :vendor (format "%s %s %s (%s)"
+   :vendor (format "%s (%s)"
                    (.getVmVendor runtime)
-                   (.getVmName runtime)
-                   (.getVmVersion runtime)
-                   (.getSpecVersion runtime))})
+                   (.getSpecVersion runtime))
+   :version (.getVmVersion runtime)
+   :process-id (os-java-pid)})
 
 (s/fdef capture-jvx-attrs
   :args (s/cat :server (partial instance? MBeanServerConnection)
@@ -173,22 +183,22 @@
 (defn capture-thread-states [^ThreadMXBean threads]
   (let [deadlocks (detect-deadlocks threads)
         base-map {:count (.getThreadCount threads)
-                  :daemon.count (.getDaemonThreadCount threads)
-                  :deadlock.count (count deadlocks)
-                  :deadlocks deadlocks}]
+                  :daemon-count (.getDaemonThreadCount threads)
+                  :deadlock-count (count deadlocks)
+                  :deadlocks deadlocks}
+        convert-name (fn [s] (str/replace (str/lower-case s) #"_" "-"))]
     (merge
      base-map
      (apply merge
             (for [^Thread$State state (Thread$State/values)]
-              {(keyword (str (str/lower-case state) ".count"))
+              {(keyword (str (convert-name state) "-count"))
                (get-thread-count state threads)})))))
 
 (defn jvm-sample-memory
   "Captures JVM memory metrics"
-  [{:keys [total heap non-heap pools]}]
+  [{:keys [pools] :as opts}]
   (let [mxbean (ManagementFactory/getMemoryMXBean)
-        captured-memory (capture-memory mxbean
-                                        :total total :heap heap :non-heap non-heap)
+        captured-memory (capture-memory mxbean opts)
         poolmxbean (when pools (into [] (ManagementFactory/getMemoryPoolMXBeans)))
         captured-pools (when pools {:pools (capture-memory-pools poolmxbean)})]
     (merge captured-memory captured-pools)))
@@ -213,8 +223,8 @@
 
 (defn jvm-sample
   [{:keys [memory gc threads jvm-attrs]}]
-  (let [sample-mem (when memory {:memory (jvm-sample-memory memory)})
+  (let [mem (when memory {:memory (jvm-sample-memory memory)})
         gc (when gc {:gc (jvm-sample-gc)})
         threads (when threads {:threads (jvm-sample-threads)})
         jvm-attrs (when jvm-attrs {:jvm-attrs (jvm-sample-attrs)})]
-    (merge {} sample-mem gc threads jvm-attrs)))
+    (merge {} mem gc threads jvm-attrs)))
