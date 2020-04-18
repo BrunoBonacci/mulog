@@ -15,6 +15,7 @@
     [(just
       {:mulog/event-name :test
        :mulog/timestamp anything
+       :mulog/trace-id anything
        :mulog/namespace (str *ns*)})])
  )
 
@@ -212,10 +213,10 @@
 
 
 (fact
- "μ/log: can overwrite timestamp and namespace"
+ "μ/log: can overwrite base-event properties"
 
  (tp/with-test-publisher
-   (u/log :test :mulog/timestamp 1 :mulog/namespace "test"))
+     (u/log :test :mulog/timestamp 1 :mulog/namespace "test" :mulog/trace-id "id1"))
 
- => [#:mulog{:timestamp 1, :event-name :test, :namespace "test"}]
+ => [#:mulog{:trace-id "id1", :timestamp 1, :event-name :test, :namespace "test"}]
  )
