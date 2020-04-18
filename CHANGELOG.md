@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.1.9 - (unreleased)
+## v0.2.0 - (unreleased)
   - Added flag to support ElasticSearch v6.x correctly
   - Added `:mulog/trace-id` to base event with a flake (192 bit time-ordered unique id)
   - Added Zipkin publisher

@@ -462,7 +462,7 @@ How to use it:
 
 
 ### Zipkin publisher
-![since v0.1.9](https://img.shields.io/badge/since-v0.1.9-brightgreen)
+![since v0.2.0](https://img.shields.io/badge/since-v0.2.0-brightgreen)
 
 The events must be serializeable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
 
