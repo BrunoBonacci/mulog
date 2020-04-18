@@ -21,6 +21,10 @@
      (product-availability product-id))
     ```
     `μ/trace` uses without the `result*` function are NOT AFFECTED.
+  - Bumped dependency to **Kafka-2.5.0** in `mulog-kakfa`.
+    `mulog-kakfa` doesn't require **Kafka-2.5.0** specifically,
+    therefore if you need to use a different version, just exclude
+    the dependency.
 
 
 ## v0.1.8 - (2020-03-09)

@@ -11,7 +11,7 @@
 
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [com.brunobonacci/mulog #=(ver)]
-                 [org.apache.kafka/kafka-clients "2.4.1"]
+                 [org.apache.kafka/kafka-clients "2.5.0"]
                  [cheshire "5.10.0"]]
 
   :global-vars {*warn-on-reflection* true}
