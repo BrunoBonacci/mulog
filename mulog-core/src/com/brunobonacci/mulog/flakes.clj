@@ -94,3 +94,10 @@
   "Hexadecimal representation"
   [^Flake flake]
   (Flake/formatFlakeHex flake))
+
+
+
+;; Flake representation is just a string base64 homomorphic
+(defmethod print-method Flake
+  [f ^java.io.Writer w]
+  (print-method (str f) w))

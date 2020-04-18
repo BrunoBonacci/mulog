@@ -93,6 +93,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
      logger
      (list @global-context *local-context*
            (list
+            :mulog/trace-id  (flake)
             :mulog/timestamp (System/currentTimeMillis)
             :mulog/event-name event-name)
            pairs)))

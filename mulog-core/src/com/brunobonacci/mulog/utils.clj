@@ -73,12 +73,15 @@
 (defn pprint-event-str
   "pretty print event to a string"
   [m]
-  (let [top [:mulog/event-name :mulog/timestamp]
-        tops (set top)
-        mks (->> (keys m) (filter #(= "mulog" (namespace %))) (remove tops) (sort))
+  (let [ids [:mulog/trace-id   :mulog/root-trace :mulog/parent-trace]
+        top [:mulog/event-name :mulog/timestamp ]
+        mks (->> (keys m) (filter #(= "mulog" (namespace %))) (remove (set (concat ids top))) (sort))
         oks (->> (keys m) (remove #(= "mulog" (namespace %))) (sort))
         get-value (fn [k] (get m k))]
-    (->> (mapcat (juxt identity get-value) (concat top mks oks))
+    (->> (map (juxt identity get-value) (concat top ids mks oks))
+       (remove (let [ids (set ids)]
+                 (fn [[k v]] (and (ids k) (nil? v)))))
+       (apply concat)
        (apply array-map)
        (#(edn-str % :pretty? true)))))
 
