@@ -44,8 +44,7 @@
          gbc#     @com.brunobonacci.mulog/global-context
          _#       (reset! com.brunobonacci.mulog/global-context {})
          tp#      (test-publisher outbox# (:process cfg#))
-         test-id# (keyword (str "test-" (ut/random-uid)))
-         sp#      (uc/start-publisher! inbox# tp# test-id#)]
+         sp#      (uc/start-publisher! inbox# {:type :inline :publisher tp#})]
 
      (binding [com.brunobonacci.mulog/*default-logger* inbox#]
        ~@body)

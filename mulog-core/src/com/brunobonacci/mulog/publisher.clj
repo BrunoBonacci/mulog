@@ -219,6 +219,17 @@
 
 
 
+(defmethod publisher-factory :inline
+  [{:keys [publisher] :as cfg}]
+  ;; verify type
+  (when-not (instance? com.brunobonacci.mulog.publisher.PPublisher publisher)
+    (loading-error :verify {:config cfg
+                            :name :direct
+                            :type (type publisher)} nil))
+  publisher)
+
+
+
 (defmethod publisher-factory :console
   [config]
   (console-publisher config))

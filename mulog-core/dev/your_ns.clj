@@ -147,6 +147,15 @@
     (MyCustomPublisher. config (rb/agent-buffer 10000)))
 
 
+  (def st
+    (μ/start-publisher!
+     {:type :inline :publisher (my-custom-publisher {:pretty-print true})}))
+
+  (μ/log :test-event)
+
+
+
+
   (defn- pprint-str
     [v]
     (with-out-str

@@ -4,7 +4,8 @@
             [clojure.string :as str]
             [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.utils :as ut]
-            [com.brunobonacci.mulog.flakes :refer [flake]]))
+            [com.brunobonacci.mulog.flakes :refer [flake]]
+            [com.brunobonacci.mulog.core :as core]))
 
 
 
@@ -63,7 +64,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
-;;                       ----==| Μ / T R A C E |==----                        ;;
+;;                       ----==| μ / T R A C E |==----                        ;;
 ;;                                                                            ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -152,6 +153,16 @@
   )
 
 
+
+(comment
+
+  ;; stop publisher
+  (core/registered-publishers)
+  ;; STOPLAST
+  (core/stop-publisher! (->> (core/registered-publishers) last :id))
+
+
+  )
 
 
 

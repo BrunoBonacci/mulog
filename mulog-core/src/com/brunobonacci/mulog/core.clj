@@ -5,7 +5,7 @@
     com.brunobonacci.mulog.core
   (:require [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.publisher :as p]
-            [com.brunobonacci.mulog.core :as core])
+            [com.brunobonacci.mulog.flakes :refer [snowflake]])
   (:import [com.brunobonacci.mulog.publisher PPublisher]))
 
 
@@ -25,40 +25,34 @@
   (swap! buffer rb/enqueue value))
 
 
-
+;;
+;; Stores the registered publishers
+;; id -> {buffer, publisher, ?stopper}
+;;
 (defonce publishers
-  (atom #{}))
+  (atom {}))
 
 
 
 (defn register-publisher!
-  [buffer id publisher]
-  (swap! publishers conj [buffer id publisher]))
+  [buffer publisher]
+  (let [id (snowflake)]
+    (swap! publishers assoc id {:buffer buffer :publisher publisher})
+    id))
 
 
 
 (defn deregister-publisher!
-  ([id]
-   (swap! publishers
-          (fn [publishers]
-            (->> publishers
-               (remove #(= id (second %)))
-               (into #{})))))
+  [id]
+  (swap! publishers dissoc id))
 
-  ([buffer id]
-   (swap! publishers
-          (fn [publishers]
-            (->> publishers
-               (remove #(and (= id (second %))
-                           (= buffer (first %))))
-               (into #{})))))
 
-  ([buffer id publisher]
-   (swap! publishers
-          (fn [publishers]
-            (->> publishers
-               (remove #(= % [buffer id publisher]))
-               (into #{}))))))
+
+(defn registered-publishers
+  []
+  (->> @publishers
+     (map (fn [[id {:keys [publisher]}]] {:id id :publisher publisher}))
+     (sort-by :id)))
 
 
 
@@ -75,13 +69,13 @@
      (try
        (let [pubs @publishers
              ;;    group-by buffer
-             pubs (group-by first pubs)]
+             pubs (group-by :buffer (map second pubs))]
 
          (doseq [[buf dests] pubs]   ;; for every buffer
            (let [items (rb/items @buf)
                  offset (-> items last first)]
              (when (seq items)
-               (doseq [[_ _ pub] dests]  ;; and each destination
+               (doseq [{pub :publisher} dests]  ;; and each destination
                  ;; send to the agent-buffer
                  (send (p/agent-buffer pub)
                        (partial reduce rb/enqueue)
@@ -97,37 +91,47 @@
 
 
 (defn start-publisher!
-  ([buffer config]
-   (start-publisher! buffer (p/publisher-factory config) (:type config)))
-  ([buffer ^PPublisher publisher publisher-name]
-   (let [period (p/publish-delay publisher)
-         period (max (or period PUBLISH-INTERVAL) PUBLISH-INTERVAL)
+  [buffer config]
+  (let [^PPublisher publisher (p/publisher-factory config)
+        period (p/publish-delay publisher)
+        period (max (or period PUBLISH-INTERVAL) PUBLISH-INTERVAL)
 
-         ;; register publisher in dispatch list
-         _ (register-publisher! buffer publisher-name publisher)
-         deregister (fn [] (deregister-publisher!
-                           buffer publisher-name publisher))
+        ;; register publisher in dispatch list
+        publisher-id (register-publisher! buffer publisher)
+        deregister (fn [] (deregister-publisher! publisher-id))
 
 
-         publish (fn [] (send-off (p/agent-buffer publisher)
-                                 (partial p/publish publisher)))
-         ;; register periodic call publish
-         stop (rb/recurring-task period publish)]
-     (fn stop-publisher
-       []
-       ;; remove publisher from listeners
-       (deregister)
-       ;; stop recurring calls to publisher
-       (stop)
-       ;; flush buffer
-       (publish)
-       ;; close publisher
-       (when (instance? java.io.Closeable publisher)
-         (send-off (p/agent-buffer publisher)
-                   (fn [_]
-                     (.close ^java.io.Closeable publisher))))
-       :stopped))))
+        publish (fn [] (send-off (p/agent-buffer publisher)
+                                (partial p/publish publisher)))
+        ;; register periodic call publish
+        stop (rb/recurring-task period publish)
 
+        ;; prepare a stop function
+        stopper
+        (fn stop-publisher
+          []
+          ;; remove publisher from listeners
+          (deregister)
+          ;; stop recurring calls to publisher
+          (stop)
+          ;; flush buffer
+          (publish)
+          ;; close publisher
+          (when (instance? java.io.Closeable publisher)
+            (send-off (p/agent-buffer publisher)
+                      (fn [_]
+                        (.close ^java.io.Closeable publisher))))
+          :stopped)]
+    ;; register the stop function
+    (swap! publishers assoc-in [publisher-id :stopper] stopper)
+    ;; return the stop function
+    stopper))
+
+
+
+(defn stop-publisher!
+  [publisher-id]
+  ((get-in @publishers [publisher-id :stopper] (constantly :stopped))))
 
 
 (defmacro on-error
@@ -157,5 +161,5 @@
   "internal utility macro"
   [event-name tid ptid duration ts outcome capture result & pairs]
   (when capture
-    `(com.brunobonacci.mulog/with-context (core/on-error {:mulog/capture :error} (~capture ~result))
+    `(com.brunobonacci.mulog/with-context (on-error {:mulog/capture :error} (~capture ~result))
        (core/log-trace ~event-name ~tid ~ptid ~duration ~ts ~outcome ~@pairs))))

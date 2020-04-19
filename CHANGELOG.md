@@ -26,6 +26,7 @@
     `mulog-kakfa` doesn't require **Kafka-2.5.0** specifically,
     therefore if you need to use a different version, just exclude
     the dependency.
+  - Added `:inline` publishers
 
 
 ## v0.1.8 - (2020-03-09)

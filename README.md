@@ -506,6 +506,7 @@ How to use it:
 
 
 ### Custom publishers
+![since v0.1.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)
 
 To use your own publisher create a function which take a configuration
 and return an instance of `PPublisher` protocol and then use the
@@ -525,10 +526,27 @@ classpath and then just add the fully qualified function name:
 For more information about how to implement custom publisher see:
 [How to write custom publishers](./doc/custom-publishers.md)
 
+
+### Inline publishers
+![since v0.2.0](https://img.shields.io/badge/since-v0.2.0-brightgreen)
+
+Custom publisher can also be started by providing an instance of
+`com.brunobonacci.mulog.publisher.PPublisher` in `μ/start-publisher!`
+as follow:
+
+``` clojure
+(def my-publisher (my-custom-publisher {})
+
+(μ/start-publisher!
+  {:type :inline :publisher my-publisher})
+```
+
+
 ## More docs
 
   * Read about [μ/log internals](./doc/mulog-internals.md)
   * [How to write custom publishers](./doc/custom-publishers.md)
+
 
 
 ## Contributions
