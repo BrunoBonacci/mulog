@@ -161,5 +161,6 @@
   "internal utility macro"
   [event-name tid ptid duration ts outcome capture result & pairs]
   (when capture
-    `(com.brunobonacci.mulog/with-context (on-error {:mulog/capture :error} (~capture ~result))
-       (core/log-trace ~event-name ~tid ~ptid ~duration ~ts ~outcome ~@pairs))))
+    `(com.brunobonacci.mulog/with-context
+       (on-error {:mulog/capture :error} (~capture ~result))
+       (log-trace ~event-name ~tid ~ptid ~duration ~ts ~outcome ~@pairs))))
