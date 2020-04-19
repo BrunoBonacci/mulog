@@ -126,8 +126,8 @@
 
 (s/def :attrs/name string?)
 (s/def :attrs/vendor string?)
-(s/def ::attrs/jvm-version string?)
-(s/def ::attrs/process-id int?)
+(s/def :attrs/jvm-version string?)
+(s/def :attrs/process-id int?)
 (s/fdef capture-jvm-attrs
   :args (s/cat :runtime (partial instance? RuntimeMXBean))
   :ret (s/keys :req [:attrs/name :attrs/vendor :attrs/jvm-version :attrs/process-id]))
@@ -222,6 +222,16 @@
     (capture-jvm-attrs runtime)))
 
 (defn jvm-sample
+  "Samples the JVM runtime for some metrics.
+   Currently, the metrics available are:
+   - Memory
+     - Total memory
+     - Heap memory
+     - Non-heap memory
+     - Memory pools
+  - Garbage Collector
+  - JVM attributes
+  - Threads"
   [{:keys [memory gc threads jvm-attrs]}]
   (let [mem (when memory {:memory (jvm-sample-memory memory)})
         gc (when gc {:gc (jvm-sample-gc)})
