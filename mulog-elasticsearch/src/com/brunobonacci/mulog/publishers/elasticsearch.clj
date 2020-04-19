@@ -5,11 +5,19 @@
             [com.brunobonacci.mulog.publishers.util :as u]
             [clj-http.client :as http]
             [cheshire.core :as json]
+            [cheshire.generate :as gen]
             [clojure.string :as str]
             [clj-time.format :as tf]
             [clj-time.coerce :as tc]
             [clojure.walk :as w]))
 
+
+;;
+;; Add Flake encoder to JSON generator
+;;
+(gen/add-encoder com.brunobonacci.mulog.core.Flake
+                 (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
+                   (gen/write-string json ^String (str x))))
 
 
 (def date-time-formatter
@@ -76,11 +84,14 @@
   [{:keys [index* name-mangling els-version] :as config} records]
   (let [mangler (if name-mangling mangle-map identity)]
     (->> records
-       (mapcat (fn [{:keys [mulog/timestamp] :as r}]
-                 (let [index   (index* timestamp)
-                       ;; https://www.elastic.co/guide/en/elasticsearch/reference/7.x/removal-of-types.html
-                       idx-map (if (= els-version :v6.x) {:_index index :_type "_doc"} {:_index index})]
-                   [(str (json/generate-string {:index idx-map}) \newline)
+       (mapcat (fn [{:keys [mulog/timestamp mulog/trace-id] :as r}]
+                 (let [metaidx (merge
+                                {:_index (index* timestamp)}
+                                ;; if the trace-id is available use it as ELS _id
+                                (when trace-id {:_id (str trace-id)})
+                                ;; https://www.elastic.co/guide/en/elasticsearch/reference/7.x/removal-of-types.html
+                                (when (= els-version :v6.x) {:_type "_doc"}))]
+                   [(str (json/generate-string {:index metaidx}) \newline)
                     (-> r
                        (mangler)
                        (dissoc :mulog/timestamp)
