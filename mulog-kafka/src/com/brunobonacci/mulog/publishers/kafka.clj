@@ -18,6 +18,13 @@
                  (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
                    (gen/write-string json ^String (ut/exception-stacktrace x))))
 
+;;
+;; Add Flake encoder to JSON generator
+;;
+(gen/add-encoder com.brunobonacci.mulog.core.Flake
+                 (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
+                   (gen/write-string json ^String (str x))))
+
 
 
 (defn- normalize-config
