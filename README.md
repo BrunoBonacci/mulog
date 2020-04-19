@@ -285,6 +285,9 @@ The available configuration options:
 ``` clojure
 {:type :console
 
+ ;; Whether or not to output must be pretty-printed (multiple lines)
+ :pretty? false
+
  ;; a function to apply to the sequence of events before publishing.
  ;; This transformation function can be used to filter, tranform,
  ;; anonymise events before they are published to a external system.

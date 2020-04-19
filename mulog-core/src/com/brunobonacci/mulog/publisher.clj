@@ -55,14 +55,15 @@
   (publish [_ buffer]
     ;; items are pairs [offset <item>]
     (doseq [item  (transform (map second (rb/items buffer)))]
-      (printf "%s\n" (ut/edn-str item)))
+      (if (:pretty? config)
+        (printf "%s\n" (ut/pprint-event-str item))
+        (printf "%s\n" (ut/edn-str item))))
     (flush)
     (rb/clear buffer)))
 
 
-
 (defn console-publisher
-  [{:keys [transform] :as config}]
+  [{:keys [transform pretty?] :as config}]
   (ConsolePublisher. config (rb/agent-buffer 10000) (or transform identity)))
 
 

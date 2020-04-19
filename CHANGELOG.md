@@ -3,7 +3,7 @@
 ## v0.2.0 - (unreleased)
   - Added flag to support ElasticSearch v6.x correctly
   - Added `:mulog/trace-id` to base event with a flake (192 bit time-ordered unique id)
-  - Added Zipkin publisher
+  - [**NEW**] Added Zipkin publisher
   - `μ/trace` function api change. (**BREAKING CHANGE**)
     * If you were using the ***μ/trace*** function
     with the `result*` function you will have change the code as follow:
@@ -21,6 +21,7 @@
      (product-availability product-id))
     ```
     `μ/trace` uses without the `result*` function are NOT AFFECTED.
+  - Added ability to pretty print events on the console.
   - Bumped dependency to **Kafka-2.5.0** in `mulog-kakfa`.
     `mulog-kakfa` doesn't require **Kafka-2.5.0** specifically,
     therefore if you need to use a different version, just exclude

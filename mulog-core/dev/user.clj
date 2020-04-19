@@ -18,7 +18,7 @@
 
   (u/log ::hello :to "World!")
 
-  (def p1 (u/start-publisher! {:type :console}))
+  (def p1 (u/start-publisher! {:type :console :pretty? true}))
 
   (u/log ::hello :to "World!" :v 2)
 
