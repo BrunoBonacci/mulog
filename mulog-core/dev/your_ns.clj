@@ -6,8 +6,9 @@
 
   (μ/log ::hello :to "New World!")
 
-
   (μ/start-publisher! {:type :console})
+
+  (μ/log ::event-name, :key1 "value1", :key2 :value2, :keyN "valueN")
 
   (μ/log ::system-started :version "0.1.0")
 
@@ -15,18 +16,26 @@
 
   (μ/log ::http-request :path "/orders", :method :post, :remote-ip "1.2.3.4", :http-status 201)
 
+  (def x (RuntimeException. "Boom!"))
+  (μ/log ::invalid-request :exception x, :user-id "123456789", :items-requested 47)
+
+  (μ/log ::position-updated :poi "1234567" :location {:lat 51.4978128, :lng -0.1767122} )
+
+
+
 
   (μ/log ::system-started :init-time 32)
 
   (μ/set-global-context! {:app-name "mulog-demo", :version "0.1.0", :env "local"})
 
-  {:mulog/timestamp 1572709332340,
-   :mulog/event-name :your-ns/system-started,
-   :mulog/namespace "your-ns",
-   :app-name "mulog-demo",
-   :version "0.1.0",
-   :env "local",
-   :init-time 32}
+  ;; {:mulog/event-name :your-ns/system-started,
+  ;;  :mulog/timestamp 1587501375129,
+  ;;  :mulog/trace-id mulog/flake "4VTCYUcCs5KRbiRibgulnns3l6ZW_yxk",
+  ;;  :mulog/namespace "your-ns",
+  ;;  :app-name "mulog-demo",
+  ;;  :env "local",
+  ;;  :init-time 32,
+  ;;  :version "0.1.0"}
 
 
   (μ/set-global-context! {})
@@ -34,31 +43,34 @@
   (μ/with-context {:order "abc123"}
     (μ/log ::process-item :item-id "sku-123" :qt 2))
 
+  ;; {:mulog/event-name :your-ns/process-item,
+  ;;  :mulog/timestamp 1587501473472,
+  ;;  :mulog/trace-id mulog/flake "4VTCdCz6T_TTM9bS5LCwqMG0FhvSybkN",
+  ;;  :mulog/namespace "your-ns",
+  ;;  :app-name "mulog-demo",
+  ;;  :env "local",
+  ;;  :item-id "sku-123",
+  ;;  :order "abc123",
+  ;;  :qt 2,
+  ;;  :version "0.1.0"}
 
-  {:mulog/timestamp 1572711123826,
-   :mulog/event-name :your-ns/process-item,
-   :mulog/namespace "your-ns",
-   :app-name "mulog-demo",
-   :version "0.1.0",
-   :env "local",
-   :order "abc123",
-   :item-id "sku-123",
-   :qt 2}
+
 
   (μ/with-context {:transaction-id "tx-098765"}
     (μ/with-context {:order "abc123"}
       (μ/log ::process-item :item-id "sku-123" :qt 2)))
 
-  {:mulog/timestamp 1572711123826,
-   :mulog/event-name :your-ns/process-item,
-   :mulog/namespace "your-ns",
-   :app-name "mulog-demo",
-   :version "0.1.0",
-   :env "local",
-   :transaction-id "tx-098765",
-   :order "abc123",
-   :item-id "sku-123",
-   :qt 2}
+  ;; {:mulog/event-name :your-ns/process-item,
+  ;;  :mulog/timestamp 1587501492168,
+  ;;  :mulog/trace-id mulog/flake "4VTCeIc_FNzCjegzQ0cMSLI09RqqC2FR",
+  ;;  :mulog/namespace "your-ns",
+  ;;  :app-name "mulog-demo",
+  ;;  :env "local",
+  ;;  :item-id "sku-123",
+  ;;  :order "abc123",
+  ;;  :qt 2,
+  ;;  :transaction-id "tx-098765",
+  ;;  :version "0.1.0"}
 
 
   (defn process-item [sku quantity]
@@ -70,7 +82,44 @@
 
   (μ/with-context {:order "abc123"}
     (process-item "sku-123" 2))
+
+  ;; {:mulog/event-name :your-ns/item-processed,
+  ;;  :mulog/timestamp 1587501555926,
+  ;;  :mulog/trace-id mulog/flake "4VTCi08XrCWQLrR8vS2nP8sG1zDTGuY_",
+  ;;  :mulog/namespace "your-ns",
+  ;;  :app-name "mulog-demo",
+  ;;  :env "local",
+  ;;  :item-id "sku-123",
+  ;;  :order "abc123",
+  ;;  :qt 2,
+  ;;  :version "0.1.0"}
+
   )
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                       ----==| Μ / T R A C E |==----                        ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(comment
+
+  (defn product-availability [product-id]
+    (Thread/sleep (rand-int 500)))
+  (def product-id "2345-23-545")
+  (def order-id   "34896-34556")
+  (def user-id    "709-6567567")
+
+  (μ/trace ::availability
+    [:product-id product-id, :order order-id, :user user-id]
+    (product-availability product-id))
+
+
+  )
+
 
 
 
@@ -88,24 +137,6 @@
   (μ/log ::hello :to "New World!")
 
   (stop-all)
-
-  )
-
-
-
-
-(comment
-
-  (defn product-availability [product-id]
-    (Thread/sleep (rand-int 500)))
-  (def product-id "2345-23-545")
-  (def order-id   "34896-34556")
-  (def user-id    "709-6567567")
-
-  (μ/trace ::availability
-    [:product-id product-id, :order order-id, :user user-id]
-    (product-availability product-id))
-
 
   )
 

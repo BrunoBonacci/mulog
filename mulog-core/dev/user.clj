@@ -266,3 +266,51 @@
      (run! ut/pprint-event))
 
   )
+
+
+(comment
+
+  ;; publisher for examples
+  (require '[com.brunobonacci.mulog.buffer :as rb]
+           '[com.brunobonacci.mulog.utils :as ut]
+           '[clojure.pprint :refer [pprint]])
+
+
+  (deftype ExamplesPublisher
+      [config buffer]
+
+
+      com.brunobonacci.mulog.publisher.PPublisher
+      (agent-buffer [_]
+        buffer)
+
+
+      (publish-delay [_]
+        500)
+
+
+      (publish [_ buffer]
+        ;; items are pairs [offset <item>]
+        (doseq [item (map second (rb/items buffer))]
+          ;; print the item
+          (-> item
+             ut/pprint-event-str
+             (str/replace #"^" ";; ")
+             (str/replace #"\n" "\n;; ")
+             (str/replace #"\n;; $" "\n")
+             ((partial printf "%s\n"))))
+        ;; return the buffer minus the published elements
+        (rb/clear buffer)))
+
+
+  (defn examples-publisher
+    []
+    (ExamplesPublisher. {} (rb/agent-buffer 10000)))
+
+  (st)
+  (def st
+    (u/start-publisher!
+     {:type :inline :publisher (examples-publisher)}))
+
+  (u/log ::example :foo :baz, :bar 1)
+)

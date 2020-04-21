@@ -129,21 +129,26 @@ At this point you should be able to see the previous event in your
 REPL terminal and it will look as follow:
 
 ``` clojure
-{:mulog/timestamp 1572707670555, :mulog/event-name :your-ns/hello, :mulog/namespace "your-ns", :to "New World!"}
+{:mulog/trace-id mulog/flake "4VTBeu2scrIEMle9us8StnmvRrj9ThWP", :mulog/timestamp 1587500402972, :mulog/event-name :your-ns/hello, :mulog/namespace "your-ns", :to "New World!"}
 ```
 
 Here some example of events you might want to log.
 
 ``` clojure
+;; The general form is
+(μ/log ::event-name, :key1 "value1", :key2 :value2, :keyN "valueN")
+
+;; examples
 (μ/log ::system-started :version "0.1.0" :init-time 32)
 
 (μ/log ::user-logged :user-id "1234567" :remote-ip "1.2.3.4" :auth-method :password-login)
 
 (μ/log ::http-request :path "/orders", :method :post, :remote-ip "1.2.3.4", :http-status 201, :request-time 129)
 
+(def x (RuntimeException. "Boom!"))
 (μ/log ::invalid-request :exception x, :user-id "123456789", :items-requested 47)
 
-(μ/log ::position-updated :poi "1234567" :location {:lat 51.4978128, :lng -0.1767122 )
+(μ/log ::position-updated :poi "1234567" :location {:lat 51.4978128, :lng -0.1767122} )
 ```
 
 All above are examples of events you might want to track, collect and
@@ -171,13 +176,14 @@ For example:
 (μ/set-global-context! {:app-name "mulog-demo", :version "0.1.0", :env "local"})
 
 (μ/log ::system-started :init-time 32)
-;; {:mulog/timestamp 1572709332340,
-;;  :mulog/event-name :your-ns/system-started,
+;; {:mulog/event-name :your-ns/system-started,
+;;  :mulog/timestamp 1587501375129,
+;;  :mulog/trace-id mulog/flake "4VTCYUcCs5KRbiRibgulnns3l6ZW_yxk",
 ;;  :mulog/namespace "your-ns",
 ;;  :app-name "mulog-demo",
-;;  :version "0.1.0",
 ;;  :env "local",
-;;  :init-time 32}
+;;  :init-time 32,
+;;  :version "0.1.0"}
 ```
 
 Typically, you will set the global context once in your main function
@@ -203,15 +209,16 @@ For example the following line will contain all the properties of the
 (μ/with-context {:order "abc123"}
   (μ/log ::item-processed :item-id "sku-123" :qt 2))
 
-;; {:mulog/timestamp 1572711123826,
-;;  :mulog/event-name :your-ns/item-processed,
+;; {:mulog/event-name :your-ns/process-item,
+;;  :mulog/timestamp 1587501473472,
+;;  :mulog/trace-id mulog/flake "4VTCdCz6T_TTM9bS5LCwqMG0FhvSybkN",
 ;;  :mulog/namespace "your-ns",
 ;;  :app-name "mulog-demo",
-;;  :version "0.1.0",
 ;;  :env "local",
-;;  :order "abc123",
 ;;  :item-id "sku-123",
-;;  :qt 2}
+;;  :order "abc123",
+;;  :qt 2,
+;;  :version "0.1.0"}
 ```
 
 The local context can be nested:
@@ -221,16 +228,17 @@ The local context can be nested:
   (μ/with-context {:order "abc123"}
     (μ/log ::item-processed :item-id "sku-123" :qt 2)))
 
-;; {:mulog/timestamp 1572711123826,
-;;  :mulog/event-name :your-ns/item-processed,
+;; {:mulog/event-name :your-ns/process-item,
+;;  :mulog/timestamp 1587501492168,
+;;  :mulog/trace-id mulog/flake "4VTCeIc_FNzCjegzQ0cMSLI09RqqC2FR",
 ;;  :mulog/namespace "your-ns",
 ;;  :app-name "mulog-demo",
-;;  :version "0.1.0",
 ;;  :env "local",
-;;  :transaction-id "tx-098765",
-;;  :order "abc123",
 ;;  :item-id "sku-123",
-;;  :qt 2}
+;;  :order "abc123",
+;;  :qt 2,
+;;  :transaction-id "tx-098765",
+;;  :version "0.1.0"}
 ```
 
 Local context works across function boundaries:
@@ -245,15 +253,16 @@ Local context works across function boundaries:
 (μ/with-context {:order "abc123"}
     (process-item "sku-123" 2))
 
-;; {:mulog/timestamp 1572711818791,
-;;  :mulog/event-name :your-ns/item-processed,
+;; {:mulog/event-name :your-ns/item-processed,
+;;  :mulog/timestamp 1587501555926,
+;;  :mulog/trace-id mulog/flake "4VTCi08XrCWQLrR8vS2nP8sG1zDTGuY_",
 ;;  :mulog/namespace "your-ns",
 ;;  :app-name "mulog-demo",
-;;  :version "0.1.0",
 ;;  :env "local",
-;;  :order "abc123",
 ;;  :item-id "sku-123",
-;;  :qt 2}
+;;  :order "abc123",
+;;  :qt 2,
+;;  :version "0.1.0"}
 
 ```
 
