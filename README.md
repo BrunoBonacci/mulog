@@ -1,7 +1,7 @@
 # μ/log
 [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog.svg)](https://clojars.org/com.brunobonacci/mulog)  [![cljdoc badge](https://cljdoc.org/badge/com.brunobonacci/mulog)](https://cljdoc.org/d/com.brunobonacci/mulog/CURRENT) ![CircleCi](https://img.shields.io/circleci/project/BrunoBonacci/mulog.svg) ![last-commit](https://img.shields.io/github/last-commit/BrunoBonacci/mulog.svg)
 
-![mulog](./doc/mulog.png)
+![mulog](./doc/images/mulog.png)
 
 ***μ/log*** *(Pronounced: /mjuːlog/)* is a micro-logging library that logs events and data, not words!
 
@@ -129,7 +129,7 @@ At this point you should be able to see the previous event in your
 REPL terminal and it will look as follow:
 
 ``` clojure
-{:mulog/trace-id mulog/flake "4VTBeu2scrIEMle9us8StnmvRrj9ThWP", :mulog/timestamp 1587500402972, :mulog/event-name :your-ns/hello, :mulog/namespace "your-ns", :to "New World!"}
+{:mulog/trace-id #mulog/flake "4VTBeu2scrIEMle9us8StnmvRrj9ThWP", :mulog/timestamp 1587500402972, :mulog/event-name :your-ns/hello, :mulog/namespace "your-ns", :to "New World!"}
 ```
 
 Here some example of events you might want to log.
@@ -178,7 +178,7 @@ For example:
 (μ/log ::system-started :init-time 32)
 ;; {:mulog/event-name :your-ns/system-started,
 ;;  :mulog/timestamp 1587501375129,
-;;  :mulog/trace-id mulog/flake "4VTCYUcCs5KRbiRibgulnns3l6ZW_yxk",
+;;  :mulog/trace-id #mulog/flake "4VTCYUcCs5KRbiRibgulnns3l6ZW_yxk",
 ;;  :mulog/namespace "your-ns",
 ;;  :app-name "mulog-demo",
 ;;  :env "local",
@@ -211,7 +211,7 @@ For example the following line will contain all the properties of the
 
 ;; {:mulog/event-name :your-ns/process-item,
 ;;  :mulog/timestamp 1587501473472,
-;;  :mulog/trace-id mulog/flake "4VTCdCz6T_TTM9bS5LCwqMG0FhvSybkN",
+;;  :mulog/trace-id #mulog/flake "4VTCdCz6T_TTM9bS5LCwqMG0FhvSybkN",
 ;;  :mulog/namespace "your-ns",
 ;;  :app-name "mulog-demo",
 ;;  :env "local",
@@ -230,7 +230,7 @@ The local context can be nested:
 
 ;; {:mulog/event-name :your-ns/process-item,
 ;;  :mulog/timestamp 1587501492168,
-;;  :mulog/trace-id mulog/flake "4VTCeIc_FNzCjegzQ0cMSLI09RqqC2FR",
+;;  :mulog/trace-id #mulog/flake "4VTCeIc_FNzCjegzQ0cMSLI09RqqC2FR",
 ;;  :mulog/namespace "your-ns",
 ;;  :app-name "mulog-demo",
 ;;  :env "local",
@@ -255,7 +255,7 @@ Local context works across function boundaries:
 
 ;; {:mulog/event-name :your-ns/item-processed,
 ;;  :mulog/timestamp 1587501555926,
-;;  :mulog/trace-id mulog/flake "4VTCi08XrCWQLrR8vS2nP8sG1zDTGuY_",
+;;  :mulog/trace-id #mulog/flake "4VTCi08XrCWQLrR8vS2nP8sG1zDTGuY_",
 ;;  :mulog/namespace "your-ns",
 ;;  :app-name "mulog-demo",
 ;;  :env "local",
@@ -279,6 +279,173 @@ Here some best practices to follow while logging events:
   * Avoid logging deeply nested maps, they are hard to query.
   * Log timestamps with milliseconds precision.
 
+
+## ***μ/trace***
+![since v0.2.0](https://img.shields.io/badge/since-v0.2.0-brightgreen)
+
+![mutrace](./doc/images/mutrace.png)
+
+***μ/trace*** *(Pronounced: /mjuːtrace/)* is a micro distributed
+tracing library that with the focus on tracking data.
+
+***μ/trace*** is a subsystem of ***μ/log*** and it relies heavily on
+it.  While the objective of ***μ/log*** is to record and publish a
+event which happens in a single point in time, the objective of
+***μ/trace*** is to record and publish an event that spans over a
+short period of time, and potentially, spans across multiple systems.
+
+***μ/trace*** can be used within a single system and it will provide
+accurate data around instrumented operation of that system. ***μ/trace***
+can also be used in a distributed setup and in conjunction with other
+distributed tracers such as [Zipkin](https://zipkin.io/) and participate
+into distributed traces.
+
+***μ/trace*** data points are not confined to distributed tracers,
+but the data can be used and interpreted in ElasticSearch, in real-time
+streaming system which use Apache Kafka etc.
+
+Assume that you have a complex operation which you want to track the
+rate, the outcome, the latency and have contextual information about
+the call.
+
+One example of such calls is the call to an external service or database
+to retrieve the current product availability.
+
+Here an example of such call:
+
+``` clojure
+;; example call to external service
+(defn product-availability [product-id]
+  (http/get availability-service {:product-id product-id}))
+```
+
+We want to track how long this operation takes and if it fails, what's
+the reason. With ***μ/trace*** we can instrument the request as follow:
+
+``` clojure
+;; same require as mulog
+;; (require '[com.brunobonacci.mulog :as μ])
+
+;; wrap the call to the `product-availablity` function with μ/trace
+(μ/trace ::availability
+  []
+  (product-availability product-id))
+```
+
+***μ/trace*** will start a timer before calling `(product-availability
+product-id)` and when the execution completes it will log an event
+using ***μ/log***.  To the caller it will be like calling
+`(product-availability product-id)` directly as the caller will receive the
+evaluation result of the body. However, ***μ/log*** will publish the following
+event:
+
+``` clojure
+;; {:mulog/event-name :your-ns/availability,
+;;  :mulog/timestamp 1587504242983,
+;;  :mulog/trace-id #mulog/flake "4VTF9QBbnef57vxVy-b4uKzh7dG7r7y4",
+;;  :mulog/root-trace #mulog/flake "4VTF9QBbnef57vxVy-b4uKzh7dG7r7y4",
+;;  :mulog/duration 254402837,
+;;  :mulog/namespace "your-ns",
+;;  :mulog/outcome :ok,
+;;  :app-name "mulog-demo",
+;;  :env "local",
+;;  :version "0.1.0"}
+```
+
+There are a few things to notice here:
+  - Firstly, it inherited the global context which we set for
+    ***μ/log*** (`:app-name`, `:version` and `:env`)
+  - Next, we have the same keys which are available in ***μ/log***
+    events, such as: `:mulog/event-name`, `:mulog/timestamp`,
+    `:mulog/namespace` and `:mulog/trace-id`.
+  - In addition to the `:mulog/trace-id`, which identified this
+    particular trace event, we have two more IDs. One called
+    `:mulog/root-trace` and the second one called
+    `:mulog/parent-trace`. The latter one is missing because this
+    trace doesn't have a parent ***μ/trace*** block. The
+    `:mulog/root-trace` is the id of the originating trace which could
+    be coming from another system.  The `:mulog/root-trace` is the
+    same as the `:mulog/trace-id` because, in this example, this trace
+    is the first one (and the only one) of the stack.
+  - Next, we have `:mulog/duration` which is the duration of the evaluation of
+    the body ( the `product-availability` call) expressed in *nanoseconds*
+  - Whether the call succeeded or failed, this is specified in
+    `:mulog/outcome` which it can be `:ok` or `:error`. The latter
+    will be set in case an exception is raised, and in this case, an
+    additional `:exception` property will be added with the actual
+    exception. In case of errors, the exception will be thrown back to
+    the caller for further handling.
+
+In the above example we are missing some contextual information.
+For example, we know that someone is enquiring about product availability
+but we don't know about which product. This information is available
+at the point of call, it would be nice to be able to see this information
+in the trace as well. That's easily done.
+
+Like ***μ/log*** events, we can add key/value `pairs` to the trace as well:
+
+``` clojure
+(μ/trace ::availability
+  [:product-id product-id]
+  (product-availability product-id))
+```
+
+Note that within square brackets we have added the info we need.
+But we can go one step further. Let's assume that we had the `order-id`
+and the `user-id` who is enquiring about the availability as local context
+then we would have the following trace event.
+
+``` clojure
+(def product-id "2345-23-545")
+(def order-id   "34896-34556")
+(def user-id    "709-6567567")
+
+(μ/with-context {:order order-id, :user user-id}
+  (μ/trace ::availability
+    [:product-id product-id]
+    (product-availability product-id)))
+
+;; {:mulog/event-name :your-ns/availability,
+;;  :mulog/timestamp 1587506497789,
+;;  :mulog/trace-id #mulog/flake "4VTHCez0rr3TpaBmUQrTb2DZaYmaWFkH",
+;;  :mulog/root-trace #mulog/flake "4VTHCez0rr3TpaBmUQrTb2DZaYmaWFkH",
+;;  :mulog/duration 280510026,
+;;  :mulog/namespace "your-ns",
+;;  :mulog/outcome :ok,
+;;  :app-name "mulog-demo",
+;;  :env "local",
+;;  :order "34896-34556",
+;;  :product-id "2345-23-545",
+;;  :user "709-6567567",
+;;  :version "0.1.0"}
+
+```
+
+One important difference between `with-context` and the `μ/trace`
+`pairs` is that `with-context` will *propagate that information to
+all nested calls* while the `μ/trace` pairs will be only added to that
+specific trace event and not the nested ones.
+
+If we had the following set of nested calls:
+
+``` clojure
+(process-order)
+└── (availability)
+    ├── (warehouse-availablity)
+    ├── (shopping-carts)
+    └── (availability-estimator)
+```
+
+Where `process-order` check the `avalability` of each product, and to
+check the availability of each product you need to verify what is
+available in the `warehouse` as well as how many items are locked in
+in-flight shopping carts and have this information provided to an
+`estimator` you would end-up with a trace which looks like the
+following:
+
+![nested traces](./doc/images/nested-traces.png)
+
+
 ## Publishers
 
 Publishers allow to send the events to external system where they can
@@ -287,7 +454,8 @@ be stored, indexed, transformed or visualized.
 ### Simple console publisher
 ![since v0.1.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)
 
-It outputs the events into the standard output in EDN format, mostly intended for local development.
+It outputs the events into the standard output in EDN format, mostly
+intended for local development.
 
 The available configuration options:
 

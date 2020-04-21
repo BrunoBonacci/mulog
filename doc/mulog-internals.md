@@ -16,7 +16,7 @@ The design goals of ***μ/log*** are the following:
 
 With the above goals in mind let's look at how it works!
 
-![internals](mulog-internals.png)
+![internals](./images/mulog-internals.png)
 
 Looking at the above picture let's see what happens step by step.
 

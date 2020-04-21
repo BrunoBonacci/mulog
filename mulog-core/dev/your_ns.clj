@@ -30,7 +30,7 @@
 
   ;; {:mulog/event-name :your-ns/system-started,
   ;;  :mulog/timestamp 1587501375129,
-  ;;  :mulog/trace-id mulog/flake "4VTCYUcCs5KRbiRibgulnns3l6ZW_yxk",
+  ;;  :mulog/trace-id #mulog/flake "4VTCYUcCs5KRbiRibgulnns3l6ZW_yxk",
   ;;  :mulog/namespace "your-ns",
   ;;  :app-name "mulog-demo",
   ;;  :env "local",
@@ -45,7 +45,7 @@
 
   ;; {:mulog/event-name :your-ns/process-item,
   ;;  :mulog/timestamp 1587501473472,
-  ;;  :mulog/trace-id mulog/flake "4VTCdCz6T_TTM9bS5LCwqMG0FhvSybkN",
+  ;;  :mulog/trace-id #mulog/flake "4VTCdCz6T_TTM9bS5LCwqMG0FhvSybkN",
   ;;  :mulog/namespace "your-ns",
   ;;  :app-name "mulog-demo",
   ;;  :env "local",
@@ -62,7 +62,7 @@
 
   ;; {:mulog/event-name :your-ns/process-item,
   ;;  :mulog/timestamp 1587501492168,
-  ;;  :mulog/trace-id mulog/flake "4VTCeIc_FNzCjegzQ0cMSLI09RqqC2FR",
+  ;;  :mulog/trace-id #mulog/flake "4VTCeIc_FNzCjegzQ0cMSLI09RqqC2FR",
   ;;  :mulog/namespace "your-ns",
   ;;  :app-name "mulog-demo",
   ;;  :env "local",
@@ -85,7 +85,7 @@
 
   ;; {:mulog/event-name :your-ns/item-processed,
   ;;  :mulog/timestamp 1587501555926,
-  ;;  :mulog/trace-id mulog/flake "4VTCi08XrCWQLrR8vS2nP8sG1zDTGuY_",
+  ;;  :mulog/trace-id #mulog/flake "4VTCi08XrCWQLrR8vS2nP8sG1zDTGuY_",
   ;;  :mulog/namespace "your-ns",
   ;;  :app-name "mulog-demo",
   ;;  :env "local",
@@ -108,17 +108,115 @@
 (comment
 
   (defn product-availability [product-id]
+    (http/get availability-service {:product-id product-id}))
+
+  (defn product-availability [product-id]
     (Thread/sleep (rand-int 500)))
+
+  (μ/trace ::availability
+    []
+    (product-availability product-id))
+
+  ;; {:mulog/event-name :your-ns/availability,
+  ;;  :mulog/timestamp 1587504242983,
+  ;;  :mulog/trace-id #mulog/flake "4VTF9QBbnef57vxVy-b4uKzh7dG7r7y4",
+  ;;  :mulog/root-trace #mulog/flake "4VTF9QBbnef57vxVy-b4uKzh7dG7r7y4",
+  ;;  :mulog/duration 254402837,
+  ;;  :mulog/namespace "your-ns",
+  ;;  :mulog/outcome :ok,
+  ;;  :app-name "mulog-demo",
+  ;;  :env "local",
+  ;;  :version "0.1.0"}
+
+
   (def product-id "2345-23-545")
   (def order-id   "34896-34556")
   (def user-id    "709-6567567")
 
-  (μ/trace ::availability
-    [:product-id product-id, :order order-id, :user user-id]
-    (product-availability product-id))
+  (μ/with-context {:order order-id, :user user-id}
+    (μ/trace ::availability
+      [:product-id product-id]
+      (product-availability product-id)))
+
+  ;; {:mulog/event-name :your-ns/availability,
+  ;;  :mulog/timestamp 1587506497789,
+  ;;  :mulog/trace-id #mulog/flake "4VTHCez0rr3TpaBmUQrTb2DZaYmaWFkH",
+  ;;  :mulog/root-trace #mulog/flake "4VTHCez0rr3TpaBmUQrTb2DZaYmaWFkH",
+  ;;  :mulog/duration 280510026,
+  ;;  :mulog/namespace "your-ns",
+  ;;  :mulog/outcome :ok,
+  ;;  :app-name "mulog-demo",
+  ;;  :env "local",
+  ;;  :order "34896-34556",
+  ;;  :product-id "2345-23-545",
+  ;;  :user "709-6567567",
+  ;;  :version "0.1.0"}
+)
+
+
+
+
+
+;;
+;; Nested trace example
+;;
+
+(comment
+
+  (defn warehouse-availability [product-id]
+    (Thread/sleep (rand-int 100))
+    (rand-int 100))
+
+  (defn shopping-carts [product-id mode]
+    (Thread/sleep (rand-int 100))
+    (rand-int 10))
+
+  (defn availability-estimator [warehouse in-flight-carts]
+    (Thread/sleep (rand-int 100))
+    (- warehouse in-flight-carts))
+
+  (defn product-availability [product-id]
+    (let [warehouse
+          (μ/trace ::warehouse-availability
+            [:product-id product-id :app-name "warehouse"]
+            (warehouse-availability product-id))
+
+          in-flight-carts
+          (μ/trace ::shopping-carts
+            [:product-id product-id :app-name "carts"]
+            (shopping-carts product-id :in-flight))
+
+          estimated
+          (μ/trace ::availability-estimator
+            [:product-id product-id :app-name "stock-mgmt"]
+            (availability-estimator warehouse in-flight-carts))]
+
+      {:availability estimated}))
+
+  (defn process-order [order-id items]
+    (Thread/sleep (rand-int 100))
+    {:order order-id
+     :items (mapv
+             (fn [product-id]
+               (μ/trace ::availability
+                 [:product-id product-id :app-name "stock-mgmt"]
+                 (product-availability product-id))) items)})
+
+
+  (def items ["2345-23-545" "6543-43-0032"])
+  (def order-id   "34896-34556")
+  (def user-id    "709-6567567")
+
+
+  (μ/with-context {:user user-id :order-id order-id}
+    (μ/trace ::process-order
+      [:order-type :premium :app-name "order-api"]
+      (process-order order-id items)))
 
 
   )
+
+
 
 
 
