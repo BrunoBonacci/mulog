@@ -100,4 +100,5 @@
 ;; Flake representation is just a string base64 homomorphic
 (defmethod print-method Flake
   [f ^java.io.Writer w]
+  (.write w "mulog/flake ")
   (print-method (str f) w))
