@@ -18,8 +18,7 @@
                  [com.cognitect.aws/api "0.8.456"]
                  [com.cognitect.aws/endpoints "1.1.11.753"]
                  [com.cognitect.aws/kinesis "770.2.568.0"]
-                 [com.cognitect.aws/sts "773.2.578.0"]
-                 ]
+                 [com.cognitect.aws/sts "773.2.578.0"]]
 
   :global-vars {*warn-on-reflection* true}
 
