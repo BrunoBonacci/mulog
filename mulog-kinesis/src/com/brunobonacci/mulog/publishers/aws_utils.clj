@@ -10,6 +10,6 @@
                        :request {:StreamName stream-name
                                  :Records    records}
                        }))
-(defn create-records!
+(defn create-records
   [k d]
   {:PartitionKey k :Data d})
