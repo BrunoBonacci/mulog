@@ -18,7 +18,7 @@
         fmt* (if (= :json format) json/generate-string ut/edn-str)]
     (->> records
          (map (juxt #(str (get % key-field)) fmt*))
-         (map (fn [[k v]] (awsutils/create-records! k v)))
+         (map (fn [[k v]] (awsutils/create-records k v)))
          (partition-all max-items)
          (run! (partial awsutils/publish! stream-name)))))
 
