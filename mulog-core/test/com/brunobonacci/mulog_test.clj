@@ -330,22 +330,178 @@
 (fact "μ/trace: respects local context"
 
   (tp/with-test-publisher
-    (u/trace :test
-      [:key1 :value1 :key2 2]
+    (u/with-context {:cntx1 "value1" }
+      (u/trace :test
+        [:key1 :value1 :key2 2]
 
-      (u/log :inner :key3 3)
-      {:foo "bar"}
-      )
+        (u/log :inner :key3 3)
+        {:foo "bar"}))
     )
 
   => (just
         [(contains
           {:mulog/event-name :inner
-           :key3             3})
+           :key3             3
+           :cntx1            "value1"})
 
          (contains
           {:mulog/event-name :test
            :key1             :value1
-           :key2             2})])
+           :key2             2
+           :cntx1            "value1"})])
 
+  )
+
+
+
+(fact "μ/trace: respects global context"
+
+  (tp/with-test-publisher
+    (u/set-global-context! {:global 1})
+    (u/trace :test
+      [:key1 :value1 :key2 2]
+
+      (u/log :inner :key3 3)
+      {:foo "bar"})
+    )
+
+  => (just
+        [(contains
+          {:mulog/event-name :inner
+           :key3             3
+           :global           1})
+
+         (contains
+          {:mulog/event-name :test
+           :key1             :value1
+           :key2             2
+           :global           1})])
+
+  )
+
+
+
+(fact "μ/trace: nests and inherit parent trace"
+
+  (let [result
+        (->>
+            (tp/with-test-publisher
+
+              (u/trace :outer
+                [:key1 "value1"]
+
+                (u/trace :middle
+                  [:key1 "value2"]
+
+                  (u/trace :inner
+                    [:key1 "value3"]
+
+                    (u/log :message :key1 "value4")
+                    {:foo "bar"}))))
+          #_(def result))]
+
+    (count result) => 4
+    (mapv :mulog/event-name result) => [:message :inner :middle :outer]
+    ;; root trace id are all the same
+    (->> (mapv :mulog/root-trace result)
+      (apply =)) => true
+    ;; all trace id are different
+    (->> (mapv :mulog/trace-id result)
+      (apply not=)) => true
+    ;; the tarce id is the parent-trace for the inner block
+    (->> (mapcat (juxt :mulog/trace-id :mulog/parent-trace) result)
+      (rest)
+      (partition 2)
+      (mapv (partial apply =))) => [true true true]
+
+    ))
+
+
+
+(fact "μ/trace: can extract values from results, expression body is untouched"
+
+  (fact "success case"
+    (tp/with-test-publisher
+      (u/trace :test
+        {:pairs [:key1 "value1"]
+         :capture #(select-keys % [:http-status])}
+        {:http-status 200 :body "OK"})
+      => {:http-status 200 :body "OK"}
+      ))
+
+
+  (fact "fail case"
+    (tp/with-test-publisher
+      (u/trace :test
+        {:pairs [:key1 "value1"]
+         :capture #(select-keys % [:http-status])}
+        (throw (ex-info "BOOM" {})))
+      => (throws Exception "BOOM")))
+
+
+  (fact "success case"
+    (tp/with-test-publisher
+      (u/trace :test
+        {:pairs [:key1 "value1"]
+         :capture #(throw (ex-info "BOOM" {}))}
+        {:http-status 200 :body "OK"})
+      => {:http-status 200 :body "OK"}
+      ))
+  )
+
+
+
+(fact "μ/trace: can extract values from results, test extraction"
+
+  (fact "success case"
+    (tp/with-test-publisher
+      (u/trace :test
+        {:pairs   [:key1 "value1"]
+         :capture #(select-keys % [:http-status])}
+        {:http-status 200 :body "OK"}))
+    => (just
+          [(contains
+            {:mulog/event-name :test
+             :key1             "value1"
+             :http-status      200})]))
+
+
+  (fact "fail case"
+    (tp/with-test-publisher
+      (tp/ignore
+       (u/trace :test
+         {:pairs   [:key1 "value1"]
+          :capture #(select-keys % [:http-status])}
+         (throw (ex-info "BOOM" {})))))
+
+    => (just
+          [(contains
+            {:mulog/event-name :test
+             :key1             "value1"
+             :mulog/outcome    :error})]))
+
+
+  (fact "fail case, doesn't contain the extraction"
+    (->> (tp/with-test-publisher
+         (tp/ignore
+          (u/trace :test
+            {:pairs   [:key1 "value1"]
+             :capture #(select-keys % [:http-status])}
+            (throw (ex-info "BOOM" {})))))
+      first
+      :http-status) => nil)
+
+
+  (fact "success case but failing extraction"
+    (tp/with-test-publisher
+      (u/trace :test
+        {:pairs   [:key1 "value1"]
+         :capture #(throw (ex-info "BOOM" {}))}
+        {:http-status 200 :body "OK"}))
+
+    => (just
+          [(contains
+            {:mulog/event-name :test
+             :key1             "value1"
+             :mulog/capture    :error})]))
   )
