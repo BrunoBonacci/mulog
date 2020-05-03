@@ -13,14 +13,13 @@
                    (gen/write-string json ^String (str x))))
 
 (defn- put-records
-  [{:keys [kinesis-client-params stream-name partition-key-name format max-items] :as config} records]
+  [{:keys [kinesis-client-params stream-name partition-key-name format] :as config} records]
   (let [kinesis-client (awsutils/create-kinesis-client kinesis-client-params)
         key-field partition-key-name
         fmt* (if (= :json format) json/generate-string ut/edn-str)]
     (->> records
          (map (juxt #(str (get % key-field)) fmt*))
          (map (fn [[k v]] (awsutils/create-records k v)))
-         (partition-all max-items)
          (run! (partial awsutils/publish! kinesis-client stream-name)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -53,7 +52,7 @@
 (def ^:const DEFAULT-CONFIG
   {
    :partition-key-name  :mulog/trace-id
-   :max-items           500
+   :max-items           500                 ;; Each PutRecords request can support up to 500 records.
    :publish-delay       5000
    :format    :json
    ;; function to transform records
@@ -68,5 +67,5 @@
   (KinesisPublisher.
     (as-> config $
           (merge DEFAULT-CONFIG $))
-    (rb/agent-buffer 500)           ;; Each PutRecords request can support up to 500 records.
+    (rb/agent-buffer (:max-items config))
     (or (:transform config) identity)))
