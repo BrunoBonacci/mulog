@@ -5,55 +5,51 @@
 
 
 
-(fact
- "a successful delivery"
+(fact "a successful delivery"
 
- (tp/with-processing-publisher
-   {}
-   (u/log :test))
+  (tp/with-processing-publisher
+      {}
+    (u/log :test))
 
- => (just
-    [(contains
-      {:mulog/event-name :test})])
- )
-
-
-
-(fact
- "the inbox buffer limits the number of events"
-
- (tp/with-processing-publisher
-   {}
-   (dotimes [_ 200]
-     (u/log :test)))
-
- => (n-of (contains {:mulog/event-name :test}) 100)
- )
+  => (just
+        [(contains
+          {:mulog/event-name :test})])
+  )
 
 
 
-(fact
- "if the publisher fails it retries"
+(fact "the inbox buffer limits the number of events"
 
- (tp/with-processing-publisher
-   {:process (tp/rounds [:fail :ok]) :rounds 2}
-   (u/log :test))
+  (tp/with-processing-publisher
+      {}
+    (dotimes [_ 200]
+      (u/log :test)))
 
- => (just
-    [(contains
-      {:mulog/event-name :test})])
- )
+  => (n-of (contains {:mulog/event-name :test}) 100)
+  )
 
 
 
-(fact
- "if the publisher fails it retries until it succeeds"
+(fact "if the publisher fails it retries"
 
- (tp/with-processing-publisher
-   {:process (tp/rounds [:fail :fail :fail :fail :ok]) :rounds 5}
-   (u/log :test))
+  (tp/with-processing-publisher
+      {:process (tp/rounds [:fail :ok]) :rounds 2}
+    (u/log :test))
 
- => (just
-    [(contains
-      {:mulog/event-name :test})])
- )
+  => (just
+        [(contains
+          {:mulog/event-name :test})])
+  )
+
+
+
+(fact "if the publisher fails it retries until it succeeds"
+
+  (tp/with-processing-publisher
+      {:process (tp/rounds [:fail :fail :fail :fail :ok]) :rounds 5}
+    (u/log :test))
+
+  => (just
+        [(contains
+          {:mulog/event-name :test})])
+  )

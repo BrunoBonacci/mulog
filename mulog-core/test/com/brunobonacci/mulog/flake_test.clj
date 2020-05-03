@@ -53,7 +53,6 @@
 
 
 
-
 (def random-flake
   "Generates flake."
   (gen/no-shrink
@@ -69,15 +68,18 @@
    (< (compare f1 f2) 0)))
 
 
+
 (fact "Property: Ensures that the monotonic property is respected"
   (tc/quick-check 1000000 monotonic-property)
   => (contains {:pass? true}))
+
 
 
 (def random-flake-hex
   "Generates flake."
   (gen/no-shrink
    (gen/fmap (fn [_] (Flake/formatFlakeHex (Flake/flake))) (gen/return 1))))
+
 
 
 (def monotonic-property-hex
@@ -88,8 +90,11 @@
    (< (compare f1 f2) 0)))
 
 
+
 (fact "Property: Ensures that the monotonic property is respected (hex)"
   (tc/quick-check 1000000 monotonic-property-hex)
   => (contains {:pass? true}))
+
+
 
 ;;

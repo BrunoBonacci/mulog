@@ -65,7 +65,7 @@
 
   "}
     com.brunobonacci.mulog.flakes
-    (:import com.brunobonacci.mulog.core.Flake))
+  (:import com.brunobonacci.mulog.core.Flake))
 
 
 

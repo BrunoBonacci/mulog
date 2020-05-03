@@ -6,6 +6,7 @@
             [clojure.test.check.properties :as prop]))
 
 
+
 (def operations
   (gen/frequency
    [[6 (gen/tuple (gen/return :enqueue)
@@ -44,5 +45,3 @@
 (fact "Property: Ensures that the operations on the ring-buffer are robust"
   (tc/quick-check 1000 robust-operation-property)
   => (contains {:pass? true}))
-
-;;

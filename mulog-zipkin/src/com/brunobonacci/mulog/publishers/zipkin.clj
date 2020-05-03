@@ -9,6 +9,8 @@
             [clojure.string :as str]
             [com.brunobonacci.mulog :as u]))
 
+
+
 ;;
 ;; Add Exception encoder to JSON generator
 ;;
@@ -32,6 +34,9 @@
 ;;
 ;; OpenZipkin only accepts a 32 characters long ID for the root trace in hexadecimal format
 ;; while it accepts 16 characters for a span ID (in hexadecimal format)
+
+
+
 ;;
 (defn- hexify
   "Returns an hexadecimal representation of a flake.
@@ -59,24 +64,24 @@
 (defn- prepare-records
   [config events]
   (->> events
-     (filter :mulog/root-trace)
-     (map (fn [{:keys [mulog/trace-id mulog/parent-trace mulog/root-trace
-                      mulog/duration mulog/event-name mulog/timestamp
-                      app-name] :as e}]
-            ;; zipkin IDs are much lower bits than flakes
-            {:id        (hexify trace-id 16)
-             :traceId   (hexify root-trace 32)
-             :parentId  (hexify parent-trace 16)
-             :name      event-name
-             :kind      "SERVER"
-             ;; timestamp in μs
-             :timestamp (* timestamp 1000)
-             ;; duration in μs
-             :duration  (quot duration 1000)
-             ;; use app-name as localEndpoint if available
-             :localEndpoint {:serviceName (or app-name "unknown")}
-             ;; tags values must be a string (can't be maps)
-             :tags      (ut/map-values str (ut/remove-nils e))}))))
+    (filter :mulog/root-trace)
+    (map (fn [{:keys [mulog/trace-id mulog/parent-trace mulog/root-trace
+                     mulog/duration mulog/event-name mulog/timestamp
+                     app-name] :as e}]
+           ;; zipkin IDs are much lower bits than flakes
+           {:id        (hexify trace-id 16)
+            :traceId   (hexify root-trace 32)
+            :parentId  (hexify parent-trace 16)
+            :name      event-name
+            :kind      "SERVER"
+            ;; timestamp in μs
+            :timestamp (* timestamp 1000)
+            ;; duration in μs
+            :duration  (quot duration 1000)
+            ;; use app-name as localEndpoint if available
+            :localEndpoint {:serviceName (or app-name "unknown")}
+            ;; tags values must be a string (can't be maps)
+            :tags      (ut/map-values str (ut/remove-nils e))}))))
 
 
 
@@ -93,7 +98,6 @@
 
 
 
-
 (comment
 
   (def url "http://localhost:9411/api/v2/spans")
@@ -105,6 +109,7 @@
 
   (-> events first :mulog/root-trace (f/flake-hex) (#(subs % 0 32)))
   )
+
 
 
 (comment
@@ -122,8 +127,6 @@
   ;;
 
   )
-
-
 
 
 

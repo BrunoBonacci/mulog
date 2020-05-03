@@ -16,9 +16,9 @@
   [n]
   (when n
     (-> (str n)
-       (str/replace #"^:" "")
-       (str/replace #"/" ".")
-       (str/replace #"[^\w\d_.]" "_"))))
+      (str/replace #"^:" "")
+      (str/replace #"/" ".")
+      (str/replace #"[^\w\d_.]" "_"))))
 
 
 

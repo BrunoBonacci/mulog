@@ -18,6 +18,8 @@
                  (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
                    (gen/write-string json ^String (ut/exception-stacktrace x))))
 
+
+
 ;;
 ;; Add Flake encoder to JSON generator
 ;;
@@ -30,18 +32,18 @@
 (defn- normalize-config
   [config]
   (->> config
-     (merge {:key.serializer   StringSerializer
-             :value.serializer StringSerializer})
-     (map (fn [[k v]]
-            [(name k)
-             (cond
-               (string? v)  v
-               (keyword? v) (name v)
-               (number? v)  (str v)
-               (class? v)   (.getName ^Class v)
-               (nil? v)     v
-               :else        (str v))]))
-     (into {})))
+    (merge {:key.serializer   StringSerializer
+            :value.serializer StringSerializer})
+    (map (fn [[k v]]
+           [(name k)
+            (cond
+              (string? v)  v
+              (keyword? v) (name v)
+              (number? v)  (str v)
+              (class? v)   (.getName ^Class v)
+              (nil? v)     v
+              :else        (str v))]))
+    (into {})))
 
 
 
@@ -89,9 +91,9 @@
   [{:keys [key-field format topic producer*] :as  config} records]
   (let [fmt* (if (= :json format) json/generate-string ut/edn-str)]
     (->> records
-       (map (juxt #(get % key-field) fmt*))
-       (map (fn [[k v]] (send! producer* topic k v)))
-       (doall))))
+      (map (juxt #(get % key-field) fmt*))
+      (map (fn [[k v]] (send! producer* topic k v)))
+      (doall))))
 
 
 

@@ -8,6 +8,7 @@
   (:import com.brunobonacci.mulog.core.Flake))
 
 
+
 (comment
   ;;  Clojure 1.10.1, Java 1.8.0_232
 
@@ -26,7 +27,7 @@
   ;; Overhead used : 1.571562 ns
   ;;
   ;; Found 2 outliers in 60 samples (3.3333 %)
-  ;; low-severe	 2 (3.3333 %)
+  ;; low-severe  2 (3.3333 %)
   ;; Variance from outliers : 1.6389 % Variance is slightly inflated by outliers
 
 
@@ -46,7 +47,7 @@
   ;; Overhead used : 1.571562 ns
   ;;
   ;; Found 1 outliers in 60 samples (1.6667 %)
-  ;; low-severe	 1 (1.6667 %)
+  ;; low-severe  1 (1.6667 %)
   ;; Variance from outliers : 4.2725 % Variance is slightly inflated by outliers
 
 
@@ -69,11 +70,11 @@
   (def buffer (atom (ring-buffer 10000)))
   (bench
    (swap! buffer
-         (fn [buffer]
-           (conj buffer
-                 (assoc {:bechmark "speed"}
-                        :mulog/timestamp (System/currentTimeMillis)
-                        :mulog/event-name :test)))))
+          (fn [buffer]
+            (conj buffer
+                  (assoc {:bechmark "speed"}
+                         :mulog/timestamp (System/currentTimeMillis)
+                         :mulog/event-name :test)))))
   ;; Evaluation count : 206594940 in 60 samples of 3443249 calls.
   ;; Execution time mean : 285.340496 ns
   ;; Execution time std-deviation : 2.438685 ns
@@ -94,8 +95,8 @@
   ;; Overhead used : 6.945067 ns
   ;;
   ;; Found 2 outliers in 60 samples (3.3333 %)
-  ;; low-severe	 1 (1.6667 %)
-  ;; low-mild	 1 (1.6667 %)
+  ;; low-severe  1 (1.6667 %)
+  ;; low-mild    1 (1.6667 %)
   ;; Variance from outliers : 1.6389 % Variance is slightly inflated by outliers
 
 
@@ -142,7 +143,7 @@
   ;; Overhead used : 2.117150 ns
   ;;
   ;; Found 4 outliers in 60 samples (6.6667 %)
-  ;; low-severe	 4 (6.6667 %)
+  ;; low-severe  4 (6.6667 %)
   ;; Variance from outliers : 43.4030 % Variance is moderately inflated by outliers
 
   )
@@ -165,7 +166,7 @@
   ;; Overhead used : 2.090673 ns
   ;;
   ;; Found 4 outliers in 60 samples (6.6667 %)
-  ;; low-severe	 4 (6.6667 %)
+  ;; low-severe  4 (6.6667 %)
   ;; Variance from outliers : 1.6389 % Variance is slightly inflated by outliers
 
 
@@ -187,8 +188,8 @@
   ;; Overhead used : 2.144793 ns
   ;;
   ;; Found 5 outliers in 60 samples (8.3333 %)
-  ;; low-severe	 4 (6.6667 %)
-  ;; low-mild	 1 (1.6667 %)
+  ;; low-severe  4 (6.6667 %)
+  ;; low-mild    1 (1.6667 %)
   ;; Variance from outliers : 12.6407 % Variance is moderately inflated by outliers
 
 
@@ -201,8 +202,8 @@
   ;; Overhead used : 2.090673 ns
   ;;
   ;; Found 5 outliers in 60 samples (8.3333 %)
-  ;; low-severe	 4 (6.6667 %)
-  ;; low-mild	 1 (1.6667 %)
+  ;; low-severe  4 (6.6667 %)
+  ;; low-mild    1 (1.6667 %)
   ;; Variance from outliers : 19.0473 % Variance is moderately inflated by outliers
 
 
@@ -215,8 +216,8 @@
   ;; Overhead used : 2.090673 ns
   ;;
   ;; Found 6 outliers in 60 samples (10.0000 %)
-  ;; low-severe	 3 (5.0000 %)
-  ;; low-mild	 3 (5.0000 %)
+  ;; low-severe  3 (5.0000 %)
+  ;; low-mild    3 (5.0000 %)
   ;; Variance from outliers : 28.6849 % Variance is moderately inflated by outliers
 
 

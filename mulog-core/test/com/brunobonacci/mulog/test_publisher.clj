@@ -4,6 +4,7 @@
             [com.brunobonacci.mulog.utils :as ut]))
 
 
+
 (deftype TestPublisher
     [buffer delivery-buffer process]
 
@@ -14,10 +15,10 @@
 
   (publish [_ buffer]
     (->> buffer
-         rb/items
-         (map second)
-         (process)
-         (swap! delivery-buffer into))
+      rb/items
+      (map second)
+      (process)
+      (swap! delivery-buffer into))
     (rb/clear buffer)))
 
 
@@ -31,6 +32,8 @@
 
 
 (defmacro with-test-publisher
+  ""
+  {:style/indent 0}
   [& body]
   `(with-processing-publisher {} ~@body))
 
@@ -74,3 +77,12 @@
             (throw (ex-info "boom!!!" {})))
           (vswap! round rest)))
       recs)))
+
+
+
+(defmacro ignore
+  [& body]
+  `(try
+     ~@body
+     (catch Exception x#
+       x#)))

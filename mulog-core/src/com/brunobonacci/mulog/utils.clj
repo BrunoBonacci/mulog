@@ -23,10 +23,10 @@
     `(.pid (java.lang.ProcessHandle/current))
     ;; java <= 8
     `(-> (java.lang.management.ManagementFactory/getRuntimeMXBean)
-        (.getName)
-        (str/split #"@")
-        (first)
-        (Long/parseLong))))
+       (.getName)
+       (str/split #"@")
+       (first)
+       (Long/parseLong))))
 
 
 
@@ -79,11 +79,11 @@
         oks (->> (keys m) (remove #(= "mulog" (namespace %))) (sort))
         get-value (fn [k] (get m k))]
     (->> (map (juxt identity get-value) (concat top ids mks oks))
-       (remove (let [ids (set ids)]
-                 (fn [[k v]] (and (ids k) (nil? v)))))
-       (apply concat)
-       (apply array-map)
-       (#(edn-str % :pretty? true)))))
+      (remove (let [ids (set ids)]
+                (fn [[k v]] (and (ids k) (nil? v)))))
+      (apply concat)
+      (apply array-map)
+      (#(edn-str % :pretty? true)))))
 
 
 
@@ -108,15 +108,15 @@
   "recursively remove nils from maps, vectors and lists."
   [m]
   (->> m
-     (w/postwalk
-      (fn [i]
-        (cond
-          (map? i)        (into {} (remove (comp nil? second) i))
-          (map-entry? i)  i
-          (vector? i)     (into [] (remove nil? i))
-          (set? i)        (into #{} (remove nil? i))
-          (sequential? i) (remove nil? i)
-          :else           i)))))
+    (w/postwalk
+        (fn [i]
+          (cond
+            (map? i)        (into {} (remove (comp nil? second) i))
+            (map-entry? i)  i
+            (vector? i)     (into [] (remove nil? i))
+            (set? i)        (into #{} (remove nil? i))
+            (sequential? i) (remove nil? i)
+            :else           i)))))
 
 
 
@@ -124,5 +124,5 @@
   "Applies f to all the value of the map m"
   [f m]
   (->> m
-       (map (fn [[k v]] [k (f v)]))
-       (into {})))
+    (map (fn [[k v]] [k (f v)]))
+    (into {})))

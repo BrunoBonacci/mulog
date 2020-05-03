@@ -12,12 +12,14 @@
             [clojure.walk :as w]))
 
 
+
 ;;
 ;; Add Flake encoder to JSON generator
 ;;
 (gen/add-encoder com.brunobonacci.mulog.core.Flake
                  (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
                    (gen/write-string json ^String (str x))))
+
 
 
 (def date-time-formatter
@@ -29,8 +31,8 @@
 (defn format-date-from-long
   [timestamp]
   (->> timestamp
-     (tc/from-long)
-     (tf/unparse date-time-formatter)))
+    (tc/from-long)
+    (tf/unparse date-time-formatter)))
 
 
 
@@ -59,8 +61,8 @@
      (fn [i]
        (if (map? i)
          (->> i
-            (map (fn [entry] (mangler entry)))
-            (into {}))
+           (map (fn [entry] (mangler entry)))
+           (into {}))
          i))
      m)))
 
@@ -70,6 +72,7 @@
 (defn- to-json
   [m]
   (json/generate-string m {:date-format "yyyy-MM-dd'T'HH:mm:ss.SSSX"}))
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -84,21 +87,21 @@
   [{:keys [index* name-mangling els-version] :as config} records]
   (let [mangler (if name-mangling mangle-map identity)]
     (->> records
-       (mapcat (fn [{:keys [mulog/timestamp mulog/trace-id] :as r}]
-                 (let [metaidx (merge
-                                {:_index (index* timestamp)}
-                                ;; if the trace-id is available use it as ELS _id
-                                (when trace-id {:_id (str trace-id)})
-                                ;; https://www.elastic.co/guide/en/elasticsearch/reference/7.x/removal-of-types.html
-                                (when (= els-version :v6.x) {:_type "_doc"}))]
-                   [(str (json/generate-string {:index metaidx}) \newline)
-                    (-> r
-                       (mangler)
-                       (dissoc :mulog/timestamp)
-                       (assoc "@timestamp" (format-date-from-long timestamp))
-                       (ut/remove-nils)
-                       (to-json)
-                       (#(str % \newline)))]))))))
+      (mapcat (fn [{:keys [mulog/timestamp mulog/trace-id] :as r}]
+                (let [metaidx (merge
+                               {:_index (index* timestamp)}
+                               ;; if the trace-id is available use it as ELS _id
+                               (when trace-id {:_id (str trace-id)})
+                               ;; https://www.elastic.co/guide/en/elasticsearch/reference/7.x/removal-of-types.html
+                               (when (= els-version :v6.x) {:_type "_doc"}))]
+                  [(str (json/generate-string {:index metaidx}) \newline)
+                   (-> r
+                     (mangler)
+                     (dissoc :mulog/timestamp)
+                     (assoc "@timestamp" (format-date-from-long timestamp))
+                     (ut/remove-nils)
+                     (to-json)
+                     (#(str % \newline)))]))))))
 
 
 
@@ -113,7 +116,7 @@
     :connection-timeout publish-delay
     :body
     (->> (prepare-records config records)
-       (apply str))}))
+      (apply str))}))
 
 
 

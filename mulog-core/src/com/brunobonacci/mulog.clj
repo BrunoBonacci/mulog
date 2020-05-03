@@ -45,7 +45,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
 (defonce ^{:doc "The default logger buffers the messages in a ring buffer
              waiting to be dispatched to a destination like a file
              or a centralized logging management system."
-       :dynamic true}
+           :dynamic true}
   *default-logger*
   ;; The choice of an atom against an agent it is mainly based on
   ;; bechmarks. Items can be added to the buffer with a mean time of
@@ -55,7 +55,6 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   ;; however, the performance difference is big enough that I can
   ;; afford at least 4 retries to make the cost of 1 send to an agent.
   (atom (rb/ring-buffer 1000)))
-
 
 
 
@@ -76,7 +75,6 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
              who is the user issuing the request and so on."
        :dynamic true}
   *local-context* nil)
-
 
 
 
@@ -198,9 +196,9 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
    (if (= :multi type)
      ;; if multi publisher then start them all
      (->>  publishers
-         (map (partial core/start-publisher! logger))
-         (doall)
-         ((fn [sf] (fn [] (run! #(%) sf)))))
+       (map (partial core/start-publisher! logger))
+       (doall)
+       ((fn [sf] (fn [] (run! #(%) sf)))))
      ;; otherwise start the single publisher
      (core/start-publisher! logger config))))
 
@@ -281,9 +279,10 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
 
 
 (defmacro trace
-  "Traces the execution of an operation with the outcome and the time taken in nanoseconds.
+  "Traces the execution of an operation with the outcome and the time
+  taken in nanoseconds.
 
-  *NOTE: API unstable, might change in future releases.*
+  *NOTE: API under development, might change in future releases.*
 
   ***μ/trace*** will generate a trace object which can be understood by
   distributed tracing systems.

@@ -62,6 +62,7 @@
     (rb/clear buffer)))
 
 
+
 (defn console-publisher
   [{:keys [transform pretty?] :as config}]
   (ConsolePublisher. config (rb/agent-buffer 10000) (or transform identity)))

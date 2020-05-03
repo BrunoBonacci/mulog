@@ -16,8 +16,8 @@
 (defn index-by
   [f coll]
   (->> coll
-     (map (juxt f identity))
-     (into {})))
+    (map (juxt f identity))
+    (into {})))
 
 
 
@@ -29,23 +29,23 @@
       (μ/log :disruptions/initiated-poll)
 
       (safely
-          (let [disruptions (tfl/all-disruptions config)]
+       (let [disruptions (tfl/all-disruptions config)]
 
-            ;; record the active disruptions
-            (μ/log :disruptions/poll-completed
-                   :active-disruptions (count disruptions))
+         ;; record the active disruptions
+         (μ/log :disruptions/poll-completed
+                :active-disruptions (count disruptions))
 
-            (swap! active-disruptions
-                   (fn [old new]
-                     (->>
+         (swap! active-disruptions
+                (fn [old new]
+                  (->>
                       (merge
-                       (index-by #(get % "id") old)
-                       (index-by #(get % "id") new))
+                          (index-by #(get % "id") old)
+                          (index-by #(get % "id") new))
                       (map second)))
-                   disruptions))
-        :on-error
-        :max-retries :forever
-        :message "Polling disruptions data")
+                disruptions))
+       :on-error
+       :max-retries :forever
+       :message "Polling disruptions data")
       ;; sleep between 30s-2min between polls
       (sleep :min 30000 :max 120000)
       (recur))))

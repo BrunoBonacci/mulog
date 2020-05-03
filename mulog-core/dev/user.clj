@@ -61,7 +61,6 @@
 
 
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
 ;;                       ----==| μ / T R A C E |==----                        ;;
@@ -126,6 +125,7 @@
   )
 
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
 ;;                     ----==| T R A N S F O R M |==----                      ;;
@@ -145,8 +145,8 @@
           {:type :console
            :transform (fn [events]
                         (->> events
-                           (filter #(< (:v %) 500))
-                           (map #(update % :v -))))}))
+                          (filter #(< (:v %) 500))
+                          (map #(update % :v -))))}))
 
   (x)
 
@@ -163,7 +163,6 @@
 
 
   )
-
 
 
 
@@ -214,7 +213,6 @@
 
 
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
 ;;                        ----==| Z I P K I N |==----                         ;;
@@ -244,6 +242,8 @@
 
   )
 
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
 ;;                    ----==| E V E N T S   D O C |==----                     ;;
@@ -256,16 +256,17 @@
   ;;
 
   (->> (io/file "/tmp/mulog.edn")
-     slurp
-     (str/split-lines)
-     (map read-string)
-     (map (juxt :mulog/event-name identity))
-     (into {})
-     (map second)
-     (sort-by :mulog/timestamp)
-     (run! ut/pprint-event))
+    slurp
+    (str/split-lines)
+    (map read-string)
+    (map (juxt :mulog/event-name identity))
+    (into {})
+    (map second)
+    (sort-by :mulog/timestamp)
+    (run! ut/pprint-event))
 
   )
+
 
 
 (comment
@@ -280,27 +281,27 @@
       [config buffer]
 
 
-      com.brunobonacci.mulog.publisher.PPublisher
-      (agent-buffer [_]
-        buffer)
+    com.brunobonacci.mulog.publisher.PPublisher
+    (agent-buffer [_]
+      buffer)
 
 
-      (publish-delay [_]
-        500)
+    (publish-delay [_]
+      500)
 
 
-      (publish [_ buffer]
-        ;; items are pairs [offset <item>]
-        (doseq [item (map second (rb/items buffer))]
-          ;; print the item
-          (-> item
-             ut/pprint-event-str
-             (str/replace #"^" ";; ")
-             (str/replace #"\n" "\n;; ")
-             (str/replace #"\n;; $" "\n")
-             ((partial printf "%s\n"))))
-        ;; return the buffer minus the published elements
-        (rb/clear buffer)))
+    (publish [_ buffer]
+      ;; items are pairs [offset <item>]
+      (doseq [item (map second (rb/items buffer))]
+        ;; print the item
+        (-> item
+          ut/pprint-event-str
+          (str/replace #"^" ";; ")
+          (str/replace #"\n" "\n;; ")
+          (str/replace #"\n;; $" "\n")
+          ((partial printf "%s\n"))))
+      ;; return the buffer minus the published elements
+      (rb/clear buffer)))
 
 
   (defn examples-publisher
@@ -313,4 +314,4 @@
      {:type :inline :publisher (examples-publisher)}))
 
   (u/log ::example :foo :baz, :bar 1)
-)
+  )

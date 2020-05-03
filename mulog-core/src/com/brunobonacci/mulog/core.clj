@@ -25,6 +25,7 @@
   (swap! buffer rb/enqueue value))
 
 
+
 ;;
 ;; Stores the registered publishers
 ;; id -> {buffer, publisher, ?stopper}
@@ -51,8 +52,8 @@
 (defn registered-publishers
   []
   (->> @publishers
-     (map (fn [[id {:keys [publisher]}]] {:id id :publisher publisher}))
-     (sort-by :id)))
+    (map (fn [[id {:keys [publisher]}]] {:id id :publisher publisher}))
+    (sort-by :id)))
 
 
 
@@ -80,8 +81,8 @@
                  (send (p/agent-buffer pub)
                        (partial reduce rb/enqueue)
                        (->> items
-                          (map second)
-                          (map (partial apply merge-pairs)))))
+                         (map second)
+                         (map (partial apply merge-pairs)))))
                ;; remove items up to the offset
                (swap! buf rb/dequeue offset)))))
        (catch Exception x
@@ -134,6 +135,7 @@
   ((get-in @publishers [publisher-id :stopper] (constantly :stopped))))
 
 
+
 (defmacro on-error
   "internal utility macro"
   [default & body]
@@ -147,13 +149,14 @@
 (defmacro log-trace
   "internal utility macro"
   [event-name tid ptid duration ts outcome & pairs]
-  `(com.brunobonacci.mulog/log ~event-name
-        :mulog/trace-id  ~tid
-        :mulog/parent-trace ~ptid
-        :mulog/duration ~duration
-        :mulog/timestamp ~ts
-        :mulog/outcome ~outcome
-        ~@pairs))
+  `(com.brunobonacci.mulog/log
+    ~event-name
+    :mulog/trace-id  ~tid
+    :mulog/parent-trace ~ptid
+    :mulog/duration ~duration
+    :mulog/timestamp ~ts
+    :mulog/outcome ~outcome
+    ~@pairs))
 
 
 
