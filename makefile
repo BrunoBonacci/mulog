@@ -130,6 +130,7 @@ deploy:
 - (cd mulog-core;                 lein deploy clojars)
 - (cd mulog-elasticsearch;        lein deploy clojars)
 - (cd mulog-kafka;                lein deploy clojars)
+- (cd mulog-zipkin;               lein deploy clojars)
 
 
 #
