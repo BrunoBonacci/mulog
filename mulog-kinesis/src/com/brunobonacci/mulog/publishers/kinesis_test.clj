@@ -41,9 +41,9 @@
   (aws/invoke kinesis { :op  :DescribeStream
                         :request {:StreamName stream-name}}))
 (defn create-stream
-  [kinesis stream-name]
-  (aws/invoke kinesis { :op      :CreateStream
-                        :request {:StreamName stream-name :ShardCount 1}}))                        :request {:StreamName stream-name}}))
+  [kinesis name]
+  (aws/invoke kinesis { :op :CreateStream
+                        :request {:StreamName name :ShardCount 1}}))
 (defn delete-stream
   [kinesis stream-name]
   (aws/invoke kinesis { :op  :DeleteStream
