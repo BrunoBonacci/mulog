@@ -13,14 +13,15 @@
                    (gen/write-string json ^String (str x))))
 
 (defn- put-records
-  [{:keys [stream-name partition-key-name format max-items] :as config} records]
-  (let [key-field partition-key-name
+  [{:keys [kinesis-client-params stream-name partition-key-name format max-items] :as config} records]
+  (let [kinesis-client (awsutils/create-kinesis-client kinesis-client-params)
+        key-field partition-key-name
         fmt* (if (= :json format) json/generate-string ut/edn-str)]
     (->> records
          (map (juxt #(str (get % key-field)) fmt*))
          (map (fn [[k v]] (awsutils/create-records k v)))
          (partition-all max-items)
-         (run! (partial awsutils/publish! stream-name)))))
+         (run! (partial awsutils/publish! kinesis-client stream-name)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                                ;;
@@ -56,7 +57,8 @@
    :publish-delay       5000
    :format    :json
    ;; function to transform records
-   :transform           identity
+   :transform               identity
+   :kinesis-client-params   {:api  :kinesis}
    })
 
 ;https://docs.aws.amazon.com/cli/latest/reference/kinesis/put-records.html
