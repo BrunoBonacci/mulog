@@ -13,9 +13,8 @@
                    (gen/write-string json ^String (str x))))
 
 (defn- put-records
-  [{:keys [kinesis-client-params stream-name partition-key-name format] :as config} records]
-  (let [kinesis-client (awsutils/create-kinesis-client kinesis-client-params)
-        key-field partition-key-name
+  [kinesis-client {:keys [stream-name partition-key-name format] :as config} records]
+  (let [key-field partition-key-name
         fmt* (if (= :json format) json/generate-string ut/edn-str)
         request     (->> records
                          (map (juxt #(str (get % key-field)) fmt*))
@@ -29,7 +28,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (deftype KinesisPublisher
-  [config buffer transform]
+  [config buffer transform kinesis-client]
 
   com.brunobonacci.mulog.publisher.PPublisher
   (agent-buffer [_]
@@ -46,7 +45,7 @@
         buffer
         ;; else send to kinesis
         (do
-          (put-records config (transform (map second items)))
+          (put-records kinesis-client config (transform (map second items)))
           (rb/dequeue buffer last-offset))))))
 
 (def ^:const DEFAULT-CONFIG
@@ -69,4 +68,5 @@
     (KinesisPublisher.
       cfg
       (rb/agent-buffer (:max-items cfg))
-      (or (:transform cfg) identity))))
+      (or (:transform cfg) identity)
+      (awsutils/create-kinesis-client (:kinesis-client-params cfg)))))
