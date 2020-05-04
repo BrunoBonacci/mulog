@@ -64,8 +64,9 @@
 (defn kinesis-publisher
   [{:keys [stream-name] :as config}]
   {:pre [stream-name]}
-  (KinesisPublisher.
-    (as-> config $
-          (merge DEFAULT-CONFIG $))
-    (rb/agent-buffer (:max-items config))
-    (or (:transform config) identity)))
+  (let [cfg (as-> config $
+               (merge DEFAULT-CONFIG $))]
+    (KinesisPublisher.
+      cfg
+      (rb/agent-buffer (:max-items cfg))
+      (or (:transform cfg) identity))))
