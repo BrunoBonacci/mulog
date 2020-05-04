@@ -16,11 +16,11 @@
   [{:keys [kinesis-client-params stream-name partition-key-name format] :as config} records]
   (let [kinesis-client (awsutils/create-kinesis-client kinesis-client-params)
         key-field partition-key-name
-        fmt* (if (= :json format) json/generate-string ut/edn-str)]
-    (->> records
-         (map (juxt #(str (get % key-field)) fmt*))
-         (map (fn [[k v]] (awsutils/create-records k v)))
-         (run! (partial awsutils/publish! kinesis-client stream-name)))))
+        fmt* (if (= :json format) json/generate-string ut/edn-str)
+        request     (->> records
+                         (map (juxt #(str (get % key-field)) fmt*))
+                         (map (fn [[k v]]  {:PartitionKey k :Data v})))]
+    (awsutils/publish! kinesis-client stream-name request)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                                ;;

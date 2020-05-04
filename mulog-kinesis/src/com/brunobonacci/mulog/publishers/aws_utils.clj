@@ -16,7 +16,3 @@
           (not (zero? failed-record-count)))
       (println
         (format "mu/log kinesis stream '%s' publisher failure; Reason: %s" stream-name rsp)))))
-
-(defn create-records
-  [k d]
-  {:PartitionKey k :Data d})
