@@ -14,27 +14,12 @@ A μ/log publisher for Kinesis.
 Please see [README](../README.md) on main page.
 
 ## Testing
-1. start localstack with the configured kinesis service
+1. Start localstack with the configured kinesis service
 ``` shell
 docker-compose rm -f && docker-compose up -d
 ```
 
-2. Create a kinesis stream
- 2.1 The stream can be created with aws cli, commands below:
-
-`create-stream`
-
-```shell
-aws --endpoint-url=http://localhost:4568 kinesis create-stream --stream-name mulog-test-stream --shard-count 1
-```
-
-`describe-stream`
-```shell
-aws --endpoint-url=http://localhost:4568 kinesis describe-stream --stream-name mulog-test-stream
-```
- 2.2 Alternatively `kinesis_test.clj` has the util function to create a stream
- 
-3. Test step are mentioned in `kinesis_test.clj`  
+2. Facts can be found in `kinesis_test.clj`  
 
 ## License
 

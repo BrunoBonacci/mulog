@@ -48,10 +48,12 @@
           (put-records kinesis-client config (transform (map second items)))
           (rb/dequeue buffer last-offset))))))
 
+(def ^:const KINESIS-MAX-RECORDS-NUMBER 500) ;; Each PutRecords request can support up to 500 records.
+
 (def ^:const DEFAULT-CONFIG
   {
    :partition-key-name  :mulog/trace-id
-   :max-items           500                 ;; Each PutRecords request can support up to 500 records.
+   :max-items           KINESIS-MAX-RECORDS-NUMBER
    :publish-delay       5000
    :format    :json
    ;; function to transform records
@@ -61,10 +63,15 @@
 
 ;https://docs.aws.amazon.com/cli/latest/reference/kinesis/put-records.html
 (defn kinesis-publisher
-  [{:keys [stream-name] :as config}]
+  [{:keys [stream-name max-items] :as config}]
   {:pre [stream-name]}
   (let [cfg (as-> config $
-               (merge DEFAULT-CONFIG $))]
+               (merge DEFAULT-CONFIG $)
+               (update $ :max-items min KINESIS-MAX-RECORDS-NUMBER))]
+    (if (and
+          (not (nil? max-items))
+          (> max-items KINESIS-MAX-RECORDS-NUMBER))
+      (println (format "!!! Provided %d buffer size will be capped to maximum allowed 500" max-items)))
     (KinesisPublisher.
       cfg
       (rb/agent-buffer (:max-items cfg))

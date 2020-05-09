@@ -12,7 +12,11 @@
                                         :request {:StreamName stream-name
                                                   :Records    records}})
         failed-record-count (:FailedRecordCount rsp)]
-    (if (or (nil? failed-record-count)
-          (not (zero? failed-record-count)))
-      (println
-        (format "mu/log kinesis stream '%s' publisher failure; Reason: %s" stream-name rsp)))))
+    (cond
+      (nil? failed-record-count)        (println (format
+                                                   "mu/log kinesis stream '%s' publisher failure; Reason: %s"
+                                                   stream-name rsp))
+      (not (zero? failed-record-count)) (throw
+                                          (ex-info
+                                            (str "μ/log kinesis stream '" stream-name "' publisher failure")
+                                                  {:rsp rsp})))))
