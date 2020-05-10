@@ -74,6 +74,6 @@
       (println (format "!!! Provided %d buffer size will be capped to maximum allowed 500" max-items)))
     (KinesisPublisher.
       cfg
-      (rb/agent-buffer (:max-items cfg))
+      (rb/agent-buffer 10000)
       (or (:transform cfg) identity)
       (awsutils/create-kinesis-client (:kinesis-client-params cfg)))))
