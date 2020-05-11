@@ -8,6 +8,12 @@
                                        :ShardId "shardId-000000000000"}]})
       => false)
 
+(fact "response with failed records has failures"
+      (utils/has-failures? {:FailedRecordCount 5,
+                            :Records [{:SequenceNumber "49606637818941416612640445792517439640700155362084388866",
+                                       :ShardId "shardId-000000000000"}]})
+      => true)
+
 (fact "when requested an absent stream then response has failures"
       (utils/has-failures? {:__type "ResourceNotFoundException",
                             :message "Stream Stream-1 under account 000000000000 not found.",
