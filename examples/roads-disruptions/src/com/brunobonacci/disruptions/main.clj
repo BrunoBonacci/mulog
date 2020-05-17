@@ -30,7 +30,11 @@
      ;; send events to kafka
      {:type :kafka :kafka {:bootstrap.servers "192.168.200.200:9092,127.0.0.1:9092"}}
      ;; send events to zipkin
-     {:type :zipkin :url  "http://localhost:9411/"}]}})
+     {:type :zipkin :url  "http://localhost:9411/"}
+     ;; send events to slack
+     {:type :slack
+      :webhook-url "https://hooks.slack.com/services/.../.../..."
+      :transform identity}]}})
 
 
 

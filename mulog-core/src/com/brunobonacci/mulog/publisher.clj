@@ -251,3 +251,11 @@
   (load-dynamic-publisher
    "com.brunobonacci.mulog.publishers.zipkin/zipkin-publisher"
    config))
+
+
+
+(defmethod publisher-factory :slack
+  [config]
+  (load-dynamic-publisher
+   "com.brunobonacci.mulog.publishers.slack/slack-publisher"
+   config))

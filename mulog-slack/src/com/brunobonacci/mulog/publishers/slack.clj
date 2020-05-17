@@ -2,13 +2,11 @@
   (:require [com.brunobonacci.mulog.publisher :as p]
             [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.utils :as ut]
-            [com.brunobonacci.mulog.publishers.util :as u]
             [clj-http.client :as http]
             [cheshire.core :as json]
-            [clojure.string :as str]
             [clj-time.format :as tf]
             [clj-time.coerce :as tc]
-            [clojure.walk :as w]))
+            [clojure.string :as str]))
 
 
 (defn- unix-ms-to-iso8601
@@ -19,7 +17,7 @@
         (tf/unparse iso-8601-fmt))))
 
 
-(defn- default-chat-msg-format
+(defn- default-render-message
   "Timestamp and event name with the log content in a code block"
   [event]
   (let [timestamp (unix-ms-to-iso8601 (:mulog/timestamp event))
@@ -31,31 +29,38 @@
         (ut/pprint-event-str event)
         "```")))
 
-
 (defn- send-slack-message
   [webhook-url message publish-delay]
+  ;; (println (str "About to send: " message " to " webhook-url))
   (http/post
    webhook-url
-   {:content-type "application/ndjson"
+   {:content-type "application/json"
     :accept :json
-    :as :json
-    :socket-timeout publish-delay
-    :connection-timeout publish-delay
+    ;; TODO: How is publish-delay to be implemented?
+    ;; :socket-timeout publish-delay
+    ;; :connection-timeout publish-delay
     :body (json/generate-string {:text message})}))
-
 
 ;; test
 (comment
-  (let [f default-chat-msg-format
-        message (f {:mulog/timestamp (System/currentTimeMillis)
-                    :mulog/event-name :hello
-                    :event-details {:venue
-                                    {:over
-                                     {:the "rainbow"}}
-                                    :how-many-people-saw 4
-                                    :severity "critical"}})]
-    (println message)
-    (send-slack-message "https://hooks.slack.com/services/..." message 5000)))
+  (let [f default-render-message
+        messages (str/join "\n"
+                           (map f [{:mulog/timestamp (System/currentTimeMillis)
+                                    :mulog/event-name :hello
+                                    :event-details {:venue
+                                                    {:over
+                                                      {:the "rainbow"}
+                                                      :how-many-people-saw 4
+                                                     :severity "critical"}}}
+                                   {:mulog/timestamp (System/currentTimeMillis)
+                                    :mulog/event-name :hello
+                                    :event-details {:venue
+                                                    {:over
+                                                      {:the "atmosphere"}
+                                                      :how-many-people-saw 1
+                                                      :severity "not very critical"}}}]))]
+    (println messages)
+    (send-slack-message "https://hooks.slack.com/services/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" messages 5000)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -76,34 +81,38 @@
     (:publish-delay config))
 
   (publish [_ buffer]
-    ;; items are pairs [offset <item>]
     (let [items (take (:max-items config) (rb/items buffer))
           last-offset (-> items last first)
-          event-to-chat-msg (comp (:chat-msg-format config)
-                                  (:transform config))]
+          transform (:transform config)
+          ;; items are pairs [offset <item>]
+          transformed-events (transform (map second items))
+          render-message (:render-message config)
+          rendered-messages (map render-message transformed-events)]
       (if-not (seq items)
         buffer
         (do
-          (send-slack-message (:webhook-url config)
-                              (event-to-chat-msg (map second items))
-                              (:publish-delay config))
-          (rb/dequeue buffer last-offset))))))
+            (send-slack-message (:webhook-url config)
+                                (str/join "\n" rendered-messages)
+                                (:publish-delay config))
+            (rb/dequeue buffer last-offset))))))
+
 
 
 (def ^:const default-config
-  {;; :webhook-url see https://api.slack.com/messaging/webhooks
-   ;; :webhook-url "https://hooks.slack.com/services/..." ;; REQUIRED
-   :max-items     5000
+  {;; Should look something like "https://hooks.slack.com/services/..."
+   ;; See https://api.slack.com/messaging/webhooks
+   ;;   :webhook-url (REQUIRED)
+   ;; Function applied to the list of records retrieved from the queue
+   ;;   :transform (REQUIRED)
+   :max-items     20 ;; By default, only send 20 events per slack message
    :publish-delay 5000 ;; 5s
-   ;; function to transform records
-   :transform     identity
-   ;; function applied to each event to render the content for the chat
-   :chat-msg-format default-chat-msg-format})
+   ;; Function applied to each event for rendering the slack message to be sent
+   :render-message default-render-message})
 
 
 (defn slack-publisher
-  [{:keys [webhook-url] :as config}]
-  {:pre [webhook-url]}
+  [{:keys [webhook-url transform] :as config}]
+  {:pre [webhook-url transform]}
   (SlackPublisher.
    (merge default-config config)
-   (rb/agent-buffer 20000)))
+   (rb/agent-buffer 1000)))
