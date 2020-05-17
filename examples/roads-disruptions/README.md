@@ -28,22 +28,24 @@ sudo ifconfig en0 alias 192.168.200.200/32 up
 Alternatively, edit the `docker-compose.yaml` and add your local ip (non 127.0.0.1).
 This is necessary for the producer to connect to the broker.
 
-1. Start Kafka and ElasticSearch in background
+1. Create a Slack Webhook at https://api.slack.com/messaging/webhooks.
+2. Update  `src/com/brunobonacci/disruptions/main.clj/DEFAULT-CONFIG`'s Slack Publisher's `:webhook-url` to the Webhook you created in the previous step
+3. Start Kafka and ElasticSearch in background
 ``` shell
 docker-compose rm -f && docker-compose up
 ```
-2. Wait until all services are properly started and logs are settled.
-3. Run the disruption service
+4. Wait until all services are properly started and logs are settled.
+5. Run the disruption service
 ``` shell
 lein do clean, run
 ```
-4. Open: http://localhost:9000/ for Kibana, click on **Management ->
+6. Open: http://localhost:9000/ for Kibana, click on **Management ->
    Index Patterns -> Create Index pattern**, then add the index
    pattern `mulog-*`, click **Next**, Choose `@timestamp` as time
    field, then click on **Create index pattern**.
-5. Finally, Click on **Discover** and see the events as they arrive.
-6. The same events should be printed in the console and in Kafka topic called **mulog**.
-7. You can query the `roads-disruptions` on http://localhost:8000/ as follow:
+7. Finally, Click on **Discover** and see the events as they arrive.
+8. The same events should be printed in the console and in Kafka topic called **mulog**.
+9. You can query the `roads-disruptions` on http://localhost:8000/ as follow:
 ``` shell
 # to check the API status
 curl -si http://localhost:8000/healthcheck
