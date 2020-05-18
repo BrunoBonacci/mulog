@@ -78,12 +78,9 @@
         mks (->> (keys m) (filter #(= "mulog" (namespace %))) (remove (set (concat ids top))) (sort))
         oks (->> (keys m) (remove #(= "mulog" (namespace %))) (sort))
         get-value (fn [k] (get m k))]
-    (->> (map (juxt identity get-value) (concat top ids mks oks))
-      (remove (let [ids (set ids)]
-                (fn [[k v]] (and (ids k) (nil? v)))))
-      (apply concat)
-      (apply array-map)
-      (#(edn-str % :pretty? true)))))
+    (->> (mapcat (juxt identity get-value) (concat top mks oks))
+       (apply array-map)
+       (#(edn-str % :pretty? true)))))
 
 
 
