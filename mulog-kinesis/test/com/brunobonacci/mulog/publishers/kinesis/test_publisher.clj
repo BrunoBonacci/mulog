@@ -1,4 +1,4 @@
-(ns com.brunobonacci.mulog.publishers.test-publisher
+(ns com.brunobonacci.mulog.publishers.kinesis.test-publisher
   (:require [com.brunobonacci.mulog :as μ]
             [cheshire.core :as json]
             [cognitect.aws.client.api :as aws])
