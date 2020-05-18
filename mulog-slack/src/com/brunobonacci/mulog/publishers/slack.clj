@@ -1,6 +1,5 @@
 (ns com.brunobonacci.mulog.publishers.slack
-  (:require [com.brunobonacci.mulog.publisher :as p]
-            [com.brunobonacci.mulog.buffer :as rb]
+  (:require [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.utils :as ut]
             [clj-http.client :as http]
             [cheshire.core :as json]
@@ -31,7 +30,6 @@
 
 (defn- send-slack-message
   [webhook-url message publish-delay]
-  ;; (println (str "About to send: " message " to " webhook-url))
   (http/post
    webhook-url
    {:content-type "application/json"
