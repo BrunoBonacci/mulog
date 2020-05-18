@@ -87,6 +87,13 @@
 
 
 
+(defn pprint-event
+  "pretty print event"
+  [m]
+  (println (pprint-event-str m)))
+
+
+
 (defn exception-stacktrace
   "returns a string representation of an exception and its stack-trace"
   [^Throwable x]
