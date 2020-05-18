@@ -36,9 +36,8 @@
    webhook-url
    {:content-type "application/json"
     :accept :json
-    ;; TODO: How is publish-delay to be implemented?
-    ;; :socket-timeout publish-delay
-    ;; :connection-timeout publish-delay
+    :socket-timeout publish-delay
+    :connection-timeout publish-delay
     :body (json/generate-string {:text message})}))
 
 ;; test
@@ -105,7 +104,7 @@
    ;; Function applied to the list of records retrieved from the queue
    ;;   :transform (REQUIRED)
    :max-items     20 ;; By default, only send 20 events per slack message
-   :publish-delay 5000 ;; 5s
+   :publish-delay 3000 ;; 3s
    ;; Function applied to each event for rendering the slack message to be sent
    :render-message default-render-message})
 
