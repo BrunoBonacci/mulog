@@ -62,7 +62,8 @@ all: ancient clean build
 #
 # Build
 #
-build: build-core build-els build-kafka build-zipkin build-examples
+#build: build-core build-els build-kafka build-kinesis build-slack build-zipkin build-examples
+build: build-core build-els build-kafka build-slack build-zipkin build-examples
 - @printf "#\n# Building μ/log Completed!\n#\n"
 
 
@@ -97,6 +98,26 @@ mulog-kafka/target/mulog*.jar: $(kafka_src)
 
 
 #
+# Build kinesis
+#
+kinesis_src = $(shell find mulog-kinesis/project.clj mulog-kinesis/src mulog-kinesis/resources -type f)
+build-kinesis: build-core mulog-kinesis/target/mulog*.jar
+mulog-kinesis/target/mulog*.jar: $(kinesis_src)
+- @printf "#\n# Building mulog-kinesis\n#\n"
+- (cd mulog-kinesis; lein do check, midje, install)
+
+
+#
+# Build slack
+#
+slack_src = $(shell find mulog-slack/project.clj mulog-slack/src mulog-slack/resources -type f)
+build-slack: build-core mulog-slack/target/mulog*.jar
+mulog-slack/target/mulog*.jar: $(slack_src)
+- @printf "#\n# Building mulog-slack\n#\n"
+- (cd mulog-slack; lein do check, midje, install)
+
+
+#
 # Build zipkin
 #
 zipkin_src = $(shell find mulog-zipkin/project.clj mulog-zipkin/src mulog-zipkin/resources -type f)
@@ -118,7 +139,7 @@ disruptions_src = $(shell find examples/roads-disruptions/project.clj examples/r
 build-examples-disruptions: build-core build-els build-kafka build-zipkin examples/roads-disruptions/target/roads-disruptions*.jar
 examples/roads-disruptions/target/roads-disruptions*.jar: $(disruptions_src)
 - @printf "#\n# Building examples/roads-disruptions\n#\n"
-- (cd examples/roads-disruptions; lein do check, test)
+- (cd examples/roads-disruptions; lein do check, test, jar)
 
 
 #
@@ -130,6 +151,8 @@ deploy:
 - (cd mulog-core;                 lein deploy clojars)
 - (cd mulog-elasticsearch;        lein deploy clojars)
 - (cd mulog-kafka;                lein deploy clojars)
+- (cd mulog-kinesis               lein deploy clojars)
+- (cd mulog-slack;                lein deploy clojars)
 - (cd mulog-zipkin;               lein deploy clojars)
 
 
@@ -142,6 +165,8 @@ ancient:
 - (cd mulog-core;                 lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-elasticsearch;        lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-kafka;                lein with-profile tools ancient upgrade ; lein do clean, install)
+- (cd mulog-kinesis;              lein with-profile tools ancient upgrade ; lein do clean, install)
+- (cd mulog-slack;                lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-zipkin;               lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd examples/roads-disruptions; lein with-profile tools ancient upgrade ; lein do clean, install)
 
@@ -155,5 +180,7 @@ clean:
 - (cd mulog-core;                 rm -fr target)
 - (cd mulog-elasticsearch;        rm -fr target)
 - (cd mulog-kafka;                rm -fr target)
+- (cd mulog-kinesis;              rm -fr target)
+- (cd mulog-slack;                rm -fr target)
 - (cd mulog-zipkin;               rm -fr target)
 - (cd examples/roads-disruptions; rm -fr target)
