@@ -1,9 +1,41 @@
 (ns com.brunobonacci.mulog.publishers.kinesis
   (:require [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.utils :as ut]
-            [com.brunobonacci.mulog.publishers.aws-utils :as awsutils]
+            [com.brunobonacci.mulog.publisher :as p]
+            [cognitect.aws.client.api :as aws]
             [cheshire.core :as json]
             [cheshire.generate :as gen]))
+
+
+
+(defn- has-failures?
+  [rs]
+  (not
+   (and
+    (contains? rs :FailedRecordCount)
+    (zero? (:FailedRecordCount rs)))))
+
+
+
+(defn- create-kinesis-client
+  [params]
+  (aws/client params))
+
+
+
+;; https://docs.aws.amazon.com/cli/latest/reference/kinesis/put-records.html
+(defn- publish!
+  [kinesis-client stream-name records]
+  (let [rs (aws/invoke kinesis-client {:op      :PutRecords
+                                       :request {:StreamName stream-name
+                                                 :Records    records}})]
+    (if (has-failures? rs)
+      (throw
+       (ex-info
+        (str "μ/log kinesis publisher failure, stream '" stream-name "'")
+        {:rs rs})))))
+
+
 
 ;;
 ;; Add Flake encoder to JSON generator
@@ -12,14 +44,18 @@
                  (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
                    (gen/write-string json ^String (str x))))
 
+
+
 (defn- put-records
   [kinesis-client {:keys [stream-name partition-key-name format] :as config} records]
   (let [key-field partition-key-name
         fmt* (if (= :json format) json/generate-string ut/edn-str)
         request     (->> records
-                         (map (juxt #(str (get % key-field)) fmt*))
-                         (map (fn [[k v]]  {:PartitionKey k :Data v})))]
-    (awsutils/publish! kinesis-client stream-name request)))
+                      (map (juxt #(str (get % key-field)) fmt*))
+                      (map (fn [[k v]]  {:PartitionKey k :Data v})))]
+    (publish! kinesis-client stream-name request)))
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                                ;;
@@ -28,7 +64,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (deftype KinesisPublisher
-  [config buffer transform kinesis-client]
+    [config buffer transform kinesis-client]
 
   com.brunobonacci.mulog.publisher.PPublisher
   (agent-buffer [_]
@@ -48,7 +84,13 @@
           (put-records kinesis-client config (transform (map second items)))
           (rb/dequeue buffer last-offset))))))
 
-(def ^:const KINESIS-MAX-RECORDS-NUMBER 500) ;; Each PutRecords request can support up to 500 records.
+
+
+(def ^:const KINESIS-MAX-RECORDS-NUMBER
+  "Each PutRecords request can support up to 500 records. (AWS limit)"
+  500)
+
+
 
 (def ^:const DEFAULT-CONFIG
   {
@@ -61,19 +103,17 @@
    :kinesis-client-params   {:api  :kinesis}
    })
 
-;https://docs.aws.amazon.com/cli/latest/reference/kinesis/put-records.html
+
+
 (defn kinesis-publisher
   [{:keys [stream-name max-items] :as config}]
   {:pre [stream-name]}
   (let [cfg (as-> config $
-               (merge DEFAULT-CONFIG $)
-               (update $ :max-items min KINESIS-MAX-RECORDS-NUMBER))]
-    (if (and
-          (not (nil? max-items))
-          (> max-items KINESIS-MAX-RECORDS-NUMBER))
-      (println (format "!!! Provided %d buffer size will be capped to maximum allowed 500" max-items)))
+              (merge DEFAULT-CONFIG $)
+              (update $ :max-items min KINESIS-MAX-RECORDS-NUMBER))]
+
     (KinesisPublisher.
-      cfg
-      (rb/agent-buffer 10000)
-      (or (:transform cfg) identity)
-      (awsutils/create-kinesis-client (:kinesis-client-params cfg)))))
+     cfg
+     (rb/agent-buffer 10000)
+     (or (:transform cfg) identity)
+     (create-kinesis-client (:kinesis-client-params cfg)))))
