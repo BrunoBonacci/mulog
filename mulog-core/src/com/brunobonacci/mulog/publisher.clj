@@ -266,8 +266,17 @@
    config))
 
 
+
 (defmethod publisher-factory :kinesis
   [config]
   (load-dynamic-publisher
    "com.brunobonacci.mulog.publishers.kinesis/kinesis-publisher"
+   config))
+
+
+
+(defmethod publisher-factory :slack
+  [config]
+  (load-dynamic-publisher
+   "com.brunobonacci.mulog.publishers.slack/slack-publisher"
    config))
