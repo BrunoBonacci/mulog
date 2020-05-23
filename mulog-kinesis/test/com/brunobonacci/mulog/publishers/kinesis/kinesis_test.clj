@@ -44,8 +44,8 @@
   => (just
         {:mulog/trace-id anything
          :mulog/timestamp number?
-         :mulog/event-name "com.brunobonacci.mulog.publishers.kinesis-test/hello",
-         :mulog/namespace "com.brunobonacci.mulog.publishers.kinesis-test",
+         :mulog/event-name "com.brunobonacci.mulog.publishers.kinesis.kinesis-test/hello",
+         :mulog/namespace "com.brunobonacci.mulog.publishers.kinesis.kinesis-test",
          :to "kinesis test message"}))
 
 
