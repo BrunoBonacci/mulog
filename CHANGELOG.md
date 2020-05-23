@@ -1,7 +1,9 @@
 # Changelog
 
 ## v0.3.0 - (unreleased)
-
+  - [**NEW**] Added Kinesis publisher (thanks to @etolbakov)
+  - [**NEW**] Added Slack publisher (thanks to @anonimitoraf)
+  - [**NEW**] Added JVM Metrics publisher (thanks to @PabloReszczynski)
 
 ## v0.2.0 - (2020-05-03)
   - Added flag to support ElasticSearch v6.x correctly
