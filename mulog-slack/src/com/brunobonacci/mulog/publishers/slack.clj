@@ -1,5 +1,6 @@
 (ns com.brunobonacci.mulog.publishers.slack
-  (:require [com.brunobonacci.mulog.buffer :as rb]
+  (:require [com.brunobonacci.mulog.publisher :as p]
+            [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.utils :as ut]
             [clj-http.client :as http]
             [cheshire.core :as json]
@@ -8,12 +9,14 @@
             [clojure.string :as str]))
 
 
+
 (defn- unix-ms-to-iso8601
   [unix-ms]
   (let [iso-8601-fmt (tf/formatters :date-time)]
     (->> unix-ms
-        (tc/from-long)
-        (tf/unparse iso-8601-fmt))))
+      (tc/from-long)
+      (tf/unparse iso-8601-fmt))))
+
 
 
 (defn- default-render-message
@@ -22,11 +25,13 @@
   (let [timestamp (unix-ms-to-iso8601 (:mulog/timestamp event))
         event-name (:mulog/event-name event)]
     (str timestamp " - " event-name
-        \newline
-        "```"
-        \newline
-        (ut/pprint-event-str event)
-        "```")))
+         \newline
+         "```"
+         \newline
+         (ut/pprint-event-str event)
+         "```")))
+
+
 
 (defn- send-slack-message
   [webhook-url message publish-delay]
@@ -38,31 +43,11 @@
     :connection-timeout publish-delay
     :body (json/generate-string {:text message})}))
 
-;; test
-(comment
-  (let [f default-render-message
-        messages (str/join "\n"
-                           (map f [{:mulog/timestamp (System/currentTimeMillis)
-                                    :mulog/event-name :hello
-                                    :event-details {:venue
-                                                    {:over
-                                                      {:the "rainbow"}
-                                                      :how-many-people-saw 4
-                                                     :severity "critical"}}}
-                                   {:mulog/timestamp (System/currentTimeMillis)
-                                    :mulog/event-name :hello
-                                    :event-details {:venue
-                                                    {:over
-                                                      {:the "atmosphere"}
-                                                      :how-many-people-saw 1
-                                                      :severity "not very critical"}}}]))]
-    (println messages)
-    (send-slack-message "https://hooks.slack.com/services/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" messages 5000)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
-;;                 ----==| S L A C K |==----                                  ;;
+;;                         ----==| S L A C K |==----                          ;;
 ;;                                                                            ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -88,10 +73,10 @@
       (if-not (seq items)
         buffer
         (do
-            (send-slack-message (:webhook-url config)
-                                (str/join "\n" rendered-messages)
-                                (:publish-delay config))
-            (rb/dequeue buffer last-offset))))))
+          (send-slack-message (:webhook-url config)
+                              (str/join "\n" rendered-messages)
+                              (:publish-delay config))
+          (rb/dequeue buffer last-offset))))))
 
 
 
@@ -105,6 +90,7 @@
    :publish-delay 3000 ;; 3s
    ;; Function applied to each event for rendering the slack message to be sent
    :render-message default-render-message})
+
 
 
 (defn slack-publisher
