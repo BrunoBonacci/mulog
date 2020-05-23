@@ -1,0 +1,16 @@
+version: '3'
+services:
+  localstack:
+    image: localstack/localstack:latest
+    ports:
+      - "4568:4568"
+    environment:
+      - AWS_CBOR_DISABLE=1
+      - USE_SSL=true
+      - SERVICES=kinesis
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+      - LAMBDA_EXECUTOR=local
+      - DOCKER_HOST:unix:///var/run/docker.sock
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
