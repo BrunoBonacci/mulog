@@ -16,9 +16,9 @@
                  [clj-time "0.15.2"]
 
                  [com.cognitect.aws/api "0.8.456"]
-                 [com.cognitect.aws/endpoints "1.1.11.753"]
+                 [com.cognitect.aws/endpoints "1.1.11.789"]
                  [com.cognitect.aws/kinesis "770.2.568.0"]
-                 [com.cognitect.aws/sts "773.2.578.0"]]
+                 [com.cognitect.aws/sts "798.2.678.0"]]
 
   :global-vars {*warn-on-reflection* true}
 
@@ -32,7 +32,7 @@
                    :plugins      [[lein-midje "3.2.2"]
                                   [lein-shell "0.5.0"]]}}
 
-  :aliases {"midje" ["do"
+  :aliases {"test" ["do"
                      ["shell" "docker-compose" "up" "-d"]
                      ["shell" "sleep" "5"]
                      ["midje"]

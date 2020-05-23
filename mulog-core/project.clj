@@ -24,4 +24,6 @@
                    :jvm-opts ["-server" "-Djdk.attach.allowAttachSelf"]
                    :resource-paths ["dev-resources"]
                    :plugins      [[lein-midje "3.2.2"]]}}
+
+  :aliases {"test" "midje"}
   )

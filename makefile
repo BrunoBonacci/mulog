@@ -73,7 +73,7 @@ core_src = $(shell find mulog-core/project.clj mulog-core/src mulog-core/resourc
 build-core: mulog-core/target/mulog*.jar
 mulog-core/target/mulog*.jar: $(core_src)
 - @printf "#\n# Building mulog-core\n#\n"
-- (cd mulog-core; lein do check, midje, install)
+- (cd mulog-core; lein do check, test, install)
 
 
 #
@@ -83,7 +83,7 @@ els_src = $(shell find mulog-elasticsearch/project.clj mulog-elasticsearch/src m
 build-els: build-core mulog-elasticsearch/target/mulog*.jar
 mulog-elasticsearch/target/mulog*.jar: $(els_src)
 - @printf "#\n# Building mulog-elasticsearch\n#\n"
-- (cd mulog-elasticsearch; lein do check, midje, install)
+- (cd mulog-elasticsearch; lein do check, test, install)
 
 
 #
@@ -93,7 +93,7 @@ kafka_src = $(shell find mulog-kafka/project.clj mulog-kafka/src mulog-kafka/res
 build-kafka: build-core mulog-kafka/target/mulog*.jar
 mulog-kafka/target/mulog*.jar: $(kafka_src)
 - @printf "#\n# Building mulog-kafka\n#\n"
-- (cd mulog-kafka; lein do check, midje, install)
+- (cd mulog-kafka; lein do check, test, install)
 
 
 #
@@ -103,7 +103,7 @@ kinesis_src = $(shell find mulog-kinesis/project.clj mulog-kinesis/src mulog-kin
 build-kinesis: build-core mulog-kinesis/target/mulog*.jar
 mulog-kinesis/target/mulog*.jar: $(kinesis_src)
 - @printf "#\n# Building mulog-kinesis\n#\n"
-- (cd mulog-kinesis; lein do check, midje, install)
+- (cd mulog-kinesis; lein do check, test, install)
 
 
 #
@@ -113,7 +113,7 @@ slack_src = $(shell find mulog-slack/project.clj mulog-slack/src mulog-slack/res
 build-slack: build-core mulog-slack/target/mulog*.jar
 mulog-slack/target/mulog*.jar: $(slack_src)
 - @printf "#\n# Building mulog-slack\n#\n"
-- (cd mulog-slack; lein do check, midje, install)
+- (cd mulog-slack; lein do check, test, install)
 
 
 #
@@ -123,7 +123,7 @@ zipkin_src = $(shell find mulog-zipkin/project.clj mulog-zipkin/src mulog-zipkin
 build-zipkin: build-core mulog-zipkin/target/mulog*.jar
 mulog-zipkin/target/mulog*.jar: $(zipkin_src)
 - @printf "#\n# Building mulog-zipkin\n#\n"
-- (cd mulog-zipkin; lein do check, midje, install)
+- (cd mulog-zipkin; lein do check, test, install)
 
 
 #
