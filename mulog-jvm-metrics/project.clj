@@ -22,4 +22,6 @@
                                   [org.slf4j/slf4j-log4j12 "2.0.0-alpha1"]]
                    :resource-paths ["dev-resources"]
                    :plugins      [[lein-midje "3.2.2"]]}}
+
+  :aliases {"test" "midje"}
   )

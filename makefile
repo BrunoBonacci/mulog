@@ -62,7 +62,7 @@ all: ancient clean build
 #
 # Build
 #
-build: build-core build-els build-kafka build-kinesis build-slack build-zipkin build-examples
+build: build-core build-els build-jvm-metrics build-kafka build-kinesis build-slack build-zipkin build-examples
 - @printf "#\n# Building μ/log Completed!\n#\n"
 
 
@@ -84,6 +84,16 @@ build-els: build-core mulog-elasticsearch/target/mulog*.jar
 mulog-elasticsearch/target/mulog*.jar: $(els_src)
 - @printf "#\n# Building mulog-elasticsearch\n#\n"
 - (cd mulog-elasticsearch; lein do check, test, install)
+
+
+#
+# Build jvm-metrics
+#
+jvm-metrics_src = $(shell find mulog-jvm-metrics/project.clj mulog-jvm-metrics/src mulog-jvm-metrics/resources -type f)
+build-jvm-metrics: build-core mulog-jvm-metrics/target/mulog*.jar
+mulog-jvm-metrics/target/mulog*.jar: $(jvm-metrics_src)
+- @printf "#\n# Building mulog-jvm-metrics\n#\n"
+- (cd mulog-jvm-metrics; lein do check, test, install)
 
 
 #
@@ -149,6 +159,7 @@ deploy:
 - @printf "#\n# Deploying jars \n#\n"
 - (cd mulog-core;                 lein deploy clojars)
 - (cd mulog-elasticsearch;        lein deploy clojars)
+- (cd mulog-jvm-metrics;          lein deploy clojars)
 - (cd mulog-kafka;                lein deploy clojars)
 - (cd mulog-kinesis               lein deploy clojars)
 - (cd mulog-slack;                lein deploy clojars)
@@ -163,6 +174,7 @@ ancient:
 - @printf "#\n# Updating dependencies \n#\n"
 - (cd mulog-core;                 lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-elasticsearch;        lein with-profile tools ancient upgrade ; lein do clean, install)
+- (cd mulog-jvm-metrics;          lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-kafka;                lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-kinesis;              lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-slack;                lein with-profile tools ancient upgrade ; lein do clean, install)
@@ -178,6 +190,7 @@ clean:
 - @printf "#\n# Cleaning \n#\n"
 - (cd mulog-core;                 rm -fr target)
 - (cd mulog-elasticsearch;        rm -fr target)
+- (cd mulog-jvm-metrics;          rm -fr target)
 - (cd mulog-kafka;                rm -fr target)
 - (cd mulog-kinesis;              rm -fr target)
 - (cd mulog-slack;                rm -fr target)
