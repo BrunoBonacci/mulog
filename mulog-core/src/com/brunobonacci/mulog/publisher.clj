@@ -251,6 +251,14 @@
 
 
 
+(defmethod publisher-factory :jvm-metrics
+  [config]
+  (load-dynamic-publisher
+   "com.brunobonacci.mulog.publishers.jvm-metrics/jvm-metrics-publisher"
+   config))
+
+
+
 (defmethod publisher-factory :kafka
   [config]
   (load-dynamic-publisher

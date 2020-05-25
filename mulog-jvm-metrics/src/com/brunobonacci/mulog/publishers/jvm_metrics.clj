@@ -1,9 +1,12 @@
-(ns ^{:author "Pablo Reszczynski (@PabloReszczynski)x"
-      :doc "Module for sampling some JVM metrics"}
+(ns ^{:author "Pablo Reszczynski (@PabloReszczynski) and Bruno Bonacci (@BrunoBonacci)"
+      :doc "Publisher for sampling some JVM metrics"}
     com.brunobonacci.mulog.publishers.jvm-metrics
   (:require [clojure.spec.alpha :as s]
             [clojure.string :as str]
-            [com.brunobonacci.mulog.utils :refer [os-java-pid]])
+            [com.brunobonacci.mulog.utils :refer [os-java-pid]]
+            [com.brunobonacci.mulog.publisher :as p]
+            [com.brunobonacci.mulog :as u]
+            [com.brunobonacci.mulog.buffer :as rb])
   (:import  [java.lang.management MemoryMXBean
              MemoryPoolMXBean
              MemoryUsage
@@ -55,8 +58,20 @@
 
 
 
+(defn- fix-precision-ratio
+  [v]
+  (double
+   (with-precision 4
+     (bigdec v))))
+
+
+
 (defn- get-usage-ratio [^MemoryUsage usage]
-  (/ (.getUsed usage) (.getMax usage)))
+  (fix-precision-ratio
+   (/ (.getUsed usage)
+      (if (= (.getMax usage) -1)
+        (.getCommitted usage)
+        (.getMax usage)))))
 
 
 
@@ -125,10 +140,11 @@
             :let [pname (get-bean-name pool)
                   usage (.getUsage pool)]]
           [(keyword (str pname "-usage"))
-           (/ (.getUsed usage)
-              (if (= (.getMax usage) -1)
-                (.getCommitted usage)
-                (.getMax usage)))])))
+           (fix-precision-ratio
+            (/ (.getUsed usage)
+               (if (= (.getMax usage) -1)
+                 (.getCommitted usage)
+                 (.getMax usage))))])))
 
 
 
@@ -296,3 +312,45 @@
         threads   (when (or all threads)   {:threads   (jvm-sample-threads)})
         jvm-attrs (when (or all jvm-attrs) {:jvm-attrs (jvm-sample-attrs)})]
     (merge {} mem gc threads jvm-attrs)))
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                     ----==| P U B L I S H E R |==----                      ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(deftype JvmMetricsPublisher
+    [config buffer]
+
+  com.brunobonacci.mulog.publisher.PPublisher
+  (agent-buffer [_]
+    buffer)
+
+  (publish-delay [_]
+    (:sampling-interval config 10000))
+
+  (publish [_ buffer]
+    ;; sampling the jvm metrics
+    (u/log :mulog/jvm-metrics-sampled
+           :jvm-metrics (jvm-sample (:jvm-metrics config)))))
+
+
+
+(def ^:const DEFAULT-CONFIG
+  {;; Interval in milliseconds between two samples
+   :sampling-interval 10000
+   ;; metrics to sample
+   :jvm-metrics {:memory true :gc true :threads true :jvm-attrs true}})
+
+
+
+(defn jvm-metrics-publisher
+  [{:keys [sampling-interval jvm-metrics] :as config}]
+  (let [config (as-> config $
+                 (merge DEFAULT-CONFIG $)
+                 (assoc $ :sampling-interval
+                        (max sampling-interval 1000)))]
+    ;; create the metrics publisher
+    (JvmMetricsPublisher. config (rb/agent-buffer 1))))
