@@ -456,9 +456,9 @@ collector, threads, etc** using a special publisher.
 ``` clojure
 (def x (u/start-publisher!
          {:type :jvm-metrics
-          ;; the interval in millis between two samples
-          :sampling-interval 10000
-          ;; which metrics are you interested to sample
+          ;; the interval in millis between two samples (default: 60s)
+          :sampling-interval 60000
+          ;; which metrics are you interested to sample (default: `{:all true}`)
           :jvm-metrics
           {:memory true
            :gc true

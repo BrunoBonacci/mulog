@@ -329,7 +329,7 @@
     buffer)
 
   (publish-delay [_]
-    (:sampling-interval config 10000))
+    (:sampling-interval config 60000))
 
   (publish [_ buffer]
     ;; sampling the jvm metrics
@@ -340,7 +340,7 @@
 
 (def ^:const DEFAULT-CONFIG
   {;; Interval in milliseconds between two samples
-   :sampling-interval 10000
+   :sampling-interval 60000
    ;; metrics to sample
    :jvm-metrics {:memory true :gc true :threads true :jvm-attrs true}})
 
