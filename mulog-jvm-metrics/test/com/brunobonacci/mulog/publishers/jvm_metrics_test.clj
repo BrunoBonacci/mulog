@@ -39,7 +39,7 @@
                       :used        int?
                       :max         int?
                       :committed   int?
-                      :usage-ratio ratio?})
+                      :usage-ratio double?})
 
                     :non-heap
                     (contains
@@ -47,7 +47,7 @@
                       :used        int?
                       :max         int?
                       :committed   int?
-                      :usage-ratio #(or (int? %) (ratio? %))})
+                      :usage-ratio #(or (int? %) (double? %))})
 
                     :pools map?})}))
 
