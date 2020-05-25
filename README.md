@@ -814,7 +814,6 @@ marked as [help wanted](https://github.com/BrunoBonacci/mulog/labels/help%20want
 
 For example:
 
-  - [ ] JVM metrics sampling (GC, heap, buffers)
   - [ ] Prometheus publisher
   - [ ] InfluxDB publisher
   - [ ] CloudWatch Logs/Events publisher
