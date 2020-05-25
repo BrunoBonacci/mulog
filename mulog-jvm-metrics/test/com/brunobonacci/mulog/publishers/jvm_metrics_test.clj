@@ -25,41 +25,32 @@
 
 
 (facts "it should sample JVM metrics"
-  (fact "Total memory"
-    (jvm-sample {:memory {:total true}})
+  (fact "Memory"
+    (jvm-sample {:memory true})
     => (just {:memory
              (just {:total
                     (contains {:init      int?
                                :used      int?
                                :max       int?
-                               :committed int?})})}))
-  (fact "Heap memory"
-    (jvm-sample {:memory {:heap true}})
-    => (contains {:memory
-                 (just
-                  {:heap
-                   (contains
-                    {:init        int?
-                     :used        int?
-                     :max         int?
-                     :committed   int?
-                     :usage-ratio ratio?})})}))
+                               :committed int?})
+                    :heap
+                    (contains
+                     {:init        int?
+                      :used        int?
+                      :max         int?
+                      :committed   int?
+                      :usage-ratio ratio?})
 
-  (fact "Non-heap memory"
-    (jvm-sample {:memory {:non-heap true}})
-    => (just {:memory
-             (just
-              {:non-heap
-               (contains
-                {:init        int?
-                 :used        int?
-                 :max         int?
-                 :committed   int?
-                 :usage-ratio #(or (int? %) (ratio? %))})})}))
+                    :non-heap
+                    (contains
+                     {:init        int?
+                      :used        int?
+                      :max         int?
+                      :committed   int?
+                      :usage-ratio #(or (int? %) (ratio? %))})
 
-  (fact "Pool memory"
-    (jvm-sample {:memory {:pools true}})
-    => (just {:memory (just {:pools map?})}))
+                    :pools map?})}))
+
 
   (fact "Garbage collector metrics"
     (jvm-sample {:gc true}) => (contains {:gc map?}))

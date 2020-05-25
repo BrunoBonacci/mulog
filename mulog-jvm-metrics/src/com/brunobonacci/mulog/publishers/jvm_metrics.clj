@@ -232,12 +232,14 @@
 
 (defn jvm-sample-memory
   "Captures JVM memory metrics"
-  [{:keys [pools] :as opts}]
-  (let [mxbean (ManagementFactory/getMemoryMXBean)
-        captured-memory (capture-memory mxbean opts)
-        poolmxbean (when pools (into [] (ManagementFactory/getMemoryPoolMXBeans)))
-        captured-pools (when pools {:pools (capture-memory-pools poolmxbean)})]
-    (merge captured-memory captured-pools)))
+  ([]
+   (jvm-sample-memory {:pools true :total true :heap true :non-heap true}))
+  ([{:keys [pools] :as opts}]
+   (let [mxbean (ManagementFactory/getMemoryMXBean)
+         captured-memory (capture-memory mxbean opts)
+         poolmxbean (when pools (into [] (ManagementFactory/getMemoryPoolMXBeans)))
+         captured-pools (when pools {:pools (capture-memory-pools poolmxbean)})]
+     (merge captured-memory captured-pools))))
 
 
 
@@ -267,7 +269,7 @@
 
 (defn jvm-sample
   "Samples the JVM runtime for some metrics.
-   Currently, the metrics available are:
+   The metrics available are:
    - Memory
      - Total memory
      - Heap memory
@@ -275,10 +277,22 @@
      - Memory pools
   - Garbage Collector
   - JVM attributes
-  - Threads"
-  [{:keys [memory gc threads jvm-attrs]}]
-  (let [mem (when memory {:memory (jvm-sample-memory memory)})
-        gc (when gc {:gc (jvm-sample-gc)})
-        threads (when threads {:threads (jvm-sample-threads)})
-        jvm-attrs (when jvm-attrs {:jvm-attrs (jvm-sample-attrs)})]
+  - Threads
+
+  usage:
+
+  ```
+  (jvm-sample {:memory true :gc true :threads true :jvm-attrs true})
+  ```
+  or:
+  ```
+  (jvm-sample {:all true})
+  ```
+
+  "
+  [{:keys [memory gc threads jvm-attrs all]}]
+  (let [mem       (when (or all memory)    {:memory    (jvm-sample-memory)})
+        gc        (when (or all gc)        {:gc        (jvm-sample-gc)})
+        threads   (when (or all threads)   {:threads   (jvm-sample-threads)})
+        jvm-attrs (when (or all jvm-attrs) {:jvm-attrs (jvm-sample-attrs)})]
     (merge {} mem gc threads jvm-attrs)))
