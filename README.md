@@ -41,6 +41,8 @@ Available publishers:
   * [Multi-publisher](#multi-publisher)
   * [ElasticSearch](#elasticsearch-publisher)
   * [Apache Kafka](#apache-kafka-publisher)
+  * [Kinesis](#kinesis-publisher)
+  * [Slack](#slack-publisher)
   * [OpenZipkin](#zipkin-publisher)
   * [Pluggable custom publishers](#custom-publishers)
 
@@ -795,7 +797,7 @@ The available configuration options:
 ``` clojure
 {:type :slack
 
- ;; Zipkin endpoint (REQUIRED)
+ ;; Slack webhook url (REQUIRED)
  :webhook-url  "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX"
 
  ;; a function to select and/or transform the events to send (REQUIRED)
