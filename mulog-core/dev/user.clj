@@ -238,6 +238,33 @@
 
 
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                         ----==| S L A C K |==----                          ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(comment
+
+  (u/log ::hello :to "World!")
+
+  (u/start-publisher! {:type :console})
+
+  (u/log ::hello2 :to "World!" :v (rand-int 1000))
+
+  (def x (u/start-publisher!
+          {:type        :slack
+           :webhook-url "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX"
+           :transform   (partial filter #(= ::hello (:mulog/event-name %)))}))
+
+  (x)
+
+
+  )
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
 ;;                        ----==| Z I P K I N |==----                         ;;
