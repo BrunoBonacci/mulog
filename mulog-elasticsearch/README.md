@@ -7,7 +7,7 @@ This project contains the `publisher` for [ElasticSearch](https://www.elastic.co
 
 ## Usage
 
-Please see [README](../README.md) on main page.
+Please see [README](../README.md#elasticsearch-publisher) on main page.
 
 ## Testing
 

@@ -698,9 +698,9 @@ The available configuration options:
  ;; :format        :json
 
  ;; The name of the field which it will be used as partition key
- ;; the :puid is the process unique identifier which can be injected
- ;; as global context
- ;; :key-field :puid
+ ;; :mulog/trace-id is a unique identifier for the event it ensures
+ ;; a reasonably even spread of events across all partitions
+ ;; :key-field :mulog/trace-id
 
  ;; a function to apply to the sequence of events before publishing.
  ;; This transformation function can be used to filter, tranform,
@@ -716,6 +716,57 @@ How to use it:
 (μ/start-publisher!
   {:type :kafka
    :kafka {:bootstrap.servers "localhost:9092"}})
+```
+
+
+### Kinesis publisher
+![since v0.3.0](https://img.shields.io/badge/since-v0.3.0-brightgreen)
+
+The events must be serializeable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
+
+The available configuration options:
+
+``` clojure
+{:type :kinesis
+
+ ;; the name of the kafka topic where events will be sent
+ ;; The stream must be already present.
+ :stream-name       "mulog" (REQUIRED)
+
+ ;; maximum number of events in a single batch
+ ;; :max-items     500
+
+ ;; how often it will send the events Kafka  (in millis)
+ ;; :publish-delay 1000
+
+ ;; the format of the events to send into the topic
+ ;; can be one of: :json, :edn (default :json)
+ ;; :format        :json
+
+ ;; The name of the field which it will be used as partition key
+ ;; :mulog/trace-id is a unique identifier for the event it ensures
+ ;; a reasonably even spread of events across all partitions
+ ;; :key-field :mulog/trace-id
+
+ ;; a function to apply to the sequence of events before publishing.
+ ;; This transformation function can be used to filter, tranform,
+ ;; anonymise events before they are published to a external system.
+ ;; by defatult there is no transformation.  (since v0.1.8)
+ ;; :transform identity
+
+ ;; The kinesis client configuration can be used to override endpoints
+ ;; and provide credentials. By default it uses the AWS DefaultAWSCredentialsProviderChain
+ ;; check here for more info: https://github.com/cognitect-labs/aws-api#credentials
+ ;; :kinesis-client-config {:api :kinesis}
+ }
+```
+
+How to use it:
+
+``` clojure
+(μ/start-publisher!
+  {:type        :kinesis
+   :stream-name "mulog"})
 ```
 
 

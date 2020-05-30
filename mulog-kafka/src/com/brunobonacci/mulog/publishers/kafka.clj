@@ -165,7 +165,7 @@
    :topic "mulog"
    ;; one of: :json, :edn
    :format    :json
-   :key-field :puid
+   :key-field :mulog/trace-id
    ;; function to transform records
    :transform identity
    })

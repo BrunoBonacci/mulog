@@ -36,7 +36,7 @@
   `(let [sp# (μ/start-publisher!
               {:type                  :kinesis
                :stream-name           KINESIS-LOCAL-STREAM-NAME
-               :kinesis-client-params KINESIS-LOCAL-SETTINGS})]
+               :kinesis-client-config KINESIS-LOCAL-SETTINGS})]
      (do
        (~@command)
        ;; delay for kinesis processing

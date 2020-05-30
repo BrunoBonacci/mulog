@@ -7,20 +7,15 @@ This project contains the `publisher` for [Kinesis](https://aws.amazon.com/kines
 ## Usage
 A μ/log publisher for Kinesis.
 
-```
-(μ/start-publisher!
-  {:type :kinesis :stream-name  "your-stream-name"})
-```
-Please see [README](../README.md) on main page.
+Please see [README](../README.md#kinesis-publisher) on main page.
 
 ## Testing
-1. Start localstack with the configured kinesis service
+
+Start AWS Localstack with the configured kinesis service
 ``` shell
 docker-compose rm -f && docker-compose up -d
 ```
 
-2. Facts can be found in `kinesis_test.clj`  
-
 ## License
 
-Copyright © 2019-2020 Bruno Bonacci - Distributed under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0) 
+Copyright © 2019-2020 Bruno Bonacci - Distributed under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0)

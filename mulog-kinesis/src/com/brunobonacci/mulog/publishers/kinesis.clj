@@ -47,9 +47,8 @@
 
 
 (defn- put-records
-  [kinesis-client {:keys [stream-name partition-key-name format] :as config} records]
-  (let [key-field partition-key-name
-        fmt* (if (= :json format) json/generate-string ut/edn-str)
+  [kinesis-client {:keys [stream-name key-field format] :as config} records]
+  (let [fmt* (if (= :json format) json/generate-string ut/edn-str)
         request     (->> records
                       (map (juxt #(str (get % key-field)) fmt*))
                       (map (fn [[k v]]  {:PartitionKey k :Data v})))]
@@ -93,14 +92,15 @@
 
 
 (def ^:const DEFAULT-CONFIG
-  {
-   :partition-key-name  :mulog/trace-id
+  {;; name of the stream where to send the data (REQUIRED)
+   ;;:stream-name       "mulog"
+   :key-field           :mulog/trace-id
    :max-items           KINESIS-MAX-RECORDS-NUMBER
-   :publish-delay       5000
+   :publish-delay       1000
    :format    :json
    ;; function to transform records
    :transform               identity
-   :kinesis-client-params   {:api  :kinesis}
+   :kinesis-client-config   {:api  :kinesis}
    })
 
 
@@ -116,4 +116,4 @@
      cfg
      (rb/agent-buffer 10000)
      (or (:transform cfg) identity)
-     (create-kinesis-client (:kinesis-client-params cfg)))))
+     (create-kinesis-client (:kinesis-client-config cfg)))))
