@@ -876,6 +876,10 @@ How to use it:
    :url  "http://localhost:9411/"})
 ```
 
+Once you send a message you should get a Slack notification which looks as follow:
+
+![mulog slack example](./doc/images/mulog-slack-exmaple.png)
+
 
 ### Custom publishers
 ![since v0.1.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)
