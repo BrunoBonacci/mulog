@@ -836,6 +836,13 @@ How to use it:
 ```
 
 
+Once you send a message you should get a Slack notification which looks as follow:
+
+![mulog slack example](./doc/images/mulog-slack-exmaple.png)
+
+You can customize the look by providing a `:render-message` function
+which returns one or more [Slack Blocks](https://api.slack.com/reference/block-kit/blocks).
+
 ### Zipkin publisher
 ![since v0.2.0](https://img.shields.io/badge/since-v0.2.0-brightgreen)
 
@@ -875,10 +882,6 @@ How to use it:
   {:type :zipkin
    :url  "http://localhost:9411/"})
 ```
-
-Once you send a message you should get a Slack notification which looks as follow:
-
-![mulog slack example](./doc/images/mulog-slack-exmaple.png)
 
 
 ### Custom publishers
