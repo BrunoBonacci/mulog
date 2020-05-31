@@ -11,24 +11,20 @@
 
 
 (def KINESIS-LOCAL-SETTINGS {:api :kinesis
+                             :region "eu-west-1"
                              :endpoint-override
                              {:protocol :http
                               :hostname "localhost"
                               :port 4568}})
 
-
-
-(defmacro with-local-kinesis-client
+(defn kinesis-local-client
   []
-  `(aws/client KINESIS-LOCAL-SETTINGS))
+  (aws/client KINESIS-LOCAL-SETTINGS))
 
-
-
-(defmacro with-local-kinesis-stream
+(defn kinesis-invoke
   [client op params]
-  `(let [rq# (merge ~params {:StreamName KINESIS-LOCAL-STREAM-NAME})]
-     (aws/invoke ~client {:op ~op :request rq#})))
-
+  (let [rq (merge params {:StreamName KINESIS-LOCAL-STREAM-NAME})]
+    (aws/invoke client {:op op :request rq})))
 
 
 (defmacro with-local-kinesis-publisher
@@ -44,19 +40,18 @@
        (sp#))))
 
 
-
 (defn get-records-from-stream
   []
-  (let [kinesis                   (with-local-kinesis-client)
-        stream-desc               (with-local-kinesis-stream kinesis :DescribeStream {})
+  (let [kinesis                   (kinesis-local-client)
+        stream-desc               (kinesis-invoke kinesis :DescribeStream {})
         starting-sequence-number  (-> stream-desc
                                     (get-in [:StreamDescription :Shards])
                                     (first)
                                     (get-in [:SequenceNumberRange :StartingSequenceNumber]))
-        shard-iterator            (with-local-kinesis-stream kinesis :GetShardIterator {:ShardId                "shardId-000000000000"
+        shard-iterator            (kinesis-invoke kinesis :GetShardIterator {:ShardId                "shardId-000000000000"
                                                                                         :ShardIteratorType      "AT_SEQUENCE_NUMBER"
                                                                                         :StartingSequenceNumber starting-sequence-number})
-        kinesis-response          (with-local-kinesis-stream kinesis :GetRecords { :ShardIterator (:ShardIterator shard-iterator)})]
+        kinesis-response          (kinesis-invoke kinesis :GetRecords { :ShardIterator (:ShardIterator shard-iterator)})]
     (if (seq (:Records kinesis-response))
       (->
           kinesis-response

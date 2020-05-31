@@ -7,15 +7,14 @@
 
 
 (fact "create kinesis stream"
-  (tp/with-local-kinesis-stream (tp/with-local-kinesis-client) :CreateStream {:ShardCount 1})
+  (tp/kinesis-invoke (tp/kinesis-local-client) :CreateStream {:ShardCount 1})
   => (just {}))
-
 
 
 (fact "describe kinesis stream"
   (.sleep (TimeUnit/SECONDS) 5)                         ;; delay to create a stream
   (def describe-stream-response
-    (tp/with-local-kinesis-stream (tp/with-local-kinesis-client) :DescribeStream {}))
+    (tp/kinesis-invoke (tp/kinesis-local-client) :DescribeStream {}))
 
   describe-stream-response
 
@@ -36,7 +35,6 @@
          :StreamStatus "ACTIVE"}))
 
 
-
 (fact "publish to local kinesis stream"
   (tp/with-local-kinesis-publisher
       (μ/log ::hello :to "kinesis test message"))
@@ -51,5 +49,5 @@
 
 
 (fact "delete kinesis stream"
-  (tp/with-local-kinesis-stream (tp/with-local-kinesis-client) :DeleteStream {})
+  (tp/kinesis-invoke (tp/kinesis-local-client) :DeleteStream {})
   => (just {}))
