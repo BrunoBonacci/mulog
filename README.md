@@ -280,6 +280,10 @@ Here some best practices to follow while logging events:
     capture the current state (deref) and log it.
   * Avoid logging deeply nested maps, they are hard to query.
   * Log timestamps with milliseconds precision.
+  * Use global context to enrich events with application name,
+    version, environment, host, OS pid, and other useful information
+    so that it is always possible to determine the source of the event.
+
 
 
 ## ***μ/trace***
@@ -456,16 +460,18 @@ collector, threads, etc** using a special publisher.
 
 
 ``` clojure
-(def x (u/start-publisher!
-         {:type :jvm-metrics
-          ;; the interval in millis between two samples (default: 60s)
-          :sampling-interval 60000
-          ;; which metrics are you interested to sample (default: `{:all true}`)
-          :jvm-metrics
-          {:memory true
-           :gc true
-           :threads true
-           :jvm-attrs true}}))
+(def publisher
+  (u/start-publisher!
+    {:type :jvm-metrics
+     ;; the interval in millis between two samples (default: 60s)
+     :sampling-interval 60000
+     ;; which metrics are you interested in sampling
+     ;; (default: `{:all true}`)
+     :jvm-metrics
+     {:memory true
+      :gc true
+      :threads true
+      :jvm-attrs true}}))
 ```
 
 Here an example of the metrics sampled
