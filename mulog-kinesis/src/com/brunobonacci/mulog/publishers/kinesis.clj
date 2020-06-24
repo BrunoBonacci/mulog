@@ -89,10 +89,6 @@
   "Each PutRecords request can support up to 500 records. (AWS limit)"
   500)
 
-(def ^:const AWS-DEFAULT-REGION
-  "eu-west-1")
-
-
 (def ^:const DEFAULT-CONFIG
   {;; name of the stream where to send the data (REQUIRED)
    ;;:stream-name       "mulog"
@@ -102,7 +98,7 @@
    :format    :json
    ;; function to transform records
    :transform               identity
-   :kinesis-client-config   {:api  :kinesis :region AWS-DEFAULT-REGION}
+   :kinesis-client-config   {:api  :kinesis}
    })
 
 
