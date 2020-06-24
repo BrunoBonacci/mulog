@@ -17,8 +17,8 @@
 ;; Add Flake encoder to JSON generator
 ;;
 (gen/add-encoder com.brunobonacci.mulog.core.Flake
-                 (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
-                   (gen/write-string json ^String (str x))))
+  (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
+    (gen/write-string json ^String (str x))))
 
 
 
@@ -58,13 +58,13 @@
   [m]
   (let [mangler (comp u/type-mangle u/snake-case-mangle)]
     (w/postwalk
-     (fn [i]
-       (if (map? i)
-         (->> i
-           (map (fn [entry] (mangler entry)))
-           (into {}))
-         i))
-     m)))
+      (fn [i]
+        (if (map? i)
+          (->> i
+            (map (fn [entry] (mangler entry)))
+            (into {}))
+          i))
+      m)))
 
 
 
@@ -89,11 +89,11 @@
     (->> records
       (mapcat (fn [{:keys [mulog/timestamp mulog/trace-id] :as r}]
                 (let [metaidx (merge
-                               {:_index (index* timestamp)}
-                               ;; if the trace-id is available use it as ELS _id
-                               (when trace-id {:_id (str trace-id)})
-                               ;; https://www.elastic.co/guide/en/elasticsearch/reference/7.x/removal-of-types.html
-                               (when (= els-version :v6.x) {:_type "_doc"}))]
+                                {:_index (index* timestamp)}
+                                ;; if the trace-id is available use it as ELS _id
+                                (when trace-id {:_id (str trace-id)})
+                                ;; https://www.elastic.co/guide/en/elasticsearch/reference/7.x/removal-of-types.html
+                                (when (= els-version :v6.x) {:_type "_doc"}))]
                   [(str (json/generate-string {:index metaidx}) \newline)
                    (-> r
                      (mangler)
@@ -108,34 +108,34 @@
 (defn- post-records
   [{:keys [url publish-delay] :as config} records]
   (http/post
-   url
-   {:content-type "application/x-ndjson"
-    :accept :json
-    :as :json
-    :socket-timeout publish-delay
-    :connection-timeout publish-delay
-    :body
-    (->> (prepare-records config records)
-      (apply str))}))
+    url
+    {:content-type "application/x-ndjson"
+     :accept :json
+     :as :json
+     :socket-timeout publish-delay
+     :connection-timeout publish-delay
+     :body
+     (->> (prepare-records config records)
+       (apply str))}))
 
 
 
 (comment
 
   (prepare-records
-   {:url "http://localhost:9200/_bulk"
-    :index* (index-name)
-    :name-mangling true}
-   [{:mulog/timestamp (System/currentTimeMillis) :event-name :hello :k 1}
-    {:mulog/timestamp (System/currentTimeMillis) :event-name :hello :k nil}])
+    {:url "http://localhost:9200/_bulk"
+     :index* (index-name)
+     :name-mangling true}
+    [{:mulog/timestamp (System/currentTimeMillis) :event-name :hello :k 1}
+     {:mulog/timestamp (System/currentTimeMillis) :event-name :hello :k nil}])
 
 
   (post-records
-   {:url "http://localhost:9200/_bulk"
-    :index* (index-name)
-    :name-mangling true}
-   [{:mulog/timestamp (System/currentTimeMillis) :event-name :hello :k 1 :r1 (rand) :r2 (rand-int 100)}
-    {:mulog/timestamp (System/currentTimeMillis) :event-name :hello :k nil :r1 (rand) :r2 (rand-int 100)}])
+    {:url "http://localhost:9200/_bulk"
+     :index* (index-name)
+     :name-mangling true}
+    [{:mulog/timestamp (System/currentTimeMillis) :event-name :hello :k 1 :r1 (rand) :r2 (rand-int 100)}
+     {:mulog/timestamp (System/currentTimeMillis) :event-name :hello :k nil :r1 (rand) :r2 (rand-int 100)}])
   )
 
 
@@ -191,9 +191,9 @@
   [{:keys [url max-items index-pattern] :as config}]
   {:pre [url]}
   (ElasticSearchPublisher.
-   (as-> config $
-     (merge DEFAULT-CONFIG $)
-     (update $ :url normalize-endpoint-url)
-     (assoc $ :index* (index-name (:index-pattern $))))
-   (rb/agent-buffer 20000)
-   (or (:transform config) identity)))
+    (as-> config $
+      (merge DEFAULT-CONFIG $)
+      (update $ :url normalize-endpoint-url)
+      (assoc $ :index* (index-name (:index-pattern $))))
+    (rb/agent-buffer 20000)
+    (or (:transform config) identity)))

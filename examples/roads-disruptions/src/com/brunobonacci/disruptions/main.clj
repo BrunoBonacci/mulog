@@ -14,8 +14,8 @@
    {:base  #(str (url "https://api.tfl.gov.uk" %))
     :roads "https://api.tfl.gov.uk/road"
     :disruptions #(str (url "https://api.tfl.gov.uk/road"
-                            (url-encode %)
-                            "disruption"))}
+                         (url-encode %)
+                         "disruption"))}
 
 
    :mulog
@@ -43,7 +43,7 @@
 
   ;; set global context
   (μ/set-global-context!
-   {:app-name "roads-disruptions", :version "0.1.0", :env "local"})
+    {:app-name "roads-disruptions", :version "0.1.0", :env "local"})
 
   (μ/start-publisher! mulog))
 

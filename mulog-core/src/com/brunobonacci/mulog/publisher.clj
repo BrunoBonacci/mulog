@@ -111,10 +111,10 @@
     ;; make parte dirs
     (.mkdirs (.getParentFile filename))
     (SimpleFilePublisher.
-     config
-     (io/writer filename :append true)
-     (rb/agent-buffer 10000)
-     (or transform identity))))
+      config
+      (io/writer filename :append true)
+      (rb/agent-buffer 10000)
+      (or transform identity))))
 
 
 
@@ -132,22 +132,22 @@
      (let [[_ fns ff] (re-find #"([^/]+)/([^/]+)" fqn-fname)]
        (when (not (and fns ff))
          (throw
-          (ex-info
-           (str "function '" fqn-fname
-                "' is invalid format. must be \"namespace/fun-name\".")
-           {:fqn-fname fqn-fname})))
+           (ex-info
+             (str "function '" fqn-fname
+               "' is invalid format. must be \"namespace/fun-name\".")
+             {:fqn-fname fqn-fname})))
        (load-function-from-name fns ff))
      fqn-fname))
   ([fn-ns fn-name]
    (when (not (and fn-ns fn-name))
      (throw (ex-info (str "function '" fn-ns "/" fn-name "' not found.")
-                     {:fn-ns fn-ns :fn-name fn-name})))
+              {:fn-ns fn-ns :fn-name fn-name})))
    ;; requiring the namespace
    (require (symbol fn-ns))
    (let [fn-symbol (resolve (symbol fn-ns fn-name))]
      (when-not fn-symbol
        (throw (ex-info (str "function '" fn-ns "/" fn-name "' not found.")
-                       {:fn-ns fn-ns :fn-name fn-name})))
+                {:fn-ns fn-ns :fn-name fn-name})))
      fn-symbol)))
 
 
@@ -156,25 +156,25 @@
   (case stage
     :loading
     (throw
-     (ex-info
-      (str "Unable to load appropriate publisher."
-           " Please ensure you have the following dependency "
-           "[com.brunobonacci/mulog-"
-           (some-> info :config :type name) " \"x.y.z\"]"
-           " in your project.clj")
-      info cause))
+      (ex-info
+        (str "Unable to load appropriate publisher."
+          " Please ensure you have the following dependency "
+          "[com.brunobonacci/mulog-"
+          (some-> info :config :type name) " \"x.y.z\"]"
+          " in your project.clj")
+        info cause))
 
     :init
     (throw
-     (ex-info
-      (str "Unable to initialize publisher."
-           " Please ensure you have the publisher has a function with 1 argument.")
-      info cause))
+      (ex-info
+        (str "Unable to initialize publisher."
+          " Please ensure you have the publisher has a function with 1 argument.")
+        info cause))
 
     :verify
     (throw
-     (ex-info "Invalid publisher, not an instance of com.brunobonacci.mulog.publisher.PPublisher"
-              info))))
+      (ex-info "Invalid publisher, not an instance of com.brunobonacci.mulog.publisher.PPublisher"
+        info))))
 
 
 
@@ -208,9 +208,9 @@
 (defmethod publisher-factory :default
   [cfg]
   (throw
-   (ex-info "mu/log Invalid or no reporting method selected."
-            {:type (:type cfg)
-             :config cfg})))
+    (ex-info "mu/log Invalid or no reporting method selected."
+      {:type (:type cfg)
+       :config cfg})))
 
 
 
@@ -246,45 +246,45 @@
 (defmethod publisher-factory :elasticsearch
   [config]
   (load-dynamic-publisher
-   "com.brunobonacci.mulog.publishers.elasticsearch/elasticsearch-publisher"
-   config))
+    "com.brunobonacci.mulog.publishers.elasticsearch/elasticsearch-publisher"
+    config))
 
 
 
 (defmethod publisher-factory :jvm-metrics
   [config]
   (load-dynamic-publisher
-   "com.brunobonacci.mulog.publishers.jvm-metrics/jvm-metrics-publisher"
-   config))
+    "com.brunobonacci.mulog.publishers.jvm-metrics/jvm-metrics-publisher"
+    config))
 
 
 
 (defmethod publisher-factory :kafka
   [config]
   (load-dynamic-publisher
-   "com.brunobonacci.mulog.publishers.kafka/kafka-publisher"
-   config))
+    "com.brunobonacci.mulog.publishers.kafka/kafka-publisher"
+    config))
 
 
 
 (defmethod publisher-factory :zipkin
   [config]
   (load-dynamic-publisher
-   "com.brunobonacci.mulog.publishers.zipkin/zipkin-publisher"
-   config))
+    "com.brunobonacci.mulog.publishers.zipkin/zipkin-publisher"
+    config))
 
 
 
 (defmethod publisher-factory :kinesis
   [config]
   (load-dynamic-publisher
-   "com.brunobonacci.mulog.publishers.kinesis/kinesis-publisher"
-   config))
+    "com.brunobonacci.mulog.publishers.kinesis/kinesis-publisher"
+    config))
 
 
 
 (defmethod publisher-factory :slack
   [config]
   (load-dynamic-publisher
-   "com.brunobonacci.mulog.publishers.slack/slack-publisher"
-   config))
+    "com.brunobonacci.mulog.publishers.slack/slack-publisher"
+    config))

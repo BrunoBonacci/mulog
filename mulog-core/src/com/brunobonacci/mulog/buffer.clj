@@ -62,8 +62,8 @@ to the downstream systems by the publishers.
 
   (dequeue [this offset]
     (RingBuffer.
-     counter
-     (pop-while #(<= (first %) (or offset 0)) buffer)))
+      counter
+      (pop-while #(<= (first %) (or offset 0)) buffer)))
 
   (clear [this]
     (RingBuffer. counter (empty buffer)))
@@ -86,14 +86,14 @@ to the downstream systems by the publishers.
 (defn scheduled-thread-pool
   [core-pool-size]
   (ScheduledThreadPoolExecutor.
-   ^int core-pool-size
-   ^ThreadFactory
-   (reify ThreadFactory
-     (^Thread newThread [this ^Runnable r]
-      (let [t (Thread. r)]
-        (.setName   t (str "mu/log-task-" (.getId t)))
-        (.setDaemon t true)
-        t)))))
+    ^int core-pool-size
+    ^ThreadFactory
+    (reify ThreadFactory
+      (^Thread newThread [this ^Runnable r]
+       (let [t (Thread. r)]
+         (.setName   t (str "mu/log-task-" (.getId t)))
+         (.setDaemon t true)
+         t)))))
 
 
 
@@ -106,9 +106,9 @@ to the downstream systems by the publishers.
   [delay-millis task]
   (let [^ScheduledFuture ftask
         (.scheduleAtFixedRate
-         ^ScheduledThreadPoolExecutor timer-pool
-         (fn [] (try (task) (catch Exception x))) ;; TODO log
-         delay-millis delay-millis TimeUnit/MILLISECONDS)]
+          ^ScheduledThreadPoolExecutor timer-pool
+          (fn [] (try (task) (catch Exception x))) ;; TODO log
+          delay-millis delay-millis TimeUnit/MILLISECONDS)]
     (fn [] (.cancel ftask true))))
 
 
@@ -116,4 +116,4 @@ to the downstream systems by the publishers.
 (defn agent-buffer
   [capacity]
   (agent (ring-buffer capacity)
-         :error-mode :continue))
+    :error-mode :continue))

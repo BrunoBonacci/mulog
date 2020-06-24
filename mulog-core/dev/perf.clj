@@ -32,7 +32,7 @@
 
 
   (prof/profile
-   (bench (u/log :test :bechmark "speed")))
+    (bench (u/log :test :bechmark "speed")))
 
 
 
@@ -53,12 +53,12 @@
 
   (def buffer (agent (ring-buffer 10000) :error-mode :continue))
   (bench
-   (send buffer
-         (fn [buffer]
-           (conj buffer
-                 (assoc {:bechmark "speed"}
-                        :mulog/timestamp (System/currentTimeMillis)
-                        :mulog/event-name :test)))))
+    (send buffer
+      (fn [buffer]
+        (conj buffer
+          (assoc {:bechmark "speed"}
+            :mulog/timestamp (System/currentTimeMillis)
+            :mulog/event-name :test)))))
   ;; Evaluation count : 70285560 in 60 samples of 1171426 calls.
   ;; Execution time mean : 924.824874 ns
   ;; Execution time std-deviation : 48.549956 ns
@@ -69,12 +69,12 @@
 
   (def buffer (atom (ring-buffer 10000)))
   (bench
-   (swap! buffer
-          (fn [buffer]
-            (conj buffer
-                  (assoc {:bechmark "speed"}
-                         :mulog/timestamp (System/currentTimeMillis)
-                         :mulog/event-name :test)))))
+    (swap! buffer
+      (fn [buffer]
+        (conj buffer
+          (assoc {:bechmark "speed"}
+            :mulog/timestamp (System/currentTimeMillis)
+            :mulog/event-name :test)))))
   ;; Evaluation count : 206594940 in 60 samples of 3443249 calls.
   ;; Execution time mean : 285.340496 ns
   ;; Execution time std-deviation : 2.438685 ns

@@ -9,17 +9,17 @@
 
 (def operations
   (gen/frequency
-   [[6 (gen/tuple (gen/return :enqueue)
-                  (gen/frequency
-                   [[9 gen/any]
-                    [1 (gen/return nil)]]))]
+    [[6 (gen/tuple (gen/return :enqueue)
+          (gen/frequency
+            [[9 gen/any]
+             [1 (gen/return nil)]]))]
 
-    [2 (gen/tuple (gen/return :dequeue)
-                  (gen/frequency
-                   [[9 gen/small-integer]
-                    [1 (gen/return nil)]]))]
+     [2 (gen/tuple (gen/return :dequeue)
+          (gen/frequency
+            [[9 gen/small-integer]
+             [1 (gen/return nil)]]))]
 
-    [2 (gen/tuple (gen/return :clear) )]]))
+     [2 (gen/tuple (gen/return :clear) )]]))
 
 
 
@@ -31,12 +31,12 @@
 (def robust-operation-property
   "It doesn't exists a sequence of operations which can throw an exception"
   (prop/for-all
-   [ops ops-sequence]
-   (reduce (fn [rb [op v]]
-        (case op
-          :enqueue (enqueue rb v)
-          :dequeue (dequeue rb v)
-          :clear   (clear   rb)))
+    [ops ops-sequence]
+    (reduce (fn [rb [op v]]
+         (case op
+           :enqueue (enqueue rb v)
+           :dequeue (dequeue rb v)
+           :clear   (clear   rb)))
       (ring-buffer 5)
       ops)))
 

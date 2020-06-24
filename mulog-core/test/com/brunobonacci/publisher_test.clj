@@ -13,7 +13,7 @@
 
   => (just
         [(contains
-          {:mulog/event-name :test})])
+           {:mulog/event-name :test})])
   )
 
 
@@ -38,7 +38,7 @@
 
   => (just
         [(contains
-          {:mulog/event-name :test})])
+           {:mulog/event-name :test})])
   )
 
 
@@ -51,5 +51,5 @@
 
   => (just
         [(contains
-          {:mulog/event-name :test})])
+           {:mulog/event-name :test})])
   )

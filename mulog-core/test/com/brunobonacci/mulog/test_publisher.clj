@@ -55,7 +55,7 @@
      (reset! com.brunobonacci.mulog/global-context gbc#)
      ;; wait for the publisher to deliver the events
      (Thread/sleep (* (inc (:rounds cfg#))
-                      uc/PUBLISH-INTERVAL))
+                     uc/PUBLISH-INTERVAL))
      ;; stop the publisher
      (sp#)
      @outbox#))

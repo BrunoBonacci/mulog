@@ -44,7 +44,7 @@
                 :memory/used
                 :memory/max
                 :memory/committed]
-          :opt [:memory/usage-ratio]))
+    :opt [:memory/usage-ratio]))
 
 
 
@@ -61,14 +61,14 @@
 (defn- fix-precision-ratio
   [v]
   (double
-   (with-precision 4
-     (bigdec v))))
+    (with-precision 4
+      (bigdec v))))
 
 
 
 (defn- get-usage-ratio [^MemoryUsage usage]
   (fix-precision-ratio
-   (/ (.getUsed usage)
+    (/ (.getUsed usage)
       (if (= (.getMax usage) -1)
         (.getCommitted usage)
         (.getMax usage)))))
@@ -91,7 +91,7 @@
 
 (s/fdef capture-memory
   :args (s/cat :mxbean (partial instance? MemoryMXBean)
-               :opts ::capture-memory-opts)
+          :opts ::capture-memory-opts)
   :ret ::captured-memory)
 
 
@@ -99,14 +99,14 @@
 (defn- capture-memory [^MemoryMXBean mxbean {:keys [total heap non-heap]}]
   (letfn [(get-total []
             {:total {:init (+ (-> mxbean .getHeapMemoryUsage .getInit)
-                              (-> mxbean .getNonHeapMemoryUsage .getInit))
+                             (-> mxbean .getNonHeapMemoryUsage .getInit))
                      :used (+ (-> mxbean .getHeapMemoryUsage .getUsed)
-                              (-> mxbean .getNonHeapMemoryUsage .getUsed))
+                             (-> mxbean .getNonHeapMemoryUsage .getUsed))
                      :max  (+ (-> mxbean .getHeapMemoryUsage .getMax)
-                              (-> mxbean .getNonHeapMemoryUsage .getMax))
+                             (-> mxbean .getNonHeapMemoryUsage .getMax))
                      :committed
                      (+ (-> mxbean .getHeapMemoryUsage .getCommitted)
-                        (-> mxbean .getNonHeapMemoryUsage .getCommitted))}})
+                       (-> mxbean .getNonHeapMemoryUsage .getCommitted))}})
           (get-heap []
             {:heap {:init (-> mxbean .getHeapMemoryUsage .getInit)
                     :used (-> mxbean .getHeapMemoryUsage .getUsed)
@@ -136,15 +136,15 @@
 
 (defn- capture-memory-pools [pools]
   (into {}
-        (for [^MemoryPoolMXBean pool pools
-            :let [pname (get-bean-name pool)
-                  usage (.getUsage pool)]]
-          [(keyword (str pname "-usage"))
-           (fix-precision-ratio
-            (/ (.getUsed usage)
-               (if (= (.getMax usage) -1)
-                 (.getCommitted usage)
-                 (.getMax usage))))])))
+    (for [^MemoryPoolMXBean pool pools
+          :let [pname (get-bean-name pool)
+                usage (.getUsage pool)]]
+      [(keyword (str pname "-usage"))
+       (fix-precision-ratio
+         (/ (.getUsed usage)
+           (if (= (.getMax usage) -1)
+             (.getCommitted usage)
+             (.getMax usage))))])))
 
 
 
@@ -156,10 +156,10 @@
 
 (defn- capture-garbage-collector [gc]
   (apply merge
-         (for [^GarbageCollectorMXBean mxbean gc
-             :let [name (get-bean-name mxbean)]]
-           {(keyword (str name "-count")) (.getCollectionCount mxbean)
-            (keyword (str name "-time"))  (.getCollectionTime mxbean)})))
+    (for [^GarbageCollectorMXBean mxbean gc
+          :let [name (get-bean-name mxbean)]]
+      {(keyword (str name "-count")) (.getCollectionCount mxbean)
+       (keyword (str name "-time"))  (.getCollectionTime mxbean)})))
 
 
 
@@ -176,16 +176,16 @@
 (defn- capture-jvm-attrs [^RuntimeMXBean runtime]
   {:name (.getName runtime)
    :vendor (format "%s (%s)"
-                   (.getVmVendor runtime)
-                   (.getSpecVersion runtime))
+             (.getVmVendor runtime)
+             (.getSpecVersion runtime))
    :version (.getVmVersion runtime)
    :process-id (os-java-pid)})
 
 
 (s/fdef capture-jvx-attrs
   :args (s/cat :server (partial instance? MBeanServerConnection)
-               :object-name (partial instance? ObjectName)
-               :attr-name string?)
+          :object-name (partial instance? ObjectName)
+          :attr-name string?)
   :ret (s/nilable string?))
 
 
@@ -211,18 +211,18 @@
   (let [ids (.findDeadlockedThreads threads)]
     (if (some? ids)
       (apply merge
-             (for [^ThreadInfo info (.getThreadInfo threads ids 100)]
-               {(keyword (.getThreadName info))
-                (.getStackTrace info)}))
+        (for [^ThreadInfo info (.getThreadInfo threads ids 100)]
+          {(keyword (.getThreadName info))
+           (.getStackTrace info)}))
       {})))
 
 
 
 (defn get-thread-count [^Thread$State state ^ThreadMXBean threads]
   (count
-   (filter
-    (fn [^ThreadInfo info] (and (some? info) (= (.getThreadState info) state)))
-    (into [] (.getThreadInfo threads (.getAllThreadIds threads) 100)))))
+    (filter
+      (fn [^ThreadInfo info] (and (some? info) (= (.getThreadState info) state)))
+      (into [] (.getThreadInfo threads (.getAllThreadIds threads) 100)))))
 
 (s/fdef capture-thread-states
   :args (s/cat :threads (partial instance? ThreadMXBean))
@@ -238,11 +238,11 @@
                   :deadlocks deadlocks}
         convert-name (fn [s] (str/replace (str/lower-case s) #"_" "-"))]
     (merge
-     base-map
-     (apply merge
-            (for [^Thread$State state (Thread$State/values)]
-              {(keyword (str (convert-name state) "-count"))
-               (get-thread-count state threads)})))))
+      base-map
+      (apply merge
+        (for [^Thread$State state (Thread$State/values)]
+          {(keyword (str (convert-name state) "-count"))
+           (get-thread-count state threads)})))))
 
 
 
@@ -334,7 +334,7 @@
   (publish [_ buffer]
     ;; sampling the jvm metrics
     (u/log :mulog/jvm-metrics-sampled
-           :jvm-metrics (jvm-sample (:jvm-metrics config)))))
+      :jvm-metrics (jvm-sample (:jvm-metrics config)))))
 
 
 
@@ -351,6 +351,6 @@
   (let [config (as-> config $
                  (merge DEFAULT-CONFIG $)
                  (assoc $ :sampling-interval
-                        (max sampling-interval 1000)))]
+                   (max sampling-interval 1000)))]
     ;; create the metrics publisher
     (JvmMetricsPublisher. config (rb/agent-buffer 1))))

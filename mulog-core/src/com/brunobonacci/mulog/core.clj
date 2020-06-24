@@ -65,29 +65,29 @@
 
 (defonce dispatch-publishers
   (rb/recurring-task
-   PUBLISH-INTERVAL
-   (fn []
-     (try
-       (let [pubs @publishers
-             ;;    group-by buffer
-             pubs (group-by :buffer (map second pubs))]
+    PUBLISH-INTERVAL
+    (fn []
+      (try
+        (let [pubs @publishers
+              ;;    group-by buffer
+              pubs (group-by :buffer (map second pubs))]
 
-         (doseq [[buf dests] pubs]   ;; for every buffer
-           (let [items (rb/items @buf)
-                 offset (-> items last first)]
-             (when (seq items)
-               (doseq [{pub :publisher} dests]  ;; and each destination
-                 ;; send to the agent-buffer
-                 (send (p/agent-buffer pub)
-                       (partial reduce rb/enqueue)
-                       (->> items
-                         (map second)
-                         (map (partial apply merge-pairs)))))
-               ;; remove items up to the offset
-               (swap! buf rb/dequeue offset)))))
-       (catch Exception x
-         ;; TODO:
-         (.printStackTrace x))))))
+          (doseq [[buf dests] pubs]   ;; for every buffer
+            (let [items (rb/items @buf)
+                  offset (-> items last first)]
+              (when (seq items)
+                (doseq [{pub :publisher} dests]  ;; and each destination
+                  ;; send to the agent-buffer
+                  (send (p/agent-buffer pub)
+                    (partial reduce rb/enqueue)
+                    (->> items
+                      (map second)
+                      (map (partial apply merge-pairs)))))
+                ;; remove items up to the offset
+                (swap! buf rb/dequeue offset)))))
+        (catch Exception x
+          ;; TODO:
+          (.printStackTrace x))))))
 
 
 
@@ -103,7 +103,7 @@
 
 
         publish (fn [] (send-off (p/agent-buffer publisher)
-                                (partial p/publish publisher)))
+                         (partial p/publish publisher)))
         ;; register periodic call publish
         stop (rb/recurring-task period publish)
 
@@ -120,8 +120,8 @@
           ;; close publisher
           (when (instance? java.io.Closeable publisher)
             (send-off (p/agent-buffer publisher)
-                      (fn [_]
-                        (.close ^java.io.Closeable publisher))))
+              (fn [_]
+                (.close ^java.io.Closeable publisher))))
           :stopped)]
     ;; register the stop function
     (swap! publishers assoc-in [publisher-id :stopper] stopper)
@@ -150,13 +150,13 @@
   "internal utility macro"
   [event-name tid ptid duration ts outcome & pairs]
   `(com.brunobonacci.mulog/log
-    ~event-name
-    :mulog/trace-id  ~tid
-    :mulog/parent-trace ~ptid
-    :mulog/duration ~duration
-    :mulog/timestamp ~ts
-    :mulog/outcome ~outcome
-    ~@pairs))
+     ~event-name
+     :mulog/trace-id  ~tid
+     :mulog/parent-trace ~ptid
+     :mulog/duration ~duration
+     :mulog/timestamp ~ts
+     :mulog/outcome ~outcome
+     ~@pairs))
 
 
 

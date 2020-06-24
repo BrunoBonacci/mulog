@@ -11,9 +11,9 @@
 (defn- has-failures?
   [rs]
   (not
-   (and
-    (contains? rs :FailedRecordCount)
-    (zero? (:FailedRecordCount rs)))))
+    (and
+      (contains? rs :FailedRecordCount)
+      (zero? (:FailedRecordCount rs)))))
 
 
 
@@ -31,9 +31,9 @@
                                                  :Records    records}})]
     (if (has-failures? rs)
       (throw
-       (ex-info
-        (str "μ/log kinesis publisher failure, stream '" stream-name "'")
-        {:rs rs})))))
+        (ex-info
+          (str "μ/log kinesis publisher failure, stream '" stream-name "'")
+          {:rs rs})))))
 
 
 
@@ -41,8 +41,8 @@
 ;; Add Flake encoder to JSON generator
 ;;
 (gen/add-encoder com.brunobonacci.mulog.core.Flake
-                 (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
-                   (gen/write-string json ^String (str x))))
+  (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
+    (gen/write-string json ^String (str x))))
 
 
 
@@ -113,7 +113,7 @@
               (update $ :max-items min KINESIS-MAX-RECORDS-NUMBER))]
 
     (KinesisPublisher.
-     cfg
-     (rb/agent-buffer 10000)
-     (or (:transform cfg) identity)
-     (create-kinesis-client (:kinesis-client-config cfg)))))
+      cfg
+      (rb/agent-buffer 10000)
+      (or (:transform cfg) identity)
+      (create-kinesis-client (:kinesis-client-config cfg)))))

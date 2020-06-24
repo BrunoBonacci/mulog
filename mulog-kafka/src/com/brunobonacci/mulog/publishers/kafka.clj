@@ -15,8 +15,8 @@
 ;; Add Exception encoder to JSON generator
 ;;
 (gen/add-encoder java.lang.Throwable
-                 (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
-                   (gen/write-string json ^String (ut/exception-stacktrace x))))
+  (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
+    (gen/write-string json ^String (ut/exception-stacktrace x))))
 
 
 
@@ -24,8 +24,8 @@
 ;; Add Flake encoder to JSON generator
 ;;
 (gen/add-encoder com.brunobonacci.mulog.core.Flake
-                 (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
-                   (gen/write-string json ^String (str x))))
+  (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
+    (gen/write-string json ^String (str x))))
 
 
 
@@ -99,8 +99,8 @@
 
 (comment
   (publish-records! {:key-field :puid :format :json :topic "mulog" :producer* kp}
-                    [{:timestamp (System/currentTimeMillis) :event-name :hello :k 1}
-                     {:timestamp (System/currentTimeMillis) :event-name :hello :k 2}])
+    [{:timestamp (System/currentTimeMillis) :event-name :hello :k 1}
+     {:timestamp (System/currentTimeMillis) :event-name :hello :k 2}])
   )
 
 
@@ -176,8 +176,8 @@
   [config]
   {:pre [(get-in config [:kafka :bootstrap.servers])]}
   (KafkaPublisher.
-   (as-> config $
-     (deep-merge DEFAULT-CONFIG $)
-     (assoc $ :producer* (producer (:kafka $))))
-   (rb/agent-buffer 10000)
-   (or (:transform config) identity)))
+    (as-> config $
+      (deep-merge DEFAULT-CONFIG $)
+      (assoc $ :producer* (producer (:kafka $))))
+    (rb/agent-buffer 10000)
+    (or (:transform config) identity)))

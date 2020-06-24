@@ -25,23 +25,23 @@
   (let [timestamp (unix-ms-to-iso8601 (:mulog/timestamp event))
         event-name (:mulog/event-name event)]
     (str timestamp " - " event-name
-         \newline
-         "```"
-         \newline
-         (ut/pprint-event-str event)
-         "```")))
+      \newline
+      "```"
+      \newline
+      (ut/pprint-event-str event)
+      "```")))
 
 
 
 (defn- send-slack-message
   [webhook-url message publish-delay]
   (http/post
-   webhook-url
-   {:content-type "application/json"
-    :accept :json
-    :socket-timeout publish-delay
-    :connection-timeout publish-delay
-    :body (json/generate-string {:text message})}))
+    webhook-url
+    {:content-type "application/json"
+     :accept :json
+     :socket-timeout publish-delay
+     :connection-timeout publish-delay
+     :body (json/generate-string {:text message})}))
 
 
 
@@ -74,8 +74,8 @@
         buffer
         (do
           (send-slack-message (:webhook-url config)
-                              (str/join "\n" rendered-messages)
-                              (:publish-delay config))
+            (str/join "\n" rendered-messages)
+            (:publish-delay config))
           (rb/dequeue buffer last-offset))))))
 
 
@@ -97,5 +97,5 @@
   [{:keys [webhook-url transform] :as config}]
   {:pre [webhook-url transform]}
   (SlackPublisher.
-   (merge default-config config)
-   (rb/agent-buffer 1000)))
+    (merge default-config config)
+    (rb/agent-buffer 1000)))

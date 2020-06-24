@@ -29,23 +29,23 @@
       (μ/log :disruptions/initiated-poll)
 
       (safely
-       (let [disruptions (tfl/all-disruptions config)]
+        (let [disruptions (tfl/all-disruptions config)]
 
-         ;; record the active disruptions
-         (μ/log :disruptions/poll-completed
-                :active-disruptions (count disruptions))
+          ;; record the active disruptions
+          (μ/log :disruptions/poll-completed
+            :active-disruptions (count disruptions))
 
-         (swap! active-disruptions
-                (fn [old new]
-                  (->>
-                      (merge
-                          (index-by #(get % "id") old)
-                          (index-by #(get % "id") new))
-                      (map second)))
-                disruptions))
-       :on-error
-       :max-retries :forever
-       :message "Polling disruptions data")
+          (swap! active-disruptions
+            (fn [old new]
+              (->>
+                  (merge
+                      (index-by #(get % "id") old)
+                    (index-by #(get % "id") new))
+                (map second)))
+            disruptions))
+        :on-error
+        :max-retries :forever
+        :message "Polling disruptions data")
       ;; sleep between 30s-2min between polls
       (sleep :min 30000 :max 120000)
       (recur))))
@@ -72,19 +72,19 @@
 (defn service-api
   [config]
   (wrap-events             ;; tracks all requests with μ/log
-   (wrap-json-response
-    (routes
+    (wrap-json-response
+      (routes
 
-     (GET "/healthcheck" []
+        (GET "/healthcheck" []
           {:status 200
            :body {:status "OK" :message "All good."}})
 
 
-     (GET "/disruptions" []
+        (GET "/disruptions" []
           {:status 200
            :body {:status "OK"
                   :active-disruptions
                   @active-disruptions}})
 
-     (route/not-found
-      {:status "ERROR" :message "Resource not found."})))))
+        (route/not-found
+          {:status "ERROR" :message "Resource not found."})))))

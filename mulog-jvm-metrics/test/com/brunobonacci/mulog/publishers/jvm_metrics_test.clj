@@ -35,19 +35,19 @@
                                :committed int?})
                     :heap
                     (contains
-                     {:init        int?
-                      :used        int?
-                      :max         int?
-                      :committed   int?
-                      :usage-ratio double?})
+                      {:init        int?
+                       :used        int?
+                       :max         int?
+                       :committed   int?
+                       :usage-ratio double?})
 
                     :non-heap
                     (contains
-                     {:init        int?
-                      :used        int?
-                      :max         int?
-                      :committed   int?
-                      :usage-ratio #(or (int? %) (double? %))})
+                      {:init        int?
+                       :used        int?
+                       :max         int?
+                       :committed   int?
+                       :usage-ratio #(or (int? %) (double? %))})
 
                     :pools map?})}))
 
@@ -111,13 +111,13 @@
     (#'com.brunobonacci.mulog.publishers.jvm-metrics/capture-thread-states threads)
     =>
     (contains
-     {:deadlocks map?
-      :waiting-count int?
-      :blocked-count int?
-      :timed-waiting-count int?
-      :runnable-count int?
-      :deadlock-count int?
-      :count int?
-      :daemon-count int?
-      :new-count int?
-      :terminated-count int?})))
+      {:deadlocks map?
+       :waiting-count int?
+       :blocked-count int?
+       :timed-waiting-count int?
+       :runnable-count int?
+       :deadlock-count int?
+       :count int?
+       :daemon-count int?
+       :new-count int?
+       :terminated-count int?})))

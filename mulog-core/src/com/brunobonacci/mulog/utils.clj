@@ -44,7 +44,7 @@
         u1   (.getMostSignificantBits uuid)
         u2   (.getLeastSignificantBits uuid)]
     (str (Long/toUnsignedString u1 36)
-         (Long/toUnsignedString u2 36))))
+      (Long/toUnsignedString u2 36))))
 
 
 

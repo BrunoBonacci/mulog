@@ -195,10 +195,10 @@
     (Thread/sleep (rand-int 100))
     {:order order-id
      :items (mapv
-             (fn [product-id]
-               (μ/trace ::availability
-                 [:product-id product-id :app-name "stock-mgmt"]
-                 (product-availability product-id))) items)})
+              (fn [product-id]
+                (μ/trace ::availability
+                  [:product-id product-id :app-name "stock-mgmt"]
+                  (product-availability product-id))) items)})
 
 
   (def items ["2345-23-545" "6543-43-0032"])
@@ -220,11 +220,11 @@
 
   (def stop-all
     (μ/start-publisher!
-     {:type :multi
-      :publishers
-      [{:type :console}
-       {:type :simple-file :filename "/tmp/disk1/mulog/events1.log"}
-       {:type :simple-file :filename "/tmp/disk2/mulog/events2.log"}]}))
+      {:type :multi
+       :publishers
+       [{:type :console}
+        {:type :simple-file :filename "/tmp/disk1/mulog/events1.log"}
+        {:type :simple-file :filename "/tmp/disk2/mulog/events2.log"}]}))
 
   (μ/log ::hello :to "New World!")
 
@@ -236,8 +236,9 @@
 
 (comment
 
-  (require '[com.brunobonacci.mulog.buffer :as rb]
-           '[clojure.pprint :refer [pprint]])
+  (require
+    '[com.brunobonacci.mulog.buffer :as rb]
+    '[clojure.pprint :refer [pprint]])
 
 
   (deftype MyCustomPublisher
@@ -271,7 +272,7 @@
 
   (def st
     (μ/start-publisher!
-     {:type :inline :publisher (my-custom-publisher {:pretty-print true})}))
+      {:type :inline :publisher (my-custom-publisher {:pretty-print true})}))
 
   (μ/log :test-event)
 
@@ -318,7 +319,7 @@
     [{:keys [filename] :as config}]
     (let [config (merge {:pretty-print false :max-items 1000} config)]
       (MyCustomPublisher. config (rb/agent-buffer 10000)
-                          (io/writer (io/file filename) :append true))))
+        (io/writer (io/file filename) :append true))))
 
 
   )

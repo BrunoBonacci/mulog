@@ -15,12 +15,12 @@
 ;; Add Exception encoder to JSON generator
 ;;
 (gen/add-encoder java.lang.Throwable
-                 (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
-                   (gen/write-string json ^String (ut/exception-stacktrace x))))
+  (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
+    (gen/write-string json ^String (ut/exception-stacktrace x))))
 
 (gen/add-encoder com.brunobonacci.mulog.core.Flake
-                 (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
-                   (gen/write-string json ^String (str x))))
+  (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
+    (gen/write-string json ^String (str x))))
 
 
 
@@ -66,8 +66,8 @@
   (->> events
     (filter :mulog/root-trace)
     (map (fn [{:keys [mulog/trace-id mulog/parent-trace mulog/root-trace
-                     mulog/duration mulog/event-name mulog/timestamp
-                     app-name] :as e}]
+                      mulog/duration mulog/event-name mulog/timestamp
+                      app-name] :as e}]
            ;; zipkin IDs are much lower bits than flakes
            {:id        (hexify trace-id 16)
             :traceId   (hexify root-trace 32)
@@ -88,13 +88,13 @@
 (defn- post-records
   [{:keys [url publish-delay] :as config} records]
   (http/post
-   url
-   {:content-type "application/json"
-    :accept :json
-    :as     :json
-    :socket-timeout     publish-delay
-    :connection-timeout publish-delay
-    :body (to-json (prepare-records config records))}))
+    url
+    {:content-type "application/json"
+     :accept :json
+     :as     :json
+     :socket-timeout     publish-delay
+     :connection-timeout publish-delay
+     :body (to-json (prepare-records config records))}))
 
 
 
@@ -187,8 +187,8 @@
   [{:keys [url max-items] :as config}]
   {:pre [url]}
   (ZipkinPublisher.
-   (as-> config $
-     (merge DEFAULT-CONFIG $)
-     (update $ :url normalize-endpoint-url))
-   (rb/agent-buffer 20000)
-   (or (:transform config) identity)))
+    (as-> config $
+      (merge DEFAULT-CONFIG $)
+      (update $ :url normalize-endpoint-url))
+    (rb/agent-buffer 20000)
+    (or (:transform config) identity)))

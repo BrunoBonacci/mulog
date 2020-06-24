@@ -88,13 +88,13 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   [logger event-name pairs]
   (when (and logger event-name)
     (core/enqueue!
-     logger
-     (list @global-context *local-context*
-           (list
-            :mulog/trace-id  (flake)
-            :mulog/timestamp (System/currentTimeMillis)
-            :mulog/event-name event-name)
-           pairs)))
+      logger
+      (list @global-context *local-context*
+        (list
+          :mulog/trace-id  (flake)
+          :mulog/timestamp (System/currentTimeMillis)
+          :mulog/event-name event-name)
+        pairs)))
   nil)
 
 
@@ -133,7 +133,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   [event-name & pairs]
   (when (= 1 (rem (count pairs) 2))
     (throw (IllegalArgumentException.
-            "You must provide a series of key/value pairs in the form: :key1 value1, :key2 value2, etc.")))
+             "You must provide a series of key/value pairs in the form: :key1 value1, :key2 value2, etc.")))
   (let [ns# (str *ns*)]
     `(log* *default-logger* ~event-name (list :mulog/namespace ~ns# ~@pairs))))
 
@@ -398,7 +398,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
                 (vector? details) details
                 (map? details) (:pairs details)
                 :else (throw (ex-info "Illegal Argument, expected map or vector of pairs"
-                                      {:arg-name 'details :value details})))
+                               {:arg-name 'details :value details})))
 
         ;; function which returns a map of pairs to add to the trace from the body evaluation result
         capture (cond
@@ -408,10 +408,10 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
         ;; checking parameters
         _ (when-not (vector? pairs)
             (throw (ex-info "Illegal Argument, expected vectors of pairs: key1 value1, key2 value2"
-                            {:arg-name 'pairs :value pairs})))
+                     {:arg-name 'pairs :value pairs})))
         _ (when (not= 0 (mod (count pairs) 2))
             (throw (ex-info "Illegal Argument, unbalanced vectors of pairs: key1 value1, key2 value2"
-                            {:arg-name 'pairs :value pairs :count (count pairs)})))]
+                     {:arg-name 'pairs :value pairs :count (count pairs)})))]
 
     ;; Code generation
     `(let [ ;; :mulog/trace-id and :mulog/timestamp are created in here
@@ -431,7 +431,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
              ;; then use the capture function
              (if ~capture
                (core/log-trace-capture ~event-name tid# ptid# (- (System/nanoTime) t0#) ts# :ok
-                                       ~capture r#  ~@pairs)
+                 ~capture r#  ~@pairs)
                ;; otherwise just log the outcome
                (core/log-trace ~event-name tid# ptid# (- (System/nanoTime) t0#) ts# :ok ~@pairs))
              ;; return the body result
