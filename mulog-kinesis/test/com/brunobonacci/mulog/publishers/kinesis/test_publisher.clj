@@ -1,14 +1,9 @@
 (ns com.brunobonacci.mulog.publishers.kinesis.test-publisher
   (:require [com.brunobonacci.mulog :as μ]
+            [com.brunobonacci.mulog.utils :as ut]
             [cheshire.core :as json]
             [cognitect.aws.client.api :as aws])
   (:import (java.util.concurrent TimeUnit)))
-
-
-
-(def KINESIS-LOCAL-STREAM-NAME "mulog-test-stream")
-
-
 
 (def KINESIS-LOCAL-SETTINGS {:api :kinesis
                              :endpoint-override
@@ -16,53 +11,51 @@
                               :hostname "localhost"
                               :port 4568}})
 
+(defn parse-kinesis-response
+  [rs]
+  (->
+    rs
+    (:Records)
+    (first)
+    (:Data)
+    (slurp)
+    (json/parse-string true)))
 
-
-(defmacro with-local-kinesis-client
-  []
-  `(aws/client KINESIS-LOCAL-SETTINGS))
-
-
-
-(defmacro with-local-kinesis-stream
-  [client op params]
-  `(let [rq# (merge ~params {:StreamName KINESIS-LOCAL-STREAM-NAME})]
-     (aws/invoke ~client {:op ~op :request rq#})))
-
-
+(defn kinesis-invoke
+  [client name op params]
+  (let [rq (merge params {:StreamName name})]
+    (aws/invoke client {:op op :request rq})))
 
 (defmacro with-local-kinesis-publisher
   [command]
-  `(let [sp# (μ/start-publisher!
-              {:type                  :kinesis
-               :stream-name           KINESIS-LOCAL-STREAM-NAME
-               :kinesis-client-config KINESIS-LOCAL-SETTINGS})]
+  `(let [name#      (format "mulog-test-%s" (ut/random-uid))
+         lc#        (aws/client KINESIS-LOCAL-SETTINGS)
+         create-rs# (kinesis-invoke lc# name# :CreateStream {:ShardCount 1})
+         sp#        (μ/start-publisher!
+                      {:type                  :kinesis
+                       :stream-name           name#
+                       :kinesis-client-config KINESIS-LOCAL-SETTINGS})]
      (do
+       (println "Creating kinesis stream: " name#)
+       (.sleep (TimeUnit/SECONDS) 5)                         ;; delay to create a stream
+       (println "Kinesis stream has been created successfully: " (= create-rs# {}))
        (~@command)
-       ;; delay for kinesis processing
-       (.sleep (TimeUnit/SECONDS) 5)
-       (sp#))))
-
-
-
-(defn get-records-from-stream
-  []
-  (let [kinesis                   (with-local-kinesis-client)
-        stream-desc               (with-local-kinesis-stream kinesis :DescribeStream {})
-        starting-sequence-number  (-> stream-desc
-                                    (get-in [:StreamDescription :Shards])
-                                    (first)
-                                    (get-in [:SequenceNumberRange :StartingSequenceNumber]))
-        shard-iterator            (with-local-kinesis-stream kinesis :GetShardIterator {:ShardId                "shardId-000000000000"
-                                                                                        :ShardIteratorType      "AT_SEQUENCE_NUMBER"
-                                                                                        :StartingSequenceNumber starting-sequence-number})
-        kinesis-response          (with-local-kinesis-stream kinesis :GetRecords { :ShardIterator (:ShardIterator shard-iterator)})]
-    (if (seq (:Records kinesis-response))
-      (->
-          kinesis-response
-        (:Records)
-        (first)
-        (:Data)
-        (slurp)
-        (json/parse-string true))
-      {})))
+       (println "Message was published to kinesis stream")
+       (.sleep (TimeUnit/SECONDS) 5)                         ;; delay for kinesis processing
+       (sp#)
+       (let [description#               (kinesis-invoke lc# name# :DescribeStream {})
+             starting-sequence-number#  (-> description#
+                                           (get-in [:StreamDescription :Shards])
+                                           (first)
+                                           (get-in [:SequenceNumberRange :StartingSequenceNumber]))
+             shard-iterator#            (kinesis-invoke lc# name# :GetShardIterator
+                                                        {:ShardId       "shardId-000000000000"
+                                                            :ShardIteratorType      "AT_SEQUENCE_NUMBER"
+                                                            :StartingSequenceNumber starting-sequence-number#})
+             kinesis-response#          (kinesis-invoke lc# name# :GetRecords
+                                                        { :ShardIterator (:ShardIterator shard-iterator#)})]
+         (do
+           (println "Kinesis stream has been removed successfully:"
+                    (= {} (kinesis-invoke lc# name# :DeleteStream {})))
+           (if (seq (:Records kinesis-response#))
+             (parse-kinesis-response kinesis-response#) {}))))))

@@ -89,8 +89,6 @@
   "Each PutRecords request can support up to 500 records. (AWS limit)"
   500)
 
-
-
 (def ^:const DEFAULT-CONFIG
   {;; name of the stream where to send the data (REQUIRED)
    ;;:stream-name       "mulog"
