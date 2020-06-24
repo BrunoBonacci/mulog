@@ -5,26 +5,33 @@
             [cognitect.aws.client.api :as aws])
   (:import (java.util.concurrent TimeUnit)))
 
+
+
 (def KINESIS-LOCAL-SETTINGS {:api :kinesis
                              :endpoint-override
                              {:protocol :http
                               :hostname "localhost"
                               :port 4568}})
 
+
+
 (defn parse-kinesis-response
   [rs]
-  (->
-    rs
+  (some-> rs
     (:Records)
     (first)
     (:Data)
     (slurp)
     (json/parse-string true)))
 
+
+
 (defn kinesis-invoke
   [client name op params]
   (let [rq (merge params {:StreamName name})]
     (aws/invoke client {:op op :request rq})))
+
+
 
 (defmacro with-local-kinesis-publisher
   [command]
@@ -32,9 +39,9 @@
          lc#        (aws/client KINESIS-LOCAL-SETTINGS)
          create-rs# (kinesis-invoke lc# name# :CreateStream {:ShardCount 1})
          sp#        (μ/start-publisher!
-                      {:type                  :kinesis
-                       :stream-name           name#
-                       :kinesis-client-config KINESIS-LOCAL-SETTINGS})]
+                     {:type                  :kinesis
+                      :stream-name           name#
+                      :kinesis-client-config KINESIS-LOCAL-SETTINGS})]
      (do
        (println "Creating kinesis stream: " name#)
        (.sleep (TimeUnit/SECONDS) 5)                         ;; delay to create a stream
@@ -45,13 +52,13 @@
        (sp#)
        (let [description#               (kinesis-invoke lc# name# :DescribeStream {})
              starting-sequence-number#  (-> description#
-                                           (get-in [:StreamDescription :Shards])
-                                           (first)
-                                           (get-in [:SequenceNumberRange :StartingSequenceNumber]))
+                                          (get-in [:StreamDescription :Shards])
+                                          (first)
+                                          (get-in [:SequenceNumberRange :StartingSequenceNumber]))
              shard-iterator#            (kinesis-invoke lc# name# :GetShardIterator
                                                         {:ShardId       "shardId-000000000000"
-                                                            :ShardIteratorType      "AT_SEQUENCE_NUMBER"
-                                                            :StartingSequenceNumber starting-sequence-number#})
+                                                         :ShardIteratorType      "AT_SEQUENCE_NUMBER"
+                                                         :StartingSequenceNumber starting-sequence-number#})
              kinesis-response#          (kinesis-invoke lc# name# :GetRecords
                                                         { :ShardIterator (:ShardIterator shard-iterator#)})]
          (do

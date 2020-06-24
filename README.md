@@ -72,7 +72,7 @@ frameworks, which have been redesigned in various decades follow the
 same structure as when systems lived on the same single server for
 decades.
 
-I believe we need the break free of these anachronistic design and use
+I believe we need the break free of these anachronistic designs and use
 event loggers, *not message loggers*, which are designed for dynamic
 distributed systems living in cloud and using centralized log
 aggregators. *So here is ***μ/log*** designed for this very purpose.*
