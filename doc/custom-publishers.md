@@ -213,14 +213,14 @@ the system won't run out of memory.
 If you are building a general purpose publisher it is a good idea to
 provide the ability to take a general transformation which can be
 applied to the events.  This can be very useful for filtering which
-events you which to send to a specific publisher or for performing
+events you wish to send to a specific publisher or for performing
 simple event transformations.  For example, the transformation could
 be used to anonymize some sensitive fields which you might not want to
 see in one destination.
 Sometimes it is useful to filter noisy events out and get only the
 events you are interested into a particular publisher.
 
-All the built-in publisher support custom transformation via the
+All the built-in publishers support custom transformation via the
 `:transform` configuration.
 
 If you are implementing a Publisher, consider adding the support as
@@ -266,5 +266,5 @@ For example, in our previous example:
     (MyCustomPublisher. config (rb/agent-buffer 10000))))
 ```
 
-Remember the transform if a function which applies to all events, it
+Remember the transform is a function which applies to all events, it
 can do any sort of operation and it is optional.
