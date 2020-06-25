@@ -4,6 +4,7 @@
   - [**NEW**] Added Kinesis publisher (thanks to @etolbakov)
   - [**NEW**] Added Slack publisher (thanks to @anonimitoraf)
   - [**NEW**] Added JVM Metrics publisher (thanks to @PabloReszczynski)
+  - ELS: auto-detects the version by default
 
 ## v0.2.0 - (2020-05-03)
   - Added flag to support ElasticSearch v6.x correctly

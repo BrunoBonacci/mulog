@@ -108,7 +108,7 @@
 (defn- post-records
   [{:keys [url publish-delay] :as config} records]
   (http/post
-    url
+    (normalize-endpoint-url url)
     {:content-type "application/x-ndjson"
      :accept :json
      :as :json
@@ -117,6 +117,29 @@
      :body
      (->> (prepare-records config records)
        (apply str))}))
+
+
+
+(defn detect-els-version
+  "It contacts the ELS API and retrieve the major version group"
+  [url]
+  (some->
+    (http/get
+      url
+      {:content-type "application/json"
+       :accept :json
+       :as :json
+       :socket-timeout 500
+       :connection-timeout 500
+       :throw-exceptions false
+       :ignore-unknown-host? true})
+    :body
+    :version
+    :number
+    (str/split #"\.")
+    first
+    (#(format "v%s.x" %))
+    (keyword)))
 
 
 
@@ -180,7 +203,7 @@
    :publish-delay 5000
    :index-pattern "'mulog-'yyyy.MM.dd"
    :name-mangling true
-   :els-version   :v7.x   ;; one of: `:v6.x`, `:v7.x`
+   :els-version   :auto   ;; one of: `:v6.x`, `:v7.x`, `:auto`
    ;; function to transform records
    :transform     identity
    })
@@ -193,7 +216,8 @@
   (ElasticSearchPublisher.
     (as-> config $
       (merge DEFAULT-CONFIG $)
-      (update $ :url normalize-endpoint-url)
+      ;; autodetect version when set to `:auto`
+      (update $ :els-version (fn [v] (if (= v :auto) (or (detect-version url) :v7.x) v)))
       (assoc $ :index* (index-name (:index-pattern $))))
     (rb/agent-buffer 20000)
     (or (:transform config) identity)))

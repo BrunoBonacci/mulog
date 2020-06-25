@@ -634,8 +634,8 @@ The available configuration options:
 
 
  ;; The ElasticSearch version family.
- ;; one of: `:v6.x`  `:v7.x`
- :els-version   :v7.x
+ ;; one of: `:auto` `:v6.x`  `:v7.x`
+ :els-version   :auto
 
  ;; the maximum number of events which can be sent in a single
  ;; batch request to ElasticSearch
