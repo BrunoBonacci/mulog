@@ -217,7 +217,7 @@
     (as-> config $
       (merge DEFAULT-CONFIG $)
       ;; autodetect version when set to `:auto`
-      (update $ :els-version (fn [v] (if (= v :auto) (or (detect-version url) :v7.x) v)))
+      (update $ :els-version (fn [v] (if (= v :auto) (or (detect-els-version url) :v7.x) v)))
       (assoc $ :index* (index-name (:index-pattern $))))
     (rb/agent-buffer 20000)
     (or (:transform config) identity)))
