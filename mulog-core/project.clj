@@ -25,5 +25,6 @@
                    :resource-paths ["dev-resources"]
                    :plugins      [[lein-midje "3.2.2"]]}}
 
+  :auto    {"javac" {:file-pattern #"\.java$"}}
   :aliases {"test" "midje"}
   )

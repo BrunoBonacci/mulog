@@ -193,6 +193,20 @@
   ;; Variance from outliers : 12.6407 % Variance is moderately inflated by outliers
 
 
+  (bench (Flake/parseFlake (.toString (Flake/flake))))
+  ;; Evaluation count : 380853420 in 60 samples of 6347557 calls.
+  ;;
+  ;; Execution time mean : 155.868847 ns (- 78ns => 77s)
+  ;; Execution time std-deviation : 16.031191 ns
+  ;; Execution time lower quantile : 145.733294 ns ( 2.5%)
+  ;; Execution time upper quantile : 186.844744 ns (97.5%)
+  ;; Overhead used : 2.116975 ns
+  ;;
+  ;; Found 3 outliers in 60 samples (5.0000 %)
+  ;; low-severe  3 (5.0000 %)
+  ;; Variance from outliers : 70.4022 % Variance is severely inflated by outliers
+
+
   (bench (.getTimestampNanos (Flake/flake)))
   ;; Evaluation count : 1562994420 in 60 samples of 26049907 calls.
   ;; Execution time mean : 36.792359 ns

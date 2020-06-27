@@ -102,3 +102,18 @@
   [f ^java.io.Writer w]
   (.write w "#mulog/flake ")
   (print-method (str f) w))
+
+
+
+(defmethod print-dup Flake
+  [f ^java.io.Writer w]
+  (print-method f w))
+
+
+
+;; Reader macro data reader
+(defn read-method
+  "Reader method"
+  [flake]
+  {:pre [(string? flake)]}
+  (Flake/parseFlake flake))

@@ -97,4 +97,30 @@
 
 
 
+(fact "Flake parsing"
+
+  (Flake/parseFlake nil) => nil
+
+  (Flake/parseFlake "Invalid !@#$%^& String") => nil
+
+  (let [flake (str (Flake/flake))]
+    (str (Flake/parseFlake flake)) => flake)
+  )
+
+
+
+(def always-parse-property
+  "For all flakes,  f1 == parse(str(f1))"
+  (gen/no-shrink
+    (prop/for-all
+      [f flake]
+      (= f (Flake/parseFlake (str f))))))
+
+
+
+(fact "Property: Ensures that parsing a flake always results with the original flake"
+  (tc/quick-check 100000 always-parse-property)
+  => (contains {:pass? true}))
+
+
 ;;

@@ -248,6 +248,70 @@ public class Flake implements Comparable<Flake> {
     }
 
 
+    /**
+     * A lookup from the character in the Flake string
+     * (minus first char) back to the byte value.
+     * This is the reverse lookup if `chars`
+     */
+    private static final byte[] reverseChars = new byte[]{
+        0, -1, -1,
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+        -1, -1, -1, -1, -1, -1, -1,
+        11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+        21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+        31, 32, 33, 34, 35, 36,
+        -1, -1, -1, -1, 37, -1,
+        38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
+        48, 49, 50, 51, 52, 53, 54, 55, 56, 57,
+        58, 59, 60, 61, 62, 63
+    };
+
+
+    /**
+     * It parses a Flake string in base64 and returns
+     * the corresponding bytes, null otherwise.
+     */
+    private static final byte[] base64ToBytes(String flake){
+        if( flake == null || flake.length() != 32)
+            return null;
+
+        byte[] buf6 = new byte[32];  // 6 bits each byte
+        byte[] buf  = new byte[24];  // 8 bits each byte
+
+        // convert character to byte value
+        for( int i = 0; i < flake.length(); i++){
+            int c = flake.charAt(i) - chars[0];
+            if( c < 0 || c > reverseChars.length ) return null;
+            byte b =  reverseChars[c];
+            if( b == -1) return null;
+            buf6[i] = b;
+        }
+
+        // compact 4 bytes of 6 bits each into
+        // 3 bytes of 8 bits
+        int bix = 0;
+        for( int i = 0; i < buf6.length; i += 4){
+            buf[bix++] = (byte) ((buf6[i] << 2) | (buf6[i+1] >>> 4));
+            buf[bix++] = (byte) (((buf6[i+1] & 0b00001111) << 4) | (buf6[i+2] >>> 2));
+            buf[bix++] = (byte) (((buf6[i+2] & 0b00000011) << 6) | buf6[i+3]);
+        }
+
+        return buf;
+    }
+
+
+    /**
+     * It parses a Flake string in base64 and returns
+     * the corresponding bytes, null otherwise.
+     */
+    public static final Flake parseFlake(String flake){
+        byte[] bytes = base64ToBytes(flake);
+        if( bytes == null )
+            return null;
+        else
+            return Flake.makeFlake( bytes );
+    }
+
 
     private static final char[] hexChars = new char[]{
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
