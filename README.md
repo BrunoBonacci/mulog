@@ -49,6 +49,15 @@ Available publishers:
 
 ## Motivation
 
+It is not the intention of ***µ/log*** to be a logging system in the
+sense of Log4j et al. In any significant project I worked in the last
+15 years, logging text messages resulted in a large amount of strings
+which was hard to make sense of, thus mostly ignored. ***µ/log***'s
+idea is to replace the "*3 Pillars of Observability*" with a more
+fundamental concept: "**the event**". Event-based data is easy to
+index, search, augment, aggregate and visualise therefore can easily
+replace traditional logs, metrics and traces.
+
 Existing logging libraries are based on a design from the 80s and
 early 90s.  Most of the systems at the time where developed in
 standalone servers where logging messages to console or file was the
