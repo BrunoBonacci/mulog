@@ -31,11 +31,15 @@
 
 
 
-(defmacro with-test-publisher
-  ""
-  {:style/indent 0}
-  [& body]
-  `(with-processing-publisher {} ~@body))
+(defn wait-until
+  "it waits for test* (thunk) to return true or for `or-at-most` millis to have passed."
+  [test* or-at-most]
+  (let [start (System/currentTimeMillis)]
+    (loop []
+      (when-not (or (test*)
+                  (> (- (System/currentTimeMillis) start) or-at-most))
+        (Thread/sleep (/ or-at-most 5))
+        (recur)))))
 
 
 
@@ -44,6 +48,11 @@
   `(let [cfg#     (merge {:process identity :rounds 1} ~config)
          inbox#   (atom (rb/ring-buffer 100))
          outbox#  (atom [])
+         flush#   (atom 0)
+         w#       (add-watch outbox# :flush
+                    (fn [_# _# o# n#]
+                      (when (< (count o#) (count n#))
+                        (swap! flush# inc))))
          gbc#     @com.brunobonacci.mulog/global-context
          _#       (reset! com.brunobonacci.mulog/global-context {})
          tp#      (test-publisher outbox# (:process cfg#))
@@ -54,11 +63,21 @@
 
      (reset! com.brunobonacci.mulog/global-context gbc#)
      ;; wait for the publisher to deliver the events
-     (Thread/sleep (* (inc (:rounds cfg#))
-                     uc/PUBLISH-INTERVAL))
+     (wait-until
+       (fn [] (> @flush# 0))
+       (* (inc (:rounds cfg#))
+         uc/PUBLISH-INTERVAL))
      ;; stop the publisher
      (sp#)
      @outbox#))
+
+
+
+(defmacro with-test-publisher
+  ""
+  {:style/indent 0}
+  [& body]
+  `(with-processing-publisher {} ~@body))
 
 
 

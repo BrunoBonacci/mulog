@@ -7,8 +7,7 @@
 
 (fact "a successful delivery"
 
-  (tp/with-processing-publisher
-      {}
+  (tp/with-test-publisher
     (u/log :test))
 
   => (just
@@ -20,12 +19,11 @@
 
 (fact "the inbox buffer limits the number of events"
 
-  (tp/with-processing-publisher
-      {}
+  (tp/with-test-publisher
     (dotimes [_ 200]
       (u/log :test)))
 
-  => (n-of (contains {:mulog/event-name :test}) 100)
+  => #(<= (count %) 100)
   )
 
 
