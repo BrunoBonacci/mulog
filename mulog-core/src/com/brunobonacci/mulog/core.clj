@@ -86,7 +86,7 @@
                 ;; remove items up to the offset
                 (swap! buf rb/dequeue offset)))))
         (catch Exception x
-          ;; TODO:
+          ;; TODO:log errors? (this shouldn't happen)
           (.printStackTrace x))))))
 
 
@@ -102,8 +102,9 @@
         deregister (fn [] (deregister-publisher! publisher-id))
 
 
+        ;; TODO: log errors
         publish (fn [] (send-off (p/agent-buffer publisher)
-                         (partial p/publish publisher)))
+                        (partial p/publish publisher)))
         ;; register periodic call publish
         stop (rb/recurring-task period publish)
 

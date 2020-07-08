@@ -107,7 +107,7 @@ to the downstream systems by the publishers.
   (let [^ScheduledFuture ftask
         (.scheduleAtFixedRate
           ^ScheduledThreadPoolExecutor timer-pool
-          (fn [] (try (task) (catch Exception x))) ;; TODO log
+          (fn [] (try (task) (catch Exception x))) ;; TODO log errors, this shouldn't happen
           delay-millis delay-millis TimeUnit/MILLISECONDS)]
     (fn [] (.cancel ftask true))))
 
