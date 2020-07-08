@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.3.0 - (unreleased)
+## v0.3.0 - (2020-07-08)
   - [**NEW**] Added Kinesis publisher (thanks to @etolbakov)
   - [**NEW**] Added Slack publisher (thanks to @anonimitoraf)
   - [**NEW**] Added JVM Metrics publisher (thanks to @PabloReszczynski)

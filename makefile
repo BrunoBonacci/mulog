@@ -62,7 +62,7 @@ all: ancient clean build
 #
 # Build
 #
-build: build-core build-els build-jvm-metrics build-kafka build-kinesis build-slack build-zipkin build-examples
+build: build-core build-json build-els build-jvm-metrics build-kafka build-kinesis build-slack build-zipkin build-examples
 - @printf "#\n# Building μ/log Completed!\n#\n"
 
 
@@ -172,7 +172,7 @@ deploy:
 - (cd mulog-elasticsearch;        lein deploy clojars)
 - (cd mulog-jvm-metrics;          lein deploy clojars)
 - (cd mulog-kafka;                lein deploy clojars)
-- (cd mulog-kinesis               lein deploy clojars)
+- (cd mulog-kinesis;              lein deploy clojars)
 - (cd mulog-slack;                lein deploy clojars)
 - (cd mulog-zipkin;               lein deploy clojars)
 
