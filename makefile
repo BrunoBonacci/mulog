@@ -63,6 +63,7 @@ all: ancient clean build
 # Build
 #
 build: build-core build-els build-jvm-metrics build-kafka build-kinesis build-slack build-zipkin build-examples
+# build: build-core build-els build-jvm-metrics build-kafka build-kinesis build-cloudwatch build-slack build-zipkin build-examples
 - @printf "#\n# Building μ/log Completed!\n#\n"
 
 

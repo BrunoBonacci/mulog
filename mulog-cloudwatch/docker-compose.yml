@@ -1,0 +1,11 @@
+version: '3'
+services:
+  localstack:
+    image: localstack/localstack:latest
+    ports:
+      - "4566-4599:4566-4599"
+    environment:
+      - USE_SSL=true
+      - SERVICES=cloudwatch,logs
+      - DEBUG=1
+      - LAMBDA_EXECUTOR=local

@@ -282,6 +282,12 @@
     config))
 
 
+(defmethod publisher-factory :cloudwatch
+  [config]
+  (load-dynamic-publisher
+    "com.brunobonacci.mulog.publishers.cloudwatch/cloudwatch-publisher"
+    config))
+
 
 (defmethod publisher-factory :slack
   [config]
