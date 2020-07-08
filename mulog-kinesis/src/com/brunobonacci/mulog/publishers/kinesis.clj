@@ -2,9 +2,8 @@
   (:require [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.utils :as ut]
             [com.brunobonacci.mulog.publisher :as p]
-            [cognitect.aws.client.api :as aws]
-            [cheshire.core :as json]
-            [cheshire.generate :as gen]))
+            [com.brunobonacci.mulog.common.json :as json]
+            [cognitect.aws.client.api :as aws]))
 
 
 
@@ -37,18 +36,9 @@
 
 
 
-;;
-;; Add Flake encoder to JSON generator
-;;
-(gen/add-encoder com.brunobonacci.mulog.core.Flake
-  (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
-    (gen/write-string json ^String (str x))))
-
-
-
 (defn- put-records
   [kinesis-client {:keys [stream-name key-field format] :as config} records]
-  (let [fmt* (if (= :json format) json/generate-string ut/edn-str)
+  (let [fmt* (if (= :json format) json/to-json ut/edn-str)
         request     (->> records
                       (map (juxt #(str (get % key-field)) fmt*))
                       (map (fn [[k v]]  {:PartitionKey k :Data v})))]
@@ -94,13 +84,13 @@
 (def ^:const DEFAULT-CONFIG
   {;; name of the stream where to send the data (REQUIRED)
    ;;:stream-name       "mulog"
-   :key-field           :mulog/trace-id
-   :max-items           KINESIS-MAX-RECORDS-NUMBER
-   :publish-delay       1000
-   :format    :json
+   :key-field             :mulog/trace-id
+   :max-items             KINESIS-MAX-RECORDS-NUMBER
+   :publish-delay         1000
+   :format                :json
    ;; function to transform records
-   :transform               identity
-   :kinesis-client-config   {:api  :kinesis}
+   :transform             identity
+   :kinesis-client-config {:api :kinesis}
    })
 
 

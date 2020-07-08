@@ -2,30 +2,12 @@
   (:require [com.brunobonacci.mulog.publisher :as p]
             [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.utils :as ut]
-            [cheshire.core :as json]
-            [cheshire.generate :as gen]
+            [com.brunobonacci.mulog.common.json :as json]
             [clojure.string :as str])
   (:import [java.util Map]
            [org.apache.kafka.clients.producer KafkaProducer ProducerRecord RecordMetadata]
            [org.apache.kafka.common.serialization StringSerializer Serializer]))
 
-
-
-;;
-;; Add Exception encoder to JSON generator
-;;
-(gen/add-encoder java.lang.Throwable
-  (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
-    (gen/write-string json ^String (ut/exception-stacktrace x))))
-
-
-
-;;
-;; Add Flake encoder to JSON generator
-;;
-(gen/add-encoder com.brunobonacci.mulog.core.Flake
-  (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
-    (gen/write-string json ^String (str x))))
 
 
 
@@ -89,7 +71,7 @@
 ;; TODO: handle records which can't be serialized.
 (defn- publish-records!
   [{:keys [key-field format topic producer*] :as  config} records]
-  (let [fmt* (if (= :json format) json/generate-string ut/edn-str)]
+  (let [fmt* (if (= :json format) json/to-json ut/edn-str)]
     (->> records
       (map (juxt #(get % key-field) fmt*))
       (map (fn [[k v]] (send! producer* topic k v)))
@@ -158,16 +140,16 @@
 (def ^:const DEFAULT-CONFIG
   {:max-items     1000
    :publish-delay 1000
-   :kafka {;; the comma-separated list of brokers to connect
-           ;; :bootstrap.servers "localhost:9092"
-           ;; you can add more kafka connection properties here
-           }
-   :topic "mulog"
+   :kafka         {;; the comma-separated list of brokers to connect
+                   ;; :bootstrap.servers "localhost:9092"
+                   ;; you can add more kafka connection properties here
+                   }
+   :topic         "mulog"
    ;; one of: :json, :edn
-   :format    :json
-   :key-field :mulog/trace-id
+   :format        :json
+   :key-field     :mulog/trace-id
    ;; function to transform records
-   :transform identity
+   :transform     identity
    })
 
 

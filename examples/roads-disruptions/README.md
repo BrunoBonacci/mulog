@@ -29,7 +29,9 @@ Alternatively, edit the `docker-compose.yaml` and add your local ip (non 127.0.0
 This is necessary for the producer to connect to the broker.
 
 1. Create a Slack Webhook at https://api.slack.com/messaging/webhooks.
-2. Update  `src/com/brunobonacci/disruptions/main.clj/DEFAULT-CONFIG`'s Slack Publisher's `:webhook-url` to the Webhook you created in the previous step
+2. Update `src/com/brunobonacci/disruptions/main.clj/DEFAULT-CONFIG`'s
+   Slack Publisher's `:webhook-url` to the Webhook you created in the
+   previous step, uncomment the configuration section
 3. Start Kafka and ElasticSearch in background
 ``` shell
 docker-compose rm -f && docker-compose up

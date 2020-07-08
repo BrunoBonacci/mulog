@@ -32,9 +32,9 @@
      ;; send events to zipkin
      {:type :zipkin :url  "http://localhost:9411/"}
      ;; send events to slack
-     {:type :slack
-      :webhook-url "https://hooks.slack.com/services/.../.../..."
-      :transform identity}]}})
+     #_{:type :slack
+        :webhook-url "https://hooks.slack.com/services/.../.../..."
+        :transform identity}]}})
 
 
 
