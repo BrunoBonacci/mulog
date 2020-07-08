@@ -8,7 +8,7 @@
 
 
 ## v0.2.0 - (2020-05-03)
-  - Added flag to support ElasticSearch v6.x correctly
+  - Added flag to support Elasticsearch v6.x correctly
   - Added `:mulog/trace-id` to base event with a flake (192 bit time-ordered unique id)
   - [**NEW**] Added Zipkin publisher
   - `μ/trace` function api change. (**BREAKING CHANGE**)

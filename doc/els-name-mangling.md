@@ -1,16 +1,16 @@
-# Attribute name mangling on ElasticSearch
+# Attribute name mangling on Elasticsearch
 
-ElasticSearch can ingest documents without the necessity to define a
+Elasticsearch can ingest documents without the necessity to define a
 schema ahead of time.
 
 It is generally a good idea to define a [Mapping](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html)
-(schema in ElasticSearch terms) for your indices.
+(schema in Elasticsearch terms) for your indices.
 
 A Mapping allows for better optimisations of your indexes.
-ElasticSearch is capable of inferring the Mapping if one is not
+Elasticsearch is capable of inferring the Mapping if one is not
 provided explicitly.
 
-This capability makes very easy and quick to get started with ElasticSearch.
+This capability makes very easy and quick to get started with Elasticsearch.
 However, if the inferred type is incorrect it can lead to problems.
 
 For example, if you have a record for your Order as following:
@@ -27,7 +27,7 @@ For example, if you have a record for your Order as following:
 ```
 
 The `orderId` is a number automatically incremented by the DB.
-If you index this document in ElasticSearch with:
+If you index this document in Elasticsearch with:
 
 ```
 >>> PUT http://localhost:9200/orders/_doc/43253
@@ -196,7 +196,7 @@ configuration:
 ``` clojure
 {:type :elasticsearch
 
- ;; ElasticSearch endpoint (REQUIRED)
+ ;; Elasticsearch endpoint (REQUIRED)
  :url  "http://localhost:9200/"
 
  ;; Whether or not to change the attribute names
