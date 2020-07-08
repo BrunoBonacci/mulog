@@ -39,7 +39,7 @@ Available publishers:
   * [Simple console publisher (stdout)](#simple-console-publisher)
   * [Simple file publisher](#simple-file-publisher)
   * [Multi-publisher](#multi-publisher)
-  * [ElasticSearch](#elasticsearch-publisher)
+  * [Elasticsearch](#elasticsearch-publisher)
   * [Apache Kafka](#apache-kafka-publisher)
   * [Kinesis](#kinesis-publisher)
   * [Slack](#slack-publisher)
@@ -301,9 +301,9 @@ Here some best practices to follow while logging events:
       (catch Exception x
         (μ/log ::actionX :exception x :status :failed)))
     ```
-    It will be easier to search for all the error in ElasticSearch
+    It will be easier to search for all the error in Elasticsearch
     just by looking the presence of the `exception` key
-    (ElasticSearch query example `exception:*`)
+    (Elasticsearch query example `exception:*`)
 
 ## ***μ/trace***
 ![since v0.2.0](https://img.shields.io/badge/since-v0.2.0-brightgreen)
@@ -326,7 +326,7 @@ distributed tracers such as [Zipkin](https://zipkin.io/) and participate
 into distributed traces.
 
 ***μ/trace*** data points are not confined to distributed tracers,
-but the data can be used and interpreted in ElasticSearch, in real-time
+but the data can be used and interpreted in Elasticsearch, in real-time
 streaming system which use Apache Kafka etc.
 
 Assume that you have a complex operation which you want to track the
@@ -638,7 +638,7 @@ It will initialize all the configured publishers and return a function
 with no arguments which when called will stop all the publishers.
 
 
-### ElasticSearch publisher
+### Elasticsearch publisher
 ![since v0.1.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)
 
 The events must be serializeable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
@@ -648,20 +648,20 @@ The available configuration options:
 ``` clojure
 {:type :elasticsearch
 
- ;; ElasticSearch endpoint (REQUIRED)
+ ;; Elasticsearch endpoint (REQUIRED)
  :url  "http://localhost:9200/"
 
 
- ;; The ElasticSearch version family.
+ ;; The Elasticsearch version family.
  ;; one of: `:auto` `:v6.x`  `:v7.x`
  :els-version   :auto
 
  ;; the maximum number of events which can be sent in a single
- ;; batch request to ElasticSearch
+ ;; batch request to Elasticsearch
  :max-items     5000
 
  ;; Interval in milliseconds between publish requests.
- ;; μ/log will try to send the records to ElasticSearch
+ ;; μ/log will try to send the records to Elasticsearch
  ;; with the interval specified.
  :publish-delay 5000
 

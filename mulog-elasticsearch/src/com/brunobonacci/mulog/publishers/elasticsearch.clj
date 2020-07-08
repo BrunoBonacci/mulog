@@ -153,7 +153,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(deftype ElasticSearchPublisher
+(deftype ElasticsearchPublisher
     [config buffer transform]
 
 
@@ -196,7 +196,7 @@
 (defn elasticsearch-publisher
   [{:keys [url max-items index-pattern] :as config}]
   {:pre [url]}
-  (ElasticSearchPublisher.
+  (ElasticsearchPublisher.
     (as-> config $
       (merge DEFAULT-CONFIG $)
       ;; autodetect version when set to `:auto`
