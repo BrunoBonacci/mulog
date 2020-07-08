@@ -282,7 +282,7 @@ Local context works across function boundaries:
 Here some best practices to follow while logging events:
 
   * Use namespaced keywords or qualified strings for the `event-name`
-  * Log values not opaque objects, objects will be turned into strings
+  * Log plain values, not opaque objects, objects will be turned into strings
     which diminishes their value
   * Do not log mutable values, since rendering is done asynchronously
     you could be logging a different state. If values are mutable
@@ -292,8 +292,18 @@ Here some best practices to follow while logging events:
   * Use global context to enrich events with application name,
     version, environment, host, OS pid, and other useful information
     so that it is always possible to determine the source of the event.
-
-
+    See [example here](https://github.com/BrunoBonacci/mulog/blob/master/examples/roads-disruptions/src/com/brunobonacci/disruptions/main.clj#L44-L46).
+  * If you have to log an error/exception put the exception object
+    with a `:exception` key. For example:
+    ```clojure
+    (try
+      (something)
+      (catch Exception x
+        (μ/log ::actionX :exception x :status :failed)))
+    ```
+    It will be easier to search for all the error in ElasticSearch
+    just by looking the presence of the `exception` key
+    (ElasticSearch query example `exception:*`)
 
 ## ***μ/trace***
 ![since v0.2.0](https://img.shields.io/badge/since-v0.2.0-brightgreen)
