@@ -11,8 +11,7 @@
 
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [com.brunobonacci/mulog #=(ver)]
-                 [cheshire "5.10.0"]
-
+                 [com.brunobonacci/mulog-json #=(ver)]
                  [com.cognitect.aws/api "0.8.456"]
                  [com.cognitect.aws/endpoints "1.1.11.789"]
                  [com.cognitect.aws/logs "798.2.672.0"]]
@@ -30,10 +29,9 @@
                                   [lein-shell "0.5.0"]]}}
 
   :aliases {"test" ["do"
-                     ["shell" "docker-compose" "up" "-d"]
-                     ["shell" "sleep" "5"]
-                     ["midje"]
-                     ["shell" "docker-compose" "kill"]
-                     ["shell" "docker-compose" "rm" "-f"]
-                    ]}
+                    ["shell" "docker-compose" "up" "-d"]
+                    ["shell" "sleep" "5"]
+                    ["midje"]
+                    ["shell" "docker-compose" "kill"]
+                    ["shell" "docker-compose" "rm" "-f"]]}
   )

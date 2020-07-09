@@ -2,14 +2,17 @@
   (:require [com.brunobonacci.mulog.publisher :as p]
             [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.utils :as ut]
-            [cognitect.aws.client.api :as aws]
-            [cheshire.core :as json]
-            [cheshire.generate :as gen]))
+            [com.brunobonacci.mulog.common.json :as json]
+            [cognitect.aws.client.api :as aws]))
+
+(defn- has-invalid-token?
+  [type]
+  (= "InvalidSequenceTokenException" type))
 
 
-(defn- has-failures?
+(defn- has-anomaly?
   [rs]
-  (not (= {} rs)))
+  (contains? rs :cognitect.anomalies/category))
 
 
 (defn- create-cloudwatch-client
@@ -18,39 +21,35 @@
 
 
 (defn- publish!
-  [cloudwatch-client group-name stream-name records]
-  (let [create-rs (aws/invoke cloudwatch-client {:op :CreateLogStream
-                                                 :request {:logGroupName group-name
-                                                           :logStreamName stream-name}})]
-    (if (has-failures? create-rs)
-      (throw
-        (ex-info
-          (str "μ/log cloudwatch publisher failure, group '" group-name "'" " stream '"  stream-name "'")
-          {:rs create-rs}))
-      (aws/invoke cloudwatch-client {:op      :PutLogEvents
-                                     :request {:logGroupName  group-name
-                                               :logStreamName stream-name
-                                               :logEvents     records}
-                                     }))))
+  [cloudwatch-client group-name stream-name records next-token]
+  (let [rq {:logGroupName  group-name
+            :logStreamName stream-name
+            :logEvents     records}
+        token @next-token
+        rs  (aws/invoke cloudwatch-client {:op  :PutLogEvents
+                                           :request (if (nil? token)
+                                                     rq
+                                                     (merge rq token))})]
 
-
-;;
-;; Add Flake encoder to JSON generator
-;;
-(gen/add-encoder com.brunobonacci.mulog.core.Flake
-                 (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
-                   (gen/write-string json ^String (str x))))
-
+    (if (has-anomaly? rs)
+      (if (has-invalid-token? (:__type rs) )
+        (swap! next-token assoc :sequenceToken (:expectedSequenceToken rs))
+        (throw
+          (ex-info
+            (str "μ/log cloudwatch publisher publish failure, group '"
+                 group-name "'" " stream '"
+                 stream-name "' reason '" (:message rs) "'")
+            {:rs rs})))
+      (swap! next-token assoc :sequenceToken (:nextSequenceToken rs)))))
 
 
 (defn- put-log-events
-  [cw-client {:keys [group-name key-field format] :as config} records]
-  (let [fmt* (if (= :json format) json/generate-string ut/edn-str)
+  [cw-client stream-name {:keys [group-name format] :as config} records  next-token]
+  (let [fmt*     (if (= :json format) json/to-json ut/edn-str)
         request  (->> records
-                         (map (juxt #(str (get % key-field)) fmt*))
-                         (map (fn [[k v]] {:timestamp (Long/parseLong k) :message v})))
-        stream-name  (ut/puid)]
-    (publish! cw-client group-name stream-name request)))
+                         (map (juxt #(get % :mulog/timestamp) fmt*))
+                         (map (fn [[k v]] {:timestamp k :message v})))]
+    (publish! cw-client group-name stream-name request  next-token)))
 
 
 
@@ -61,7 +60,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (deftype CloudwatchPublisher
-  [config buffer transform cw-client]
+  [config buffer transform cw-client stream-name next-token]
 
   com.brunobonacci.mulog.publisher.PPublisher
   (agent-buffer [_]
@@ -78,14 +77,13 @@
         buffer
         ;; else send to cloudwatch
         (do
-          (put-log-events cw-client config (transform (map second items)))
+          (put-log-events cw-client stream-name config (transform (map second items)) next-token)
           (rb/dequeue buffer last-offset))))))
 
 
 (def ^:const DEFAULT-CONFIG
   {;; name of the cloudwatch group where to put the data (REQUIRED)
    ;:group-name              "mulog"
-   :key-field                :mulog/timestamp
    :max-items                5000
    :publish-delay            1000
    :format                   :json
@@ -96,11 +94,25 @@
 (defn cloudwatch-publisher
   [{:keys [group-name] :as config}]
   {:pre [group-name]}
-  (let [cfg (as-> config $
-                  (merge DEFAULT-CONFIG $))]
-
-    (CloudwatchPublisher.
-      cfg
-      (rb/agent-buffer 10000)
-      (or (:transform cfg) identity)
-      (create-cloudwatch-client (:cloudwatch-client-config cfg)))))
+  (let [cfg               (->> config
+                               (merge DEFAULT-CONFIG))
+        cloudwatch-client (create-cloudwatch-client (:cloudwatch-client-config cfg))
+        token             (atom nil)
+        stream-name       (ut/puid)
+        rs                (aws/invoke cloudwatch-client {:op :CreateLogStream
+                                                         :request {:logGroupName group-name
+                                                                   :logStreamName stream-name}})]
+    (if (has-anomaly? rs)
+      (throw
+        (ex-info
+          (str "μ/log cloudwatch publisher initialization failure, group '"
+               group-name "'" " stream '"
+               stream-name "' reason '" (:message rs) "'")
+          {:rs rs}))
+      (CloudwatchPublisher.
+        cfg
+        (rb/agent-buffer 10000)
+        (or (:transform cfg) identity)
+        cloudwatch-client
+        stream-name
+        token))))
