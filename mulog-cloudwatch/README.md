@@ -1,11 +1,11 @@
 # μ/log -> Cloudwatch publisher
 [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog.svg)](https://clojars.org/com.brunobonacci/mulog)  [![cljdoc badge](https://cljdoc.org/badge/com.brunobonacci/mulog)](https://cljdoc.org/d/com.brunobonacci/mulog/CURRENT) ![CircleCi](https://img.shields.io/circleci/project/BrunoBonacci/mulog.svg) ![last-commit](https://img.shields.io/github/last-commit/BrunoBonacci/mulog.svg)
 
-This project contains the `publisher` for [Cloudwatch](https://aws.amazon.com/kinesis/)
+This project contains the `publisher` for [Amazon CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html)
 
 
 ## Usage
-A μ/log publisher for Cloudwatch.
+A μ/log publisher for Amazon CloudWatch Logs.
 
 Please see [README](../README.md#cloudwatch-publisher) on main page.
 
@@ -18,7 +18,7 @@ Alternatively, start AWS Localstack with the configured cloudwatch service
 ``` shell
 docker-compose rm -f && docker-compose up -d
 ```
-and execute `cloudwatch-test.clj` manually 
+and execute `cloudwatch-test.clj` in REPL 
 
 ## License
 
