@@ -1,7 +1,7 @@
 (ns com.brunobonacci.mulog.publishers.kinesis.test-publisher
   (:require [com.brunobonacci.mulog :as μ]
             [com.brunobonacci.mulog.utils :as ut]
-            [cheshire.core :as json]
+            [com.brunobonacci.mulog.common.json :as json]
             [cognitect.aws.client.api :as aws])
   (:import (java.util.concurrent TimeUnit)))
 
@@ -22,7 +22,7 @@
     (first)
     (:Data)
     (slurp)
-    (json/parse-string true)))
+    (json/from-json)))
 
 
 

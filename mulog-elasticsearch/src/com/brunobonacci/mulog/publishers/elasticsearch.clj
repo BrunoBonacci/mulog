@@ -3,22 +3,12 @@
             [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.utils :as ut]
             [com.brunobonacci.mulog.publishers.util :as u]
+            [com.brunobonacci.mulog.common.json :as json]
             [clj-http.client :as http]
-            [cheshire.core :as json]
-            [cheshire.generate :as gen]
             [clojure.string :as str]
             [clj-time.format :as tf]
             [clj-time.coerce :as tc]
             [clojure.walk :as w]))
-
-
-
-;;
-;; Add Flake encoder to JSON generator
-;;
-(gen/add-encoder com.brunobonacci.mulog.core.Flake
-  (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
-    (gen/write-string json ^String (str x))))
 
 
 
@@ -68,13 +58,6 @@
 
 
 
-;; TODO: handle records which can't be serialized.
-(defn- to-json
-  [m]
-  (json/generate-string m {:date-format "yyyy-MM-dd'T'HH:mm:ss.SSSX"}))
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
 ;;         ----==| P O S T   T O   E L A S T I C S E A R C H |==----          ;;
@@ -94,13 +77,13 @@
                                 (when trace-id {:_id (str trace-id)})
                                 ;; https://www.elastic.co/guide/en/elasticsearch/reference/7.x/removal-of-types.html
                                 (when (= els-version :v6.x) {:_type "_doc"}))]
-                  [(str (json/generate-string {:index metaidx}) \newline)
+                  [(str (json/to-json {:index metaidx}) \newline)
                    (-> r
                      (mangler)
                      (dissoc :mulog/timestamp)
                      (assoc "@timestamp" (format-date-from-long timestamp))
                      (ut/remove-nils)
-                     (to-json)
+                     (json/to-json)
                      (#(str % \newline)))]))))))
 
 
@@ -170,7 +153,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(deftype ElasticSearchPublisher
+(deftype ElasticsearchPublisher
     [config buffer transform]
 
 
@@ -213,7 +196,7 @@
 (defn elasticsearch-publisher
   [{:keys [url max-items index-pattern] :as config}]
   {:pre [url]}
-  (ElasticSearchPublisher.
+  (ElasticsearchPublisher.
     (as-> config $
       (merge DEFAULT-CONFIG $)
       ;; autodetect version when set to `:auto`

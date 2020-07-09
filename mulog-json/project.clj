@@ -1,6 +1,6 @@
 (defn ver [] (-> "../ver/mulog.version" slurp .trim))
-(defproject com.brunobonacci/mulog-kafka #=(ver)
-  :description "A publisher for μ/log to Kafka."
+(defproject com.brunobonacci/mulog-json #=(ver)
+  :description "μ/log json handling"
 
   :url "https://github.com/BrunoBonacci/mulog"
 
@@ -11,8 +11,7 @@
 
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [com.brunobonacci/mulog #=(ver)]
-                 [com.brunobonacci/mulog-json #=(ver)]
-                 [org.apache.kafka/kafka-clients "2.5.0"]]
+                 [cheshire "5.10.0"]]
 
   :global-vars {*warn-on-reflection* true}
 
@@ -20,8 +19,7 @@
 
   :profiles {:dev {:dependencies [[midje "1.9.9"]
                                   [org.clojure/test.check "1.0.0"]
-                                  [criterium "0.4.6"]
-                                  [org.slf4j/slf4j-log4j12 "2.0.0-alpha1"]]
+                                  [criterium "0.4.6"]]
                    :resource-paths ["dev-resources"]
                    :plugins      [[lein-midje "3.2.2"]]}}
 

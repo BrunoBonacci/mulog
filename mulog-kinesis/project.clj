@@ -11,12 +11,12 @@
 
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [com.brunobonacci/mulog #=(ver)]
+                 [com.brunobonacci/mulog-json #=(ver)]
                  [clj-http "3.10.1"]
-                 [cheshire "5.10.0"]
                  [clj-time "0.15.2"]
 
                  [com.cognitect.aws/api "0.8.456"]
-                 [com.cognitect.aws/endpoints "1.1.11.789"]
+                 [com.cognitect.aws/endpoints "1.1.11.813"]
                  [com.cognitect.aws/kinesis "770.2.568.0"]
                  [com.cognitect.aws/sts "798.2.678.0"]]
 
@@ -26,16 +26,16 @@
 
   :profiles {:dev {:dependencies [[midje "1.9.9"]
                                   [org.clojure/test.check "1.0.0"]
-                                  [criterium "0.4.5"]
+                                  [criterium "0.4.6"]
                                   [org.slf4j/slf4j-log4j12 "2.0.0-alpha1"]]
                    :resource-paths ["dev-resources"]
                    :plugins      [[lein-midje "3.2.2"]
                                   [lein-shell "0.5.0"]]}}
 
   :aliases {"test" ["do"
-                     ["shell" "docker-compose" "up" "-d"]
-                     ["shell" "sleep" "5"]
-                     ["midje"]
-                     ["shell" "docker-compose" "kill"]
-                     ["shell" "docker-compose" "rm" "-f"]]}
+                    ["shell" "docker-compose" "up" "-d"]
+                    ["shell" "sleep" "5"]
+                    ["midje"]
+                    ["shell" "docker-compose" "kill"]
+                    ["shell" "docker-compose" "rm" "-f"]]}
   )

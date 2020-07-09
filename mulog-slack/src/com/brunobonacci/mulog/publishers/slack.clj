@@ -2,8 +2,8 @@
   (:require [com.brunobonacci.mulog.publisher :as p]
             [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.utils :as ut]
+            [com.brunobonacci.mulog.common.json :as json]
             [clj-http.client :as http]
-            [cheshire.core :as json]
             [clj-time.format :as tf]
             [clj-time.coerce :as tc]
             [clojure.string :as str]))
@@ -41,7 +41,7 @@
      :accept :json
      :socket-timeout publish-delay
      :connection-timeout publish-delay
-     :body (json/generate-string {:text message})}))
+     :body (json/to-json {:text message})}))
 
 
 
@@ -98,4 +98,4 @@
   {:pre [webhook-url transform]}
   (SlackPublisher.
     (merge default-config config)
-    (rb/agent-buffer 1000)))
+    (rb/agent-buffer 100)))

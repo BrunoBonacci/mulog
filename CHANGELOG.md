@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.3.0 - (unreleased)
+## v0.3.0 - (2020-07-08)
   - [**NEW**] Added Kinesis publisher (thanks to @etolbakov)
   - [**NEW**] Added Slack publisher (thanks to @anonimitoraf)
   - [**NEW**] Added JVM Metrics publisher (thanks to @PabloReszczynski)
@@ -8,7 +8,7 @@
 
 
 ## v0.2.0 - (2020-05-03)
-  - Added flag to support ElasticSearch v6.x correctly
+  - Added flag to support Elasticsearch v6.x correctly
   - Added `:mulog/trace-id` to base event with a flake (192 bit time-ordered unique id)
   - [**NEW**] Added Zipkin publisher
   - `μ/trace` function api change. (**BREAKING CHANGE**)

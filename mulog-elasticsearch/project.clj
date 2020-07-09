@@ -1,6 +1,6 @@
 (defn ver [] (-> "../ver/mulog.version" slurp .trim))
 (defproject com.brunobonacci/mulog-elasticsearch #=(ver)
-  :description "A publisher for μ/log to ElasticSearch."
+  :description "A publisher for μ/log to Elasticsearch."
 
   :url "https://github.com/BrunoBonacci/mulog"
 
@@ -11,8 +11,8 @@
 
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [com.brunobonacci/mulog #=(ver)]
+                 [com.brunobonacci/mulog-json #=(ver)]
                  [clj-http "3.10.1"]
-                 [cheshire "5.10.0"]
                  [clj-time "0.15.2"]]
 
   :global-vars {*warn-on-reflection* true}
@@ -21,7 +21,7 @@
 
   :profiles {:dev {:dependencies [[midje "1.9.9"]
                                   [org.clojure/test.check "1.0.0"]
-                                  [criterium "0.4.5"]
+                                  [criterium "0.4.6"]
                                   [org.slf4j/slf4j-log4j12 "2.0.0-alpha1"]]
                    :resource-paths ["dev-resources"]
                    :plugins      [[lein-midje "3.2.2"]]}}

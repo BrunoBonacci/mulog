@@ -29,8 +29,10 @@ Alternatively, edit the `docker-compose.yaml` and add your local ip (non 127.0.0
 This is necessary for the producer to connect to the broker.
 
 1. Create a Slack Webhook at https://api.slack.com/messaging/webhooks.
-2. Update  `src/com/brunobonacci/disruptions/main.clj/DEFAULT-CONFIG`'s Slack Publisher's `:webhook-url` to the Webhook you created in the previous step
-3. Start Kafka and ElasticSearch in background
+2. Update `src/com/brunobonacci/disruptions/main.clj/DEFAULT-CONFIG`'s
+   Slack Publisher's `:webhook-url` to the Webhook you created in the
+   previous step, uncomment the configuration section
+3. Start Kafka and Elasticsearch in background
 ``` shell
 docker-compose rm -f && docker-compose up
 ```
@@ -60,8 +62,8 @@ The logs will be sent to the following destinations:
   - Console standard output
   - Filesystem: `/tmp/mulog/events.log`
   - Kafka topic: `mulog`
-  - ElasticSearch index `mulog-YYYY.MM.DD`
-  - Zipkin + ElasticSearch (console http://localhost:9411/)
+  - Elasticsearch index `mulog-YYYY.MM.DD`
+  - Zipkin + Elasticsearch (console http://localhost:9411/)
 
 To see the events sent to Kafka run:
 

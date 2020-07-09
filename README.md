@@ -39,7 +39,7 @@ Available publishers:
   * [Simple console publisher (stdout)](#simple-console-publisher)
   * [Simple file publisher](#simple-file-publisher)
   * [Multi-publisher](#multi-publisher)
-  * [ElasticSearch](#elasticsearch-publisher)
+  * [Elasticsearch](#elasticsearch-publisher)
   * [Apache Kafka](#apache-kafka-publisher)
   * [Kinesis](#kinesis-publisher)
   * [Slack](#slack-publisher)
@@ -93,10 +93,10 @@ In order to use the library add the dependency to your `project.clj`
 
 ``` clojure
 ;; Leiningen project
-[com.brunobonacci/mulog "0.2.0"]
+[com.brunobonacci/mulog "0.3.0"]
 
 ;; deps.edn format
-{:deps { com.brunobonacci/mulog {:mvn/version "0.2.0"}}}
+{:deps { com.brunobonacci/mulog {:mvn/version "0.3.0"}}}
 ```
 
 Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog.svg)](https://clojars.org/com.brunobonacci/mulog)
@@ -282,7 +282,7 @@ Local context works across function boundaries:
 Here some best practices to follow while logging events:
 
   * Use namespaced keywords or qualified strings for the `event-name`
-  * Log values not opaque objects, objects will be turned into strings
+  * Log plain values, not opaque objects, objects will be turned into strings
     which diminishes their value
   * Do not log mutable values, since rendering is done asynchronously
     you could be logging a different state. If values are mutable
@@ -292,8 +292,18 @@ Here some best practices to follow while logging events:
   * Use global context to enrich events with application name,
     version, environment, host, OS pid, and other useful information
     so that it is always possible to determine the source of the event.
-
-
+    See [example here](https://github.com/BrunoBonacci/mulog/blob/master/examples/roads-disruptions/src/com/brunobonacci/disruptions/main.clj#L44-L46).
+  * If you have to log an error/exception put the exception object
+    with a `:exception` key. For example:
+    ```clojure
+    (try
+      (something)
+      (catch Exception x
+        (μ/log ::actionX :exception x :status :failed)))
+    ```
+    It will be easier to search for all the error in Elasticsearch
+    just by looking the presence of the `exception` key
+    (Elasticsearch query example `exception:*`)
 
 ## ***μ/trace***
 ![since v0.2.0](https://img.shields.io/badge/since-v0.2.0-brightgreen)
@@ -316,7 +326,7 @@ distributed tracers such as [Zipkin](https://zipkin.io/) and participate
 into distributed traces.
 
 ***μ/trace*** data points are not confined to distributed tracers,
-but the data can be used and interpreted in ElasticSearch, in real-time
+but the data can be used and interpreted in Elasticsearch, in real-time
 streaming system which use Apache Kafka etc.
 
 Assume that you have a complex operation which you want to track the
@@ -628,7 +638,7 @@ It will initialize all the configured publishers and return a function
 with no arguments which when called will stop all the publishers.
 
 
-### ElasticSearch publisher
+### Elasticsearch publisher
 ![since v0.1.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)
 
 The events must be serializeable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
@@ -638,20 +648,20 @@ The available configuration options:
 ``` clojure
 {:type :elasticsearch
 
- ;; ElasticSearch endpoint (REQUIRED)
+ ;; Elasticsearch endpoint (REQUIRED)
  :url  "http://localhost:9200/"
 
 
- ;; The ElasticSearch version family.
+ ;; The Elasticsearch version family.
  ;; one of: `:auto` `:v6.x`  `:v7.x`
  :els-version   :auto
 
  ;; the maximum number of events which can be sent in a single
- ;; batch request to ElasticSearch
+ ;; batch request to Elasticsearch
  :max-items     5000
 
  ;; Interval in milliseconds between publish requests.
- ;; μ/log will try to send the records to ElasticSearch
+ ;; μ/log will try to send the records to Elasticsearch
  ;; with the interval specified.
  :publish-delay 5000
 

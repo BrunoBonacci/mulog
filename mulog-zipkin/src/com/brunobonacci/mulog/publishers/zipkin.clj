@@ -3,31 +3,10 @@
             [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.utils :as ut]
             [com.brunobonacci.mulog.flakes :as f :refer [flake]]
+            [com.brunobonacci.mulog.common.json :as json]
+            [com.brunobonacci.mulog :as u]
             [clj-http.client :as http]
-            [cheshire.core :as json]
-            [cheshire.generate :as gen]
-            [clojure.string :as str]
-            [com.brunobonacci.mulog :as u]))
-
-
-
-;;
-;; Add Exception encoder to JSON generator
-;;
-(gen/add-encoder java.lang.Throwable
-  (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
-    (gen/write-string json ^String (ut/exception-stacktrace x))))
-
-(gen/add-encoder com.brunobonacci.mulog.core.Flake
-  (fn [x ^com.fasterxml.jackson.core.JsonGenerator json]
-    (gen/write-string json ^String (str x))))
-
-
-
-;; TODO: handle records which can't be serialized.
-(defn- to-json
-  [m]
-  (json/generate-string m {:date-format "yyyy-MM-dd'T'HH:mm:ss.SSSX"}))
+            [clojure.string :as str]))
 
 
 
@@ -66,8 +45,8 @@
   (->> events
     (filter :mulog/root-trace)
     (map (fn [{:keys [mulog/trace-id mulog/parent-trace mulog/root-trace
-                      mulog/duration mulog/event-name mulog/timestamp
-                      app-name] :as e}]
+                     mulog/duration mulog/event-name mulog/timestamp
+                     app-name] :as e}]
            ;; zipkin IDs are much lower bits than flakes
            {:id        (hexify trace-id 16)
             :traceId   (hexify root-trace 32)
@@ -94,7 +73,7 @@
      :as     :json
      :socket-timeout     publish-delay
      :connection-timeout publish-delay
-     :body (to-json (prepare-records config records))}))
+     :body (json/to-json (prepare-records config records))}))
 
 
 

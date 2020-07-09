@@ -62,8 +62,7 @@ all: ancient clean build
 #
 # Build
 #
-build: build-core build-els build-jvm-metrics build-kafka build-kinesis build-slack build-zipkin build-examples
-# build: build-core build-els build-jvm-metrics build-kafka build-kinesis build-cloudwatch build-slack build-zipkin build-examples
+build: build-core build-json build-els build-jvm-metrics build-kafka build-kinesis build-cloudwatch build-slack build-zipkin build-examples
 - @printf "#\n# Building μ/log Completed!\n#\n"
 
 
@@ -75,6 +74,16 @@ build-core: mulog-core/target/mulog*.jar
 mulog-core/target/mulog*.jar: $(core_src)
 - @printf "#\n# Building mulog-core\n#\n"
 - (cd mulog-core; lein do check, test, install)
+
+
+#
+# Build JSON
+#
+json_src = $(shell find mulog-json/project.clj mulog-json/src mulog-json/resources -type f)
+build-json: build-core mulog-json/target/mulog*.jar
+mulog-json/target/mulog*.jar: $(json_src)
+- @printf "#\n# Building mulog-json\n#\n"
+- (cd mulog-json; lein do check, test, install)
 
 
 #
@@ -159,10 +168,12 @@ examples/roads-disruptions/target/roads-disruptions*.jar: $(disruptions_src)
 deploy:
 - @printf "#\n# Deploying jars \n#\n"
 - (cd mulog-core;                 lein deploy clojars)
+- (cd mulog-json;                 lein deploy clojars)
 - (cd mulog-elasticsearch;        lein deploy clojars)
 - (cd mulog-jvm-metrics;          lein deploy clojars)
 - (cd mulog-kafka;                lein deploy clojars)
-- (cd mulog-kinesis               lein deploy clojars)
+- (cd mulog-kinesis;              lein deploy clojars)
+- (cd mulog-cloudwatch;           lein deploy clojars)
 - (cd mulog-slack;                lein deploy clojars)
 - (cd mulog-zipkin;               lein deploy clojars)
 
@@ -174,10 +185,12 @@ deploy:
 ancient:
 - @printf "#\n# Updating dependencies \n#\n"
 - (cd mulog-core;                 lein with-profile tools ancient upgrade ; lein do clean, install)
+- (cd mulog-json;                 lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-elasticsearch;        lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-jvm-metrics;          lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-kafka;                lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-kinesis;              lein with-profile tools ancient upgrade ; lein do clean, install)
+- (cd mulog-cloudwatch;           lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-slack;                lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-zipkin;               lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd examples/roads-disruptions; lein with-profile tools ancient upgrade ; lein do clean, install)
@@ -190,10 +203,12 @@ ancient:
 clean:
 - @printf "#\n# Cleaning \n#\n"
 - (cd mulog-core;                 rm -fr target)
+- (cd mulog-json;                 rm -fr target)
 - (cd mulog-elasticsearch;        rm -fr target)
 - (cd mulog-jvm-metrics;          rm -fr target)
 - (cd mulog-kafka;                rm -fr target)
 - (cd mulog-kinesis;              rm -fr target)
+- (cd mulog-cloudwatch;           rm -fr target)
 - (cd mulog-slack;                rm -fr target)
 - (cd mulog-zipkin;               rm -fr target)
 - (cd examples/roads-disruptions; rm -fr target)

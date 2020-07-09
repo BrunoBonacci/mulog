@@ -11,9 +11,17 @@ Please see [README](../README.md#kinesis-publisher) on main page.
 
 ## Testing
 
+To test just run:
+``` shell
+lein test
+```
+
+
 Start AWS Localstack with the configured kinesis service
 ``` shell
 docker-compose rm -f && docker-compose up -d
+lein midje
+docker-compose kill && docker-compose rm -f
 ```
 
 ## License

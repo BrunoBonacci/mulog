@@ -19,7 +19,7 @@
 
   :profiles {:dev {:dependencies [[midje "1.9.9"]
                                   [org.clojure/test.check "1.0.0"]
-                                  [criterium "0.4.5"]
+                                  [criterium "0.4.6"]
                                   [com.clojure-goes-fast/clj-async-profiler "0.4.1"]]
                    :jvm-opts ["-server" "-Djdk.attach.allowAttachSelf"]
                    :resource-paths ["dev-resources"]
