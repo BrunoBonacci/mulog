@@ -289,9 +289,10 @@ Here some best practices to follow while logging events:
     capture the current state (deref) and log it.
   * Avoid logging deeply nested maps, they are hard to query.
   * Log timestamps with milliseconds precision.
-  * Use global context to enrich events with application name,
-    version, environment, host, OS pid, and other useful information
-    so that it is always possible to determine the source of the event.
+  * Use global context to enrich events with application name
+    (`:app-name`), version (`:version`), environment (`:env`), host,
+    OS pid, and other useful information so that it is always possible
+    to determine the source of the event.
     See [example here](https://github.com/BrunoBonacci/mulog/blob/master/examples/roads-disruptions/src/com/brunobonacci/disruptions/main.clj#L44-L46).
   * If you have to log an error/exception put the exception object
     with a `:exception` key. For example:
@@ -908,6 +909,16 @@ How to use it:
    :url  "http://localhost:9411/"})
 ```
 
+**NOTE: Zipkin requires an application name for the traces, use
+`set-global-context` to define one**, like:
+
+``` clojure
+  ;; set global context
+  (μ/set-global-context!
+    {:app-name "my-app", :version "0.1.0", :env "local"})
+```
+
+see [example here](https://github.com/BrunoBonacci/mulog/blob/master/examples/roads-disruptions/src/com/brunobonacci/disruptions/main.clj#L44-L46).
 
 ### Custom publishers
 ![since v0.1.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)
