@@ -105,18 +105,13 @@
 
 
 (defn remove-nils
-  "recursively remove nils from maps, vectors and lists."
+  "recursively remove nils from maps (in keys or values)"
   [m]
-  (->> m
-    (w/postwalk
-        (fn [i]
-          (cond
-            (map? i)        (into {} (remove (comp nil? second) i))
-            (map-entry? i)  i
-            (vector? i)     (into [] (remove nil? i))
-            (set? i)        (into #{} (remove nil? i))
-            (sequential? i) (remove nil? i)
-            :else           i)))))
+  (w/postwalk
+    #(if (map? %)
+       (into {} (remove (fn [[k v]] (or (nil? v) (nil? k))) %))
+       %)
+    m))
 
 
 
