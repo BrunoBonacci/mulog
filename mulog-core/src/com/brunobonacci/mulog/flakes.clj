@@ -8,12 +8,15 @@
  following characteristics:
 
   - **Monotonic IDs**
-    Every new ID is larger than the previous one. The idea is that the
-    'happens before' relationship applies to these IDs. If you observe
-    and Flake and you create a new one, the Flake is going to be larger
-    than the previous one.
-    Therefore the following condition should apply for all Flakes
-    `flake0 < flake1 < flake2 < ... < flakeN`
+    Every new ID is larger than the previous one. The idea is that
+    the 'happens before' relationship applies to these IDs. If you
+    observe a Flake and you create a new one in the same thread, the
+    new Flake is going to be larger than the previous one. There is
+    no synchronisation and it uses a wall clock as well as a
+    monotonic clock as part of the generation, therefore Flakes
+    created across processes/machines might suffer from clock skew
+    and hard reset.  Generally the following condition should apply
+    for all Flakes `flake0 < flake1 < flake2 < ... < flakeN`
 
   - **Two components: one time-based (64 bits), one random (128 bits)**
     The most significant bits are time based and they use a monotonic
