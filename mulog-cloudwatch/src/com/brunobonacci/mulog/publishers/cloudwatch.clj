@@ -44,11 +44,10 @@
 
 
 (defn- put-log-events
-  [cw-client stream-name {:keys [group-name format] :as config} records  next-token]
-  (let [fmt*     (if (= :json format) json/to-json ut/edn-str)
-        request  (->> records
-                         (map (juxt #(get % :mulog/timestamp) fmt*))
-                         (map (fn [[k v]] {:timestamp k :message v})))]
+  [cw-client stream-name {:keys [group-name] :as config} records  next-token]
+  (let [request  (->> records
+                      (map (juxt #(get % :mulog/timestamp) json/to-json))
+                      (map (fn [[k v]] {:timestamp k :message v})))]
     (publish! cw-client group-name stream-name request  next-token)))
 
 
@@ -86,7 +85,6 @@
    ;:group-name              "mulog"
    :max-items                5000
    :publish-delay            1000
-   :format                   :json
    ;; function to transform records
    :transform                identity
    :cloudwatch-client-config {:api :logs}})
