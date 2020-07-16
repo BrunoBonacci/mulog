@@ -6,8 +6,10 @@
             [cognitect.aws.client.api :as aws]))
 
 (defn- has-invalid-token?
-  [type]
-  (= "InvalidSequenceTokenException" type))
+  [rs]
+  (-> rs
+      (:__type)
+      (= "InvalidSequenceTokenException")))
 
 
 (defn- has-anomaly?
@@ -32,7 +34,7 @@
                                                      (merge rq token))})]
 
     (if (has-anomaly? rs)
-      (if (has-invalid-token? (:__type rs) )
+      (if (has-invalid-token? rs)
         (swap! next-token assoc :sequenceToken (:expectedSequenceToken rs))
         (throw
           (ex-info
