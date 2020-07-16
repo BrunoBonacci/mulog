@@ -22,6 +22,13 @@
   (aws/client params))
 
 
+(defn- create-log-stream
+  [client group-name stream-name]
+  (aws/invoke client {:op :CreateLogStream
+                      :request {:logGroupName group-name
+                                :logStreamName stream-name}}))
+
+
 (defn- publish!
   [cloudwatch-client group-name stream-name records next-token]
   (let [rq {:logGroupName  group-name
@@ -99,9 +106,7 @@
         cloudwatch-client (create-cloudwatch-client (:cloudwatch-client-config cfg))
         token             (atom nil)
         stream-name       (ut/puid)
-        rs                (aws/invoke cloudwatch-client {:op :CreateLogStream
-                                                         :request {:logGroupName group-name
-                                                                   :logStreamName stream-name}})]
+        rs                (create-log-stream cloudwatch-client group-name stream-name)]
     (if (has-anomaly? rs)
       (throw
         (ex-info
