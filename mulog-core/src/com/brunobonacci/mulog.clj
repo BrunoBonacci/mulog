@@ -257,8 +257,9 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   (μ/with-context {:order \"abc123\"}
     (μ/log ::item-processed :item-id \"sku-123\" :qt 2))
 
-  ;; {:mulog/timestamp 1572711123826,
+  ;; {:mulog/trace-id #mulog/flake \"4VIKxhMPB2eS0uc1EV9M9a5G7MYn3TMs\",
   ;;  :mulog/event-name :your-ns/item-processed,
+  ;;  :mulog/timestamp 1572711123826,
   ;;  :mulog/namespace \"your-ns\",
   ;;  :app-name \"mulog-demo\",
   ;;  :version \"0.1.0\",
@@ -309,14 +310,14 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   Will produce an event as follow:
 
   ``` Clojure
-  {:mulog/trace-id \"4VIKxhMPB2eS0uc1EV9M9a5G7MYn3TMs\",
+  {:mulog/trace-id #mulog/flake \"4VIKxhMPB2eS0uc1EV9M9a5G7MYn3TMs\",
    :mulog/event-name :your-ns/availability,
    :mulog/timestamp 1586804894278,
    :mulog/duration 253303600,
    :mulog/namespace \"your-ns\",
    :mulog/outcome :ok,
-   :mulog/root-trace \"4VILF82cx_mFKlbKN-PUTezsRdsn8XOY\",
-   :mulog/parent-trace \"4VILL47ifjeHTaaG3kAWtZoELvk9AGY9\",
+   :mulog/root-trace #mulog/flake \"4VILF82cx_mFKlbKN-PUTezsRdsn8XOY\",
+   :mulog/parent-trace #mulog/flake \"4VILL47ifjeHTaaG3kAWtZoELvk9AGY9\",
    :order \"34896-34556\",
    :product-id \"2345-23-545\",
    :user \"709-6567567\"}
@@ -366,14 +367,14 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   Will produce an event as follow:
 
   ``` Clojure
-  {:mulog/trace-id \"4VIKxhMPB2eS0uc1EV9M9a5G7MYn3TMs\",
+  {:mulog/trace-id #mulog/flake \"4VIKxhMPB2eS0uc1EV9M9a5G7MYn3TMs\",
    :mulog/event-name :your-ns/availability,
    :mulog/timestamp 1586804894278,
    :mulog/duration 253303600,
    :mulog/namespace \"your-ns\",
    :mulog/outcome :ok,
-   :mulog/root-trace \"4VILF82cx_mFKlbKN-PUTezsRdsn8XOY\",
-   :mulog/parent-trace \"4VILL47ifjeHTaaG3kAWtZoELvk9AGY9\",
+   :mulog/root-trace #mulog/flake \"4VILF82cx_mFKlbKN-PUTezsRdsn8XOY\",
+   :mulog/parent-trace #mulog/flake \"4VILL47ifjeHTaaG3kAWtZoELvk9AGY9\",
    :order \"34896-34556\",
    :product-id \"2345-23-545\",
    :user \"709-6567567\",
