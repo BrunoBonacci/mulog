@@ -1,0 +1,25 @@
+# VM invoker: /opt/jdk-14.0.1+7/bin/java
+
+Benchmark                                    Mode  Cnt     Score    Error  Units
+j.bench_0_log_call_simple.run                avgt   25   386.121 ± 16.155  ns/op
+j.bench_1_trace_call_simple.run              avgt   25  1234.145 ± 39.774  ns/op
+j.bench_2_trace_call_with_capture.run        avgt   25  2118.587 ± 35.110  ns/op
+j.bench_3_flake_creation.run                 avgt   25    33.209 ±  0.202  ns/op
+j.bench_4_flake_string_representation.run    avgt   25    76.861 ±  0.614  ns/op
+j.bench_5_flake_snowflake.run                avgt   25    72.815 ±  0.094  ns/op
+j.bench_6_flake_hex_representation.run       avgt   25    87.657 ±  5.976  ns/op
+j.bench_7_flake_create_and_parse_string.run  avgt   25   147.481 ±  0.971  ns/op
+
+
+
+# VM version: JDK 11.0.7, VM 11.0.7+10-jvmci-20.1-b02
+
+Benchmark                                    Mode  Cnt     Score    Error  Units
+j.bench_0_log_call_simple.run                avgt  200   280.324 ±  0.933  ns/op
+j.bench_1_trace_call_simple.run              avgt  200  1003.665 ±  7.976  ns/op
+j.bench_2_trace_call_with_capture.run        avgt  200  1440.242 ± 13.929  ns/op
+j.bench_3_flake_creation.run                 avgt  200    32.466 ±  0.072  ns/op
+j.bench_4_flake_string_representation.run    avgt  200    62.559 ±  0.067  ns/op
+j.bench_5_flake_snowflake.run                avgt  200    62.899 ±  0.277  ns/op
+j.bench_6_flake_hex_representation.run       avgt  200    68.918 ±  0.033  ns/op
+j.bench_7_flake_create_and_parse_string.run  avgt  200   147.093 ±  0.198  ns/op

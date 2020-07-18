@@ -1,0 +1,682 @@
+# JMH version: 1.23
+# AWS instance: c5.4xlarge
+# VM version: JDK 14.0.1, OpenJDK 64-Bit Server VM, 14.0.1+7
+# VM invoker: /opt/jdk-14.0.1+7/bin/java
+# VM options: -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.3.1 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1595084248772.bench_0_log_call_simple.run
+
+# Run progress: 0.00% complete, ETA 01:06:40
+# Fork: 1 of 5
+# Warmup Iteration   1: 366.665 ns/op
+# Warmup Iteration   2: 355.655 ns/op
+# Warmup Iteration   3: 355.746 ns/op
+# Warmup Iteration   4: 356.074 ns/op
+# Warmup Iteration   5: 356.383 ns/op
+Iteration   1: 356.244 ns/op
+Iteration   2: 356.471 ns/op
+Iteration   3: 357.223 ns/op
+Iteration   4: 357.386 ns/op
+Iteration   5: 357.042 ns/op
+
+# Run progress: 2.50% complete, ETA 01:05:49
+# Fork: 2 of 5
+# Warmup Iteration   1: 397.184 ns/op
+# Warmup Iteration   2: 377.710 ns/op
+# Warmup Iteration   3: 386.183 ns/op
+# Warmup Iteration   4: 386.173 ns/op
+# Warmup Iteration   5: 385.796 ns/op
+Iteration   1: 386.743 ns/op
+Iteration   2: 385.046 ns/op
+Iteration   3: 385.053 ns/op
+Iteration   4: 384.608 ns/op
+Iteration   5: 384.293 ns/op
+
+# Run progress: 5.00% complete, ETA 01:04:08
+# Fork: 3 of 5
+# Warmup Iteration   1: 376.186 ns/op
+# Warmup Iteration   2: 368.397 ns/op
+# Warmup Iteration   3: 367.262 ns/op
+# Warmup Iteration   4: 372.362 ns/op
+# Warmup Iteration   5: 367.395 ns/op
+Iteration   1: 367.064 ns/op
+Iteration   2: 370.175 ns/op
+Iteration   3: 370.455 ns/op
+Iteration   4: 370.304 ns/op
+Iteration   5: 370.446 ns/op
+
+# Run progress: 7.50% complete, ETA 01:02:27
+# Fork: 4 of 5
+# Warmup Iteration   1: 418.827 ns/op
+# Warmup Iteration   2: 407.532 ns/op
+# Warmup Iteration   3: 407.525 ns/op
+# Warmup Iteration   4: 406.970 ns/op
+# Warmup Iteration   5: 407.111 ns/op
+Iteration   1: 406.838 ns/op
+Iteration   2: 406.580 ns/op
+Iteration   3: 406.498 ns/op
+Iteration   4: 406.677 ns/op
+Iteration   5: 406.848 ns/op
+
+# Run progress: 10.00% complete, ETA 01:00:46
+# Fork: 5 of 5
+# Warmup Iteration   1: 423.841 ns/op
+# Warmup Iteration   2: 415.779 ns/op
+# Warmup Iteration   3: 415.350 ns/op
+# Warmup Iteration   4: 414.777 ns/op
+# Warmup Iteration   5: 414.218 ns/op
+Iteration   1: 412.431 ns/op
+Iteration   2: 412.364 ns/op
+Iteration   3: 411.816 ns/op
+Iteration   4: 411.978 ns/op
+Iteration   5: 412.448 ns/op
+
+
+Result "jmh1595084248772.bench_0_log_call_simple.run":
+  386.121 ±(99.9%) 16.155 ns/op [Average]
+  (min, avg, max) = (356.244, 386.121, 412.448), stdev = 21.567
+  CI (99.9%): [369.966, 402.277] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 14.0.1, OpenJDK 64-Bit Server VM, 14.0.1+7
+# VM invoker: /opt/jdk-14.0.1+7/bin/java
+# VM options: -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.3.1 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1595084248772.bench_1_trace_call_simple.run
+
+# Run progress: 12.50% complete, ETA 00:59:04
+# Fork: 1 of 5
+# Warmup Iteration   1: 1333.270 ns/op
+# Warmup Iteration   2: 1296.337 ns/op
+# Warmup Iteration   3: 1289.021 ns/op
+# Warmup Iteration   4: 1293.998 ns/op
+# Warmup Iteration   5: 1298.383 ns/op
+Iteration   1: 1299.728 ns/op
+Iteration   2: 1302.281 ns/op
+Iteration   3: 1301.259 ns/op
+Iteration   4: 1296.973 ns/op
+Iteration   5: 1294.241 ns/op
+
+# Run progress: 15.00% complete, ETA 00:57:23
+# Fork: 2 of 5
+# Warmup Iteration   1: 1229.529 ns/op
+# Warmup Iteration   2: 1195.348 ns/op
+# Warmup Iteration   3: 1194.575 ns/op
+# Warmup Iteration   4: 1195.218 ns/op
+# Warmup Iteration   5: 1195.247 ns/op
+Iteration   1: 1193.846 ns/op
+Iteration   2: 1193.653 ns/op
+Iteration   3: 1194.387 ns/op
+Iteration   4: 1194.121 ns/op
+Iteration   5: 1195.311 ns/op
+
+# Run progress: 17.50% complete, ETA 00:55:41
+# Fork: 3 of 5
+# Warmup Iteration   1: 1203.654 ns/op
+# Warmup Iteration   2: 1168.429 ns/op
+# Warmup Iteration   3: 1168.643 ns/op
+# Warmup Iteration   4: 1167.612 ns/op
+# Warmup Iteration   5: 1171.634 ns/op
+Iteration   1: 1172.126 ns/op
+Iteration   2: 1169.134 ns/op
+Iteration   3: 1169.765 ns/op
+Iteration   4: 1167.121 ns/op
+Iteration   5: 1167.220 ns/op
+
+# Run progress: 20.00% complete, ETA 00:54:00
+# Fork: 4 of 5
+# Warmup Iteration   1: 1338.937 ns/op
+# Warmup Iteration   2: 1284.781 ns/op
+# Warmup Iteration   3: 1291.069 ns/op
+# Warmup Iteration   4: 1291.657 ns/op
+# Warmup Iteration   5: 1290.123 ns/op
+Iteration   1: 1289.437 ns/op
+Iteration   2: 1293.145 ns/op
+Iteration   3: 1290.020 ns/op
+Iteration   4: 1289.577 ns/op
+Iteration   5: 1292.355 ns/op
+
+# Run progress: 22.50% complete, ETA 00:52:19
+# Fork: 5 of 5
+# Warmup Iteration   1: 1244.607 ns/op
+# Warmup Iteration   2: 1204.299 ns/op
+# Warmup Iteration   3: 1221.349 ns/op
+# Warmup Iteration   4: 1221.801 ns/op
+# Warmup Iteration   5: 1217.231 ns/op
+Iteration   1: 1220.369 ns/op
+Iteration   2: 1214.997 ns/op
+Iteration   3: 1215.696 ns/op
+Iteration   4: 1219.408 ns/op
+Iteration   5: 1217.449 ns/op
+
+
+Result "jmh1595084248772.bench_1_trace_call_simple.run":
+  1234.145 ±(99.9%) 39.774 ns/op [Average]
+  (min, avg, max) = (1167.121, 1234.145, 1302.281), stdev = 53.097
+  CI (99.9%): [1194.371, 1273.919] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 14.0.1, OpenJDK 64-Bit Server VM, 14.0.1+7
+# VM invoker: /opt/jdk-14.0.1+7/bin/java
+# VM options: -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.3.1 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1595084248772.bench_2_trace_call_with_capture.run
+
+# Run progress: 25.00% complete, ETA 00:50:38
+# Fork: 1 of 5
+# Warmup Iteration   1: 2123.576 ns/op
+# Warmup Iteration   2: 2071.853 ns/op
+# Warmup Iteration   3: 2062.850 ns/op
+# Warmup Iteration   4: 2063.073 ns/op
+# Warmup Iteration   5: 2066.866 ns/op
+Iteration   1: 2065.247 ns/op
+Iteration   2: 2064.763 ns/op
+Iteration   3: 2064.095 ns/op
+Iteration   4: 2065.989 ns/op
+Iteration   5: 2064.559 ns/op
+
+# Run progress: 27.50% complete, ETA 00:48:56
+# Fork: 2 of 5
+# Warmup Iteration   1: 2191.836 ns/op
+# Warmup Iteration   2: 2145.621 ns/op
+# Warmup Iteration   3: 2144.517 ns/op
+# Warmup Iteration   4: 2144.819 ns/op
+# Warmup Iteration   5: 2144.405 ns/op
+Iteration   1: 2145.228 ns/op
+Iteration   2: 2143.670 ns/op
+Iteration   3: 2142.861 ns/op
+Iteration   4: 2142.631 ns/op
+Iteration   5: 2144.635 ns/op
+
+# Run progress: 30.00% complete, ETA 00:47:15
+# Fork: 3 of 5
+# Warmup Iteration   1: 2198.699 ns/op
+# Warmup Iteration   2: 2148.441 ns/op
+# Warmup Iteration   3: 2145.865 ns/op
+# Warmup Iteration   4: 2145.454 ns/op
+# Warmup Iteration   5: 2145.082 ns/op
+Iteration   1: 2144.178 ns/op
+Iteration   2: 2143.915 ns/op
+Iteration   3: 2144.365 ns/op
+Iteration   4: 2143.569 ns/op
+Iteration   5: 2143.455 ns/op
+
+# Run progress: 32.50% complete, ETA 00:45:34
+# Fork: 4 of 5
+# Warmup Iteration   1: 2111.749 ns/op
+# Warmup Iteration   2: 2064.457 ns/op
+# Warmup Iteration   3: 2063.176 ns/op
+# Warmup Iteration   4: 2064.424 ns/op
+# Warmup Iteration   5: 2063.588 ns/op
+Iteration   1: 2063.307 ns/op
+Iteration   2: 2062.939 ns/op
+Iteration   3: 2063.937 ns/op
+Iteration   4: 2063.393 ns/op
+Iteration   5: 2064.720 ns/op
+
+# Run progress: 35.00% complete, ETA 00:43:52
+# Fork: 5 of 5
+# Warmup Iteration   1: 2217.282 ns/op
+# Warmup Iteration   2: 2181.103 ns/op
+# Warmup Iteration   3: 2176.567 ns/op
+# Warmup Iteration   4: 2177.645 ns/op
+# Warmup Iteration   5: 2177.261 ns/op
+Iteration   1: 2177.255 ns/op
+Iteration   2: 2176.791 ns/op
+Iteration   3: 2176.982 ns/op
+Iteration   4: 2176.195 ns/op
+Iteration   5: 2175.987 ns/op
+
+
+Result "jmh1595084248772.bench_2_trace_call_with_capture.run":
+  2118.587 ±(99.9%) 35.110 ns/op [Average]
+  (min, avg, max) = (2062.939, 2118.587, 2177.255), stdev = 46.871
+  CI (99.9%): [2083.476, 2153.697] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 14.0.1, OpenJDK 64-Bit Server VM, 14.0.1+7
+# VM invoker: /opt/jdk-14.0.1+7/bin/java
+# VM options: -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.3.1 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1595084248772.bench_3_flake_creation.run
+
+# Run progress: 37.50% complete, ETA 00:42:11
+# Fork: 1 of 5
+# Warmup Iteration   1: 33.500 ns/op
+# Warmup Iteration   2: 32.554 ns/op
+# Warmup Iteration   3: 33.068 ns/op
+# Warmup Iteration   4: 33.083 ns/op
+# Warmup Iteration   5: 33.065 ns/op
+Iteration   1: 33.084 ns/op
+Iteration   2: 33.105 ns/op
+Iteration   3: 33.082 ns/op
+Iteration   4: 33.078 ns/op
+Iteration   5: 33.095 ns/op
+
+# Run progress: 40.00% complete, ETA 00:40:30
+# Fork: 2 of 5
+# Warmup Iteration   1: 33.530 ns/op
+# Warmup Iteration   2: 32.543 ns/op
+# Warmup Iteration   3: 33.285 ns/op
+# Warmup Iteration   4: 33.300 ns/op
+# Warmup Iteration   5: 33.289 ns/op
+Iteration   1: 33.290 ns/op
+Iteration   2: 33.286 ns/op
+Iteration   3: 33.287 ns/op
+Iteration   4: 33.298 ns/op
+Iteration   5: 33.295 ns/op
+
+# Run progress: 42.50% complete, ETA 00:38:49
+# Fork: 3 of 5
+# Warmup Iteration   1: 33.698 ns/op
+# Warmup Iteration   2: 32.814 ns/op
+# Warmup Iteration   3: 33.456 ns/op
+# Warmup Iteration   4: 33.466 ns/op
+# Warmup Iteration   5: 33.474 ns/op
+Iteration   1: 33.450 ns/op
+Iteration   2: 33.462 ns/op
+Iteration   3: 33.494 ns/op
+Iteration   4: 33.464 ns/op
+Iteration   5: 33.435 ns/op
+
+# Run progress: 45.00% complete, ETA 00:37:07
+# Fork: 4 of 5
+# Warmup Iteration   1: 33.161 ns/op
+# Warmup Iteration   2: 32.770 ns/op
+# Warmup Iteration   3: 32.757 ns/op
+# Warmup Iteration   4: 32.752 ns/op
+# Warmup Iteration   5: 32.756 ns/op
+Iteration   1: 32.767 ns/op
+Iteration   2: 32.768 ns/op
+Iteration   3: 32.751 ns/op
+Iteration   4: 32.745 ns/op
+Iteration   5: 32.745 ns/op
+
+# Run progress: 47.50% complete, ETA 00:35:26
+# Fork: 5 of 5
+# Warmup Iteration   1: 33.345 ns/op
+# Warmup Iteration   2: 32.569 ns/op
+# Warmup Iteration   3: 33.450 ns/op
+# Warmup Iteration   4: 33.469 ns/op
+# Warmup Iteration   5: 33.479 ns/op
+Iteration   1: 33.460 ns/op
+Iteration   2: 33.456 ns/op
+Iteration   3: 33.444 ns/op
+Iteration   4: 33.447 ns/op
+Iteration   5: 33.448 ns/op
+
+
+Result "jmh1595084248772.bench_3_flake_creation.run":
+  33.209 ±(99.9%) 0.202 ns/op [Average]
+  (min, avg, max) = (32.745, 33.209, 33.494), stdev = 0.270
+  CI (99.9%): [33.007, 33.412] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 14.0.1, OpenJDK 64-Bit Server VM, 14.0.1+7
+# VM invoker: /opt/jdk-14.0.1+7/bin/java
+# VM options: -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.3.1 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1595084248772.bench_4_flake_string_representation.run
+
+# Run progress: 50.00% complete, ETA 00:33:45
+# Fork: 1 of 5
+# Warmup Iteration   1: 72.864 ns/op
+# Warmup Iteration   2: 70.796 ns/op
+# Warmup Iteration   3: 76.626 ns/op
+# Warmup Iteration   4: 76.571 ns/op
+# Warmup Iteration   5: 76.616 ns/op
+Iteration   1: 76.670 ns/op
+Iteration   2: 76.654 ns/op
+Iteration   3: 76.710 ns/op
+Iteration   4: 76.681 ns/op
+Iteration   5: 76.699 ns/op
+
+# Run progress: 52.50% complete, ETA 00:32:04
+# Fork: 2 of 5
+# Warmup Iteration   1: 72.658 ns/op
+# Warmup Iteration   2: 71.058 ns/op
+# Warmup Iteration   3: 78.423 ns/op
+# Warmup Iteration   4: 78.356 ns/op
+# Warmup Iteration   5: 78.338 ns/op
+Iteration   1: 78.387 ns/op
+Iteration   2: 78.341 ns/op
+Iteration   3: 78.326 ns/op
+Iteration   4: 78.289 ns/op
+Iteration   5: 78.302 ns/op
+
+# Run progress: 55.00% complete, ETA 00:30:22
+# Fork: 3 of 5
+# Warmup Iteration   1: 72.801 ns/op
+# Warmup Iteration   2: 70.968 ns/op
+# Warmup Iteration   3: 76.871 ns/op
+# Warmup Iteration   4: 76.785 ns/op
+# Warmup Iteration   5: 76.911 ns/op
+Iteration   1: 76.937 ns/op
+Iteration   2: 76.995 ns/op
+Iteration   3: 77.017 ns/op
+Iteration   4: 77.025 ns/op
+Iteration   5: 77.021 ns/op
+
+# Run progress: 57.50% complete, ETA 00:28:41
+# Fork: 4 of 5
+# Warmup Iteration   1: 72.900 ns/op
+# Warmup Iteration   2: 70.939 ns/op
+# Warmup Iteration   3: 76.204 ns/op
+# Warmup Iteration   4: 76.120 ns/op
+# Warmup Iteration   5: 76.106 ns/op
+Iteration   1: 76.087 ns/op
+Iteration   2: 76.199 ns/op
+Iteration   3: 76.132 ns/op
+Iteration   4: 76.135 ns/op
+Iteration   5: 76.098 ns/op
+
+# Run progress: 60.00% complete, ETA 00:27:00
+# Fork: 5 of 5
+# Warmup Iteration   1: 72.834 ns/op
+# Warmup Iteration   2: 71.041 ns/op
+# Warmup Iteration   3: 76.249 ns/op
+# Warmup Iteration   4: 76.150 ns/op
+# Warmup Iteration   5: 76.236 ns/op
+Iteration   1: 76.182 ns/op
+Iteration   2: 76.176 ns/op
+Iteration   3: 76.161 ns/op
+Iteration   4: 76.143 ns/op
+Iteration   5: 76.154 ns/op
+
+
+Result "jmh1595084248772.bench_4_flake_string_representation.run":
+  76.861 ±(99.9%) 0.614 ns/op [Average]
+  (min, avg, max) = (76.087, 76.861, 78.387), stdev = 0.820
+  CI (99.9%): [76.246, 77.475] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 14.0.1, OpenJDK 64-Bit Server VM, 14.0.1+7
+# VM invoker: /opt/jdk-14.0.1+7/bin/java
+# VM options: -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.3.1 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1595084248772.bench_5_flake_snowflake.run
+
+# Run progress: 62.50% complete, ETA 00:25:19
+# Fork: 1 of 5
+# Warmup Iteration   1: 74.771 ns/op
+# Warmup Iteration   2: 73.069 ns/op
+# Warmup Iteration   3: 72.917 ns/op
+# Warmup Iteration   4: 72.782 ns/op
+# Warmup Iteration   5: 72.773 ns/op
+Iteration   1: 72.778 ns/op
+Iteration   2: 72.752 ns/op
+Iteration   3: 72.765 ns/op
+Iteration   4: 72.802 ns/op
+Iteration   5: 72.780 ns/op
+
+# Run progress: 65.00% complete, ETA 00:23:37
+# Fork: 2 of 5
+# Warmup Iteration   1: 75.142 ns/op
+# Warmup Iteration   2: 73.318 ns/op
+# Warmup Iteration   3: 73.000 ns/op
+# Warmup Iteration   4: 73.050 ns/op
+# Warmup Iteration   5: 73.065 ns/op
+Iteration   1: 73.009 ns/op
+Iteration   2: 73.057 ns/op
+Iteration   3: 73.037 ns/op
+Iteration   4: 73.058 ns/op
+Iteration   5: 73.063 ns/op
+
+# Run progress: 67.50% complete, ETA 00:21:56
+# Fork: 3 of 5
+# Warmup Iteration   1: 75.033 ns/op
+# Warmup Iteration   2: 73.001 ns/op
+# Warmup Iteration   3: 72.719 ns/op
+# Warmup Iteration   4: 72.786 ns/op
+# Warmup Iteration   5: 72.775 ns/op
+Iteration   1: 72.772 ns/op
+Iteration   2: 72.688 ns/op
+Iteration   3: 72.669 ns/op
+Iteration   4: 72.663 ns/op
+Iteration   5: 72.667 ns/op
+
+# Run progress: 70.00% complete, ETA 00:20:15
+# Fork: 4 of 5
+# Warmup Iteration   1: 74.745 ns/op
+# Warmup Iteration   2: 73.119 ns/op
+# Warmup Iteration   3: 72.874 ns/op
+# Warmup Iteration   4: 72.893 ns/op
+# Warmup Iteration   5: 72.796 ns/op
+Iteration   1: 72.805 ns/op
+Iteration   2: 72.763 ns/op
+Iteration   3: 72.784 ns/op
+Iteration   4: 72.822 ns/op
+Iteration   5: 72.795 ns/op
+
+# Run progress: 72.50% complete, ETA 00:18:33
+# Fork: 5 of 5
+# Warmup Iteration   1: 74.769 ns/op
+# Warmup Iteration   2: 72.941 ns/op
+# Warmup Iteration   3: 72.775 ns/op
+# Warmup Iteration   4: 72.797 ns/op
+# Warmup Iteration   5: 72.784 ns/op
+Iteration   1: 72.794 ns/op
+Iteration   2: 72.758 ns/op
+Iteration   3: 72.742 ns/op
+Iteration   4: 72.752 ns/op
+Iteration   5: 72.801 ns/op
+
+
+Result "jmh1595084248772.bench_5_flake_snowflake.run":
+  72.815 ±(99.9%) 0.094 ns/op [Average]
+  (min, avg, max) = (72.663, 72.815, 73.063), stdev = 0.125
+  CI (99.9%): [72.721, 72.909] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 14.0.1, OpenJDK 64-Bit Server VM, 14.0.1+7
+# VM invoker: /opt/jdk-14.0.1+7/bin/java
+# VM options: -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.3.1 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1595084248772.bench_6_flake_hex_representation.run
+
+# Run progress: 75.00% complete, ETA 00:16:52
+# Fork: 1 of 5
+# Warmup Iteration   1: 83.809 ns/op
+# Warmup Iteration   2: 81.731 ns/op
+# Warmup Iteration   3: 81.075 ns/op
+# Warmup Iteration   4: 81.149 ns/op
+# Warmup Iteration   5: 81.177 ns/op
+Iteration   1: 81.111 ns/op
+Iteration   2: 81.048 ns/op
+Iteration   3: 81.030 ns/op
+Iteration   4: 81.060 ns/op
+Iteration   5: 81.060 ns/op
+
+# Run progress: 77.50% complete, ETA 00:15:11
+# Fork: 2 of 5
+# Warmup Iteration   1: 83.831 ns/op
+# Warmup Iteration   2: 81.740 ns/op
+# Warmup Iteration   3: 81.282 ns/op
+# Warmup Iteration   4: 81.208 ns/op
+# Warmup Iteration   5: 81.131 ns/op
+Iteration   1: 81.264 ns/op
+Iteration   2: 81.210 ns/op
+Iteration   3: 81.422 ns/op
+Iteration   4: 81.277 ns/op
+Iteration   5: 81.307 ns/op
+
+# Run progress: 80.00% complete, ETA 00:13:30
+# Fork: 3 of 5
+# Warmup Iteration   1: 100.978 ns/op
+# Warmup Iteration   2: 96.736 ns/op
+# Warmup Iteration   3: 97.608 ns/op
+# Warmup Iteration   4: 97.672 ns/op
+# Warmup Iteration   5: 97.595 ns/op
+Iteration   1: 97.603 ns/op
+Iteration   2: 97.552 ns/op
+Iteration   3: 97.545 ns/op
+Iteration   4: 97.573 ns/op
+Iteration   5: 97.644 ns/op
+
+# Run progress: 82.50% complete, ETA 00:11:48
+# Fork: 4 of 5
+# Warmup Iteration   1: 99.947 ns/op
+# Warmup Iteration   2: 97.071 ns/op
+# Warmup Iteration   3: 96.840 ns/op
+# Warmup Iteration   4: 96.879 ns/op
+# Warmup Iteration   5: 96.919 ns/op
+Iteration   1: 96.891 ns/op
+Iteration   2: 96.836 ns/op
+Iteration   3: 96.851 ns/op
+Iteration   4: 96.909 ns/op
+Iteration   5: 96.835 ns/op
+
+# Run progress: 85.00% complete, ETA 00:10:07
+# Fork: 5 of 5
+# Warmup Iteration   1: 83.772 ns/op
+# Warmup Iteration   2: 81.795 ns/op
+# Warmup Iteration   3: 81.393 ns/op
+# Warmup Iteration   4: 81.442 ns/op
+# Warmup Iteration   5: 81.404 ns/op
+Iteration   1: 81.424 ns/op
+Iteration   2: 81.414 ns/op
+Iteration   3: 81.513 ns/op
+Iteration   4: 81.483 ns/op
+Iteration   5: 81.553 ns/op
+
+
+Result "jmh1595084248772.bench_6_flake_hex_representation.run":
+  87.657 ±(99.9%) 5.976 ns/op [Average]
+  (min, avg, max) = (81.030, 87.657, 97.644), stdev = 7.977
+  CI (99.9%): [81.681, 93.632] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 14.0.1, OpenJDK 64-Bit Server VM, 14.0.1+7
+# VM invoker: /opt/jdk-14.0.1+7/bin/java
+# VM options: -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.3.1 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1595084248772.bench_7_flake_create_and_parse_string.run
+
+# Run progress: 87.50% complete, ETA 00:08:26
+# Fork: 1 of 5
+# Warmup Iteration   1: 151.300 ns/op
+# Warmup Iteration   2: 147.323 ns/op
+# Warmup Iteration   3: 147.820 ns/op
+# Warmup Iteration   4: 147.895 ns/op
+# Warmup Iteration   5: 147.796 ns/op
+Iteration   1: 147.894 ns/op
+Iteration   2: 147.814 ns/op
+Iteration   3: 147.826 ns/op
+Iteration   4: 147.840 ns/op
+Iteration   5: 147.925 ns/op
+
+# Run progress: 90.00% complete, ETA 00:06:45
+# Fork: 2 of 5
+# Warmup Iteration   1: 150.394 ns/op
+# Warmup Iteration   2: 147.531 ns/op
+# Warmup Iteration   3: 147.856 ns/op
+# Warmup Iteration   4: 147.885 ns/op
+# Warmup Iteration   5: 147.973 ns/op
+Iteration   1: 147.973 ns/op
+Iteration   2: 147.862 ns/op
+Iteration   3: 147.809 ns/op
+Iteration   4: 147.819 ns/op
+Iteration   5: 147.814 ns/op
+
+# Run progress: 92.50% complete, ETA 00:05:03
+# Fork: 3 of 5
+# Warmup Iteration   1: 150.922 ns/op
+# Warmup Iteration   2: 147.786 ns/op
+# Warmup Iteration   3: 148.754 ns/op
+# Warmup Iteration   4: 148.719 ns/op
+# Warmup Iteration   5: 148.723 ns/op
+Iteration   1: 148.583 ns/op
+Iteration   2: 148.627 ns/op
+Iteration   3: 148.630 ns/op
+Iteration   4: 148.597 ns/op
+Iteration   5: 148.620 ns/op
+
+# Run progress: 95.00% complete, ETA 00:03:22
+# Fork: 4 of 5
+# Warmup Iteration   1: 147.817 ns/op
+# Warmup Iteration   2: 145.065 ns/op
+# Warmup Iteration   3: 145.002 ns/op
+# Warmup Iteration   4: 145.010 ns/op
+# Warmup Iteration   5: 144.977 ns/op
+Iteration   1: 144.952 ns/op
+Iteration   2: 145.196 ns/op
+Iteration   3: 144.826 ns/op
+Iteration   4: 145.019 ns/op
+Iteration   5: 145.062 ns/op
+
+# Run progress: 97.50% complete, ETA 00:01:41
+# Fork: 5 of 5
+# Warmup Iteration   1: 151.542 ns/op
+# Warmup Iteration   2: 147.601 ns/op
+# Warmup Iteration   3: 148.283 ns/op
+# Warmup Iteration   4: 147.920 ns/op
+# Warmup Iteration   5: 147.960 ns/op
+Iteration   1: 147.961 ns/op
+Iteration   2: 147.992 ns/op
+Iteration   3: 147.984 ns/op
+Iteration   4: 148.422 ns/op
+Iteration   5: 147.972 ns/op
+
+
+Result "jmh1595084248772.bench_7_flake_create_and_parse_string.run":
+  147.481 ±(99.9%) 0.971 ns/op [Average]
+  (min, avg, max) = (144.826, 147.481, 148.630), stdev = 1.296
+  CI (99.9%): [146.510, 148.451] (assumes normal distribution)
+
+
+# Run complete. Total time: 01:07:30
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+Benchmark                                    Mode  Cnt     Score    Error  Units
+j.bench_0_log_call_simple.run                avgt   25   386.121 ± 16.155  ns/op
+j.bench_1_trace_call_simple.run              avgt   25  1234.145 ± 39.774  ns/op
+j.bench_2_trace_call_with_capture.run        avgt   25  2118.587 ± 35.110  ns/op
+j.bench_3_flake_creation.run                 avgt   25    33.209 ±  0.202  ns/op
+j.bench_4_flake_string_representation.run    avgt   25    76.861 ±  0.614  ns/op
+j.bench_5_flake_snowflake.run                avgt   25    72.815 ±  0.094  ns/op
+j.bench_6_flake_hex_representation.run       avgt   25    87.657 ±  5.976  ns/op
+j.bench_7_flake_create_and_parse_string.run  avgt   25   147.481 ±  0.971  ns/op
