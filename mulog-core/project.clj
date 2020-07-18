@@ -17,14 +17,17 @@
 
   :jvm-opts ["-server"]
 
-  :profiles {:dev {:dependencies [[midje "1.9.9"]
+  :profiles {:dev {:source-paths ["dev"]
+                   :dependencies [[midje "1.9.9"]
                                   [org.clojure/test.check "1.0.0"]
                                   [criterium "0.4.6"]
-                                  [com.clojure-goes-fast/clj-async-profiler "0.4.1"]]
+                                  [com.clojure-goes-fast/clj-async-profiler "0.4.1"]
+                                  [jmh-clojure "0.2.1"]]
                    :jvm-opts ["-server" "-Djdk.attach.allowAttachSelf"]
                    :resource-paths ["dev-resources"]
                    :plugins      [[lein-midje "3.2.2"]]}}
 
   :auto    {"javac" {:file-pattern #"\.java$"}}
-  :aliases {"test" "midje"}
+  :aliases {"test" "midje"
+            "perf" ["with-profile" "dev" "jmh" #=(pr-str {:file "./dev/perf/benchmarks.edn" :status true :pprint true})]}
   )

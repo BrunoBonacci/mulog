@@ -4,7 +4,9 @@
             [com.brunobonacci.mulog.flakes :as f]
             [amalloy.ring-buffer :refer [ring-buffer]]
             [criterium.core :refer [bench quick-bench]]
-            [clj-async-profiler.core :as prof])
+            [clj-async-profiler.core :as prof]
+            [jmh.core :as jmh]
+            [clojure.edn :as edn])
   (:import com.brunobonacci.mulog.core.Flake))
 
 
@@ -234,5 +236,17 @@
   ;; low-mild    3 (5.0000 %)
   ;; Variance from outliers : 28.6849 % Variance is moderately inflated by outliers
 
+
+  )
+
+
+
+(comment
+
+  (jmh/run
+    (clojure.edn/read-string (slurp "./dev/perf/benchmarks.edn"))
+    {:type  :quick
+     :status true
+     :pprint true})
 
   )
