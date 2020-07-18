@@ -1,4 +1,4 @@
-(ns perf.benchmarks
+(ns benchmarks
   (:require [com.brunobonacci.mulog :as u]
             [com.brunobonacci.mulog.utils :as ut]
             [com.brunobonacci.mulog.flakes :as f]

@@ -17,7 +17,7 @@
 
   :jvm-opts ["-server"]
 
-  :profiles {:dev {:source-paths ["dev"]
+  :profiles {:dev {:source-paths ["perf"]
                    :dependencies [[midje "1.9.9"]
                                   [org.clojure/test.check "1.0.0"]
                                   [criterium "0.4.6"]
@@ -25,9 +25,11 @@
                                   [jmh-clojure "0.2.1"]]
                    :jvm-opts ["-server" "-Djdk.attach.allowAttachSelf"]
                    :resource-paths ["dev-resources"]
-                   :plugins      [[lein-midje "3.2.2"]]}}
+                   :plugins      [[lein-midje "3.2.2"]
+                                  [lein-jmh "0.2.6"]]}}
 
   :auto    {"javac" {:file-pattern #"\.java$"}}
+
   :aliases {"test" "midje"
-            "perf" ["with-profile" "dev" "jmh" #=(pr-str {:file "./dev/perf/benchmarks.edn" :status true :pprint true})]}
+            "perf" ["with-profile" "dev" "jmh" #=(pr-str {:file "./perf/benchmarks.edn" :status true :pprint true})]}
   )

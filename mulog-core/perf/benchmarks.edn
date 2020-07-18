@@ -1,0 +1,16 @@
+{:benchmarks
+ [benchmarks/log-call-simple
+  benchmarks/trace-call-simple
+  benchmarks/trace-call-with-capture
+  benchmarks/flake-creation
+  benchmarks/flake-string-representation
+  benchmarks/flake-snowflake
+  benchmarks/flake-hex-representation
+  benchmarks/flake-create-and-parse-string
+  ]
+
+ :options
+ {:jmh/default
+  {:mode [:average #_:single-shot #_:throughput #_:samples #_:all]
+   :output-time-unit :ns}}
+ }

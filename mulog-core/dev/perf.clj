@@ -244,7 +244,7 @@
 (comment
 
   (jmh/run
-    (clojure.edn/read-string (slurp "./dev/perf/benchmarks.edn"))
+    (clojure.edn/read-string (slurp "./perf/benchmarks.edn"))
     {:type  :quick
      :status true
      :pprint true})
