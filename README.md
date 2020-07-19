@@ -808,7 +808,7 @@ The available configuration options:
 ``` clojure
 {:type :cloudwatch
 
- ;; name of the CloudWatch log group where to put the data 
+ ;; name of the CloudWatch log group where events will be sent
  ;; The log group be already present.
  :group-name        "mulog" (REQUIRED)
 
