@@ -62,7 +62,7 @@ all: ancient clean build
 #
 # Build
 #
-build: build-core build-json build-els build-jvm-metrics build-kafka build-kinesis build-slack build-zipkin build-examples
+build: build-core build-json build-els build-jvm-metrics build-kafka build-kinesis build-cloudwatch build-slack build-zipkin build-examples
 - @printf "#\n# Building μ/log Completed!\n#\n"
 
 
@@ -173,6 +173,7 @@ deploy:
 - (cd mulog-jvm-metrics;          lein deploy clojars)
 - (cd mulog-kafka;                lein deploy clojars)
 - (cd mulog-kinesis;              lein deploy clojars)
+- (cd mulog-cloudwatch;           lein deploy clojars)
 - (cd mulog-slack;                lein deploy clojars)
 - (cd mulog-zipkin;               lein deploy clojars)
 
@@ -189,6 +190,7 @@ ancient:
 - (cd mulog-jvm-metrics;          lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-kafka;                lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-kinesis;              lein with-profile tools ancient upgrade ; lein do clean, install)
+- (cd mulog-cloudwatch;           lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-slack;                lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-zipkin;               lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd examples/roads-disruptions; lein with-profile tools ancient upgrade ; lein do clean, install)
@@ -206,6 +208,7 @@ clean:
 - (cd mulog-jvm-metrics;          rm -fr target)
 - (cd mulog-kafka;                rm -fr target)
 - (cd mulog-kinesis;              rm -fr target)
+- (cd mulog-cloudwatch;           rm -fr target)
 - (cd mulog-slack;                rm -fr target)
 - (cd mulog-zipkin;               rm -fr target)
 - (cd examples/roads-disruptions; rm -fr target)

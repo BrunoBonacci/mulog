@@ -42,6 +42,7 @@ Available publishers:
   * [Elasticsearch](#elasticsearch-publisher)
   * [Apache Kafka](#apache-kafka-publisher)
   * [Kinesis](#kinesis-publisher)
+  * [CloudWatch Logs](#cloudwatch-logs-publisher)
   * [Slack](#slack-publisher)
   * [OpenZipkin](#zipkin-publisher)
   * [Pluggable custom publishers](#custom-publishers)
@@ -137,7 +138,7 @@ You can add as many key-value pairs as you deem useful to express the event in y
 ```
 
 At this point you should be able to see the previous event in your
-REPL terminal and it will look as follow:
+REPL terminal and it will look as follows:
 
 ``` clojure
 {:mulog/trace-id #mulog/flake "4VTBeu2scrIEMle9us8StnmvRrj9ThWP", :mulog/timestamp 1587500402972, :mulog/event-name :your-ns/hello, :mulog/namespace "your-ns", :to "New World!"}
@@ -750,21 +751,21 @@ How to use it:
 ### Kinesis publisher
 ![since v0.3.0](https://img.shields.io/badge/since-v0.3.0-brightgreen)
 
-The events must be serializeable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
+The events must be serializable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
 
 The available configuration options:
 
 ``` clojure
 {:type :kinesis
 
- ;; the name of the kafka topic where events will be sent
+ ;; the name of the Amazon Kinesis steam where events will be sent
  ;; The stream must be already present.
  :stream-name       "mulog" (REQUIRED)
 
  ;; maximum number of events in a single batch
  ;; :max-items     500
 
- ;; how often it will send the events Kafka  (in millis)
+ ;; how often it will send events to Amazon Kinesis (in millis)
  ;; :publish-delay 1000
 
  ;; the format of the events to send into the topic
@@ -798,10 +799,52 @@ How to use it:
 ```
 
 
+### Cloudwatch Logs publisher
+![since v0.4.0](https://img.shields.io/badge/since-v0.4.0-brightgreen)
+
+The events must be serializable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
+
+The available configuration options:
+
+``` clojure
+{:type :cloudwatch
+
+ ;; name of the CloudWatch log group where events will be sent
+ ;; The log group be already present.
+ :group-name        "mulog" (REQUIRED)
+
+ ;; maximum number of events in a single batch
+ ;; :max-items     5000
+
+ ;; how often it will send events to Amazon CloudWatch Logs (in millis)
+ ;; :publish-delay 1000
+
+ ;; a function to apply to the sequence of events before publishing.
+ ;; This transformation function can be used to filter, tranform,
+ ;; anonymise events before they are published to a external system.
+ ;; by defatult there is no transformation.  (since v0.1.8)
+ ;; :transform identity
+
+ ;; The kinesis client configuration can be used to override endpoints
+ ;; and provide credentials. By default it uses the AWS DefaultAWSCredentialsProviderChain
+ ;; check here for more info: https://github.com/cognitect-labs/aws-api#credentials
+ ;; :cloudwatch-client-config {:api :logs}
+ }
+```
+
+How to use it:
+
+``` clojure
+(μ/start-publisher!
+  {:type        :cloudwatch 
+   :group-name  "mulog"})
+```
+
+
 ### Slack publisher
 ![since v0.3.0](https://img.shields.io/badge/since-v0.3.0-brightgreen)
 
-The events must be serializeable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
+The events must be serializable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
 
 First get an [Incoming Webhook in Slack](https://api.slack.com/messaging/webhooks)
 following these steps:
@@ -872,7 +915,7 @@ which returns one or more [Slack Blocks](https://api.slack.com/reference/block-k
 ### Zipkin publisher
 ![since v0.2.0](https://img.shields.io/badge/since-v0.2.0-brightgreen)
 
-The events must be serializeable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
+The events must be serializable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
 
 The available configuration options:
 
