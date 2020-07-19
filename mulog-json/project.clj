@@ -18,7 +18,7 @@
   :jvm-opts ["-server"]
 
   :profiles {:dev {:dependencies [[midje "1.9.9"]
-                                  [org.clojure/test.check "1.0.0"]
+                                  [org.clojure/test.check "1.1.0"]
                                   [criterium "0.4.6"]]
                    :resource-paths ["dev-resources"]
                    :plugins      [[lein-midje "3.2.2"]]}}

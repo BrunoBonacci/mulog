@@ -19,7 +19,7 @@
   :jvm-opts ["-server"]
 
   :profiles {:dev {:dependencies [[midje "1.9.9"]
-                                  [org.clojure/test.check "1.0.0"]
+                                  [org.clojure/test.check "1.1.0"]
                                   [criterium "0.4.6"]
                                   [org.slf4j/slf4j-log4j12 "2.0.0-alpha1"]]
                    :resource-paths ["dev-resources"]
