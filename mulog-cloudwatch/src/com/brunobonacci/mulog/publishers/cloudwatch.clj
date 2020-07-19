@@ -90,7 +90,7 @@
 
 
 (def ^:const DEFAULT-CONFIG
-  {;; name of the cloudwatch group where to put the data (REQUIRED)
+  {;; name of the cloudwatch log group where to put the data (REQUIRED)
    ;:group-name              "mulog"
    :max-items                5000
    :publish-delay            1000
