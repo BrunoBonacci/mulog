@@ -836,7 +836,7 @@ How to use it:
 ``` clojure
 (μ/start-publisher!
   {:type        :cloudwatch 
-   :group-name "mulog"})
+   :group-name  "mulog"})
 ```
 
 
