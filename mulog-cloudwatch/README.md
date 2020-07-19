@@ -14,11 +14,14 @@ Please see [README](../README.md#cloudwatch-publisher) on main page.
 ```
  lein do test
 ```
+
 Alternatively, start AWS Localstack with the configured cloudwatch service
+
 ``` shell
 docker-compose rm -f && docker-compose up -d
 ```
-and execute `cloudwatch-test.clj` in REPL 
+
+and execute `lein midje`
 
 ## License
 

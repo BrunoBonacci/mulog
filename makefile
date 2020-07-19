@@ -127,6 +127,16 @@ mulog-kinesis/target/mulog*.jar: $(kinesis_src)
 
 
 #
+# Build CloudWatch
+#
+cloudwatch_src = $(shell find mulog-cloudwatch/project.clj mulog-cloudwatch/src mulog-cloudwatch/resources -type f)
+build-cloudwatch: build-core mulog-cloudwatch/target/mulog*.jar
+mulog-cloudwatch/target/mulog*.jar: $(cloudwatch_src)
+- @printf "#\n# Building mulog-cloudwatch\n#\n"
+- (cd mulog-cloudwatch; lein do check, install) # TODO: fix Region error and add test
+
+
+#
 # Build slack
 #
 slack_src = $(shell find mulog-slack/project.clj mulog-slack/src mulog-slack/resources -type f)

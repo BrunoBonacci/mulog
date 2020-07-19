@@ -6,12 +6,17 @@
   (:import (java.util.concurrent TimeUnit)))
 
 
-(def CLOUDWATCH-LOCAL-SETTINGS {:api    :logs
-                                :region "eu-west-1"
-                                :endpoint-override
-                                        {:protocol :http
-                                         :hostname "localhost"
-                                         :port     4586}})
+
+(def CLOUDWATCH-LOCAL-SETTINGS
+  {:api    :logs
+   :region "eu-west-1"
+   :endpoint-override
+   {:protocol :http
+    :hostname "localhost"
+    :port     4586}})
+
+
+
 (defn operation-status
   [op rs]
   (if (= rs {})
@@ -19,13 +24,15 @@
     (str "Operation '" op "' failed. Details:" rs)))
 
 
+
 (defn parse-events
   [events]
   (some-> events
-          (:events)
-          first
-          (:message)
-          (json/parse-string true)))
+    (:events)
+    first
+    (:message)
+    (json/parse-string true)))
+
 
 
 (defmacro with-local-cloudwatch-publisher
@@ -33,7 +40,7 @@
   `(let [lg-name# (format "mulog-test-%s" (ut/uuid))
          lc# (aws/client CLOUDWATCH-LOCAL-SETTINGS)
          create-lg# (aws/invoke lc# {:op      :CreateLogGroup
-                                    :request {:logGroupName lg-name#}})
+                                     :request {:logGroupName lg-name#}})
          cwp# (μ/start-publisher!
                 {:type                     :cloudwatch
                  :group-name               lg-name#
@@ -47,20 +54,20 @@
        (.sleep (TimeUnit/SECONDS) 5)                        ;; delay for cloudwatch processing
        (cwp#)
        (let [describe-lg#  (aws/invoke lc# {:op :DescribeLogGroups
-                                           :request {:logGroupNamePrefix "mulog-test-"}})
+                                            :request {:logGroupNamePrefix "mulog-test-"}})
              lg-exact-name# (-> describe-lg#
-                               :logGroups
-                               first
-                               :logGroupName)
+                              :logGroups
+                              first
+                              :logGroupName)
              describe-stream#   (aws/invoke lc# {:op  :DescribeLogStreams
-                                                :request {:logGroupName lg-exact-name#}})
+                                                 :request {:logGroupName lg-exact-name#}})
              stream-exact-name#  (-> describe-stream#
-                                     :logStreams
-                                     first
-                                     :logStreamName)
+                                   :logStreams
+                                   first
+                                   :logStreamName)
              log-events#        (aws/invoke lc# {:op :GetLogEvents
-                                                :request {:logGroupName lg-exact-name#
-                                                          :logStreamName stream-exact-name#}})
+                                                 :request {:logGroupName lg-exact-name#
+                                                           :logStreamName stream-exact-name#}})
              remove-lg#         (aws/invoke lc# {:op  :DeleteLogGroup
                                                  :request {:logGroupName lg-exact-name#}})]
          (do

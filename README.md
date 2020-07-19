@@ -811,7 +811,7 @@ The available configuration options:
 
  ;; name of the CloudWatch log group where events will be sent
  ;; The log group be already present.
- :group-name        "mulog" (REQUIRED)
+ :group-name        "mulog" ;; (REQUIRED)
 
  ;; maximum number of events in a single batch
  ;; :max-items     5000
@@ -822,7 +822,7 @@ The available configuration options:
  ;; a function to apply to the sequence of events before publishing.
  ;; This transformation function can be used to filter, tranform,
  ;; anonymise events before they are published to a external system.
- ;; by defatult there is no transformation.  (since v0.1.8)
+ ;; by defatult there is no transformation.
  ;; :transform identity
 
  ;; The kinesis client configuration can be used to override endpoints
@@ -836,7 +836,7 @@ How to use it:
 
 ``` clojure
 (μ/start-publisher!
-  {:type        :cloudwatch 
+  {:type        :cloudwatch
    :group-name  "mulog"})
 ```
 
