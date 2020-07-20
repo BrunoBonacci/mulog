@@ -22,11 +22,11 @@
                                   [org.clojure/test.check "1.1.0"]
                                   [criterium "0.4.6"]
                                   [com.clojure-goes-fast/clj-async-profiler "0.4.1"]
-                                  [jmh-clojure "0.3.0"]]
+                                  [jmh-clojure "0.3.1"]]
                    :jvm-opts ["-server" "-Djdk.attach.allowAttachSelf"]
                    :resource-paths ["dev-resources"]
                    :plugins      [[lein-midje "3.2.2"]
-                                  [lein-jmh "0.2.6"]]}}
+                                  [lein-jmh "0.2.8"]]}}
 
   :auto    {"javac" {:file-pattern #"\.java$"}}
 
