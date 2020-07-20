@@ -82,8 +82,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   (when (= 1 (rem (count pairs) 2))
     (throw (IllegalArgumentException.
              "You must provide a series of key/value pairs in the form: :key1 value1, :key2 value2, etc.")))
-  (let [ns# (str *ns*)]
-    `(core/log* core/*default-logger* ~event-name (list :mulog/namespace ~ns# ~@pairs))))
+  `(core/log* core/*default-logger* ~event-name (list :mulog/namespace (str *ns*) ~@pairs)))
 
 
 

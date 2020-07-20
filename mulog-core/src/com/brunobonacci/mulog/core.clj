@@ -228,14 +228,17 @@
 (defmacro log-trace
   "internal utility macro"
   [event-name tid ptid duration ts outcome & pairs]
-  `(com.brunobonacci.mulog/log
-     ~event-name
-     :mulog/trace-id     ~tid
-     :mulog/parent-trace ~ptid
-     :mulog/duration     ~duration
-     :mulog/timestamp    ~ts
-     :mulog/outcome      ~outcome
-     ~@pairs))
+  `(capture
+     *default-logger*
+     (list
+       :mulog/event-name ~event-name
+       :mulog/trace-id     ~tid
+       :mulog/parent-trace ~ptid
+       :mulog/duration     ~duration
+       :mulog/timestamp    ~ts
+       :mulog/outcome      ~outcome
+       :mulog/namespace   (str *ns*))
+     (list ~@pairs)))
 
 
 
