@@ -37,65 +37,13 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
 "}
     com.brunobonacci.mulog
   (:require [com.brunobonacci.mulog.core :as core]
-            [com.brunobonacci.mulog.buffer :as rb]
+            [com.brunobonacci.mulog.utils :refer [defalias]]
             [com.brunobonacci.mulog.flakes :refer [flake]]))
 
 
 
-(defonce ^{:doc "The default logger buffers the messages in a ring buffer
-             waiting to be dispatched to a destination like a file
-             or a centralized logging management system."
-           :dynamic true}
-  *default-logger*
-  ;; The choice of an atom against an agent it is mainly based on
-  ;; bechmarks. Items can be added to the buffer with a mean time of
-  ;; 285 nanos, against the 1.2μ of the agent. The agent might be
-  ;; better in cases in which the atom is heavily contended and many
-  ;; retries are required in that case the agent could be better,
-  ;; however, the performance difference is big enough that I can
-  ;; afford at least 4 retries to make the cost of 1 send to an agent.
-  (atom (rb/ring-buffer 1000)))
-
-
-
-(defonce ^{:doc "The global logging context is used to add properties
-             which are valid for all subsequent log events.  This is
-             typically set once at the beginning of the process with
-             information like the app-name, version, environment, the
-             pid and other similar info."}
-  global-context (atom {}))
-
-
-
-(def ^{:doc "The local context is local to the current thread,
-             therefore all the subsequent call to log withing the
-             given context will have the properties added as well. It
-             is typically used to add information regarding the
-             current processing in the current thread. For example
-             who is the user issuing the request and so on."
-       :dynamic true}
-  *local-context* nil)
-
-
-
-(defn log*
-  "Event logging function. Given a logger (buffer) an event name and a
-  list/map of event's attribute key/values, it enqueues the event in
-  the the buffer and returns nil.  Asynchronous process will take care
-  to send the content of the buffer to the registered publishers.
-  (for more information, see the `log` macro below)
-  "
-  [logger event-name pairs]
-  (when (and logger event-name)
-    (core/enqueue!
-      logger
-      (list @global-context *local-context*
-        (list
-          :mulog/trace-id  (flake)
-          :mulog/timestamp (System/currentTimeMillis)
-          :mulog/event-name event-name)
-        pairs)))
-  nil)
+;; create var alias in local namespace
+(defalias log* core/log*)
 
 
 
@@ -135,7 +83,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
     (throw (IllegalArgumentException.
              "You must provide a series of key/value pairs in the form: :key1 value1, :key2 value2, etc.")))
   (let [ns# (str *ns*)]
-    `(log* *default-logger* ~event-name (list :mulog/namespace ~ns# ~@pairs))))
+    `(core/log* core/*default-logger* ~event-name (list :mulog/namespace ~ns# ~@pairs))))
 
 
 
@@ -191,7 +139,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
 
   "
   ([config]
-   (start-publisher! *default-logger* config))
+   (start-publisher! core/*default-logger* config))
   ([logger {:keys [type publishers] :as config}]
    (if (= :multi type)
      ;; if multi publisher then start them all
@@ -229,7 +177,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
 
   "
   [context]
-  (reset! global-context context))
+  (reset! core/global-context context))
 
 
 
@@ -239,7 +187,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   `clojure.core/update` function.
   "
   [f & args]
-  (apply swap! global-context f args))
+  (apply swap! core/global-context f args))
 
 
 
@@ -274,7 +222,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   are in the same execution thread and which the scope of the block.
   "
   [context & body]
-  `(binding [*local-context* (merge *local-context* ~context)]
+  `(binding [core/*local-context* (merge core/*local-context* ~context)]
      ~@body))
 
 
@@ -419,12 +367,12 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
            ;; because the log function is called after the evaluation of body
            ;; is completed, and the timestamp wouldn't be correct
            tid#  (flake)
-           ptid# (get *local-context* :mulog/parent-trace)
+           ptid# (get core/*local-context* :mulog/parent-trace)
            ts#   (System/currentTimeMillis)
            ;; start timer to track body execution
            t0#   (System/nanoTime)]
        ;; setting up the tracing re
-       (with-context {:mulog/root-trace   (or (get *local-context* :mulog/root-trace) tid#)
+       (with-context {:mulog/root-trace   (or (get core/*local-context* :mulog/root-trace) tid#)
                       :mulog/parent-trace tid#}
          (try
            (let [r# (do ~@body)]

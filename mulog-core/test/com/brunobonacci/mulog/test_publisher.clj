@@ -53,15 +53,15 @@
                     (fn [_# _# o# n#]
                       (when (< (count o#) (count n#))
                         (swap! flush# inc))))
-         gbc#     @com.brunobonacci.mulog/global-context
-         _#       (reset! com.brunobonacci.mulog/global-context {})
+         gbc#     @com.brunobonacci.mulog.core/global-context
+         _#       (reset! com.brunobonacci.mulog.core/global-context {})
          tp#      (test-publisher outbox# (:process cfg#))
          sp#      (uc/start-publisher! inbox# {:type :inline :publisher tp#})]
 
-     (binding [com.brunobonacci.mulog/*default-logger* inbox#]
+     (binding [com.brunobonacci.mulog.core/*default-logger* inbox#]
        ~@body)
 
-     (reset! com.brunobonacci.mulog/global-context gbc#)
+     (reset! com.brunobonacci.mulog.core/global-context gbc#)
      ;; wait for the publisher to deliver the events
      (wait-until
        (fn [] (> @flush# 0))
