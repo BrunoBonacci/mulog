@@ -285,18 +285,18 @@
     )
 
   => (just
-         [(just
-            {:mulog/event-name   :test
-             :mulog/timestamp    anything
-             :mulog/trace-id     anything
-             ;; no parent trace
-             :mulog/parent-trace nil?
-             :mulog/root-trace   anything
-             :mulog/namespace    (str *ns*)
-             :mulog/outcome      :error
-             ;; duration is in nanoseconds
-             :mulog/duration     #(and (number? %) (> % 1000000))
-             :exception          #(instance? Exception %)})])
+        [(just
+           {:mulog/event-name   :test
+            :mulog/timestamp    anything
+            :mulog/trace-id     anything
+            ;; no parent trace
+            :mulog/parent-trace nil?
+            :mulog/root-trace   anything
+            :mulog/namespace    (str *ns*)
+            :mulog/outcome      :error
+            ;; duration is in nanoseconds
+            :mulog/duration     #(and (number? %) (> % 1000000))
+            :exception          #(instance? Exception %)})])
   )
 
 
@@ -314,14 +314,14 @@
     )
 
   => (just
-         [(contains
-            {:mulog/event-name :inner
-             :key3             3})
+        [(contains
+           {:mulog/event-name :inner
+            :key3             3})
 
-          (contains
-            {:mulog/event-name :test
-             :key1             :value1
-             :key2             2})])
+         (contains
+           {:mulog/event-name :test
+            :key1             :value1
+            :key2             2})])
 
   )
 
@@ -339,16 +339,16 @@
     )
 
   => (just
-         [(contains
-            {:mulog/event-name :inner
-             :key3             3
-             :cntx1            "value1"})
+        [(contains
+           {:mulog/event-name :inner
+            :key3             3
+            :cntx1            "value1"})
 
-          (contains
-            {:mulog/event-name :test
-             :key1             :value1
-             :key2             2
-             :cntx1            "value1"})])
+         (contains
+           {:mulog/event-name :test
+            :key1             :value1
+            :key2             2
+            :cntx1            "value1"})])
 
   )
 
@@ -366,16 +366,16 @@
     )
 
   => (just
-         [(contains
-            {:mulog/event-name :inner
-             :key3             3
-             :global           1})
+        [(contains
+           {:mulog/event-name :inner
+            :key3             3
+            :global           1})
 
-          (contains
-            {:mulog/event-name :test
-             :key1             :value1
-             :key2             2
-             :global           1})])
+         (contains
+           {:mulog/event-name :test
+            :key1             :value1
+            :key2             2
+            :global           1})])
 
   )
 
@@ -460,10 +460,10 @@
          :capture #(select-keys % [:http-status])}
         {:http-status 200 :body "OK"}))
     => (just
-           [(contains
-              {:mulog/event-name :test
-               :key1             "value1"
-               :http-status      200})]))
+          [(contains
+             {:mulog/event-name :test
+              :key1             "value1"
+              :http-status      200})]))
 
 
   (fact "fail case"
@@ -475,19 +475,19 @@
           (throw (ex-info "BOOM" {})))))
 
     => (just
-           [(contains
-              {:mulog/event-name :test
-               :key1             "value1"
-               :mulog/outcome    :error})]))
+          [(contains
+             {:mulog/event-name :test
+              :key1             "value1"
+              :mulog/outcome    :error})]))
 
 
   (fact "fail case, doesn't contain the extraction"
     (->> (tp/with-test-publisher
-           (tp/ignore
-             (u/trace :test
-               {:pairs   [:key1 "value1"]
-                :capture #(select-keys % [:http-status])}
-               (throw (ex-info "BOOM" {})))))
+         (tp/ignore
+           (u/trace :test
+             {:pairs   [:key1 "value1"]
+              :capture #(select-keys % [:http-status])}
+             (throw (ex-info "BOOM" {})))))
       first
       :http-status) => nil)
 
@@ -504,4 +504,19 @@
              {:mulog/event-name :test
               :key1             "value1"
               :mulog/capture    :error})]))
+
+
+  (fact "extraction can redefine internal properties such as :outcome and :exception"
+    (tp/with-test-publisher
+      (u/trace :test
+        {:pairs   [:key1 "value1"]
+         :capture (constantly {:mulog/outcome :error :exception (ex-info "Logical errror" {})})}
+        {:http-status 500 :body "some error as a value"}))
+    => (just
+          [(contains
+             {:mulog/event-name :test
+              :mulog/outcome    :error
+              :exception        (partial instance? Exception)
+              :key1             "value1"
+              })]))
   )
