@@ -183,13 +183,12 @@
 
 
 
-(defn capture
+(defn log-append
   "TODO: FIXME
-  Event logging function. Given a logger (buffer) an event name and a
-  list/map of event's attribute key/values, it enqueues the event in
-  the the buffer and returns nil.  Asynchronous process will take care
-  to send the content of the buffer to the registered publishers.
-  (for more information, see the `log` macro below)
+  Append to given a logger (buffer) an event represented by one or more set
+  of key/values pairs. it enqueues the event in the the buffer and returns nil.
+  Pairs can be lists of key value pairs (in the form `'(:key1 \"v1\", :key2 2 ,,,)`)
+  or maps.
   "
   ([logger pairs1]
    (when logger
@@ -215,7 +214,7 @@
   "
   [logger event-name pairs]
   (when (and logger event-name)
-    (capture logger
+    (log-append logger
       (list
         :mulog/trace-id  (flake)
         :mulog/timestamp (System/currentTimeMillis)
@@ -227,25 +226,16 @@
 
 (defmacro log-trace
   "internal utility macro"
-  [event-name tid ptid duration ts outcome & pairs]
-  `(capture
+  [event-name tid ptid duration ts outcome pairs captures]
+  `(log-append
      *default-logger*
      (list
-       :mulog/event-name ~event-name
+       :mulog/event-name   ~event-name
        :mulog/trace-id     ~tid
        :mulog/parent-trace ~ptid
        :mulog/duration     ~duration
        :mulog/timestamp    ~ts
        :mulog/outcome      ~outcome
        :mulog/namespace   (str *ns*))
-     (list ~@pairs)))
-
-
-
-(defmacro log-trace-capture
-  "internal utility macro"
-  [event-name tid ptid duration ts outcome capture result & pairs]
-  (when capture
-    `(com.brunobonacci.mulog/with-context
-       (on-error {:mulog/capture :error} (~capture ~result))
-       (log-trace ~event-name ~tid ~ptid ~duration ~ts ~outcome ~@pairs))))
+     ~pairs
+     ~captures))

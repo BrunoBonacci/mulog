@@ -13,6 +13,13 @@
 
 
 
+(defn log-call-with-context
+  []
+  (u/with-context {:context :value1}
+    (u/log :test-log :bechmark "speed")))
+
+
+
 (defn trace-call-simple
   []
   (u/trace :test-trace

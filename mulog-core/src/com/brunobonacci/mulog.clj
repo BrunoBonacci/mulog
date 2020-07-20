@@ -375,16 +375,13 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
                       :mulog/parent-trace tid#}
          (try
            (let [r# (do ~@body)]
-             ;; if there is something to capture form the evaluation result
-             ;; then use the capture function
-             (if ~capture
-               (core/log-trace-capture ~event-name tid# ptid# (- (System/nanoTime) t0#) ts# :ok
-                 ~capture r#  ~@pairs)
-               ;; otherwise just log the outcome
-               (core/log-trace ~event-name tid# ptid# (- (System/nanoTime) t0#) ts# :ok ~@pairs))
+             (core/log-trace ~event-name tid# ptid# (- (System/nanoTime) t0#) ts# :ok (list ~@pairs)
+               ;; if there is something to capture form the evaluation result
+               ;; then use the capture function
+               (core/on-error {:mulog/capture :error} (when-let [c# ~capture] (c# r#))))
              ;; return the body result
              r#)
            ;; If and exception occur, then log the error.
            (catch Exception x#
-             (core/log-trace ~event-name tid# ptid# (- (System/nanoTime) t0#) ts# :error :exception x# ~@pairs)
+             (core/log-trace ~event-name tid# ptid# (- (System/nanoTime) t0#) ts# :error (list :exception x# ~@pairs) nil)
              (throw x#)))))))
