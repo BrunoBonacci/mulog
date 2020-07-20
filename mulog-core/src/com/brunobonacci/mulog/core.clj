@@ -184,8 +184,7 @@
 
 
 (defn log-append
-  "TODO: FIXME
-  Append to given a logger (buffer) an event represented by one or more set
+  "Append to given a logger (buffer) an event represented by one or more set
   of key/values pairs. it enqueues the event in the the buffer and returns nil.
   Pairs can be lists of key value pairs (in the form `'(:key1 \"v1\", :key2 2 ,,,)`)
   or maps.

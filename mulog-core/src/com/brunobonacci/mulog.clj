@@ -151,6 +151,17 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
 
 
 
+(defn global-context
+  "Return the current value of the `global-context`.
+  The global logging context is used to add properties which are valid
+  for all subsequent log events.  This is typically set once at the
+  beginning of the process with information like the app-name,
+  version, environment, the pid and other similar info."
+  []
+  @core/global-context)
+
+
+
 (defn set-global-context!
   "Adding events which are rich in attributes and dimensions is
   extremely useful, however it is not easy to have all the attributes
@@ -187,6 +198,18 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   "
   [f & args]
   (apply swap! core/global-context f args))
+
+
+
+(defn local-context
+  "Returns the current `local-context`.
+  The local context is local to the current thread, therefore all the
+  subsequent call to log withing the given context will have the
+  properties added as well. It is typically used to add information
+  regarding the current processing in the current thread. For example
+  who is the user issuing the request and so on."
+  []
+  core/*local-context*)
 
 
 
