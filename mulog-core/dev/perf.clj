@@ -37,7 +37,6 @@
     (bench (u/log :test :bechmark "speed")))
 
 
-
   ;; After enabling the publisher, the performances are unaffected ;-)
   (def pbs
     (u/start-publisher! {:type :simple-file :filename "/tmp/bench/mulog.log"}))
@@ -85,21 +84,32 @@
   ;; Overhead used : 1.860115 ns
 
 
+  ;; TODO: `with-context` surprisingly expensive. look for a better way.
+  (bench
+    (u/with-context {:context :v1}
+      (u/log :test :bechmark "speed")))
+  ;; Execution time mean : 972.426151 ns
+  ;; Execution time std-deviation : 41.989582 ns
+  ;; Execution time lower quantile : 919.358853 ns ( 2.5%)
+  ;; Execution time upper quantile : 1.069576 µs (97.5%)
+  ;; Overhead used : 2.204037 ns
+
 
 
   (bench (do)) ;; 0.72ns
   (bench (u/trace :bench [] (do)))
-  ;; Evaluation count : 135225540 in 60 samples of 2253759 calls.
-  ;; Execution time mean : 446.652002 ns
-  ;; Execution time std-deviation : 5.785668 ns
-  ;; Execution time lower quantile : 438.042388 ns ( 2.5%)
-  ;; Execution time upper quantile : 458.801791 ns (97.5%)
-  ;; Overhead used : 6.945067 ns
+  ;; Evaluation count : 57938880 in 60 samples of 965648 calls.
   ;;
-  ;; Found 2 outliers in 60 samples (3.3333 %)
-  ;; low-severe  1 (1.6667 %)
-  ;; low-mild    1 (1.6667 %)
-  ;; Variance from outliers : 1.6389 % Variance is slightly inflated by outliers
+  ;; Execution time mean : 1.019139 µs
+  ;; Execution time std-deviation : 134.563956 ns
+  ;; Execution time lower quantile : 907.992166 ns ( 2.5%)
+  ;; Execution time upper quantile : 1.365292 µs (97.5%)
+  ;; Overhead used : 2.204037 ns
+  ;;
+  ;; Found 4 outliers in 60 samples (6.6667 %)
+  ;; low-severe	 2 (3.3333 %)
+  ;; low-mild	 2 (3.3333 %)
+  ;; Variance from outliers : 80.6704 % Variance is severely inflated by outliers
 
 
   )

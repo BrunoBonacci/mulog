@@ -2,6 +2,7 @@
 
 ## v0.4.0 - (unreleased)
   - [**NEW**] Added CloudWatch Logs publisher (thanks to @etolbakov)
+  - Performance improvement in ***μ/trace***
 
 
 ## v0.3.1 - (2020-07-10)
