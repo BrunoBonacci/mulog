@@ -212,7 +212,7 @@
   (tp/with-test-publisher
     (u/log :test :mulog/timestamp 1 :mulog/namespace "test" :mulog/trace-id "id1"))
 
-  => [#:mulog{:trace-id "id1", :timestamp 1, :event-name :test, :namespace "test"}]
+  => [{:mulog/trace-id "id1", :mulog/timestamp 1, :mulog/event-name :test, :mulog/namespace "test"}]
   )
 
 

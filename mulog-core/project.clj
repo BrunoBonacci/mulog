@@ -10,7 +10,8 @@
 
   :javac-options ["-target" "1.8" "-source" "1.8" "-Xlint:-options"]
   :java-source-paths ["java"]
-  :dependencies [[org.clojure/clojure "1.10.1"]
+
+  :dependencies [[org.clojure/clojure "1.10.1" :scope "provided"]
                  [amalloy/ring-buffer "1.3.1"]]
 
   :global-vars {*warn-on-reflection* true}
@@ -26,10 +27,17 @@
                    :jvm-opts ["-server" "-Djdk.attach.allowAttachSelf"]
                    :resource-paths ["dev-resources"]
                    :plugins      [[lein-midje "3.2.2"]
-                                  [lein-jmh "0.2.8"]]}}
+                                  [lein-jmh "0.2.8"]]}
+
+             ;; compatibility with 1.8+ for the core.
+             :1.8    {:dependencies [[org.clojure/clojure "1.8.0"]]}
+             :1.9    {:dependencies [[org.clojure/clojure "1.9.0"]]}
+             :1.10.0 {:dependencies [[org.clojure/clojure "1.10.0"]]}
+             :1.10.1 {:dependencies [[org.clojure/clojure "1.10.1"]]}
+             :1.10.2 {:dependencies [[org.clojure/clojure "1.10.2-alpha1"]]}}
 
   :auto    {"javac" {:file-pattern #"\.java$"}}
 
-  :aliases {"test" "midje"
+  :aliases {"test" ["with-profile" "+1.8:+1.9:+1.10.0:+1.10.1:+1.10.2" "midje"]
             "perf" ["with-profile" "dev" "jmh" #=(pr-str {:file "./perf/benchmarks.edn" :status true :pprint true})]}
   )
