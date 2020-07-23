@@ -520,3 +520,22 @@
               :key1             "value1"
               })]))
   )
+
+
+
+(fact "no event-name? no log!"
+
+  (fact "don't log if event-name is nil"
+    (tp/with-test-publisher
+      (tp/with-test-publisher
+        (u/log nil :missing "event-name")))
+    => [])
+
+
+  (fact "don't log if event-name is nil"
+    (tp/with-test-publisher
+      (u/trace nil
+        [:missing "event-name"]
+        (+ 1 1)))
+    => [])
+  )

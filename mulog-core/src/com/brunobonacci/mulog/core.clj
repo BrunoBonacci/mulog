@@ -226,15 +226,16 @@
 (defmacro log-trace
   "internal utility macro"
   [event-name tid ptid duration ts outcome pairs captures]
-  `(log-append
-     *default-logger*
-     (list
-       :mulog/event-name   ~event-name
-       :mulog/trace-id     ~tid
-       :mulog/parent-trace ~ptid
-       :mulog/duration     ~duration
-       :mulog/timestamp    ~ts
-       :mulog/outcome      ~outcome
-       :mulog/namespace   (str *ns*))
-     ~pairs
-     ~captures))
+  `(when-let [event-name# ~event-name]
+     (log-append
+       *default-logger*
+       (list
+         :mulog/event-name   event-name#
+         :mulog/trace-id     ~tid
+         :mulog/parent-trace ~ptid
+         :mulog/duration     ~duration
+         :mulog/timestamp    ~ts
+         :mulog/outcome      ~outcome
+         :mulog/namespace   (str *ns*))
+       ~pairs
+       ~captures)))
