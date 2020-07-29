@@ -94,6 +94,28 @@
   ;; Execution time upper quantile : 1.069576 µs (97.5%)
   ;; Overhead used : 2.204037 ns
 
+  (bench
+    (u/with-context {:context :v1}
+      (u/with-context {:level :2}
+        (u/log :test :bechmark "speed"))))
+  ;; Execution time mean : 1.401438 µs
+  ;; Execution time std-deviation : 15.374393 ns
+  ;; Execution time lower quantile : 1.385371 µs ( 2.5%)
+  ;; Execution time upper quantile : 1.443111 µs (97.5%)
+  ;; Overhead used : 2.096266 ns
+
+
+  (def ^:dynamic *b* nil)
+  (bench
+    (binding [*b* 1]
+      (+ 1 *b*)))
+  ;; Execution time mean : 386.223452 ns
+  ;; Execution time std-deviation : 13.368965 ns
+  ;; Execution time lower quantile : 378.564691 ns ( 2.5%)
+  ;; Execution time upper quantile : 406.533186 ns (97.5%)
+  ;; Overhead used : 6.656971 ns
+
+
 
 
   (bench (do)) ;; 0.72ns
