@@ -37,7 +37,8 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
 "}
     com.brunobonacci.mulog
   (:require [com.brunobonacci.mulog.core :as core]
-            [com.brunobonacci.mulog.utils :refer [defalias]]
+            [com.brunobonacci.mulog.utils
+             :refer [defalias fast-map-merge thread-local-binding]]
             [com.brunobonacci.mulog.flakes :refer [flake]]))
 
 
@@ -209,7 +210,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   regarding the current processing in the current thread. For example
   who is the user issuing the request and so on."
   []
-  core/*local-context*)
+  @core/local-context)
 
 
 
@@ -243,8 +244,9 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   all the ***μ/log*** calls within nested functions as long as they
   are in the same execution thread and which the scope of the block.
   "
+  {:style/indent 1}
   [context & body]
-  `(binding [core/*local-context* (merge core/*local-context* ~context)]
+  `(thread-local-binding [core/local-context (fast-map-merge @core/local-context ~context)]
      ~@body))
 
 
@@ -389,12 +391,12 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
            ;; because the log function is called after the evaluation of body
            ;; is completed, and the timestamp wouldn't be correct
            tid#  (flake)
-           ptid# (get core/*local-context* :mulog/parent-trace)
+           ptid# (get @core/local-context :mulog/parent-trace)
            ts#   (System/currentTimeMillis)
            ;; start timer to track body execution
            t0#   (System/nanoTime)]
        ;; setting up the tracing re
-       (with-context {:mulog/root-trace   (or (get core/*local-context* :mulog/root-trace) tid#)
+       (with-context {:mulog/root-trace   (or (get @core/local-context :mulog/root-trace) tid#)
                       :mulog/parent-trace tid#}
          (try
            (let [r# (do ~@body)]

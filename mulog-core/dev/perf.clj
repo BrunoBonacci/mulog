@@ -84,27 +84,31 @@
   ;; Overhead used : 1.860115 ns
 
 
-  ;; TODO: `with-context` surprisingly expensive. look for a better way.
   (bench
     (u/with-context {:context :v1}
       (u/log :test :bechmark "speed")))
-  ;; Execution time mean : 972.426151 ns
-  ;; Execution time std-deviation : 41.989582 ns
-  ;; Execution time lower quantile : 919.358853 ns ( 2.5%)
-  ;; Execution time upper quantile : 1.069576 µs (97.5%)
-  ;; Overhead used : 2.204037 ns
+  ;; Execution time mean : 297.677945 ns
+  ;; Execution time std-deviation : 11.220127 ns
+  ;; Execution time lower quantile : 290.369672 ns ( 2.5%)
+  ;; Execution time upper quantile : 324.592734 ns (97.5%)
+  ;; Overhead used : 2.100004 ns
+
 
   (bench
     (u/with-context {:context :v1}
       (u/with-context {:level :2}
         (u/log :test :bechmark "speed"))))
-  ;; Execution time mean : 1.401438 µs
-  ;; Execution time std-deviation : 15.374393 ns
-  ;; Execution time lower quantile : 1.385371 µs ( 2.5%)
-  ;; Execution time upper quantile : 1.443111 µs (97.5%)
-  ;; Overhead used : 2.096266 ns
+  ;; Execution time mean : 407.999100 ns
+  ;; Execution time std-deviation : 5.069265 ns
+  ;; Execution time lower quantile : 403.607057 ns ( 2.5%)
+  ;; Execution time upper quantile : 418.810819 ns (97.5%)
+  ;; Overhead used : 2.100004 ns
 
 
+  ;; --------------------------------------
+  ;; dynamic bindings are relatively slow
+  ;; thread-local variables are much faster
+  ;; --------------------------------------
   (def ^:dynamic *b* nil)
   (bench
     (binding [*b* 1]
@@ -116,22 +120,26 @@
   ;; Overhead used : 6.656971 ns
 
 
+  (def tl (ut/thread-local nil))
+  (bench
+    (ut/thread-local-binding [tl 1]
+      (+ 1 @tl)))
+  ;; Execution time mean : 26.640304 ns
+  ;; Execution time std-deviation : 0.383869 ns
+  ;; Execution time lower quantile : 26.293054 ns ( 2.5%)
+  ;; Execution time upper quantile : 27.107705 ns (97.5%)
+  ;; Overhead used : 2.096266 ns
+  ;; --------------------------------------
+
 
 
   (bench (do)) ;; 0.72ns
   (bench (u/trace :bench [] (do)))
-  ;; Evaluation count : 57938880 in 60 samples of 965648 calls.
-  ;;
-  ;; Execution time mean : 1.019139 µs
-  ;; Execution time std-deviation : 134.563956 ns
-  ;; Execution time lower quantile : 907.992166 ns ( 2.5%)
-  ;; Execution time upper quantile : 1.365292 µs (97.5%)
-  ;; Overhead used : 2.204037 ns
-  ;;
-  ;; Found 4 outliers in 60 samples (6.6667 %)
-  ;; low-severe	 2 (3.3333 %)
-  ;; low-mild	 2 (3.3333 %)
-  ;; Variance from outliers : 80.6704 % Variance is severely inflated by outliers
+  ;; Execution time mean : 432.572847 ns
+  ;; Execution time std-deviation : 4.696741 ns
+  ;; Execution time lower quantile : 428.480115 ns ( 2.5%)
+  ;; Execution time upper quantile : 447.053438 ns (97.5%)
+  ;; Overhead used : 2.100004 ns
 
 
   )

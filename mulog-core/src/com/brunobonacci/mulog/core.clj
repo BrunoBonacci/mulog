@@ -5,6 +5,7 @@
     com.brunobonacci.mulog.core
   (:require [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.publisher :as p]
+            [com.brunobonacci.mulog.utils :as ut]
             [com.brunobonacci.mulog.flakes :refer [flake snowflake]])
   (:import [com.brunobonacci.mulog.publisher PPublisher]))
 
@@ -177,9 +178,8 @@
              given context will have the properties added as well. It
              is typically used to add information regarding the
              current processing in the current thread. For example
-             who is the user issuing the request and so on."
-       :dynamic true}
-  *local-context* nil)
+             who is the user issuing the request and so on."}
+  local-context (ut/thread-local nil))
 
 
 
@@ -191,15 +191,15 @@
   "
   ([logger pairs1]
    (when logger
-     (enqueue! logger (list @global-context *local-context* pairs1)))
+     (enqueue! logger (list @global-context @local-context pairs1)))
    nil)
   ([logger pairs1 pairs2]
    (when logger
-     (enqueue! logger (list @global-context *local-context* pairs1 pairs2)))
+     (enqueue! logger (list @global-context @local-context pairs1 pairs2)))
    nil)
   ([logger pairs1 pairs2 pairs3]
    (when logger
-     (enqueue! logger (list @global-context *local-context* pairs1 pairs2 pairs3)))
+     (enqueue! logger (list @global-context @local-context pairs1 pairs2 pairs3)))
    nil))
 
 

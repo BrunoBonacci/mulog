@@ -2,7 +2,8 @@
   (:require [com.brunobonacci.mulog.flakes :refer [snowflake]]
             [clojure.string :as str]
             [clojure.pprint :as pp]
-            [clojure.walk :as w]))
+            [clojure.walk :as w])
+  (:import [com.brunobonacci.mulog.core ClojureThreadLocal]))
 
 
 
@@ -130,3 +131,59 @@
   `(do
      (def ~dest (var ~src))
      (alter-meta! (var ~dest) merge (select-keys (meta (var ~src)) [:doc :arglists]))))
+
+
+
+;;; Credit Metosin
+;;; https://github.com/metosin/reitit/blob/0bcfda755f139d14cf4eff37e2b294f573215213/modules/reitit-core/src/reitit/impl.cljc#L136
+(defn fast-assoc
+  "Like assoc but only takes one kv pair. Slightly faster."
+  {:inline
+   (fn [a k v]
+     `(.assoc ~(with-meta a {:tag 'clojure.lang.Associative}) ~k ~v))}
+  [^clojure.lang.Associative a k v]
+  (.assoc ^clojure.lang.Associative a k v))
+
+
+
+;;; Credit Metosin
+;;; https://github.com/metosin/compojure-api/blob/master/src/compojure/api/common.clj#L46
+(defn fast-map-merge
+  "Returns a map that consists of the second of the maps assoc-ed onto
+  the first. If a key occurs in more than one map, the mapping from
+  te latter (left-to-right) will be the mapping in the result."
+  [x y]
+  (cond
+    (nil? x) y
+    (nil? y) x
+    :else
+    (reduce-kv
+      (fn [m k v]
+        (fast-assoc m k v))
+      x
+      y)))
+
+
+
+(defn thread-local
+  "A thread-local variable which can be deref'd"
+  ([]
+   (ClojureThreadLocal.))
+  ([init]
+   (ClojureThreadLocal. init)))
+
+
+
+(defmacro thread-local-binding
+  "Like the `binding` macro but for thread-local vars. (only 1 binding is supported)"
+  {:style/indent 1}
+  [binding & body]
+  (when-not (and (vector? binding) (= 2 (count binding)))
+    (throw (ex-info "the binding vector must be a clojure vector with 2 elements, symbol and value"
+             {:bindings binding})))
+  (let [[sym val] binding]
+    `(let [^ClojureThreadLocal sym# ~sym
+           val# ~val
+           b# (deref sym#)]
+       (.set sym# val#)
+       (try ~@body (finally (.set sym# b#))))))
