@@ -28,24 +28,13 @@ Here some features and key design decisions that make ***μ/log*** special:
   * Ability to add contextual logging.
   * Adding publishers won't affect logging performances
   * Extremely easy to create *stateful* publishers for new systems
-  * Wide range of publishers available
+  * Wide range of publishers available ([see available list](#table-of-contents))
   * *Event logs are useful, but not as important as process flow
     (therefore preferable to drop events rather than crashing the
     process)*
   * Because is cheap to log events, you can freely log plenty.
-
-Available publishers:
-
-  * [Simple console publisher (stdout)](#simple-console-publisher)
-  * [Simple file publisher](#simple-file-publisher)
-  * [Multi-publisher](#multi-publisher)
-  * [Elasticsearch](#elasticsearch-publisher)
-  * [Apache Kafka](#apache-kafka-publisher)
-  * [Kinesis](#kinesis-publisher)
-  * [CloudWatch Logs](#cloudwatch-logs-publisher)
-  * [Slack](#slack-publisher)
-  * [OpenZipkin](#zipkin-publisher)
-  * [Pluggable custom publishers](#custom-publishers)
+  * And events are **just data** so can process, enrich, filter,
+    aggregate, visualise the data with your own tools.
 
 
 ## Motivation
@@ -86,6 +75,38 @@ I believe we need the break free of these anachronistic designs and use
 event loggers, *not message loggers*, which are designed for dynamic
 distributed systems living in cloud and using centralized log
 aggregators. *So here is ***μ/log*** designed for this very purpose.*
+
+
+## Table of contents
+
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+
+ - [Features](#features)
+ - [Motivation](#motivation)
+ - [Table of contents](#table-of-contents)
+ - [Usage](#usage)
+     - [Use of context](#use-of-context)
+ - [Best practices](#best-practices)
+ - [***μ/trace***](#μtrace)
+ - [JVM Metrics sampling](#jvm-metrics-sampling)
+ - [Publishers](#publishers)
+     - [Simple console publisher](#simple-console-publisher)
+     - [Simple file publisher](#simple-file-publisher)
+     - [Multi publisher](#multi-publisher)
+     - [Elasticsearch publisher](#elasticsearch-publisher)
+     - [Apache Kafka publisher](#apache-kafka-publisher)
+     - [Kinesis publisher](#kinesis-publisher)
+     - [Cloudwatch Logs publisher](#cloudwatch-logs-publisher)
+     - [Slack publisher](#slack-publisher)
+     - [Zipkin publisher](#zipkin-publisher)
+     - [Custom publishers](#custom-publishers)
+     - [Inline publishers](#inline-publishers)
+ - [Additional topics](#additional-topics)
+ - [Contributions](#contributions)
+ - [Related projects](#related-projects)
+ - [License](#license)
+
+<!-- markdown-toc end -->
 
 
 ## Usage
@@ -557,7 +578,8 @@ Here an example of the metrics sampled
 ## Publishers
 
 Publishers allow to send the events to external system where they can
-be stored, indexed, transformed or visualized.
+be stored, indexed, transformed or visualised.
+
 
 ### Simple console publisher
 ![since v0.1.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)
@@ -1000,7 +1022,7 @@ as follow:
 ```
 
 
-## More docs
+## Additional topics
 
   * Read about [μ/log internals](./doc/mulog-internals.md)
   * [How to write custom publishers](./doc/custom-publishers.md)
@@ -1019,7 +1041,6 @@ For example:
 
   - [ ] Prometheus publisher
   - [ ] InfluxDB publisher
-  - [ ] CloudWatch Logs/Events publisher
   - [ ] Advanced Console publisher
   - [ ] Advanced File publisher
 
@@ -1031,6 +1052,16 @@ To contribute:
   - drop a message to the issue so that I know someone else is working on it
   - follow the guidelines in the ticket
   - in doubt, just ask!
+
+## Related projects
+
+Here there are some other open-source projects which are related to ***μ/log**:
+
+  * [slf4j-mulog](https://gitlab.com/nonseldiha/slf4j-mulog) - a SLF4j backend for ***μ/log**.
+    It enables you to send your traditional logs from your existing
+    projects via ***μ/log** and leverage all ***μ/log**'s capability
+    to filter/transform/enrich events before publishing.
+
 
 ## License
 
