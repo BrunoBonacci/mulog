@@ -43,7 +43,7 @@
 (defn- prepare-records
   [config events]
   (->> events
-    (filter :mulog/root-trace)
+    (filter #(and (:mulog/root-trace %) (:mulog/duration %)))
     (map (fn [{:keys [mulog/trace-id mulog/parent-trace mulog/root-trace
                      mulog/duration mulog/event-name mulog/timestamp
                      app-name] :as e}]
