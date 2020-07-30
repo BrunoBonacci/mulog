@@ -22,7 +22,7 @@
    {:type :multi
     :publishers
     [ ;; send events to the stdout
-     {:type :console}
+     {:type :console :pretty? true}
      ;; send events to a file
      {:type :simple-file :filename "/tmp/mulog/events.log"}
      ;; send events to ELS
