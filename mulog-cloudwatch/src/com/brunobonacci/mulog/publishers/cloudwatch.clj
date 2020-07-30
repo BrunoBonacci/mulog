@@ -37,24 +37,27 @@
 
 (defn- publish!
   [cloudwatch-client group-name stream-name records next-token]
-  (let [rq {:logGroupName  group-name
-            :logStreamName stream-name
-            :logEvents     records}
+  (let [rq    {:logGroupName  group-name
+               :logStreamName stream-name
+               :logEvents     records}
         token @next-token
-        rs  (aws/invoke cloudwatch-client {:op  :PutLogEvents
-                                           :request (if (nil? token)
-                                                      rq
-                                                      (merge rq token))})]
+        rs    (aws/invoke cloudwatch-client {:op      :PutLogEvents
+                                             :request (if (nil? token)
+                                                        rq
+                                                        (merge rq token))})]
 
     (if (has-anomaly? rs)
       (if (has-invalid-token? rs)
         (swap! next-token assoc :sequenceToken (:expectedSequenceToken rs))
         (throw
           (ex-info
-            (str "μ/log cloudwatch publisher publish failure, group '"
-              group-name "'" " stream '"
-              stream-name "' reason '" (:message rs) "'")
-            {:rs rs})))
+            (format "μ/log cloudwatch publisher publish failure, group '%s' stream '%s' reason: %s "
+              (str group-name)
+              (str stream-name)
+              (str (:message rs)))
+            {:rs          rs
+             :group-name  group-name
+             :stream-name stream-name})))
       (swap! next-token assoc :sequenceToken (:nextSequenceToken rs)))))
 
 
@@ -120,12 +123,13 @@
     (if (has-anomaly? rs)
       (throw
         (ex-info
-          (format (str "μ/log cloudwatch publisher initialization failure,"
-                  " group: '%s', stream: '%s', reason: %s")
+          (format "μ/log cloudwatch publisher initialization failure, group: '%s', stream: '%s', reason: %s"
             (str group-name)
             (str stream-name)
             (:message rs))
-          {:rs rs}))
+          {:rs          rs
+           :group-name  group-name
+           :stream-name stream-name}))
       (CloudwatchPublisher.
         cfg
         (rb/agent-buffer 10000)
