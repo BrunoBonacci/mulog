@@ -27,127 +27,6 @@
 
 
 
-;;
-;; Stores the registered publishers
-;; id -> {buffer, publisher, ?stopper}
-;;
-(defonce publishers
-  (atom {}))
-
-
-
-(defn register-publisher!
-  [buffer publisher]
-  (let [id (snowflake)]
-    (swap! publishers assoc id {:buffer buffer :publisher publisher})
-    id))
-
-
-
-(defn deregister-publisher!
-  [id]
-  (swap! publishers dissoc id))
-
-
-
-(defn registered-publishers
-  []
-  (->> @publishers
-    (map (fn [[id {:keys [publisher]}]] {:id id :publisher publisher}))
-    (sort-by :id)))
-
-
-
-(defn- merge-pairs
-  [& pairs]
-  (into {} (mapcat (fn [v] (if (sequential? v) (map vec (partition 2 v)) v)) pairs)))
-
-
-
-(defonce dispatch-publishers
-  (rb/recurring-task
-    PUBLISH-INTERVAL
-    (fn []
-      (try
-        (let [pubs @publishers
-              ;;    group-by buffer
-              pubs (group-by :buffer (map second pubs))]
-
-          (doseq [[buf dests] pubs]   ;; for every buffer
-            (let [items (rb/items @buf)
-                  offset (-> items last first)]
-              (when (seq items)
-                (doseq [{pub :publisher} dests]  ;; and each destination
-                  ;; send to the agent-buffer
-                  (send (p/agent-buffer pub)
-                    (partial reduce rb/enqueue)
-                    (->> items
-                      (map second)
-                      (map (partial apply merge-pairs)))))
-                ;; remove items up to the offset
-                (swap! buf rb/dequeue offset)))))
-        (catch Exception x
-          ;; TODO:log errors? (this shouldn't happen)
-          (.printStackTrace x))))))
-
-
-
-(defn start-publisher!
-  [buffer config]
-  (let [^PPublisher publisher (p/publisher-factory config)
-        period (p/publish-delay publisher)
-        period (max (or period PUBLISH-INTERVAL) PUBLISH-INTERVAL)
-
-        ;; register publisher in dispatch list
-        publisher-id (register-publisher! buffer publisher)
-        deregister (fn [] (deregister-publisher! publisher-id))
-
-
-        ;; TODO: log errors
-        publish (fn [] (send-off (p/agent-buffer publisher)
-                        (partial p/publish publisher)))
-        ;; register periodic call publish
-        stop (rb/recurring-task period publish)
-
-        ;; prepare a stop function
-        stopper
-        (fn stop-publisher
-          []
-          ;; remove publisher from listeners
-          (deregister)
-          ;; stop recurring calls to publisher
-          (stop)
-          ;; flush buffer
-          (publish)
-          ;; close publisher
-          (when (instance? java.io.Closeable publisher)
-            (send-off (p/agent-buffer publisher)
-              (fn [_]
-                (.close ^java.io.Closeable publisher))))
-          :stopped)]
-    ;; register the stop function
-    (swap! publishers assoc-in [publisher-id :stopper] stopper)
-    ;; return the stop function
-    stopper))
-
-
-
-(defn stop-publisher!
-  [publisher-id]
-  ((get-in @publishers [publisher-id :stopper] (constantly :stopped))))
-
-
-
-(defmacro on-error
-  "internal utility macro"
-  [default & body]
-  `(try
-     ~@body
-     (catch Exception _#
-       ~default)))
-
-
-
 (defonce ^{:doc "The default logger buffers the messages in a ring buffer
              waiting to be dispatched to a destination like a file
              or a centralized logging management system."
@@ -220,6 +99,149 @@
         :mulog/event-name event-name)
       pairs))
   nil)
+
+
+
+;;
+;; Stores the registered publishers
+;; id -> {buffer, publisher, ?stopper}
+;;
+(defonce publishers
+  (atom {}))
+
+
+
+(defn register-publisher!
+  [buffer publisher]
+  (let [id (snowflake)]
+    (swap! publishers assoc id {:buffer buffer :publisher publisher})
+    id))
+
+
+
+(defn deregister-publisher!
+  [id]
+  (swap! publishers dissoc id))
+
+
+
+(defn registered-publishers
+  []
+  (->> @publishers
+    (map (fn [[id {:keys [publisher]}]] {:id id :publisher publisher}))
+    (sort-by :id)))
+
+
+
+(defn- merge-pairs
+  [& pairs]
+  (into {} (mapcat (fn [v] (if (sequential? v) (map vec (partition 2 v)) v)) pairs)))
+
+
+
+(defonce dispatch-publishers
+  (rb/recurring-task
+    PUBLISH-INTERVAL
+    (fn []
+      (let [pubs @publishers
+            ;;    group-by buffer
+            pubs (group-by :buffer (map second pubs))]
+
+        (doseq [[buf dests] pubs]   ;; for every buffer
+          (let [items (rb/items @buf)
+                offset (-> items last first)]
+            (when (seq items)
+              (doseq [{pub :publisher} dests]  ;; and each destination
+                ;; send to the agent-buffer
+                (send (p/agent-buffer pub)
+                  (partial reduce rb/enqueue)
+                  (->> items
+                    (map second)
+                    (map (partial apply merge-pairs)))))
+              ;; remove items up to the offset
+              (swap! buf rb/dequeue offset))))))
+    ;; this shouldn't happen,
+    (fn [exception]
+      (log* *default-logger* :mulog/internal-error
+        (list ;; pairs
+          :mulog/namespace (str *ns*)
+          :mulog/action    :event-dispatch
+          :mulog/origin    :mulog/core
+          :exception       exception)))))
+
+
+
+(defn start-publisher!
+  [buffer config]
+  (let [^PPublisher publisher (p/publisher-factory config)
+        period (p/publish-delay publisher)
+        period (max (or period PUBLISH-INTERVAL) PUBLISH-INTERVAL)
+
+        ;; register publisher in dispatch list
+        publisher-id (register-publisher! buffer publisher)
+        deregister (fn [] (deregister-publisher! publisher-id))
+
+        ;; single attempt to call `publish` on a publisher
+        ;; errors are logged via μ/log ;-)
+        publish-attempt
+        (fn publish-attempt
+          [buffer]
+          (try
+            (p/publish publisher buffer)
+            (catch Exception exception
+              (log* *default-logger* :mulog/publisher-error
+                (list ;; pairs
+                  :mulog/namespace (str *ns*)
+                  :mulog/action    :publish
+                  :mulog/origin    :mulog/core
+                  :exception       exception
+                  ;; can't log the full `config` as it could contain
+                  ;; sensitive info like passwords and service-keys
+                  :publisher-type  (:type config)
+                  :publisher-id    publisher-id))
+              (throw exception))))
+
+        publish (fn [] (send-off (p/agent-buffer publisher) publish-attempt))
+
+        ;; register periodic call publish
+        stop (rb/recurring-task period publish)
+
+        ;; prepare a stop function
+        stopper
+        (fn stop-publisher
+          []
+          ;; remove publisher from listeners
+          (deregister)
+          ;; stop recurring calls to publisher
+          (stop)
+          ;; flush buffer
+          (publish)
+          ;; close publisher
+          (when (instance? java.io.Closeable publisher)
+            (send-off (p/agent-buffer publisher)
+              (fn [_]
+                (.close ^java.io.Closeable publisher))))
+          :stopped)]
+    ;; register the stop function
+    (swap! publishers assoc-in [publisher-id :stopper] stopper)
+    ;; return the stop function
+    stopper))
+
+
+
+(defn stop-publisher!
+  [publisher-id]
+  ((get-in @publishers [publisher-id :stopper] (constantly :stopped))))
+
+
+
+(defmacro on-error
+  "internal utility macro"
+  [default & body]
+  `(try
+     ~@body
+     (catch Exception _#
+       ~default)))
 
 
 
