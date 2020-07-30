@@ -73,7 +73,7 @@
   [{:keys [key-field format topic producer*] :as  config} records]
   (let [fmt* (if (= :json format) json/to-json ut/edn-str)]
     (->> records
-      (map (juxt #(get % key-field) fmt*))
+      (map (juxt #(some-> (get % key-field) str) fmt*))
       (map (fn [[k v]] (send! producer* topic k v)))
       (doall))))
 
