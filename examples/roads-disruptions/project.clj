@@ -17,7 +17,7 @@
                  [ring/ring-json "0.5.0"]
                  [clj-http "3.10.1"]
                  [com.cemerick/url "0.1.1"]
-                 [com.brunobonacci/safely "0.5.0"]
+                 [com.brunobonacci/safely "0.7.0-SNAPSHOT"]
                  [org.clojure/tools.logging "1.1.0"]
                  [com.brunobonacci/mulog #=(ver)]
                  [com.brunobonacci/mulog-elasticsearch #=(ver)]

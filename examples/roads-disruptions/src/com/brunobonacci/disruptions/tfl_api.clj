@@ -26,7 +26,7 @@
             (json/parse-string))
         :on-error
         :max-retries :forever
-        ;;:circuit-breaker :list-roads ;;TODO: re-enable circuit-breaker
+        :circuit-breaker :list-roads
         :message "Problem retrieving the list of roads"
         :log-stacktrace false)
 
@@ -58,7 +58,7 @@
         :on-error
         :max-retries 5
         :default []
-        ;;:circuit-breaker :disruptions ;;TODO: re-enable circuit-breaker
+        :circuit-breaker :disruptions
         :message "Problem retrieving the disruptions"
         :log-stacktrace false)
 
