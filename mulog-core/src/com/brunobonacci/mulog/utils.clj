@@ -66,8 +66,8 @@
       ;; pretty-printed representation
       (with-out-str
         (pp/pprint v))
-      ;; compact representation
-      (pr-str v))))
+      ;; compact representation, exception are represented multiple lines
+      (str/replace (pr-str v) #"\n+" " "))))
 
 
 

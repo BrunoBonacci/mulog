@@ -92,7 +92,7 @@
   (publish [_ buffer]
     ;; items are pairs [offset <item>]
     (doseq [item (transform (map second (rb/items buffer)))]
-      (.write filewriter ^String (ut/edn-str item)))
+      (.write filewriter ^String (str (ut/edn-str item) \newline)))
     (.flush filewriter)
     (rb/clear buffer))
 
