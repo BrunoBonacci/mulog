@@ -1,6 +1,7 @@
 (ns com.brunobonacci.mulog.publishers.kinesis
   (:require [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.utils :as ut]
+            [com.brunobonacci.mulog.flakes :as f]
             [com.brunobonacci.mulog.publisher :as p]
             [com.brunobonacci.mulog.common.json :as json]
             [cognitect.aws.client.api :as aws]))
@@ -40,7 +41,10 @@
   [kinesis-client {:keys [stream-name key-field format] :as config} records]
   (let [fmt* (if (= :json format) json/to-json ut/edn-str)
         request     (->> records
-                      (map (juxt #(str (get % key-field)) fmt*))
+                      ;; partition-key is required in Kinesis, so in
+                      ;; its absence we generate a snowflake to ensure
+                      ;; a uniform random distribution across partitions
+                      (map (juxt #(str (or (get % key-field) (f/flake))) fmt*))
                       (map (fn [[k v]]  {:PartitionKey k :Data v})))]
     (publish! kinesis-client stream-name request)))
 
