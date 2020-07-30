@@ -1,3 +1,5 @@
+# AWS instance: c5.4xlarge
+# VM version: JDK 14.0.1, OpenJDK 64-Bit Server VM, 14.0.1+7
 # VM invoker: /opt/jdk-14.0.1+7/bin/java
 
 Benchmark                                    Mode  Cnt     Score    Error  Units
@@ -13,6 +15,7 @@ j.bench_7_flake_create_and_parse_string.run  avgt   25   147.481 ±  0.971  ns/o
 
 
 # VM version: JDK 11.0.7, VM 11.0.7+10-jvmci-20.1-b02
+# VM invoker: /opt/graalvm-ce-java11-20.1.0/bin/java
 
 Benchmark                                    Mode  Cnt     Score    Error  Units
 j.bench_0_log_call_simple.run                avgt  200   280.324 ±  0.933  ns/op

@@ -6,7 +6,8 @@
             [criterium.core :refer [bench quick-bench]]
             [clj-async-profiler.core :as prof]
             [jmh.core :as jmh]
-            [clojure.edn :as edn])
+            [clojure.edn :as edn]
+            [clojure.string :as str])
   (:import com.brunobonacci.mulog.core.Flake))
 
 
@@ -283,10 +284,17 @@
 
 (comment
 
-  (jmh/run
-    (clojure.edn/read-string (slurp "./perf/benchmarks.edn"))
-    {:type  :quick
-     :status true
-     :pprint true})
+
+  (->> (jmh/run
+       (merge
+         (clojure.edn/read-string (slurp "./perf/benchmarks.edn"))
+         {:selectors {:one (comp #(str/includes? % "context") name :fn)}})
+       {:type  :quick
+        :status true
+        :pprint true
+        :select :one
+        })
+    (prn-str)
+    (spit (format "./temp/mulog-perf-run-%d.edn" (System/currentTimeMillis))))
 
   )

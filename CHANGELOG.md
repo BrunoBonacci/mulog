@@ -2,11 +2,11 @@
 
 ## v0.4.0 - (unreleased)
   - [**NEW**] Added CloudWatch Logs publisher (thanks to @etolbakov)
-  - Performance improvement in ***μ/trace***
+  - Performance improvement in ***μ/trace*** and `with-context`
 
 
 ## v0.3.1 - (2020-07-10)
-  - Zipkin: fix of publishing tags with nil values
+  - Zipkin: fix issue on publishing tags with nil values
 
 
 ## v0.3.0 - (2020-07-08)

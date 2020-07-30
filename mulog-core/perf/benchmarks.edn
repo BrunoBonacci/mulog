@@ -1,6 +1,7 @@
 {:benchmarks
  [benchmarks/log-call-simple
   benchmarks/log-call-with-context
+  benchmarks/log-call-with-context2
   benchmarks/trace-call-simple
   benchmarks/trace-call-with-capture
   benchmarks/flake-creation

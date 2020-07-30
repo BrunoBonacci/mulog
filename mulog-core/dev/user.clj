@@ -366,3 +366,67 @@
 
   (u/log ::example :foo :baz, :bar 1)
   )
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;              ----==| T R A N S F E R   C O N T E X T |==----               ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(comment
+
+  (def p1 (u/start-publisher! {:type :console :pretty? true}))
+
+  (u/log ::hello :to "World!")
+
+  ;; {:mulog/event-name :user/hello,
+  ;;  :mulog/timestamp 1596107461713,
+  ;;  :mulog/trace-id #mulog/flake "4XP3B6hxSicK-nvYgLjvoq_AhGwrEw6I",
+  ;;  :mulog/namespace "user",
+  ;;  :to "World!"}
+
+
+  (u/with-context {:context :v1}
+    (u/log ::hello :to "World!"))
+
+  ;; {:mulog/event-name :user/hello,
+  ;;  :mulog/timestamp 1596108086680,
+  ;;  :mulog/trace-id #mulog/flake "4XP2qHapQxkd7vXqU9vseLQ2ZtCAVB_U",
+  ;;  :mulog/namespace "user",
+  ;;  :context :v1,
+  ;;  :to "World!"}
+
+
+  (u/with-context {:context :v1}
+    ;; on a different thread
+    (future
+      (u/log ::hello :to "World!")))
+
+  ;; NOTE: missing `:context :v1`
+  ;; {:mulog/event-name :user/hello,
+  ;;  :mulog/timestamp 1596108119498,
+  ;;  :mulog/trace-id #mulog/flake "4XP2sBrC4ODsG3aAGWOKW4FY4na117Wj",
+  ;;  :mulog/namespace "user",
+  ;;  :to "World!"}
+
+  (u/with-context {:context :v1}
+
+    ;; capture context
+    (let [ctx (u/local-context)]
+      ;; on a different thread
+      (future
+        ;; restore context in the different thread
+        (u/with-context ctx
+          (u/log ::hello :to "World!")))))
+
+  ;; {:mulog/event-name :user/hello,
+  ;;  :mulog/timestamp 1596108227200,
+  ;;  :mulog/trace-id #mulog/flake "4XP2yT4Kx79cWOIq0EIVOKgcm-_KbxJR",
+  ;;  :mulog/namespace "user",
+  ;;  :context :v1,
+  ;;  :to "World!"}
+  )

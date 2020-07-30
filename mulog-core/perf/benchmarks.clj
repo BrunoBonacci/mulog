@@ -20,6 +20,14 @@
 
 
 
+(defn log-call-with-context2
+  []
+  (u/with-context {:context :value1}
+    (u/with-context {:level 2}
+      (u/log :test-log :bechmark "speed"))))
+
+
+
 (defn trace-call-simple
   []
   (u/trace :test-trace

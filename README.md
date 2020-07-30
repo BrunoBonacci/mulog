@@ -1026,7 +1026,7 @@ as follow:
 
   * Read about [μ/log internals](./doc/mulog-internals.md)
   * [How to write custom publishers](./doc/custom-publishers.md)
-
+  * [How to transfer the local-context](./doc/transfer-context.md)
 
 
 ## Contributions
