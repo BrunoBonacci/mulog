@@ -39,5 +39,13 @@
   :auto    {"javac" {:file-pattern #"\.java$"}}
 
   :aliases {"test" ["with-profile" "+1.8:+1.9:+1.10.0:+1.10.1:+1.10.2" "midje"]
-            "perf" ["with-profile" "dev" "jmh" #=(pr-str {:file "./perf/benchmarks.edn" :status true :pprint true})]}
+
+            "perf-quick"
+            ["with-profile" "dev" "jmh"
+             #=(pr-str {:file "./perf/benchmarks.edn" :status true :pprint true
+                        :fork 1 :measurement 5})]
+
+            "perf"
+            ["with-profile" "dev" "jmh"
+             #=(pr-str {:file "./perf/benchmarks.edn" :status true :pprint true})]}
   )
