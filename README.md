@@ -99,6 +99,7 @@ aggregators. *So here is ***μ/log*** designed for this very purpose.*
      - [Cloudwatch Logs publisher](#cloudwatch-logs-publisher)
      - [Slack publisher](#slack-publisher)
      - [Zipkin publisher](#zipkin-publisher)
+     - [Jaeger publisher](#jaeger-publisher)
      - [Custom publishers](#custom-publishers)
      - [Inline publishers](#inline-publishers)
  - [Additional topics](#additional-topics)
@@ -665,6 +666,17 @@ with no arguments which when called will stop all the publishers.
 ### Elasticsearch publisher
 ![since v0.1.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)
 
+In order to use the library add the dependency to your `project.clj`
+
+``` clojure
+;; Leiningen project
+[com.brunobonacci/mulog-elasticsearch "x.x.x"]
+
+;; deps.edn format
+{:deps { com.brunobonacci/mulog {:mvn/version "x.x.x"}}}
+```
+Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog-elasticsearch.svg)](https://clojars.org/com.brunobonacci/mulog-elasticsearch)
+
 The events must be serializeable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
 
 The available configuration options:
@@ -722,6 +734,18 @@ Read more on [Elasticsearch name mangling](./doc/els-name-mangling.md) here.
 ### Apache Kafka publisher
 ![since v0.1.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)
 
+In order to use the library add the dependency to your `project.clj`
+
+``` clojure
+;; Leiningen project
+[com.brunobonacci/mulog-kafka "x.x.x"]
+
+;; deps.edn format
+{:deps { com.brunobonacci/mulog {:mvn/version "x.x.x"}}}
+```
+Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog-kafka.svg)](https://clojars.org/com.brunobonacci/mulog-kafka)
+
+
 The events must be serializeable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
 
 The available configuration options:
@@ -772,6 +796,17 @@ How to use it:
 
 ### Kinesis publisher
 ![since v0.3.0](https://img.shields.io/badge/since-v0.3.0-brightgreen)
+
+In order to use the library add the dependency to your `project.clj`
+
+``` clojure
+;; Leiningen project
+[com.brunobonacci/mulog-kinesis "x.x.x"]
+
+;; deps.edn format
+{:deps { com.brunobonacci/mulog {:mvn/version "x.x.x"}}}
+```
+Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog-kinesis.svg)](https://clojars.org/com.brunobonacci/mulog-kinesis)
 
 The events must be serializable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
 
@@ -824,6 +859,17 @@ How to use it:
 ### Cloudwatch Logs publisher
 ![since v0.4.0](https://img.shields.io/badge/since-v0.4.0-brightgreen)
 
+In order to use the library add the dependency to your `project.clj`
+
+``` clojure
+;; Leiningen project
+[com.brunobonacci/mulog-cloudwatch "x.x.x"]
+
+;; deps.edn format
+{:deps { com.brunobonacci/mulog {:mvn/version "x.x.x"}}}
+```
+Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog-cloudwatch.svg)](https://clojars.org/com.brunobonacci/mulog-cloudwatch)
+
 The events must be serializable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
 
 The available configuration options:
@@ -865,6 +911,17 @@ How to use it:
 
 ### Slack publisher
 ![since v0.3.0](https://img.shields.io/badge/since-v0.3.0-brightgreen)
+
+In order to use the library add the dependency to your `project.clj`
+
+``` clojure
+;; Leiningen project
+[com.brunobonacci/mulog-slack "x.x.x"]
+
+;; deps.edn format
+{:deps { com.brunobonacci/mulog {:mvn/version "x.x.x"}}}
+```
+Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog-slack.svg)](https://clojars.org/com.brunobonacci/mulog-slack)
 
 The events must be serializable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
 
@@ -937,6 +994,17 @@ which returns one or more [Slack Blocks](https://api.slack.com/reference/block-k
 ### Zipkin publisher
 ![since v0.2.0](https://img.shields.io/badge/since-v0.2.0-brightgreen)
 
+In order to use the library add the dependency to your `project.clj`
+
+``` clojure
+;; Leiningen project
+[com.brunobonacci/mulog-zipkin "x.x.x"]
+
+;; deps.edn format
+{:deps { com.brunobonacci/mulog {:mvn/version "x.x.x"}}}
+```
+Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog-zipkin.svg)](https://clojars.org/com.brunobonacci/mulog-zipkin)
+
 The events must be serializable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
 
 The available configuration options:
@@ -984,6 +1052,16 @@ How to use it:
 ```
 
 see [example here](https://github.com/BrunoBonacci/mulog/blob/master/examples/roads-disruptions/src/com/brunobonacci/disruptions/main.clj#L44-L46).
+
+### Jaeger publisher
+![since v0.2.0](https://img.shields.io/badge/since-v0.2.0-brightgreen)
+
+[Jaeger Tracing](https://www.jaegertracing.io/) is a OpenZipkin
+compatible tracer, so as long as you have a Zipkin compatible
+collector (`HTTP: 9411`) you will be able to send the traces
+and use Jaeger to visualise the traces.
+
+Just follow the [Zipkin publisher](#zipkin-publisher) instructions.
 
 ### Custom publishers
 ![since v0.1.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)

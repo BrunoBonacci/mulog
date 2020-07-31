@@ -282,11 +282,31 @@
   (def x (u/start-publisher! {:type :zipkin
                               :url "http://localhost:9411/"}))
 
-  (let [t (rand-int 3000)]
+  (let [t (rand-int 1000)]
     (u/trace ::sleep
       [:time t :struct {:foo 1 :bar 2}]
       (Thread/sleep t)))
 
+
+  (u/trace ::sleep-outer
+    [:struct {:foo 1 :bar 2}]
+    (Thread/sleep (rand-int 1000))
+
+    (u/trace ::sleep-inner
+      [:step 1]
+      (Thread/sleep (rand-int 1000)))
+
+    (try
+      (u/trace ::sleep-inner
+        [:step 2]
+        (Thread/sleep (rand-int 1000))
+        (/ 1 0))
+      (catch Exception _))
+
+    (u/trace ::sleep-inner
+      [:step 3]
+      (Thread/sleep (rand-int 1000)))
+    )
 
   (x)
 
