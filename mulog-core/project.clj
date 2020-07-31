@@ -1,4 +1,8 @@
-(defproject com.brunobonacci/mulog (-> "../ver/mulog.version" slurp .trim)
+(defn ver [] (-> "../ver/mulog.version" slurp .trim))
+(defn ts [] (System/currentTimeMillis))
+(defn jdk [] (clojure.string/replace (str (System/getProperty "java.vm.vendor") "-" (System/getProperty "java.vm.version")) #" " "_"))
+
+(defproject com.brunobonacci/mulog (ver)
   :description "μ/log is a micro-logging library that logs events and data, not words!"
 
   :url "https://github.com/BrunoBonacci/mulog"
@@ -38,14 +42,20 @@
 
   :auto    {"javac" {:file-pattern #"\.java$"}}
 
-  :aliases {"test" ["with-profile" "+1.8:+1.9:+1.10.0:+1.10.1:+1.10.2" "midje"]
+  :aliases
+  {"test"
+   ["with-profile" "+1.8:+1.9:+1.10.0:+1.10.1:+1.10.2" "midje"]
 
-            "perf-quick"
-            ["with-profile" "dev" "jmh"
-             #=(pr-str {:file "./perf/benchmarks.edn" :status true :pprint true
-                        :fork 1 :measurement 5})]
+   "perf-quick"
+   ["with-profile" "dev" "jmh"
+    #=(pr-str {:file "./perf/benchmarks.edn"
+               :status true :pprint true :format :table
+               :fork 1 :measurement 5
+               :output #=(clojure.string/join "-" ["./mulog" #=(ver) #=(jdk) #=(ts) "results.edn"])})]
 
-            "perf"
-            ["with-profile" "dev" "jmh"
-             #=(pr-str {:file "./perf/benchmarks.edn" :status true :pprint true})]}
+   "perf"
+   ["with-profile" "dev" "jmh"
+    (pr-str {:file "./perf/benchmarks.edn"
+             :status true :pprint true :format :table
+             :output #=(clojure.string/join "-" ["./mulog" #=(ver) #=(jdk) #=(ts) "results.edn"])})]}
   )

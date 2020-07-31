@@ -1,6 +1,6 @@
 ({:args (),
   :samples 200,
-  :fn perf.benchmarks/log-call-simple,
+  :fn benchmarks/log-call-simple,
   :score-error 0.9329199912388365,
   :index 0,
   :score-confidence [279.3910355611759 281.2568755436536],
@@ -28,7 +28,7 @@
   :score [280.32395555241476 "ns/op"]}
  {:args (),
   :samples 200,
-  :fn perf.benchmarks/trace-call-simple,
+  :fn benchmarks/trace-call-simple,
   :score-error 7.975739841299214,
   :index 1,
   :score-confidence [995.6892785946544 1011.6407582772528],
@@ -56,7 +56,7 @@
   :score [1003.6650184359536 "ns/op"]}
  {:args (),
   :samples 200,
-  :fn perf.benchmarks/trace-call-with-capture,
+  :fn benchmarks/trace-call-with-capture,
   :score-error 13.92902283366208,
   :index 2,
   :score-confidence [1426.3132636334917 1454.1713093008157],
@@ -84,7 +84,7 @@
   :score [1440.2422864671537 "ns/op"]}
  {:args (),
   :samples 200,
-  :fn perf.benchmarks/flake-creation,
+  :fn benchmarks/flake-creation,
   :score-error 0.07184072374985513,
   :index 3,
   :score-confidence [32.394177768437125 32.53785921593684],
@@ -112,7 +112,7 @@
   :score [32.46601849218698 "ns/op"]}
  {:args (),
   :samples 200,
-  :fn perf.benchmarks/flake-string-representation,
+  :fn benchmarks/flake-string-representation,
   :score-error 0.06709981649727119,
   :index 4,
   :score-confidence [62.49188970088765 62.626089333882184],
@@ -140,7 +140,7 @@
   :score [62.558989517384916 "ns/op"]}
  {:args (),
   :samples 200,
-  :fn perf.benchmarks/flake-snowflake,
+  :fn benchmarks/flake-snowflake,
   :score-error 0.2766316090030073,
   :index 5,
   :score-confidence [62.62247813548871 63.17574135349472],
@@ -168,7 +168,7 @@
   :score [62.89910974449172 "ns/op"]}
  {:args (),
   :samples 200,
-  :fn perf.benchmarks/flake-hex-representation,
+  :fn benchmarks/flake-hex-representation,
   :score-error 0.032636082155492664,
   :index 6,
   :score-confidence [68.88499514657228 68.95026731088326],
@@ -196,7 +196,7 @@
   :score [68.91763122872777 "ns/op"]}
  {:args (),
   :samples 200,
-  :fn perf.benchmarks/flake-create-and-parse-string,
+  :fn benchmarks/flake-create-and-parse-string,
   :score-error 0.19832291241422936,
   :index 7,
   :score-confidence [146.89428952996113 147.29093535478958],
