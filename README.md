@@ -1103,6 +1103,7 @@ as follow:
 ## Additional topics
 
   * Read about [μ/log internals](./doc/mulog-internals.md)
+  * Check the [Frequently Asked Questions](./doc/faq.md)
   * [How to write custom publishers](./doc/custom-publishers.md)
   * [How to transfer the local-context](./doc/transfer-context.md)
 
@@ -1136,6 +1137,7 @@ To contribute:
 Here there are some other open-source projects which are related to ***μ/log**:
 
   * [slf4j-mulog](https://gitlab.com/nonseldiha/slf4j-mulog) - a SLF4j backend for ***μ/log**.
+
     It enables you to send your traditional logs from your existing
     projects via ***μ/log** and leverage all ***μ/log**'s capability
     to filter/transform/enrich events before publishing.
