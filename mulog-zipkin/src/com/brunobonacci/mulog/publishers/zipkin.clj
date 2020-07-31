@@ -34,6 +34,18 @@
 
 
 
+(defn flag-if-error
+  "If the trace contains an error the special tag `:error` will be added."
+  [{:keys [mulog/outcome exception error] :as event}]
+  (if (and (or (= outcome :error) exception) (not error))
+    (assoc event
+      :error (if (instance? java.lang.Exception exception)
+               (.getMessage ^java.lang.Exception exception)
+               (str "Error: " exception)))
+    event))
+
+
+
 ;;
 ;; Converts μ/trace events into Zipkin traces and spans
 ;;
@@ -60,7 +72,7 @@
             ;; use app-name as localEndpoint if available
             :localEndpoint {:serviceName (or app-name "unknown")}
             ;; tags values must be a string (can't be maps)
-            :tags      (ut/map-values str (ut/remove-nils e))}))))
+            :tags      (ut/map-values str (ut/remove-nils (flag-if-error e)))}))))
 
 
 
