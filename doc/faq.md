@@ -1,12 +1,15 @@
 # F.A.Q.
 
+Here a summary of frequently asked questions.
+
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of Contents**
 
 - [F.A.Q.](#faq)
     - [Q: How does ***μ/log*** compare to Dropwizard's Metrics/Prometheus/Reimann?](#q-how-does-μlog-compare-to-dropwizards-metricsprometheusreimann)
     - [Q: Can I use ***μ/log*** as the sole logging library and send my traditional logging to it?](#q-can-i-use-μlog-as-the-sole-logging-library-and-send-my-traditional-logging-to-it)
-    - [Q: How do I ***μ/log*** to send the `:mulog/duration` in milliseconds?](#q-how-do-i-μlog-to-send-the-mulogduration-in-milliseconds)
+    - [Q: How do I get ***μ/log*** to send the `:mulog/duration` in milliseconds?](#q-how-do-i-get-μlog-to-send-the-mulogduration-in-milliseconds)
+    - [Q: Why do I get `No reader function for tag mulog/flake`?](#q-why-do-i-get-no-reader-function-for-tag-mulogflake)
 
 <!-- markdown-toc end -->
 
@@ -135,7 +138,8 @@ you can send logs directly to Elasticsearch.
 **NOTE: `slf4j-mulog` is an open-source library developed by Peter Nagy (@xificurC)
 outside of *μ/log* distribution.**
 
-## Q: How do I ***μ/log*** to send the `:mulog/duration` in milliseconds?
+
+## Q: How do I get ***μ/log*** to send the `:mulog/duration` in milliseconds?
 
 ***μ/log*** will send the `:mulog/duration` in nanoseconds because it
 uses the monotonic timer with a nanoseconds precision which guarantee
@@ -156,4 +160,105 @@ with a transformation which convert the duration into milliseconds.
                       (if duration
                         (update e :mulog/duration quot 1000000)
                         e)) events))})
+```
+
+
+## Q: Why do I get `No reader function for tag mulog/flake`?
+
+Flakes are unique `196-bits` unique IDs, in Clojure, they are
+represented as [custom tagged
+literals](https://clojure.org/reference/reader#tagged_literals), for
+example this is a valid EDN flake:
+
+`#mulog/flake "4XQ_3iGMT9DVRa5cYN4iyLGu58SFQcm9"`
+
+EDN is an **Extensible** data format and it allows for custom reader
+tags.  Custom reader tags are handled by the reader, here and excerpt
+from the Clojure doc:
+
+> Reader tags without namespace qualifiers are reserved for
+> Clojure. Default reader tags are defined in default-data-readers but
+> may be overridden in `data_readers.clj` or by rebinding
+> `*data-readers*`. If no data reader is found for a tag, the function
+> bound in `*default-data-reader-fn*` will be invoked with the tag and
+> value to produce a value. If `*default-data-reader-fn*` is `nil` (the
+> default), a `RuntimeException` will be thrown.
+
+So depending on whether the `data_readers.clj` has been loaded of not
+you will get different error messages:
+
+For example if you don't have ***μ/log*** in your project:
+
+``` clojure
+;; no data_readers.clj - possibly missing dependency
+;; add [com.brunobonacci/mulog "x.x.x"] to project
+
+user=> (read-string "#mulog/flake \"4XQ_3fpCt2-dxDHzqGNjJOub2qZGBmhR\"")
+Execution error at user/eval1563 (form-init10114461616665553314.clj:1).
+No reader function for tag mulog/flake
+```
+
+Here the JAR is in the classpath, but the namespace isn't loaded.
+
+``` clojure
+;; Dependency not loaded, just require the namespace: com.brunobonacci.mulog.flakes
+;;
+user=> (read-string "#mulog/flake \"4XQ_3fpCt2-dxDHzqGNjJOub2qZGBmhR\"")
+Execution error (IllegalStateException) at user/eval1558 (form-init10186056973176272264.clj:1).
+Attempting to call unbound fn: #'com.brunobonacci.mulog.flakes/read-method
+
+user=> (require 'com.brunobonacci.mulog.flakes)
+nil
+user=> (read-string "#mulog/flake \"4XQ_3fpCt2-dxDHzqGNjJOub2qZGBmhR\"")
+
+#mulog/flake "4XQ_3fpCt2-dxDHzqGNjJOub2qZGBmhR"
+```
+
+However is not recommended to use the `clojure.core` reader for
+untrusted code or data, it is recommended to use the `clojure.edn`
+namespace with will read the data without attempting to evaluate the
+forms and symbols.
+
+**SOLUTION**: So to read ***μ/log*** events read as follow:
+``` clojure
+(require '[com.brunobonacci.mulog.flakes :as f]
+         '[clojure.edn :as edn])
+
+(edn/read-string
+ {:readers {'mulog/flake #'com.brunobonacci.mulog.flakes/read-method}}
+ "#mulog/flake \"4XQ_3fpCt2-dxDHzqGNjJOub2qZGBmhR\"")
+
+#mulog/flake "4XQ_3fpCt2-dxDHzqGNjJOub2qZGBmhR"
+```
+
+**ALTERNATIVE SOLUTION:** If you don't care about reading the tagged values and
+you just want to do some unrelated processing and pass it on, then you can always read
+the EDN raw tag.
+
+``` clojure
+;; read it as tagged literal
+(binding [*default-data-reader-fn* tagged-literal]
+  (read-string "#mulog/flake \"4XQ_3fpCt2-dxDHzqGNjJOub2qZGBmhR\""))
+
+#mulog/flake "4XQ_3fpCt2-dxDHzqGNjJOub2qZGBmhR"
+
+
+;; same as above but when using `clojure.edn`
+(edn/read-string {:default tagged-literal }
+  "#mulog/flake \"4XQ_3fpCt2-dxDHzqGNjJOub2qZGBmhR\"")
+
+#mulog/flake "4XQ_3fpCt2-dxDHzqGNjJOub2qZGBmhR"
+```
+
+The difference is that in the first solution you obtain an actual `flake`
+while with the second solution you just get at `tagged-literal`
+
+``` clojure
+;; with first solution
+(type #mulog/flake "4XQ_3fpCt2-dxDHzqGNjJOub2qZGBmhR")
+com.brunobonacci.mulog.core.Flake
+
+;; with second solution
+(type #mulog/flake "4XQ_3fpCt2-dxDHzqGNjJOub2qZGBmhR")
+clojure.lang.TaggedLiteral
 ```
