@@ -55,7 +55,7 @@
 
    "perf"
    ["with-profile" "dev" "jmh"
-    (pr-str {:file "./perf/benchmarks.edn"
-             :status true :pprint true :format :table
-             :output #=(clojure.string/join "-" ["./mulog" #=(ver) #=(jdk) #=(ts) "results.edn"])})]}
+    #=(pr-str {:file "./perf/benchmarks.edn"
+               :status true :pprint true :format :table
+               :output #=(clojure.string/join "-" ["./mulog" #=(ver) #=(jdk) #=(ts) "results.edn"])})]}
   )

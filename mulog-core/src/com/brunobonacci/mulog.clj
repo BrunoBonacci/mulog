@@ -72,7 +72,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   could add:
 
   ``` clojure
-  (μ/log ::user-logged :user-id \"1234567\" :remote-ip \"1.2.3.4\"
+  (μ/log ::user-logged, :user-id \"1234567\", :remote-ip \"1.2.3.4\",
      :auth-method :password-login)
   ```
 
@@ -364,7 +364,8 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
 
   "
   {:style/indent 1
-   :arglists '([event-name pairs & body] [event-name {:keys [pairs capture]} & body])}
+   :arglists '([event-name [k1 v1, k2 v2, ... :as pairs] & body]
+               [event-name {:keys [pairs capture]} & body])}
   [event-name details & body]
   (let [;; pairs to associate with this trace
         pairs (cond
