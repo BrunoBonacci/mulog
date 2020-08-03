@@ -5,6 +5,7 @@
   - [**NEW**] Jaeger Tracing publisher
   - Performance improvement in ***μ/trace*** and `with-context`
   - Zipkin, Kafka, Kinesis, File publisher stability improvements and small bug fixes
+  - Relaxed compile-time requirement for pairs
 
 
 ## v0.3.1 - (2020-07-10)

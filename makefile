@@ -8,7 +8,7 @@ define helpdoc
 # |                  MM    MM    ,M'    MM 6W'   `Wb :MI  I8                   |
 # |                  MM    MM    MV     MM 8M     M8  WmmmP"                   |
 # |                  MM    MM   AW      MM YA.   ,A9 8M                        |
-# |                  MVbgd"'Ybo,M'    .JMML.`Ybmd9'   YMMMMMb                  |
+# |                  MVbgd"'Mb ,M'    .JMML.`Ybmd9'   YMMMMMb                  |
 # |                  M.        MV                    6'     dP                 |
 # |                  M8       AW                     Ybmmmd'                   |
 # |                                                                            |

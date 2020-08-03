@@ -539,3 +539,134 @@
         (+ 1 1)))
     => [])
   )
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;           ----==| μ / T R A C E   R E L A X E D   A P I |==----            ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(fact "μ/log: with unbalanced pairs, just discard last odd one"
+
+  (tp/with-test-publisher
+    (u/log :test :p1 :v1 :unbalanced))
+
+  => (just
+        [(just
+           {:mulog/event-name   :test
+            :mulog/timestamp    anything
+            :mulog/trace-id     anything
+            :mulog/namespace    (str *ns*)
+            :p1                 :v1
+            })])
+  )
+
+
+
+(fact "μ/trace: with unbalanced pairs, just discard last odd one"
+
+  (tp/with-test-publisher
+    (u/trace :test
+      [:p1 :v1 :unbalanced]
+      (Thread/sleep 1)))
+
+  => (just
+        [(just
+           {:mulog/event-name   :test
+            :mulog/timestamp    anything
+            :mulog/trace-id     anything
+            ;; no parent trace
+            :mulog/parent-trace nil?
+            :mulog/root-trace   anything
+            :mulog/namespace    (str *ns*)
+            :mulog/outcome      :ok
+            ;; duration is in nanoseconds
+            :mulog/duration     #(and (number? %) (> % 1000000))
+            ;; just the balanced pair
+            :p1                 :v1})])
+  )
+
+
+
+(fact "μ/trace: with a flattened map"
+
+  (tp/with-test-publisher
+    (u/trace :test
+      (mapcat seq {:p1 :v1 :p2 :v2})
+      (Thread/sleep 1)))
+
+  => (just
+        [(just
+           {:mulog/event-name   :test
+            :mulog/timestamp    anything
+            :mulog/trace-id     anything
+            ;; no parent trace
+            :mulog/parent-trace nil?
+            :mulog/root-trace   anything
+            :mulog/namespace    (str *ns*)
+            :mulog/outcome      :ok
+            ;; duration is in nanoseconds
+            :mulog/duration     #(and (number? %) (> % 1000000))
+            ;; pairs
+            :p1                 :v1
+            :p2                 :v2})])
+  )
+
+
+
+(fact "μ/trace: with a list or sequence"
+
+  (tp/with-test-publisher
+    (u/trace :test
+      (concat[:p1 :v1] [:p2 :v2])
+      (Thread/sleep 1)))
+
+  => (just
+        [(just
+           {:mulog/event-name   :test
+            :mulog/timestamp    anything
+            :mulog/trace-id     anything
+            ;; no parent trace
+            :mulog/parent-trace nil?
+            :mulog/root-trace   anything
+            :mulog/namespace    (str *ns*)
+            :mulog/outcome      :ok
+            ;; duration is in nanoseconds
+            :mulog/duration     #(and (number? %) (> % 1000000))
+            ;; pairs
+            :p1                 :v1
+            :p2                 :v2})])
+  )
+
+
+
+(fact "μ/trace: with a list or sequence"
+
+  (tp/with-test-publisher
+    (u/trace :test
+      {:pairs (mapcat seq {:p1 :v1 :p2 :v2})
+       :capture (fn [v] {:value v})}
+      (Thread/sleep 1)
+      (+ 1 1)))
+
+  => (just
+        [(just
+           {:mulog/event-name   :test
+            :mulog/timestamp    anything
+            :mulog/trace-id     anything
+            ;; no parent trace
+            :mulog/parent-trace nil?
+            :mulog/root-trace   anything
+            :mulog/namespace    (str *ns*)
+            :mulog/outcome      :ok
+            ;; duration is in nanoseconds
+            :mulog/duration     #(and (number? %) (> % 1000000))
+            ;; pairs
+            :p1                 :v1
+            :p2                 :v2
+            ;; capture
+            :value              2})])
+  )
