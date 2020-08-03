@@ -80,9 +80,6 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   plenty without impacting the application performances.
   "
   [event-name & pairs]
-  (when (= 1 (rem (count pairs) 2))
-    (throw (IllegalArgumentException.
-             "You must provide a series of key/value pairs in the form: :key1 value1, :key2 value2, etc.")))
   `(core/log* core/*default-logger* ~event-name (list :mulog/namespace (str *ns*) ~@pairs)))
 
 
@@ -367,47 +364,30 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
    :arglists '([event-name [k1 v1, k2 v2, ... :as pairs] & body]
                [event-name {:keys [pairs capture]} & body])}
   [event-name details & body]
-  (let [;; pairs to associate with this trace
-        pairs (cond
-                (vector? details) details
-                (map? details) (:pairs details)
-                :else (throw (ex-info "Illegal Argument, expected map or vector of pairs"
-                               {:arg-name 'details :value details})))
-
-        ;; function which returns a map of pairs to add to the trace from the body evaluation result
-        capture (cond
-                  (vector? details) nil
-                  (map? details) (:capture details))
-
-        ;; checking parameters
-        _ (when-not (vector? pairs)
-            (throw (ex-info "Illegal Argument, expected vectors of pairs: key1 value1, key2 value2"
-                     {:arg-name 'pairs :value pairs})))
-        _ (when (not= 0 (mod (count pairs) 2))
-            (throw (ex-info "Illegal Argument, unbalanced vectors of pairs: key1 value1, key2 value2"
-                     {:arg-name 'pairs :value pairs :count (count pairs)})))]
-
-    ;; Code generation
-    `(let [ ;; :mulog/trace-id and :mulog/timestamp are created in here
-           ;; because the log function is called after the evaluation of body
-           ;; is completed, and the timestamp wouldn't be correct
-           tid#  (flake)
-           ptid# (get @core/local-context :mulog/parent-trace)
-           ts#   (System/currentTimeMillis)
-           ;; start timer to track body execution
-           t0#   (System/nanoTime)]
-       ;; setting up the tracing re
-       (with-context {:mulog/root-trace   (or (get @core/local-context :mulog/root-trace) tid#)
-                      :mulog/parent-trace tid#}
-         (try
-           (let [r# (do ~@body)]
-             (core/log-trace ~event-name tid# ptid# (- (System/nanoTime) t0#) ts# :ok (list ~@pairs)
-               ;; if there is something to capture form the evaluation result
-               ;; then use the capture function
-               (core/on-error {:mulog/capture :error} (when-let [c# ~capture] (c# r#))))
-             ;; return the body result
-             r#)
-           ;; If and exception occur, then log the error.
-           (catch Exception x#
-             (core/log-trace ~event-name tid# ptid# (- (System/nanoTime) t0#) ts# :error (list :exception x# ~@pairs) nil)
-             (throw x#)))))))
+  `(let [details# ~details
+         pairs#   (if (map? details#) (:pairs details#)   details#)
+         capture# (if (map? details#) (:capture details#) nil)
+         ;; :mulog/trace-id and :mulog/timestamp are created in here
+         ;; because the log function is called after the evaluation of body
+         ;; is completed, and the timestamp wouldn't be correct
+         ptid# (get @core/local-context :mulog/parent-trace)
+         tid#  (flake)
+         ts#   (System/currentTimeMillis)
+         ;; start timer to track body execution
+         t0#   (System/nanoTime)]
+     ;; setting up the tracing re
+     (with-context {:mulog/root-trace   (or (get @core/local-context :mulog/root-trace) tid#)
+                    :mulog/parent-trace tid#}
+       (try
+         (let [r# (do ~@body)]
+           (core/log-trace ~event-name tid# ptid# (- (System/nanoTime) t0#) ts# :ok pairs#
+             ;; if there is something to capture form the evaluation result
+             ;; then use the capture function
+             (core/on-error {:mulog/capture :error} (when capture# (capture# r#))))
+           ;; return the body result
+           r#)
+         ;; If and exception occur, then log the error.
+         (catch Exception x#
+           (core/log-trace ~event-name tid# ptid# (- (System/nanoTime) t0#) ts#
+             :error (list :exception x#) pairs#)
+           (throw x#))))))
