@@ -13,19 +13,18 @@
   [config]
   (->>
       (safely
-          (->> (μ/trace :disruptions/remote-request
-               {:pairs   [:request-type :get-all-roads]
-                :capture (fn [{:keys [status]}] {:http-status status})}
-
-               (http/get (get-in config [:endpoints :roads])
-                 {:as "UTF-8"
-                  :accept :json
-                  :socket-timeout 3000
-                  :connection-timeout 3000}))
+          (->> (http/get (get-in config [:endpoints :roads])
+               {:as "UTF-8"
+                :accept :json
+                :socket-timeout 3000
+                :connection-timeout 3000})
             :body
             (json/parse-string))
         :on-error
-        :max-retries :forever
+        :max-retries   :forever
+        :track-as      :disruptions/list-roads
+        :tracking-tags [:request-type :remote-api-call]
+        :tracking-capture (fn [{:keys [status]}] {:http-status status})
         :circuit-breaker :list-roads
         :message "Problem retrieving the list of roads"
         :log-stacktrace false)
@@ -43,22 +42,21 @@
   [config road-id]
   (->>
       (safely
-          (->> (μ/trace :disruptions/remote-request
-               {:pairs [:road-id road-id :request-type :disruptions-by-road]
-                :capture (fn [{:keys [status]}] {:http-status status})}
-
-               ;; http-rest request to TFL api
-               (http/get ((get-in config [:endpoints :disruptions]) road-id)
-                 {:as "UTF-8"
-                  :accept :json
-                  :socket-timeout 3000
-                  :connection-timeout 3000}))
+          (->> ;; http-rest request to TFL api
+              (http/get ((get-in config [:endpoints :disruptions]) road-id)
+                {:as                 "UTF-8"
+                 :accept             :json
+                 :socket-timeout     3000
+                 :connection-timeout 3000})
             :body
             (json/parse-string))
         :on-error
         :max-retries 5
-        :default []
-        :circuit-breaker :disruptions
+        :default     []
+        :track-as         :disruptions/road-disruptions
+        :tracking-tags    [:road-id road-id :request-type :remote-api-call]
+        :tracking-capture (fn [{:keys [status]}] {:http-status status})
+        :circuit-breaker  :disruptions
         :message "Problem retrieving the disruptions"
         :log-stacktrace false)
 

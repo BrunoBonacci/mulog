@@ -44,7 +44,7 @@
                 (map second)))
             disruptions))
         :on-error
-        :track-as :main-poll-disruptions
+        :tracking :disabled
         :max-retries :forever
         :message "Polling disruptions data")
       ;; sleep between 30s-2min between polls
