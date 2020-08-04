@@ -1,5 +1,5 @@
 (defn ver [] (-> "../../ver/mulog.version" slurp .trim))
-(defproject com.brunobonacci/roads-disruptions "0.1.0"
+(defproject com.brunobonacci/roads-disruptions #=(ver)
   :description "A small webservice which return live road disruption data to showcase the use of μ/log"
 
   :url "https://github.com/BrunoBonacci/mulog"
