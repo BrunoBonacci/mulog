@@ -1,10 +1,11 @@
 # Changelog
 
-## v0.4.0 - (unreleased)
+## v0.4.0 - (2020-08-04)
   - [**NEW**] Added CloudWatch Logs publisher (thanks to @etolbakov)
   - [**NEW**] Jaeger Tracing publisher
   - Performance improvement in ***μ/trace*** and `with-context`
   - Zipkin, Kafka, Kinesis, File publisher stability improvements and small bug fixes
+  - Publishers failures are now tracked with ***μ/log***
   - Relaxed compile-time requirement for pairs
 
 

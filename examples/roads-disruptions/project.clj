@@ -1,5 +1,5 @@
 (defn ver [] (-> "../../ver/mulog.version" slurp .trim))
-(defproject com.brunobonacci/roads-disruptions "0.1.0-SNAPSHOT"
+(defproject com.brunobonacci/roads-disruptions "0.1.0"
   :description "A small webservice which return live road disruption data to showcase the use of μ/log"
 
   :url "https://github.com/BrunoBonacci/mulog"
@@ -17,7 +17,7 @@
                  [ring/ring-json "0.5.0"]
                  [clj-http "3.10.1"]
                  [com.cemerick/url "0.1.1"]
-                 [com.brunobonacci/safely "0.7.0-SNAPSHOT"]
+                 [com.brunobonacci/safely "0.7.0-alpha1"]
                  [org.clojure/tools.logging "1.1.0"]
                  [com.brunobonacci/mulog #=(ver)]
                  [com.brunobonacci/mulog-elasticsearch #=(ver)]

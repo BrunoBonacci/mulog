@@ -15,7 +15,7 @@
  {:jmh/default
   {:mode             [:average #_:single-shot #_:throughput #_:samples #_:all]
    :output-time-unit :ns
-   :fork             10
+   :fork             15
    :measurement      10
    :warmup           {:time [10 :seconds]}}}
  }
