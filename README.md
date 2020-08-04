@@ -1134,12 +1134,12 @@ To contribute:
 
 ## Related projects
 
-Here there are some other open-source projects which are related to ***μ/log**:
+Here there are some other open-source projects which are related to ***μ/log***:
 
-  * [slf4j-mulog](https://gitlab.com/nonseldiha/slf4j-mulog) - a SLF4j backend for ***μ/log**.
+  * [slf4j-mulog](https://gitlab.com/nonseldiha/slf4j-mulog) - a SLF4j backend for ***μ/log***.
 
     It enables you to send your traditional logs from your existing
-    projects via ***μ/log** and leverage all ***μ/log**'s capability
+    projects via ***μ/log*** and leverage all ***μ/log***'s capability
     to filter/transform/enrich events before publishing.
 
 
