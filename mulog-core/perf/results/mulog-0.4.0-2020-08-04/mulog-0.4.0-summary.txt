@@ -1,0 +1,32 @@
+# AWS instance: c5.4xlarge
+# VM version: JDK 14.0.1, OpenJDK 64-Bit Server VM, 14.0.1+7
+# VM invoker: /opt/jdk-14.0.1+7/bin/java
+
+Benchmark                                    Mode  Cnt    Score    Error  Units
+j.bench_0_log_call_simple.run                avgt  100  393.306 ±  1.478  ns/op
+j.bench_1_log_call_with_context.run          avgt  100  417.716 ±  2.023  ns/op
+j.bench_2_log_call_with_context2.run         avgt  100  535.033 ± 10.416  ns/op
+j.bench_3_trace_call_simple.run              avgt  100  672.614 ±  1.976  ns/op
+j.bench_4_trace_call_with_capture.run        avgt  100  553.437 ±  2.032  ns/op
+j.bench_5_flake_creation.run                 avgt  100   35.448 ±  0.217  ns/op
+j.bench_6_flake_string_representation.run    avgt  100   81.381 ±  0.144  ns/op
+j.bench_7_flake_snowflake.run                avgt  100   89.498 ±  0.212  ns/op
+j.bench_8_flake_hex_representation.run       avgt  100   88.842 ±  0.059  ns/op
+j.bench_9_flake_create_and_parse_string.run  avgt  100  152.124 ±  0.070  ns/op
+
+
+
+# VM version: JDK 11.0.7, VM 11.0.7+10-jvmci-20.1-b02
+# VM invoker: /opt/graalvm-ce-java11-20.1.0/bin/java
+
+Benchmark                                    Mode  Cnt    Score   Error  Units
+j.bench_0_log_call_simple.run                avgt  100  309.906 ± 2.016  ns/op
+j.bench_1_log_call_with_context.run          avgt  100  336.802 ± 1.906  ns/op
+j.bench_2_log_call_with_context2.run         avgt  100  415.441 ± 3.277  ns/op
+j.bench_3_trace_call_simple.run              avgt  100  441.734 ± 2.485  ns/op
+j.bench_4_trace_call_with_capture.run        avgt  100  467.424 ± 4.615  ns/op
+j.bench_5_flake_creation.run                 avgt  100   34.390 ± 0.105  ns/op
+j.bench_6_flake_string_representation.run    avgt  100   66.246 ± 0.043  ns/op
+j.bench_7_flake_snowflake.run                avgt  100   67.821 ± 0.480  ns/op
+j.bench_8_flake_hex_representation.run       avgt  100   72.867 ± 0.048  ns/op
+j.bench_9_flake_create_and_parse_string.run  avgt  100  144.371 ± 0.923  ns/op

@@ -1,0 +1,2005 @@
+OpenJDK 64-Bit Server VM warning: Options -Xverify:none and -noverify were deprecated in JDK 13 and will likely be removed in a future release.
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.openjdk.jmh.util.Utils (file:/home/admin/.m2/repository/org/openjdk/jmh/jmh-core/1.23/jmh-core-1.23.jar) to field java.io.PrintStream.charOut
+WARNING: Please consider reporting this to the maintainers of org.openjdk.jmh.util.Utils
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+# JMH version: 1.23
+# VM version: JDK 14.0.1, OpenJDK 64-Bit Server VM, 14.0.1+7
+# VM invoker: /opt/jdk-14.0.1+7/bin/java
+# VM options: -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.4.0 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 10 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1596468027285.bench_0_log_call_simple.run
+
+# Run progress: 0.00% complete, ETA 04:10:00
+# Fork: 1 of 10
+# Warmup Iteration   1: 414.430 ns/op
+# Warmup Iteration   2: 398.000 ns/op
+# Warmup Iteration   3: 398.035 ns/op
+# Warmup Iteration   4: 398.151 ns/op
+# Warmup Iteration   5: 398.228 ns/op
+Iteration   1: 397.966 ns/op
+Iteration   2: 397.529 ns/op
+Iteration   3: 397.016 ns/op
+Iteration   4: 396.383 ns/op
+Iteration   5: 395.910 ns/op
+Iteration   6: 394.119 ns/op
+Iteration   7: 392.337 ns/op
+Iteration   8: 392.326 ns/op
+Iteration   9: 391.749 ns/op
+Iteration  10: 392.071 ns/op
+
+# Run progress: 1.00% complete, ETA 04:08:58
+# Fork: 2 of 10
+# Warmup Iteration   1: 409.780 ns/op
+# Warmup Iteration   2: 395.033 ns/op
+# Warmup Iteration   3: 392.718 ns/op
+# Warmup Iteration   4: 392.852 ns/op
+# Warmup Iteration   5: 393.292 ns/op
+Iteration   1: 392.670 ns/op
+Iteration   2: 393.662 ns/op
+Iteration   3: 394.441 ns/op
+Iteration   4: 394.516 ns/op
+Iteration   5: 393.984 ns/op
+Iteration   6: 393.609 ns/op
+Iteration   7: 393.794 ns/op
+Iteration   8: 394.275 ns/op
+Iteration   9: 394.122 ns/op
+Iteration  10: 394.055 ns/op
+
+# Run progress: 2.00% complete, ETA 04:06:26
+# Fork: 3 of 10
+# Warmup Iteration   1: 407.194 ns/op
+# Warmup Iteration   2: 393.178 ns/op
+# Warmup Iteration   3: 397.105 ns/op
+# Warmup Iteration   4: 392.526 ns/op
+# Warmup Iteration   5: 392.704 ns/op
+Iteration   1: 397.291 ns/op
+Iteration   2: 392.813 ns/op
+Iteration   3: 392.695 ns/op
+Iteration   4: 392.266 ns/op
+Iteration   5: 392.613 ns/op
+Iteration   6: 392.821 ns/op
+Iteration   7: 392.762 ns/op
+Iteration   8: 392.594 ns/op
+Iteration   9: 396.894 ns/op
+Iteration  10: 398.926 ns/op
+
+# Run progress: 3.00% complete, ETA 04:03:55
+# Fork: 4 of 10
+# Warmup Iteration   1: 413.515 ns/op
+# Warmup Iteration   2: 397.324 ns/op
+# Warmup Iteration   3: 397.639 ns/op
+# Warmup Iteration   4: 395.156 ns/op
+# Warmup Iteration   5: 392.982 ns/op
+Iteration   1: 393.307 ns/op
+Iteration   2: 393.903 ns/op
+Iteration   3: 393.896 ns/op
+Iteration   4: 394.819 ns/op
+Iteration   5: 395.722 ns/op
+Iteration   6: 393.842 ns/op
+Iteration   7: 393.612 ns/op
+Iteration   8: 392.654 ns/op
+Iteration   9: 393.067 ns/op
+Iteration  10: 393.932 ns/op
+
+# Run progress: 4.00% complete, ETA 04:01:23
+# Fork: 5 of 10
+# Warmup Iteration   1: 403.643 ns/op
+# Warmup Iteration   2: 388.443 ns/op
+# Warmup Iteration   3: 388.080 ns/op
+# Warmup Iteration   4: 388.845 ns/op
+# Warmup Iteration   5: 387.486 ns/op
+Iteration   1: 391.182 ns/op
+Iteration   2: 391.277 ns/op
+Iteration   3: 390.506 ns/op
+Iteration   4: 388.394 ns/op
+Iteration   5: 387.949 ns/op
+Iteration   6: 387.888 ns/op
+Iteration   7: 387.831 ns/op
+Iteration   8: 387.918 ns/op
+Iteration   9: 387.802 ns/op
+Iteration  10: 387.624 ns/op
+
+# Run progress: 5.00% complete, ETA 03:58:53
+# Fork: 6 of 10
+# Warmup Iteration   1: 403.858 ns/op
+# Warmup Iteration   2: 389.836 ns/op
+# Warmup Iteration   3: 389.221 ns/op
+# Warmup Iteration   4: 389.866 ns/op
+# Warmup Iteration   5: 389.174 ns/op
+Iteration   1: 389.362 ns/op
+Iteration   2: 389.245 ns/op
+Iteration   3: 389.768 ns/op
+Iteration   4: 390.833 ns/op
+Iteration   5: 389.481 ns/op
+Iteration   6: 388.667 ns/op
+Iteration   7: 389.589 ns/op
+Iteration   8: 390.013 ns/op
+Iteration   9: 397.210 ns/op
+Iteration  10: 390.323 ns/op
+
+# Run progress: 6.00% complete, ETA 03:56:22
+# Fork: 7 of 10
+# Warmup Iteration   1: 409.516 ns/op
+# Warmup Iteration   2: 395.202 ns/op
+# Warmup Iteration   3: 394.290 ns/op
+# Warmup Iteration   4: 394.407 ns/op
+# Warmup Iteration   5: 394.680 ns/op
+Iteration   1: 392.319 ns/op
+Iteration   2: 385.812 ns/op
+Iteration   3: 385.648 ns/op
+Iteration   4: 385.531 ns/op
+Iteration   5: 385.760 ns/op
+Iteration   6: 385.696 ns/op
+Iteration   7: 394.634 ns/op
+Iteration   8: 395.735 ns/op
+Iteration   9: 395.536 ns/op
+Iteration  10: 395.946 ns/op
+
+# Run progress: 7.00% complete, ETA 03:53:51
+# Fork: 8 of 10
+# Warmup Iteration   1: 418.112 ns/op
+# Warmup Iteration   2: 402.717 ns/op
+# Warmup Iteration   3: 401.427 ns/op
+# Warmup Iteration   4: 401.378 ns/op
+# Warmup Iteration   5: 401.722 ns/op
+Iteration   1: 402.318 ns/op
+Iteration   2: 401.773 ns/op
+Iteration   3: 402.527 ns/op
+Iteration   4: 402.367 ns/op
+Iteration   5: 402.215 ns/op
+Iteration   6: 402.681 ns/op
+Iteration   7: 403.078 ns/op
+Iteration   8: 402.438 ns/op
+Iteration   9: 402.201 ns/op
+Iteration  10: 402.604 ns/op
+
+# Run progress: 8.00% complete, ETA 03:51:20
+# Fork: 9 of 10
+# Warmup Iteration   1: 410.910 ns/op
+# Warmup Iteration   2: 395.286 ns/op
+# Warmup Iteration   3: 394.394 ns/op
+# Warmup Iteration   4: 394.700 ns/op
+# Warmup Iteration   5: 394.289 ns/op
+Iteration   1: 394.198 ns/op
+Iteration   2: 395.097 ns/op
+Iteration   3: 395.321 ns/op
+Iteration   4: 395.953 ns/op
+Iteration   5: 395.652 ns/op
+Iteration   6: 395.457 ns/op
+Iteration   7: 396.061 ns/op
+Iteration   8: 395.571 ns/op
+Iteration   9: 394.838 ns/op
+Iteration  10: 395.272 ns/op
+
+# Run progress: 9.00% complete, ETA 03:48:49
+# Fork: 10 of 10
+# Warmup Iteration   1: 404.360 ns/op
+# Warmup Iteration   2: 390.136 ns/op
+# Warmup Iteration   3: 388.315 ns/op
+# Warmup Iteration   4: 388.453 ns/op
+# Warmup Iteration   5: 388.496 ns/op
+Iteration   1: 388.433 ns/op
+Iteration   2: 389.159 ns/op
+Iteration   3: 389.069 ns/op
+Iteration   4: 388.842 ns/op
+Iteration   5: 389.442 ns/op
+Iteration   6: 389.686 ns/op
+Iteration   7: 388.695 ns/op
+Iteration   8: 388.974 ns/op
+Iteration   9: 389.467 ns/op
+Iteration  10: 388.766 ns/op
+
+
+Result "jmh1596468027285.bench_0_log_call_simple.run":
+  393.306 ±(99.9%) 1.478 ns/op [Average]
+  (min, avg, max) = (385.531, 393.306, 403.078), stdev = 4.358
+  CI (99.9%): [391.828, 394.784] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 14.0.1, OpenJDK 64-Bit Server VM, 14.0.1+7
+# VM invoker: /opt/jdk-14.0.1+7/bin/java
+# VM options: -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.4.0 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 10 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1596468027285.bench_1_log_call_with_context.run
+
+# Run progress: 10.00% complete, ETA 03:46:18
+# Fork: 1 of 10
+# Warmup Iteration   1: 445.189 ns/op
+# Warmup Iteration   2: 430.647 ns/op
+# Warmup Iteration   3: 430.610 ns/op
+# Warmup Iteration   4: 431.259 ns/op
+# Warmup Iteration   5: 431.408 ns/op
+Iteration   1: 430.734 ns/op
+Iteration   2: 430.912 ns/op
+Iteration   3: 431.395 ns/op
+Iteration   4: 431.352 ns/op
+Iteration   5: 430.788 ns/op
+Iteration   6: 430.781 ns/op
+Iteration   7: 429.998 ns/op
+Iteration   8: 430.157 ns/op
+Iteration   9: 429.877 ns/op
+Iteration  10: 429.853 ns/op
+
+# Run progress: 11.00% complete, ETA 03:43:48
+# Fork: 2 of 10
+# Warmup Iteration   1: 432.688 ns/op
+# Warmup Iteration   2: 416.043 ns/op
+# Warmup Iteration   3: 416.651 ns/op
+# Warmup Iteration   4: 416.059 ns/op
+# Warmup Iteration   5: 416.316 ns/op
+Iteration   1: 416.861 ns/op
+Iteration   2: 416.859 ns/op
+Iteration   3: 416.938 ns/op
+Iteration   4: 416.846 ns/op
+Iteration   5: 416.450 ns/op
+Iteration   6: 415.833 ns/op
+Iteration   7: 416.041 ns/op
+Iteration   8: 415.693 ns/op
+Iteration   9: 415.953 ns/op
+Iteration  10: 415.858 ns/op
+
+# Run progress: 12.00% complete, ETA 03:41:17
+# Fork: 3 of 10
+# Warmup Iteration   1: 437.540 ns/op
+# Warmup Iteration   2: 427.440 ns/op
+# Warmup Iteration   3: 422.692 ns/op
+# Warmup Iteration   4: 421.404 ns/op
+# Warmup Iteration   5: 420.337 ns/op
+Iteration   1: 419.549 ns/op
+Iteration   2: 419.600 ns/op
+Iteration   3: 419.908 ns/op
+Iteration   4: 420.065 ns/op
+Iteration   5: 420.117 ns/op
+Iteration   6: 420.342 ns/op
+Iteration   7: 420.980 ns/op
+Iteration   8: 422.166 ns/op
+Iteration   9: 419.688 ns/op
+Iteration  10: 420.091 ns/op
+
+# Run progress: 13.00% complete, ETA 03:38:46
+# Fork: 4 of 10
+# Warmup Iteration   1: 431.651 ns/op
+# Warmup Iteration   2: 416.462 ns/op
+# Warmup Iteration   3: 416.691 ns/op
+# Warmup Iteration   4: 416.357 ns/op
+# Warmup Iteration   5: 416.338 ns/op
+Iteration   1: 416.723 ns/op
+Iteration   2: 416.478 ns/op
+Iteration   3: 416.294 ns/op
+Iteration   4: 417.482 ns/op
+Iteration   5: 416.433 ns/op
+Iteration   6: 416.318 ns/op
+Iteration   7: 416.935 ns/op
+Iteration   8: 409.322 ns/op
+Iteration   9: 408.828 ns/op
+Iteration  10: 408.886 ns/op
+
+# Run progress: 14.00% complete, ETA 03:36:15
+# Fork: 5 of 10
+# Warmup Iteration   1: 432.690 ns/op
+# Warmup Iteration   2: 415.902 ns/op
+# Warmup Iteration   3: 415.879 ns/op
+# Warmup Iteration   4: 415.497 ns/op
+# Warmup Iteration   5: 415.414 ns/op
+Iteration   1: 415.643 ns/op
+Iteration   2: 415.684 ns/op
+Iteration   3: 415.955 ns/op
+Iteration   4: 415.978 ns/op
+Iteration   5: 415.981 ns/op
+Iteration   6: 415.888 ns/op
+Iteration   7: 416.111 ns/op
+Iteration   8: 416.075 ns/op
+Iteration   9: 416.323 ns/op
+Iteration  10: 415.669 ns/op
+
+# Run progress: 15.00% complete, ETA 03:33:44
+# Fork: 6 of 10
+# Warmup Iteration   1: 444.933 ns/op
+# Warmup Iteration   2: 430.876 ns/op
+# Warmup Iteration   3: 419.561 ns/op
+# Warmup Iteration   4: 419.451 ns/op
+# Warmup Iteration   5: 419.841 ns/op
+Iteration   1: 419.775 ns/op
+Iteration   2: 420.467 ns/op
+Iteration   3: 420.365 ns/op
+Iteration   4: 419.558 ns/op
+Iteration   5: 419.189 ns/op
+Iteration   6: 419.565 ns/op
+Iteration   7: 419.572 ns/op
+Iteration   8: 419.962 ns/op
+Iteration   9: 420.117 ns/op
+Iteration  10: 420.073 ns/op
+
+# Run progress: 16.00% complete, ETA 03:31:13
+# Fork: 7 of 10
+# Warmup Iteration   1: 438.878 ns/op
+# Warmup Iteration   2: 421.029 ns/op
+# Warmup Iteration   3: 421.985 ns/op
+# Warmup Iteration   4: 421.382 ns/op
+# Warmup Iteration   5: 421.294 ns/op
+Iteration   1: 421.785 ns/op
+Iteration   2: 421.076 ns/op
+Iteration   3: 421.279 ns/op
+Iteration   4: 421.251 ns/op
+Iteration   5: 421.452 ns/op
+Iteration   6: 421.236 ns/op
+Iteration   7: 421.150 ns/op
+Iteration   8: 421.752 ns/op
+Iteration   9: 422.029 ns/op
+Iteration  10: 421.560 ns/op
+
+# Run progress: 17.00% complete, ETA 03:28:42
+# Fork: 8 of 10
+# Warmup Iteration   1: 436.338 ns/op
+# Warmup Iteration   2: 421.057 ns/op
+# Warmup Iteration   3: 420.334 ns/op
+# Warmup Iteration   4: 419.473 ns/op
+# Warmup Iteration   5: 418.689 ns/op
+Iteration   1: 418.950 ns/op
+Iteration   2: 418.479 ns/op
+Iteration   3: 418.240 ns/op
+Iteration   4: 418.501 ns/op
+Iteration   5: 418.557 ns/op
+Iteration   6: 418.885 ns/op
+Iteration   7: 419.794 ns/op
+Iteration   8: 418.928 ns/op
+Iteration   9: 418.796 ns/op
+Iteration  10: 419.180 ns/op
+
+# Run progress: 18.00% complete, ETA 03:26:11
+# Fork: 9 of 10
+# Warmup Iteration   1: 425.881 ns/op
+# Warmup Iteration   2: 411.202 ns/op
+# Warmup Iteration   3: 410.439 ns/op
+# Warmup Iteration   4: 410.106 ns/op
+# Warmup Iteration   5: 409.995 ns/op
+Iteration   1: 409.840 ns/op
+Iteration   2: 409.949 ns/op
+Iteration   3: 410.684 ns/op
+Iteration   4: 410.768 ns/op
+Iteration   5: 410.499 ns/op
+Iteration   6: 410.733 ns/op
+Iteration   7: 411.077 ns/op
+Iteration   8: 411.345 ns/op
+Iteration   9: 411.486 ns/op
+Iteration  10: 411.456 ns/op
+
+# Run progress: 19.00% complete, ETA 03:23:40
+# Fork: 10 of 10
+# Warmup Iteration   1: 425.803 ns/op
+# Warmup Iteration   2: 410.949 ns/op
+# Warmup Iteration   3: 409.449 ns/op
+# Warmup Iteration   4: 409.516 ns/op
+# Warmup Iteration   5: 409.511 ns/op
+Iteration   1: 409.200 ns/op
+Iteration   2: 409.972 ns/op
+Iteration   3: 410.011 ns/op
+Iteration   4: 409.817 ns/op
+Iteration   5: 409.436 ns/op
+Iteration   6: 409.347 ns/op
+Iteration   7: 409.094 ns/op
+Iteration   8: 407.549 ns/op
+Iteration   9: 406.572 ns/op
+Iteration  10: 406.599 ns/op
+
+
+Result "jmh1596468027285.bench_1_log_call_with_context.run":
+  417.716 ±(99.9%) 2.023 ns/op [Average]
+  (min, avg, max) = (406.572, 417.716, 431.395), stdev = 5.966
+  CI (99.9%): [415.693, 419.740] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 14.0.1, OpenJDK 64-Bit Server VM, 14.0.1+7
+# VM invoker: /opt/jdk-14.0.1+7/bin/java
+# VM options: -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.4.0 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 10 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1596468027285.bench_2_log_call_with_context2.run
+
+# Run progress: 20.00% complete, ETA 03:21:10
+# Fork: 1 of 10
+# Warmup Iteration   1: 593.961 ns/op
+# Warmup Iteration   2: 577.771 ns/op
+# Warmup Iteration   3: 571.437 ns/op
+# Warmup Iteration   4: 571.461 ns/op
+# Warmup Iteration   5: 571.340 ns/op
+Iteration   1: 571.128 ns/op
+Iteration   2: 571.626 ns/op
+Iteration   3: 571.209 ns/op
+Iteration   4: 571.253 ns/op
+Iteration   5: 571.474 ns/op
+Iteration   6: 571.582 ns/op
+Iteration   7: 571.122 ns/op
+Iteration   8: 570.946 ns/op
+Iteration   9: 571.539 ns/op
+Iteration  10: 571.387 ns/op
+
+# Run progress: 21.00% complete, ETA 03:18:39
+# Fork: 2 of 10
+# Warmup Iteration   1: 500.703 ns/op
+# Warmup Iteration   2: 507.743 ns/op
+# Warmup Iteration   3: 506.159 ns/op
+# Warmup Iteration   4: 508.537 ns/op
+# Warmup Iteration   5: 506.930 ns/op
+Iteration   1: 506.841 ns/op
+Iteration   2: 506.569 ns/op
+Iteration   3: 506.814 ns/op
+Iteration   4: 507.403 ns/op
+Iteration   5: 506.927 ns/op
+Iteration   6: 506.752 ns/op
+Iteration   7: 507.055 ns/op
+Iteration   8: 507.847 ns/op
+Iteration   9: 506.873 ns/op
+Iteration  10: 506.727 ns/op
+
+# Run progress: 22.00% complete, ETA 03:16:08
+# Fork: 3 of 10
+# Warmup Iteration   1: 567.153 ns/op
+# Warmup Iteration   2: 549.959 ns/op
+# Warmup Iteration   3: 554.669 ns/op
+# Warmup Iteration   4: 560.480 ns/op
+# Warmup Iteration   5: 560.783 ns/op
+Iteration   1: 560.810 ns/op
+Iteration   2: 555.455 ns/op
+Iteration   3: 561.795 ns/op
+Iteration   4: 562.211 ns/op
+Iteration   5: 562.356 ns/op
+Iteration   6: 562.618 ns/op
+Iteration   7: 562.222 ns/op
+Iteration   8: 562.581 ns/op
+Iteration   9: 562.405 ns/op
+Iteration  10: 562.632 ns/op
+
+# Run progress: 23.00% complete, ETA 03:13:37
+# Fork: 4 of 10
+# Warmup Iteration   1: 504.642 ns/op
+# Warmup Iteration   2: 482.333 ns/op
+# Warmup Iteration   3: 481.360 ns/op
+# Warmup Iteration   4: 481.367 ns/op
+# Warmup Iteration   5: 480.965 ns/op
+Iteration   1: 482.719 ns/op
+Iteration   2: 485.219 ns/op
+Iteration   3: 484.697 ns/op
+Iteration   4: 484.889 ns/op
+Iteration   5: 487.857 ns/op
+Iteration   6: 486.829 ns/op
+Iteration   7: 485.486 ns/op
+Iteration   8: 485.463 ns/op
+Iteration   9: 485.494 ns/op
+Iteration  10: 485.700 ns/op
+
+# Run progress: 24.00% complete, ETA 03:11:06
+# Fork: 5 of 10
+# Warmup Iteration   1: 587.721 ns/op
+# Warmup Iteration   2: 559.494 ns/op
+# Warmup Iteration   3: 558.507 ns/op
+# Warmup Iteration   4: 559.036 ns/op
+# Warmup Iteration   5: 559.498 ns/op
+Iteration   1: 558.556 ns/op
+Iteration   2: 560.100 ns/op
+Iteration   3: 559.915 ns/op
+Iteration   4: 559.355 ns/op
+Iteration   5: 558.997 ns/op
+Iteration   6: 558.944 ns/op
+Iteration   7: 558.986 ns/op
+Iteration   8: 559.163 ns/op
+Iteration   9: 558.612 ns/op
+Iteration  10: 559.687 ns/op
+
+# Run progress: 25.00% complete, ETA 03:08:35
+# Fork: 6 of 10
+# Warmup Iteration   1: 579.598 ns/op
+# Warmup Iteration   2: 562.123 ns/op
+# Warmup Iteration   3: 561.313 ns/op
+# Warmup Iteration   4: 561.029 ns/op
+# Warmup Iteration   5: 561.053 ns/op
+Iteration   1: 561.191 ns/op
+Iteration   2: 561.409 ns/op
+Iteration   3: 560.829 ns/op
+Iteration   4: 560.804 ns/op
+Iteration   5: 561.049 ns/op
+Iteration   6: 560.666 ns/op
+Iteration   7: 560.721 ns/op
+Iteration   8: 560.921 ns/op
+Iteration   9: 560.760 ns/op
+Iteration  10: 560.794 ns/op
+
+# Run progress: 26.00% complete, ETA 03:06:04
+# Fork: 7 of 10
+# Warmup Iteration   1: 578.157 ns/op
+# Warmup Iteration   2: 561.870 ns/op
+# Warmup Iteration   3: 560.300 ns/op
+# Warmup Iteration   4: 560.795 ns/op
+# Warmup Iteration   5: 561.234 ns/op
+Iteration   1: 551.374 ns/op
+Iteration   2: 549.737 ns/op
+Iteration   3: 549.688 ns/op
+Iteration   4: 549.684 ns/op
+Iteration   5: 549.767 ns/op
+Iteration   6: 550.538 ns/op
+Iteration   7: 549.357 ns/op
+Iteration   8: 548.971 ns/op
+Iteration   9: 549.064 ns/op
+Iteration  10: 548.944 ns/op
+
+# Run progress: 27.00% complete, ETA 03:03:33
+# Fork: 8 of 10
+# Warmup Iteration   1: 513.949 ns/op
+# Warmup Iteration   2: 512.547 ns/op
+# Warmup Iteration   3: 513.851 ns/op
+# Warmup Iteration   4: 513.921 ns/op
+# Warmup Iteration   5: 513.486 ns/op
+Iteration   1: 513.474 ns/op
+Iteration   2: 514.022 ns/op
+Iteration   3: 514.238 ns/op
+Iteration   4: 514.268 ns/op
+Iteration   5: 514.224 ns/op
+Iteration   6: 514.294 ns/op
+Iteration   7: 513.841 ns/op
+Iteration   8: 514.041 ns/op
+Iteration   9: 513.481 ns/op
+Iteration  10: 513.332 ns/op
+
+# Run progress: 28.00% complete, ETA 03:01:02
+# Fork: 9 of 10
+# Warmup Iteration   1: 571.862 ns/op
+# Warmup Iteration   2: 550.376 ns/op
+# Warmup Iteration   3: 550.102 ns/op
+# Warmup Iteration   4: 549.872 ns/op
+# Warmup Iteration   5: 549.708 ns/op
+Iteration   1: 549.562 ns/op
+Iteration   2: 549.917 ns/op
+Iteration   3: 549.895 ns/op
+Iteration   4: 550.156 ns/op
+Iteration   5: 550.331 ns/op
+Iteration   6: 550.374 ns/op
+Iteration   7: 550.557 ns/op
+Iteration   8: 550.175 ns/op
+Iteration   9: 550.104 ns/op
+Iteration  10: 549.967 ns/op
+
+# Run progress: 29.00% complete, ETA 02:58:32
+# Fork: 10 of 10
+# Warmup Iteration   1: 510.522 ns/op
+# Warmup Iteration   2: 494.113 ns/op
+# Warmup Iteration   3: 491.686 ns/op
+# Warmup Iteration   4: 491.639 ns/op
+# Warmup Iteration   5: 491.174 ns/op
+Iteration   1: 490.770 ns/op
+Iteration   2: 490.693 ns/op
+Iteration   3: 491.121 ns/op
+Iteration   4: 491.695 ns/op
+Iteration   5: 490.974 ns/op
+Iteration   6: 491.071 ns/op
+Iteration   7: 491.396 ns/op
+Iteration   8: 491.333 ns/op
+Iteration   9: 491.673 ns/op
+Iteration  10: 491.179 ns/op
+
+
+Result "jmh1596468027285.bench_2_log_call_with_context2.run":
+  535.033 ±(99.9%) 10.416 ns/op [Average]
+  (min, avg, max) = (482.719, 535.033, 571.626), stdev = 30.712
+  CI (99.9%): [524.616, 545.449] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 14.0.1, OpenJDK 64-Bit Server VM, 14.0.1+7
+# VM invoker: /opt/jdk-14.0.1+7/bin/java
+# VM options: -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.4.0 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 10 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1596468027285.bench_3_trace_call_simple.run
+
+# Run progress: 30.00% complete, ETA 02:56:01
+# Fork: 1 of 10
+# Warmup Iteration   1: 687.414 ns/op
+# Warmup Iteration   2: 671.046 ns/op
+# Warmup Iteration   3: 667.117 ns/op
+# Warmup Iteration   4: 667.279 ns/op
+# Warmup Iteration   5: 667.554 ns/op
+Iteration   1: 667.620 ns/op
+Iteration   2: 667.724 ns/op
+Iteration   3: 668.119 ns/op
+Iteration   4: 668.367 ns/op
+Iteration   5: 666.631 ns/op
+Iteration   6: 666.831 ns/op
+Iteration   7: 681.659 ns/op
+Iteration   8: 682.301 ns/op
+Iteration   9: 682.331 ns/op
+Iteration  10: 681.797 ns/op
+
+# Run progress: 31.00% complete, ETA 02:53:30
+# Fork: 2 of 10
+# Warmup Iteration   1: 688.656 ns/op
+# Warmup Iteration   2: 668.010 ns/op
+# Warmup Iteration   3: 667.297 ns/op
+# Warmup Iteration   4: 667.189 ns/op
+# Warmup Iteration   5: 668.858 ns/op
+Iteration   1: 674.699 ns/op
+Iteration   2: 670.245 ns/op
+Iteration   3: 669.026 ns/op
+Iteration   4: 668.915 ns/op
+Iteration   5: 669.244 ns/op
+Iteration   6: 669.402 ns/op
+Iteration   7: 669.159 ns/op
+Iteration   8: 669.468 ns/op
+Iteration   9: 670.611 ns/op
+Iteration  10: 670.141 ns/op
+
+# Run progress: 32.00% complete, ETA 02:50:59
+# Fork: 3 of 10
+# Warmup Iteration   1: 695.492 ns/op
+# Warmup Iteration   2: 680.325 ns/op
+# Warmup Iteration   3: 671.928 ns/op
+# Warmup Iteration   4: 671.842 ns/op
+# Warmup Iteration   5: 672.116 ns/op
+Iteration   1: 672.492 ns/op
+Iteration   2: 672.056 ns/op
+Iteration   3: 672.143 ns/op
+Iteration   4: 672.152 ns/op
+Iteration   5: 671.951 ns/op
+Iteration   6: 672.307 ns/op
+Iteration   7: 672.028 ns/op
+Iteration   8: 673.180 ns/op
+Iteration   9: 672.017 ns/op
+Iteration  10: 672.203 ns/op
+
+# Run progress: 33.00% complete, ETA 02:48:28
+# Fork: 4 of 10
+# Warmup Iteration   1: 686.799 ns/op
+# Warmup Iteration   2: 668.744 ns/op
+# Warmup Iteration   3: 667.880 ns/op
+# Warmup Iteration   4: 667.959 ns/op
+# Warmup Iteration   5: 667.738 ns/op
+Iteration   1: 667.668 ns/op
+Iteration   2: 672.573 ns/op
+Iteration   3: 667.809 ns/op
+Iteration   4: 667.708 ns/op
+Iteration   5: 672.474 ns/op
+Iteration   6: 668.361 ns/op
+Iteration   7: 667.720 ns/op
+Iteration   8: 667.862 ns/op
+Iteration   9: 668.271 ns/op
+Iteration  10: 668.044 ns/op
+
+# Run progress: 34.00% complete, ETA 02:45:57
+# Fork: 5 of 10
+# Warmup Iteration   1: 691.064 ns/op
+# Warmup Iteration   2: 671.123 ns/op
+# Warmup Iteration   3: 670.779 ns/op
+# Warmup Iteration   4: 671.114 ns/op
+# Warmup Iteration   5: 671.191 ns/op
+Iteration   1: 670.519 ns/op
+Iteration   2: 670.866 ns/op
+Iteration   3: 671.123 ns/op
+Iteration   4: 671.231 ns/op
+Iteration   5: 671.238 ns/op
+Iteration   6: 670.300 ns/op
+Iteration   7: 670.854 ns/op
+Iteration   8: 670.534 ns/op
+Iteration   9: 670.197 ns/op
+Iteration  10: 670.212 ns/op
+
+# Run progress: 35.00% complete, ETA 02:43:26
+# Fork: 6 of 10
+# Warmup Iteration   1: 684.479 ns/op
+# Warmup Iteration   2: 665.883 ns/op
+# Warmup Iteration   3: 665.665 ns/op
+# Warmup Iteration   4: 665.879 ns/op
+# Warmup Iteration   5: 670.996 ns/op
+Iteration   1: 665.605 ns/op
+Iteration   2: 665.641 ns/op
+Iteration   3: 665.528 ns/op
+Iteration   4: 665.329 ns/op
+Iteration   5: 665.361 ns/op
+Iteration   6: 665.222 ns/op
+Iteration   7: 664.542 ns/op
+Iteration   8: 664.690 ns/op
+Iteration   9: 670.432 ns/op
+Iteration  10: 664.421 ns/op
+
+# Run progress: 36.00% complete, ETA 02:40:55
+# Fork: 7 of 10
+# Warmup Iteration   1: 703.927 ns/op
+# Warmup Iteration   2: 688.226 ns/op
+# Warmup Iteration   3: 686.976 ns/op
+# Warmup Iteration   4: 687.053 ns/op
+# Warmup Iteration   5: 687.152 ns/op
+Iteration   1: 686.807 ns/op
+Iteration   2: 686.514 ns/op
+Iteration   3: 686.563 ns/op
+Iteration   4: 687.067 ns/op
+Iteration   5: 687.055 ns/op
+Iteration   6: 686.473 ns/op
+Iteration   7: 686.740 ns/op
+Iteration   8: 686.834 ns/op
+Iteration   9: 686.632 ns/op
+Iteration  10: 686.420 ns/op
+
+# Run progress: 37.00% complete, ETA 02:38:25
+# Fork: 8 of 10
+# Warmup Iteration   1: 691.449 ns/op
+# Warmup Iteration   2: 679.488 ns/op
+# Warmup Iteration   3: 673.045 ns/op
+# Warmup Iteration   4: 672.284 ns/op
+# Warmup Iteration   5: 672.932 ns/op
+Iteration   1: 672.516 ns/op
+Iteration   2: 672.475 ns/op
+Iteration   3: 672.958 ns/op
+Iteration   4: 672.745 ns/op
+Iteration   5: 672.877 ns/op
+Iteration   6: 673.231 ns/op
+Iteration   7: 672.883 ns/op
+Iteration   8: 673.111 ns/op
+Iteration   9: 673.480 ns/op
+Iteration  10: 673.606 ns/op
+
+# Run progress: 38.00% complete, ETA 02:35:54
+# Fork: 9 of 10
+# Warmup Iteration   1: 692.180 ns/op
+# Warmup Iteration   2: 671.361 ns/op
+# Warmup Iteration   3: 672.416 ns/op
+# Warmup Iteration   4: 672.928 ns/op
+# Warmup Iteration   5: 672.781 ns/op
+Iteration   1: 674.738 ns/op
+Iteration   2: 673.386 ns/op
+Iteration   3: 673.063 ns/op
+Iteration   4: 673.277 ns/op
+Iteration   5: 673.629 ns/op
+Iteration   6: 677.846 ns/op
+Iteration   7: 673.017 ns/op
+Iteration   8: 673.144 ns/op
+Iteration   9: 673.103 ns/op
+Iteration  10: 673.533 ns/op
+
+# Run progress: 39.00% complete, ETA 02:33:23
+# Fork: 10 of 10
+# Warmup Iteration   1: 690.900 ns/op
+# Warmup Iteration   2: 671.650 ns/op
+# Warmup Iteration   3: 671.637 ns/op
+# Warmup Iteration   4: 671.347 ns/op
+# Warmup Iteration   5: 671.254 ns/op
+Iteration   1: 671.392 ns/op
+Iteration   2: 671.981 ns/op
+Iteration   3: 671.860 ns/op
+Iteration   4: 672.182 ns/op
+Iteration   5: 671.744 ns/op
+Iteration   6: 671.837 ns/op
+Iteration   7: 671.526 ns/op
+Iteration   8: 671.293 ns/op
+Iteration   9: 671.377 ns/op
+Iteration  10: 671.333 ns/op
+
+
+Result "jmh1596468027285.bench_3_trace_call_simple.run":
+  672.614 ±(99.9%) 1.976 ns/op [Average]
+  (min, avg, max) = (664.421, 672.614, 687.067), stdev = 5.827
+  CI (99.9%): [670.638, 674.590] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 14.0.1, OpenJDK 64-Bit Server VM, 14.0.1+7
+# VM invoker: /opt/jdk-14.0.1+7/bin/java
+# VM options: -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.4.0 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 10 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1596468027285.bench_4_trace_call_with_capture.run
+
+# Run progress: 40.00% complete, ETA 02:30:52
+# Fork: 1 of 10
+# Warmup Iteration   1: 568.238 ns/op
+# Warmup Iteration   2: 549.865 ns/op
+# Warmup Iteration   3: 547.773 ns/op
+# Warmup Iteration   4: 546.882 ns/op
+# Warmup Iteration   5: 547.708 ns/op
+Iteration   1: 548.784 ns/op
+Iteration   2: 546.932 ns/op
+Iteration   3: 546.638 ns/op
+Iteration   4: 547.968 ns/op
+Iteration   5: 547.199 ns/op
+Iteration   6: 546.998 ns/op
+Iteration   7: 547.020 ns/op
+Iteration   8: 546.936 ns/op
+Iteration   9: 546.150 ns/op
+Iteration  10: 546.112 ns/op
+
+# Run progress: 41.00% complete, ETA 02:28:21
+# Fork: 2 of 10
+# Warmup Iteration   1: 586.859 ns/op
+# Warmup Iteration   2: 566.717 ns/op
+# Warmup Iteration   3: 565.638 ns/op
+# Warmup Iteration   4: 564.643 ns/op
+# Warmup Iteration   5: 565.785 ns/op
+Iteration   1: 565.695 ns/op
+Iteration   2: 564.956 ns/op
+Iteration   3: 565.852 ns/op
+Iteration   4: 565.588 ns/op
+Iteration   5: 564.671 ns/op
+Iteration   6: 557.082 ns/op
+Iteration   7: 552.215 ns/op
+Iteration   8: 552.166 ns/op
+Iteration   9: 553.211 ns/op
+Iteration  10: 552.685 ns/op
+
+# Run progress: 42.00% complete, ETA 02:25:50
+# Fork: 3 of 10
+# Warmup Iteration   1: 585.663 ns/op
+# Warmup Iteration   2: 564.921 ns/op
+# Warmup Iteration   3: 564.237 ns/op
+# Warmup Iteration   4: 564.694 ns/op
+# Warmup Iteration   5: 564.622 ns/op
+Iteration   1: 564.854 ns/op
+Iteration   2: 565.038 ns/op
+Iteration   3: 564.975 ns/op
+Iteration   4: 564.947 ns/op
+Iteration   5: 564.336 ns/op
+Iteration   6: 554.003 ns/op
+Iteration   7: 553.725 ns/op
+Iteration   8: 554.062 ns/op
+Iteration   9: 554.024 ns/op
+Iteration  10: 553.568 ns/op
+
+# Run progress: 43.00% complete, ETA 02:23:19
+# Fork: 4 of 10
+# Warmup Iteration   1: 574.788 ns/op
+# Warmup Iteration   2: 556.158 ns/op
+# Warmup Iteration   3: 554.642 ns/op
+# Warmup Iteration   4: 555.265 ns/op
+# Warmup Iteration   5: 556.072 ns/op
+Iteration   1: 555.309 ns/op
+Iteration   2: 554.781 ns/op
+Iteration   3: 555.204 ns/op
+Iteration   4: 555.503 ns/op
+Iteration   5: 554.795 ns/op
+Iteration   6: 555.204 ns/op
+Iteration   7: 555.467 ns/op
+Iteration   8: 555.925 ns/op
+Iteration   9: 555.879 ns/op
+Iteration  10: 554.828 ns/op
+
+# Run progress: 44.00% complete, ETA 02:20:48
+# Fork: 5 of 10
+# Warmup Iteration   1: 575.170 ns/op
+# Warmup Iteration   2: 555.389 ns/op
+# Warmup Iteration   3: 553.990 ns/op
+# Warmup Iteration   4: 554.223 ns/op
+# Warmup Iteration   5: 554.501 ns/op
+Iteration   1: 553.903 ns/op
+Iteration   2: 553.824 ns/op
+Iteration   3: 554.363 ns/op
+Iteration   4: 554.189 ns/op
+Iteration   5: 554.229 ns/op
+Iteration   6: 554.184 ns/op
+Iteration   7: 553.239 ns/op
+Iteration   8: 553.201 ns/op
+Iteration   9: 553.367 ns/op
+Iteration  10: 553.268 ns/op
+
+# Run progress: 45.00% complete, ETA 02:18:17
+# Fork: 6 of 10
+# Warmup Iteration   1: 571.073 ns/op
+# Warmup Iteration   2: 549.907 ns/op
+# Warmup Iteration   3: 548.601 ns/op
+# Warmup Iteration   4: 548.939 ns/op
+# Warmup Iteration   5: 549.143 ns/op
+Iteration   1: 548.757 ns/op
+Iteration   2: 548.871 ns/op
+Iteration   3: 549.285 ns/op
+Iteration   4: 549.084 ns/op
+Iteration   5: 549.394 ns/op
+Iteration   6: 549.020 ns/op
+Iteration   7: 548.847 ns/op
+Iteration   8: 548.912 ns/op
+Iteration   9: 553.862 ns/op
+Iteration  10: 558.973 ns/op
+
+# Run progress: 46.00% complete, ETA 02:15:47
+# Fork: 7 of 10
+# Warmup Iteration   1: 580.354 ns/op
+# Warmup Iteration   2: 557.130 ns/op
+# Warmup Iteration   3: 556.891 ns/op
+# Warmup Iteration   4: 557.227 ns/op
+# Warmup Iteration   5: 557.420 ns/op
+Iteration   1: 554.714 ns/op
+Iteration   2: 556.208 ns/op
+Iteration   3: 557.527 ns/op
+Iteration   4: 557.312 ns/op
+Iteration   5: 557.584 ns/op
+Iteration   6: 557.614 ns/op
+Iteration   7: 557.476 ns/op
+Iteration   8: 558.137 ns/op
+Iteration   9: 557.555 ns/op
+Iteration  10: 558.641 ns/op
+
+# Run progress: 47.00% complete, ETA 02:13:16
+# Fork: 8 of 10
+# Warmup Iteration   1: 570.767 ns/op
+# Warmup Iteration   2: 550.101 ns/op
+# Warmup Iteration   3: 549.073 ns/op
+# Warmup Iteration   4: 548.687 ns/op
+# Warmup Iteration   5: 548.858 ns/op
+Iteration   1: 553.243 ns/op
+Iteration   2: 549.566 ns/op
+Iteration   3: 549.220 ns/op
+Iteration   4: 549.579 ns/op
+Iteration   5: 549.828 ns/op
+Iteration   6: 549.630 ns/op
+Iteration   7: 549.528 ns/op
+Iteration   8: 549.772 ns/op
+Iteration   9: 549.582 ns/op
+Iteration  10: 549.372 ns/op
+
+# Run progress: 48.00% complete, ETA 02:10:45
+# Fork: 9 of 10
+# Warmup Iteration   1: 563.971 ns/op
+# Warmup Iteration   2: 544.169 ns/op
+# Warmup Iteration   3: 545.737 ns/op
+# Warmup Iteration   4: 545.766 ns/op
+# Warmup Iteration   5: 545.348 ns/op
+Iteration   1: 545.146 ns/op
+Iteration   2: 543.120 ns/op
+Iteration   3: 542.993 ns/op
+Iteration   4: 543.006 ns/op
+Iteration   5: 543.639 ns/op
+Iteration   6: 543.564 ns/op
+Iteration   7: 543.192 ns/op
+Iteration   8: 543.425 ns/op
+Iteration   9: 543.257 ns/op
+Iteration  10: 542.978 ns/op
+
+# Run progress: 49.00% complete, ETA 02:08:14
+# Fork: 10 of 10
+# Warmup Iteration   1: 580.848 ns/op
+# Warmup Iteration   2: 561.947 ns/op
+# Warmup Iteration   3: 559.614 ns/op
+# Warmup Iteration   4: 558.226 ns/op
+# Warmup Iteration   5: 558.398 ns/op
+Iteration   1: 558.224 ns/op
+Iteration   2: 557.840 ns/op
+Iteration   3: 558.279 ns/op
+Iteration   4: 558.458 ns/op
+Iteration   5: 558.597 ns/op
+Iteration   6: 558.325 ns/op
+Iteration   7: 557.809 ns/op
+Iteration   8: 558.453 ns/op
+Iteration   9: 558.643 ns/op
+Iteration  10: 558.583 ns/op
+
+
+Result "jmh1596468027285.bench_4_trace_call_with_capture.run":
+  553.437 ±(99.9%) 2.032 ns/op [Average]
+  (min, avg, max) = (542.978, 553.437, 565.852), stdev = 5.991
+  CI (99.9%): [551.405, 555.469] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 14.0.1, OpenJDK 64-Bit Server VM, 14.0.1+7
+# VM invoker: /opt/jdk-14.0.1+7/bin/java
+# VM options: -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.4.0 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 10 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1596468027285.bench_5_flake_creation.run
+
+# Run progress: 50.00% complete, ETA 02:05:43
+# Fork: 1 of 10
+# Warmup Iteration   1: 35.608 ns/op
+# Warmup Iteration   2: 34.810 ns/op
+# Warmup Iteration   3: 35.007 ns/op
+# Warmup Iteration   4: 35.013 ns/op
+# Warmup Iteration   5: 35.016 ns/op
+Iteration   1: 34.997 ns/op
+Iteration   2: 35.012 ns/op
+Iteration   3: 35.007 ns/op
+Iteration   4: 35.023 ns/op
+Iteration   5: 35.010 ns/op
+Iteration   6: 35.006 ns/op
+Iteration   7: 35.009 ns/op
+Iteration   8: 35.021 ns/op
+Iteration   9: 35.013 ns/op
+Iteration  10: 35.005 ns/op
+
+# Run progress: 51.00% complete, ETA 02:03:12
+# Fork: 2 of 10
+# Warmup Iteration   1: 35.326 ns/op
+# Warmup Iteration   2: 34.608 ns/op
+# Warmup Iteration   3: 35.504 ns/op
+# Warmup Iteration   4: 35.506 ns/op
+# Warmup Iteration   5: 35.497 ns/op
+Iteration   1: 35.493 ns/op
+Iteration   2: 35.505 ns/op
+Iteration   3: 35.507 ns/op
+Iteration   4: 35.506 ns/op
+Iteration   5: 35.506 ns/op
+Iteration   6: 35.510 ns/op
+Iteration   7: 35.514 ns/op
+Iteration   8: 35.499 ns/op
+Iteration   9: 35.499 ns/op
+Iteration  10: 35.501 ns/op
+
+# Run progress: 52.00% complete, ETA 02:00:41
+# Fork: 3 of 10
+# Warmup Iteration   1: 35.581 ns/op
+# Warmup Iteration   2: 34.577 ns/op
+# Warmup Iteration   3: 35.374 ns/op
+# Warmup Iteration   4: 35.384 ns/op
+# Warmup Iteration   5: 35.376 ns/op
+Iteration   1: 35.395 ns/op
+Iteration   2: 35.397 ns/op
+Iteration   3: 35.377 ns/op
+Iteration   4: 35.474 ns/op
+Iteration   5: 35.381 ns/op
+Iteration   6: 35.380 ns/op
+Iteration   7: 35.379 ns/op
+Iteration   8: 35.376 ns/op
+Iteration   9: 35.381 ns/op
+Iteration  10: 35.394 ns/op
+
+# Run progress: 53.00% complete, ETA 01:58:10
+# Fork: 4 of 10
+# Warmup Iteration   1: 39.465 ns/op
+# Warmup Iteration   2: 38.410 ns/op
+# Warmup Iteration   3: 37.933 ns/op
+# Warmup Iteration   4: 37.952 ns/op
+# Warmup Iteration   5: 37.912 ns/op
+Iteration   1: 37.889 ns/op
+Iteration   2: 37.357 ns/op
+Iteration   3: 37.562 ns/op
+Iteration   4: 37.555 ns/op
+Iteration   5: 37.291 ns/op
+Iteration   6: 36.122 ns/op
+Iteration   7: 35.499 ns/op
+Iteration   8: 35.506 ns/op
+Iteration   9: 35.505 ns/op
+Iteration  10: 35.507 ns/op
+
+# Run progress: 54.00% complete, ETA 01:55:40
+# Fork: 5 of 10
+# Warmup Iteration   1: 35.458 ns/op
+# Warmup Iteration   2: 34.757 ns/op
+# Warmup Iteration   3: 35.476 ns/op
+# Warmup Iteration   4: 35.463 ns/op
+# Warmup Iteration   5: 35.454 ns/op
+Iteration   1: 35.452 ns/op
+Iteration   2: 35.469 ns/op
+Iteration   3: 35.475 ns/op
+Iteration   4: 35.484 ns/op
+Iteration   5: 35.458 ns/op
+Iteration   6: 35.458 ns/op
+Iteration   7: 35.463 ns/op
+Iteration   8: 35.455 ns/op
+Iteration   9: 35.463 ns/op
+Iteration  10: 35.466 ns/op
+
+# Run progress: 55.00% complete, ETA 01:53:09
+# Fork: 6 of 10
+# Warmup Iteration   1: 35.550 ns/op
+# Warmup Iteration   2: 34.514 ns/op
+# Warmup Iteration   3: 34.928 ns/op
+# Warmup Iteration   4: 35.234 ns/op
+# Warmup Iteration   5: 34.947 ns/op
+Iteration   1: 34.920 ns/op
+Iteration   2: 34.920 ns/op
+Iteration   3: 34.934 ns/op
+Iteration   4: 34.941 ns/op
+Iteration   5: 34.934 ns/op
+Iteration   6: 34.928 ns/op
+Iteration   7: 34.929 ns/op
+Iteration   8: 38.807 ns/op
+Iteration   9: 35.482 ns/op
+Iteration  10: 35.473 ns/op
+
+# Run progress: 56.00% complete, ETA 01:50:38
+# Fork: 7 of 10
+# Warmup Iteration   1: 35.630 ns/op
+# Warmup Iteration   2: 34.830 ns/op
+# Warmup Iteration   3: 35.037 ns/op
+# Warmup Iteration   4: 35.022 ns/op
+# Warmup Iteration   5: 35.028 ns/op
+Iteration   1: 35.028 ns/op
+Iteration   2: 35.035 ns/op
+Iteration   3: 35.023 ns/op
+Iteration   4: 35.032 ns/op
+Iteration   5: 35.026 ns/op
+Iteration   6: 35.027 ns/op
+Iteration   7: 35.030 ns/op
+Iteration   8: 35.029 ns/op
+Iteration   9: 35.033 ns/op
+Iteration  10: 35.042 ns/op
+
+# Run progress: 57.00% complete, ETA 01:48:07
+# Fork: 8 of 10
+# Warmup Iteration   1: 35.339 ns/op
+# Warmup Iteration   2: 34.563 ns/op
+# Warmup Iteration   3: 35.494 ns/op
+# Warmup Iteration   4: 35.491 ns/op
+# Warmup Iteration   5: 35.478 ns/op
+Iteration   1: 35.496 ns/op
+Iteration   2: 35.504 ns/op
+Iteration   3: 35.491 ns/op
+Iteration   4: 35.491 ns/op
+Iteration   5: 35.491 ns/op
+Iteration   6: 35.497 ns/op
+Iteration   7: 35.497 ns/op
+Iteration   8: 35.492 ns/op
+Iteration   9: 35.499 ns/op
+Iteration  10: 35.497 ns/op
+
+# Run progress: 58.00% complete, ETA 01:45:36
+# Fork: 9 of 10
+# Warmup Iteration   1: 35.560 ns/op
+# Warmup Iteration   2: 34.519 ns/op
+# Warmup Iteration   3: 35.067 ns/op
+# Warmup Iteration   4: 35.069 ns/op
+# Warmup Iteration   5: 35.082 ns/op
+Iteration   1: 35.085 ns/op
+Iteration   2: 35.077 ns/op
+Iteration   3: 35.092 ns/op
+Iteration   4: 35.095 ns/op
+Iteration   5: 35.082 ns/op
+Iteration   6: 35.089 ns/op
+Iteration   7: 35.071 ns/op
+Iteration   8: 35.084 ns/op
+Iteration   9: 35.074 ns/op
+Iteration  10: 35.061 ns/op
+
+# Run progress: 59.00% complete, ETA 01:43:05
+# Fork: 10 of 10
+# Warmup Iteration   1: 35.488 ns/op
+# Warmup Iteration   2: 34.771 ns/op
+# Warmup Iteration   3: 35.499 ns/op
+# Warmup Iteration   4: 35.492 ns/op
+# Warmup Iteration   5: 35.499 ns/op
+Iteration   1: 35.495 ns/op
+Iteration   2: 35.497 ns/op
+Iteration   3: 35.502 ns/op
+Iteration   4: 35.505 ns/op
+Iteration   5: 35.501 ns/op
+Iteration   6: 35.495 ns/op
+Iteration   7: 35.500 ns/op
+Iteration   8: 35.501 ns/op
+Iteration   9: 35.502 ns/op
+Iteration  10: 35.500 ns/op
+
+
+Result "jmh1596468027285.bench_5_flake_creation.run":
+  35.448 ±(99.9%) 0.217 ns/op [Average]
+  (min, avg, max) = (34.920, 35.448, 38.807), stdev = 0.641
+  CI (99.9%): [35.231, 35.666] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 14.0.1, OpenJDK 64-Bit Server VM, 14.0.1+7
+# VM invoker: /opt/jdk-14.0.1+7/bin/java
+# VM options: -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.4.0 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 10 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1596468027285.bench_6_flake_string_representation.run
+
+# Run progress: 60.00% complete, ETA 01:40:34
+# Fork: 1 of 10
+# Warmup Iteration   1: 77.586 ns/op
+# Warmup Iteration   2: 75.447 ns/op
+# Warmup Iteration   3: 81.094 ns/op
+# Warmup Iteration   4: 81.036 ns/op
+# Warmup Iteration   5: 81.073 ns/op
+Iteration   1: 81.079 ns/op
+Iteration   2: 81.023 ns/op
+Iteration   3: 81.055 ns/op
+Iteration   4: 81.050 ns/op
+Iteration   5: 81.053 ns/op
+Iteration   6: 81.062 ns/op
+Iteration   7: 81.056 ns/op
+Iteration   8: 81.063 ns/op
+Iteration   9: 81.066 ns/op
+Iteration  10: 81.051 ns/op
+
+# Run progress: 61.00% complete, ETA 01:38:03
+# Fork: 2 of 10
+# Warmup Iteration   1: 77.597 ns/op
+# Warmup Iteration   2: 75.434 ns/op
+# Warmup Iteration   3: 81.052 ns/op
+# Warmup Iteration   4: 81.028 ns/op
+# Warmup Iteration   5: 81.083 ns/op
+Iteration   1: 81.035 ns/op
+Iteration   2: 81.023 ns/op
+Iteration   3: 81.001 ns/op
+Iteration   4: 81.023 ns/op
+Iteration   5: 81.018 ns/op
+Iteration   6: 81.000 ns/op
+Iteration   7: 80.991 ns/op
+Iteration   8: 80.991 ns/op
+Iteration   9: 81.051 ns/op
+Iteration  10: 81.005 ns/op
+
+# Run progress: 62.00% complete, ETA 01:35:33
+# Fork: 3 of 10
+# Warmup Iteration   1: 77.689 ns/op
+# Warmup Iteration   2: 75.499 ns/op
+# Warmup Iteration   3: 80.889 ns/op
+# Warmup Iteration   4: 80.856 ns/op
+# Warmup Iteration   5: 80.837 ns/op
+Iteration   1: 80.844 ns/op
+Iteration   2: 80.847 ns/op
+Iteration   3: 80.888 ns/op
+Iteration   4: 80.887 ns/op
+Iteration   5: 80.919 ns/op
+Iteration   6: 80.905 ns/op
+Iteration   7: 80.874 ns/op
+Iteration   8: 80.888 ns/op
+Iteration   9: 80.888 ns/op
+Iteration  10: 80.890 ns/op
+
+# Run progress: 63.00% complete, ETA 01:33:02
+# Fork: 4 of 10
+# Warmup Iteration   1: 77.598 ns/op
+# Warmup Iteration   2: 75.446 ns/op
+# Warmup Iteration   3: 81.268 ns/op
+# Warmup Iteration   4: 81.362 ns/op
+# Warmup Iteration   5: 81.234 ns/op
+Iteration   1: 81.249 ns/op
+Iteration   2: 81.364 ns/op
+Iteration   3: 81.308 ns/op
+Iteration   4: 81.383 ns/op
+Iteration   5: 81.355 ns/op
+Iteration   6: 81.428 ns/op
+Iteration   7: 81.363 ns/op
+Iteration   8: 81.350 ns/op
+Iteration   9: 81.417 ns/op
+Iteration  10: 81.469 ns/op
+
+# Run progress: 64.00% complete, ETA 01:30:31
+# Fork: 5 of 10
+# Warmup Iteration   1: 77.494 ns/op
+# Warmup Iteration   2: 75.423 ns/op
+# Warmup Iteration   3: 81.574 ns/op
+# Warmup Iteration   4: 81.558 ns/op
+# Warmup Iteration   5: 81.591 ns/op
+Iteration   1: 81.531 ns/op
+Iteration   2: 81.795 ns/op
+Iteration   3: 81.793 ns/op
+Iteration   4: 81.761 ns/op
+Iteration   5: 81.801 ns/op
+Iteration   6: 81.821 ns/op
+Iteration   7: 81.786 ns/op
+Iteration   8: 81.807 ns/op
+Iteration   9: 81.858 ns/op
+Iteration  10: 81.853 ns/op
+
+# Run progress: 65.00% complete, ETA 01:28:00
+# Fork: 6 of 10
+# Warmup Iteration   1: 77.640 ns/op
+# Warmup Iteration   2: 75.410 ns/op
+# Warmup Iteration   3: 82.251 ns/op
+# Warmup Iteration   4: 82.183 ns/op
+# Warmup Iteration   5: 82.148 ns/op
+Iteration   1: 82.120 ns/op
+Iteration   2: 81.957 ns/op
+Iteration   3: 82.006 ns/op
+Iteration   4: 82.006 ns/op
+Iteration   5: 82.042 ns/op
+Iteration   6: 81.994 ns/op
+Iteration   7: 81.973 ns/op
+Iteration   8: 81.985 ns/op
+Iteration   9: 81.996 ns/op
+Iteration  10: 81.973 ns/op
+
+# Run progress: 66.00% complete, ETA 01:25:29
+# Fork: 7 of 10
+# Warmup Iteration   1: 77.680 ns/op
+# Warmup Iteration   2: 75.514 ns/op
+# Warmup Iteration   3: 81.182 ns/op
+# Warmup Iteration   4: 81.253 ns/op
+# Warmup Iteration   5: 81.201 ns/op
+Iteration   1: 81.206 ns/op
+Iteration   2: 81.215 ns/op
+Iteration   3: 81.223 ns/op
+Iteration   4: 81.178 ns/op
+Iteration   5: 81.194 ns/op
+Iteration   6: 81.195 ns/op
+Iteration   7: 81.179 ns/op
+Iteration   8: 81.765 ns/op
+Iteration   9: 81.210 ns/op
+Iteration  10: 81.210 ns/op
+
+# Run progress: 67.00% complete, ETA 01:22:58
+# Fork: 8 of 10
+# Warmup Iteration   1: 77.634 ns/op
+# Warmup Iteration   2: 75.456 ns/op
+# Warmup Iteration   3: 81.010 ns/op
+# Warmup Iteration   4: 81.126 ns/op
+# Warmup Iteration   5: 81.056 ns/op
+Iteration   1: 81.021 ns/op
+Iteration   2: 81.025 ns/op
+Iteration   3: 80.958 ns/op
+Iteration   4: 81.016 ns/op
+Iteration   5: 81.008 ns/op
+Iteration   6: 81.012 ns/op
+Iteration   7: 81.038 ns/op
+Iteration   8: 81.028 ns/op
+Iteration   9: 80.964 ns/op
+Iteration  10: 80.967 ns/op
+
+# Run progress: 68.00% complete, ETA 01:20:27
+# Fork: 9 of 10
+# Warmup Iteration   1: 77.498 ns/op
+# Warmup Iteration   2: 75.357 ns/op
+# Warmup Iteration   3: 81.264 ns/op
+# Warmup Iteration   4: 81.280 ns/op
+# Warmup Iteration   5: 81.292 ns/op
+Iteration   1: 81.296 ns/op
+Iteration   2: 81.385 ns/op
+Iteration   3: 81.348 ns/op
+Iteration   4: 81.317 ns/op
+Iteration   5: 81.353 ns/op
+Iteration   6: 81.413 ns/op
+Iteration   7: 81.307 ns/op
+Iteration   8: 81.246 ns/op
+Iteration   9: 81.313 ns/op
+Iteration  10: 81.334 ns/op
+
+# Run progress: 69.00% complete, ETA 01:17:56
+# Fork: 10 of 10
+# Warmup Iteration   1: 77.431 ns/op
+# Warmup Iteration   2: 75.425 ns/op
+# Warmup Iteration   3: 82.083 ns/op
+# Warmup Iteration   4: 82.057 ns/op
+# Warmup Iteration   5: 82.039 ns/op
+Iteration   1: 82.059 ns/op
+Iteration   2: 82.162 ns/op
+Iteration   3: 82.118 ns/op
+Iteration   4: 82.174 ns/op
+Iteration   5: 82.121 ns/op
+Iteration   6: 82.113 ns/op
+Iteration   7: 82.130 ns/op
+Iteration   8: 82.050 ns/op
+Iteration   9: 82.078 ns/op
+Iteration  10: 82.114 ns/op
+
+
+Result "jmh1596468027285.bench_6_flake_string_representation.run":
+  81.381 ±(99.9%) 0.144 ns/op [Average]
+  (min, avg, max) = (80.844, 81.381, 82.174), stdev = 0.424
+  CI (99.9%): [81.237, 81.525] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 14.0.1, OpenJDK 64-Bit Server VM, 14.0.1+7
+# VM invoker: /opt/jdk-14.0.1+7/bin/java
+# VM options: -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.4.0 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 10 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1596468027285.bench_7_flake_snowflake.run
+
+# Run progress: 70.00% complete, ETA 01:15:26
+# Fork: 1 of 10
+# Warmup Iteration   1: 88.793 ns/op
+# Warmup Iteration   2: 86.024 ns/op
+# Warmup Iteration   3: 89.363 ns/op
+# Warmup Iteration   4: 89.141 ns/op
+# Warmup Iteration   5: 89.140 ns/op
+Iteration   1: 89.107 ns/op
+Iteration   2: 92.283 ns/op
+Iteration   3: 89.058 ns/op
+Iteration   4: 89.035 ns/op
+Iteration   5: 92.202 ns/op
+Iteration   6: 89.101 ns/op
+Iteration   7: 89.070 ns/op
+Iteration   8: 89.063 ns/op
+Iteration   9: 89.077 ns/op
+Iteration  10: 89.066 ns/op
+
+# Run progress: 71.00% complete, ETA 01:12:55
+# Fork: 2 of 10
+# Warmup Iteration   1: 88.875 ns/op
+# Warmup Iteration   2: 85.808 ns/op
+# Warmup Iteration   3: 89.070 ns/op
+# Warmup Iteration   4: 89.097 ns/op
+# Warmup Iteration   5: 89.088 ns/op
+Iteration   1: 89.767 ns/op
+Iteration   2: 89.825 ns/op
+Iteration   3: 89.833 ns/op
+Iteration   4: 89.860 ns/op
+Iteration   5: 89.834 ns/op
+Iteration   6: 89.839 ns/op
+Iteration   7: 89.861 ns/op
+Iteration   8: 89.900 ns/op
+Iteration   9: 89.901 ns/op
+Iteration  10: 89.851 ns/op
+
+# Run progress: 72.00% complete, ETA 01:10:24
+# Fork: 3 of 10
+# Warmup Iteration   1: 88.933 ns/op
+# Warmup Iteration   2: 85.929 ns/op
+# Warmup Iteration   3: 89.031 ns/op
+# Warmup Iteration   4: 88.967 ns/op
+# Warmup Iteration   5: 88.998 ns/op
+Iteration   1: 88.999 ns/op
+Iteration   2: 89.010 ns/op
+Iteration   3: 89.032 ns/op
+Iteration   4: 88.995 ns/op
+Iteration   5: 89.010 ns/op
+Iteration   6: 89.049 ns/op
+Iteration   7: 89.053 ns/op
+Iteration   8: 89.041 ns/op
+Iteration   9: 89.085 ns/op
+Iteration  10: 89.059 ns/op
+
+# Run progress: 73.00% complete, ETA 01:07:53
+# Fork: 4 of 10
+# Warmup Iteration   1: 89.236 ns/op
+# Warmup Iteration   2: 88.053 ns/op
+# Warmup Iteration   3: 89.454 ns/op
+# Warmup Iteration   4: 89.450 ns/op
+# Warmup Iteration   5: 89.448 ns/op
+Iteration   1: 89.484 ns/op
+Iteration   2: 89.515 ns/op
+Iteration   3: 89.427 ns/op
+Iteration   4: 89.513 ns/op
+Iteration   5: 89.499 ns/op
+Iteration   6: 89.444 ns/op
+Iteration   7: 89.474 ns/op
+Iteration   8: 89.512 ns/op
+Iteration   9: 89.465 ns/op
+Iteration  10: 89.486 ns/op
+
+# Run progress: 74.00% complete, ETA 01:05:22
+# Fork: 5 of 10
+# Warmup Iteration   1: 89.491 ns/op
+# Warmup Iteration   2: 86.740 ns/op
+# Warmup Iteration   3: 89.790 ns/op
+# Warmup Iteration   4: 89.809 ns/op
+# Warmup Iteration   5: 89.793 ns/op
+Iteration   1: 89.804 ns/op
+Iteration   2: 89.779 ns/op
+Iteration   3: 89.798 ns/op
+Iteration   4: 89.836 ns/op
+Iteration   5: 89.791 ns/op
+Iteration   6: 89.790 ns/op
+Iteration   7: 89.812 ns/op
+Iteration   8: 89.808 ns/op
+Iteration   9: 89.815 ns/op
+Iteration  10: 89.817 ns/op
+
+# Run progress: 75.00% complete, ETA 01:02:51
+# Fork: 6 of 10
+# Warmup Iteration   1: 90.393 ns/op
+# Warmup Iteration   2: 87.027 ns/op
+# Warmup Iteration   3: 90.170 ns/op
+# Warmup Iteration   4: 90.106 ns/op
+# Warmup Iteration   5: 90.118 ns/op
+Iteration   1: 90.113 ns/op
+Iteration   2: 90.613 ns/op
+Iteration   3: 90.560 ns/op
+Iteration   4: 90.585 ns/op
+Iteration   5: 90.627 ns/op
+Iteration   6: 90.625 ns/op
+Iteration   7: 90.613 ns/op
+Iteration   8: 90.686 ns/op
+Iteration   9: 90.711 ns/op
+Iteration  10: 90.698 ns/op
+
+# Run progress: 76.00% complete, ETA 01:00:20
+# Fork: 7 of 10
+# Warmup Iteration   1: 89.174 ns/op
+# Warmup Iteration   2: 85.842 ns/op
+# Warmup Iteration   3: 89.038 ns/op
+# Warmup Iteration   4: 89.035 ns/op
+# Warmup Iteration   5: 89.059 ns/op
+Iteration   1: 89.084 ns/op
+Iteration   2: 89.094 ns/op
+Iteration   3: 89.126 ns/op
+Iteration   4: 89.143 ns/op
+Iteration   5: 89.121 ns/op
+Iteration   6: 89.122 ns/op
+Iteration   7: 89.125 ns/op
+Iteration   8: 89.154 ns/op
+Iteration   9: 89.157 ns/op
+Iteration  10: 89.188 ns/op
+
+# Run progress: 77.00% complete, ETA 00:57:50
+# Fork: 8 of 10
+# Warmup Iteration   1: 88.925 ns/op
+# Warmup Iteration   2: 85.995 ns/op
+# Warmup Iteration   3: 89.025 ns/op
+# Warmup Iteration   4: 89.009 ns/op
+# Warmup Iteration   5: 88.998 ns/op
+Iteration   1: 89.025 ns/op
+Iteration   2: 88.988 ns/op
+Iteration   3: 89.085 ns/op
+Iteration   4: 89.058 ns/op
+Iteration   5: 89.015 ns/op
+Iteration   6: 89.128 ns/op
+Iteration   7: 89.159 ns/op
+Iteration   8: 89.006 ns/op
+Iteration   9: 88.978 ns/op
+Iteration  10: 88.988 ns/op
+
+# Run progress: 78.00% complete, ETA 00:55:19
+# Fork: 9 of 10
+# Warmup Iteration   1: 89.075 ns/op
+# Warmup Iteration   2: 86.094 ns/op
+# Warmup Iteration   3: 89.143 ns/op
+# Warmup Iteration   4: 89.075 ns/op
+# Warmup Iteration   5: 89.064 ns/op
+Iteration   1: 89.091 ns/op
+Iteration   2: 89.150 ns/op
+Iteration   3: 89.139 ns/op
+Iteration   4: 89.115 ns/op
+Iteration   5: 89.048 ns/op
+Iteration   6: 89.093 ns/op
+Iteration   7: 89.093 ns/op
+Iteration   8: 89.107 ns/op
+Iteration   9: 89.047 ns/op
+Iteration  10: 88.995 ns/op
+
+# Run progress: 79.00% complete, ETA 00:52:48
+# Fork: 10 of 10
+# Warmup Iteration   1: 88.974 ns/op
+# Warmup Iteration   2: 85.991 ns/op
+# Warmup Iteration   3: 89.692 ns/op
+# Warmup Iteration   4: 89.368 ns/op
+# Warmup Iteration   5: 89.243 ns/op
+Iteration   1: 89.265 ns/op
+Iteration   2: 89.233 ns/op
+Iteration   3: 89.306 ns/op
+Iteration   4: 89.201 ns/op
+Iteration   5: 89.287 ns/op
+Iteration   6: 89.280 ns/op
+Iteration   7: 89.367 ns/op
+Iteration   8: 89.220 ns/op
+Iteration   9: 89.217 ns/op
+Iteration  10: 89.233 ns/op
+
+
+Result "jmh1596468027285.bench_7_flake_snowflake.run":
+  89.498 ±(99.9%) 0.212 ns/op [Average]
+  (min, avg, max) = (88.978, 89.498, 92.283), stdev = 0.625
+  CI (99.9%): [89.286, 89.710] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 14.0.1, OpenJDK 64-Bit Server VM, 14.0.1+7
+# VM invoker: /opt/jdk-14.0.1+7/bin/java
+# VM options: -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.4.0 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 10 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1596468027285.bench_8_flake_hex_representation.run
+
+# Run progress: 80.00% complete, ETA 00:50:17
+# Fork: 1 of 10
+# Warmup Iteration   1: 90.393 ns/op
+# Warmup Iteration   2: 88.293 ns/op
+# Warmup Iteration   3: 88.811 ns/op
+# Warmup Iteration   4: 88.839 ns/op
+# Warmup Iteration   5: 88.850 ns/op
+Iteration   1: 88.902 ns/op
+Iteration   2: 88.884 ns/op
+Iteration   3: 88.892 ns/op
+Iteration   4: 88.874 ns/op
+Iteration   5: 88.840 ns/op
+Iteration   6: 88.817 ns/op
+Iteration   7: 88.831 ns/op
+Iteration   8: 88.943 ns/op
+Iteration   9: 88.851 ns/op
+Iteration  10: 88.809 ns/op
+
+# Run progress: 81.00% complete, ETA 00:47:46
+# Fork: 2 of 10
+# Warmup Iteration   1: 89.574 ns/op
+# Warmup Iteration   2: 87.915 ns/op
+# Warmup Iteration   3: 88.886 ns/op
+# Warmup Iteration   4: 88.852 ns/op
+# Warmup Iteration   5: 88.870 ns/op
+Iteration   1: 88.935 ns/op
+Iteration   2: 88.882 ns/op
+Iteration   3: 88.857 ns/op
+Iteration   4: 88.835 ns/op
+Iteration   5: 88.843 ns/op
+Iteration   6: 88.834 ns/op
+Iteration   7: 88.801 ns/op
+Iteration   8: 88.841 ns/op
+Iteration   9: 88.823 ns/op
+Iteration  10: 88.840 ns/op
+
+# Run progress: 82.00% complete, ETA 00:45:15
+# Fork: 3 of 10
+# Warmup Iteration   1: 89.697 ns/op
+# Warmup Iteration   2: 87.958 ns/op
+# Warmup Iteration   3: 88.877 ns/op
+# Warmup Iteration   4: 88.911 ns/op
+# Warmup Iteration   5: 88.873 ns/op
+Iteration   1: 88.872 ns/op
+Iteration   2: 88.925 ns/op
+Iteration   3: 88.931 ns/op
+Iteration   4: 88.927 ns/op
+Iteration   5: 88.981 ns/op
+Iteration   6: 88.937 ns/op
+Iteration   7: 88.884 ns/op
+Iteration   8: 88.907 ns/op
+Iteration   9: 88.936 ns/op
+Iteration  10: 88.947 ns/op
+
+# Run progress: 83.00% complete, ETA 00:42:44
+# Fork: 4 of 10
+# Warmup Iteration   1: 90.454 ns/op
+# Warmup Iteration   2: 88.159 ns/op
+# Warmup Iteration   3: 88.895 ns/op
+# Warmup Iteration   4: 88.911 ns/op
+# Warmup Iteration   5: 88.885 ns/op
+Iteration   1: 88.877 ns/op
+Iteration   2: 88.910 ns/op
+Iteration   3: 88.913 ns/op
+Iteration   4: 88.884 ns/op
+Iteration   5: 88.910 ns/op
+Iteration   6: 88.907 ns/op
+Iteration   7: 88.854 ns/op
+Iteration   8: 88.914 ns/op
+Iteration   9: 88.956 ns/op
+Iteration  10: 88.924 ns/op
+
+# Run progress: 84.00% complete, ETA 00:40:13
+# Fork: 5 of 10
+# Warmup Iteration   1: 90.079 ns/op
+# Warmup Iteration   2: 88.421 ns/op
+# Warmup Iteration   3: 88.916 ns/op
+# Warmup Iteration   4: 89.055 ns/op
+# Warmup Iteration   5: 88.867 ns/op
+Iteration   1: 88.900 ns/op
+Iteration   2: 88.945 ns/op
+Iteration   3: 88.959 ns/op
+Iteration   4: 88.908 ns/op
+Iteration   5: 88.910 ns/op
+Iteration   6: 88.906 ns/op
+Iteration   7: 88.901 ns/op
+Iteration   8: 88.952 ns/op
+Iteration   9: 88.895 ns/op
+Iteration  10: 88.869 ns/op
+
+# Run progress: 85.00% complete, ETA 00:37:43
+# Fork: 6 of 10
+# Warmup Iteration   1: 89.887 ns/op
+# Warmup Iteration   2: 88.151 ns/op
+# Warmup Iteration   3: 88.698 ns/op
+# Warmup Iteration   4: 88.656 ns/op
+# Warmup Iteration   5: 88.609 ns/op
+Iteration   1: 88.617 ns/op
+Iteration   2: 88.629 ns/op
+Iteration   3: 88.671 ns/op
+Iteration   4: 88.634 ns/op
+Iteration   5: 88.598 ns/op
+Iteration   6: 88.592 ns/op
+Iteration   7: 88.645 ns/op
+Iteration   8: 88.645 ns/op
+Iteration   9: 88.632 ns/op
+Iteration  10: 88.579 ns/op
+
+# Run progress: 86.00% complete, ETA 00:35:12
+# Fork: 7 of 10
+# Warmup Iteration   1: 89.923 ns/op
+# Warmup Iteration   2: 88.420 ns/op
+# Warmup Iteration   3: 89.178 ns/op
+# Warmup Iteration   4: 89.155 ns/op
+# Warmup Iteration   5: 89.161 ns/op
+Iteration   1: 89.118 ns/op
+Iteration   2: 89.135 ns/op
+Iteration   3: 89.156 ns/op
+Iteration   4: 89.144 ns/op
+Iteration   5: 89.166 ns/op
+Iteration   6: 89.164 ns/op
+Iteration   7: 89.155 ns/op
+Iteration   8: 89.130 ns/op
+Iteration   9: 89.144 ns/op
+Iteration  10: 89.112 ns/op
+
+# Run progress: 87.00% complete, ETA 00:32:41
+# Fork: 8 of 10
+# Warmup Iteration   1: 89.637 ns/op
+# Warmup Iteration   2: 88.063 ns/op
+# Warmup Iteration   3: 88.853 ns/op
+# Warmup Iteration   4: 88.853 ns/op
+# Warmup Iteration   5: 88.864 ns/op
+Iteration   1: 88.804 ns/op
+Iteration   2: 88.886 ns/op
+Iteration   3: 88.853 ns/op
+Iteration   4: 88.838 ns/op
+Iteration   5: 88.831 ns/op
+Iteration   6: 88.829 ns/op
+Iteration   7: 88.851 ns/op
+Iteration   8: 88.998 ns/op
+Iteration   9: 88.892 ns/op
+Iteration  10: 88.879 ns/op
+
+# Run progress: 88.00% complete, ETA 00:30:10
+# Fork: 9 of 10
+# Warmup Iteration   1: 89.720 ns/op
+# Warmup Iteration   2: 88.132 ns/op
+# Warmup Iteration   3: 88.804 ns/op
+# Warmup Iteration   4: 88.823 ns/op
+# Warmup Iteration   5: 88.807 ns/op
+Iteration   1: 88.835 ns/op
+Iteration   2: 88.888 ns/op
+Iteration   3: 88.856 ns/op
+Iteration   4: 88.884 ns/op
+Iteration   5: 88.863 ns/op
+Iteration   6: 88.825 ns/op
+Iteration   7: 88.809 ns/op
+Iteration   8: 88.825 ns/op
+Iteration   9: 88.871 ns/op
+Iteration  10: 88.852 ns/op
+
+# Run progress: 89.00% complete, ETA 00:27:39
+# Fork: 10 of 10
+# Warmup Iteration   1: 89.854 ns/op
+# Warmup Iteration   2: 87.922 ns/op
+# Warmup Iteration   3: 88.466 ns/op
+# Warmup Iteration   4: 88.484 ns/op
+# Warmup Iteration   5: 88.524 ns/op
+Iteration   1: 88.474 ns/op
+Iteration   2: 88.471 ns/op
+Iteration   3: 88.443 ns/op
+Iteration   4: 88.458 ns/op
+Iteration   5: 88.468 ns/op
+Iteration   6: 88.471 ns/op
+Iteration   7: 88.503 ns/op
+Iteration   8: 88.490 ns/op
+Iteration   9: 88.511 ns/op
+Iteration  10: 88.516 ns/op
+
+
+Result "jmh1596468027285.bench_8_flake_hex_representation.run":
+  88.842 ±(99.9%) 0.059 ns/op [Average]
+  (min, avg, max) = (88.443, 88.842, 89.166), stdev = 0.173
+  CI (99.9%): [88.784, 88.901] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 14.0.1, OpenJDK 64-Bit Server VM, 14.0.1+7
+# VM invoker: /opt/jdk-14.0.1+7/bin/java
+# VM options: -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.4.0 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 10 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1596468027285.bench_9_flake_create_and_parse_string.run
+
+# Run progress: 90.00% complete, ETA 00:25:08
+# Fork: 1 of 10
+# Warmup Iteration   1: 169.260 ns/op
+# Warmup Iteration   2: 155.415 ns/op
+# Warmup Iteration   3: 152.193 ns/op
+# Warmup Iteration   4: 152.175 ns/op
+# Warmup Iteration   5: 152.205 ns/op
+Iteration   1: 152.261 ns/op
+Iteration   2: 152.243 ns/op
+Iteration   3: 152.189 ns/op
+Iteration   4: 152.210 ns/op
+Iteration   5: 152.199 ns/op
+Iteration   6: 152.224 ns/op
+Iteration   7: 152.238 ns/op
+Iteration   8: 152.214 ns/op
+Iteration   9: 152.187 ns/op
+Iteration  10: 152.243 ns/op
+
+# Run progress: 91.00% complete, ETA 00:22:37
+# Fork: 2 of 10
+# Warmup Iteration   1: 169.747 ns/op
+# Warmup Iteration   2: 155.590 ns/op
+# Warmup Iteration   3: 152.341 ns/op
+# Warmup Iteration   4: 151.921 ns/op
+# Warmup Iteration   5: 151.707 ns/op
+Iteration   1: 151.775 ns/op
+Iteration   2: 151.793 ns/op
+Iteration   3: 151.725 ns/op
+Iteration   4: 151.679 ns/op
+Iteration   5: 151.725 ns/op
+Iteration   6: 151.757 ns/op
+Iteration   7: 151.762 ns/op
+Iteration   8: 151.782 ns/op
+Iteration   9: 151.801 ns/op
+Iteration  10: 151.805 ns/op
+
+# Run progress: 92.00% complete, ETA 00:20:06
+# Fork: 3 of 10
+# Warmup Iteration   1: 170.814 ns/op
+# Warmup Iteration   2: 155.172 ns/op
+# Warmup Iteration   3: 152.191 ns/op
+# Warmup Iteration   4: 152.193 ns/op
+# Warmup Iteration   5: 152.210 ns/op
+Iteration   1: 152.180 ns/op
+Iteration   2: 152.169 ns/op
+Iteration   3: 152.138 ns/op
+Iteration   4: 152.159 ns/op
+Iteration   5: 152.183 ns/op
+Iteration   6: 152.193 ns/op
+Iteration   7: 152.239 ns/op
+Iteration   8: 152.215 ns/op
+Iteration   9: 152.190 ns/op
+Iteration  10: 152.200 ns/op
+
+# Run progress: 93.00% complete, ETA 00:17:36
+# Fork: 4 of 10
+# Warmup Iteration   1: 169.072 ns/op
+# Warmup Iteration   2: 155.126 ns/op
+# Warmup Iteration   3: 151.982 ns/op
+# Warmup Iteration   4: 152.001 ns/op
+# Warmup Iteration   5: 152.116 ns/op
+Iteration   1: 152.072 ns/op
+Iteration   2: 152.049 ns/op
+Iteration   3: 152.066 ns/op
+Iteration   4: 152.049 ns/op
+Iteration   5: 152.137 ns/op
+Iteration   6: 152.079 ns/op
+Iteration   7: 152.127 ns/op
+Iteration   8: 152.059 ns/op
+Iteration   9: 152.079 ns/op
+Iteration  10: 151.981 ns/op
+
+# Run progress: 94.00% complete, ETA 00:15:05
+# Fork: 5 of 10
+# Warmup Iteration   1: 169.258 ns/op
+# Warmup Iteration   2: 154.676 ns/op
+# Warmup Iteration   3: 152.061 ns/op
+# Warmup Iteration   4: 152.052 ns/op
+# Warmup Iteration   5: 152.041 ns/op
+Iteration   1: 152.041 ns/op
+Iteration   2: 152.031 ns/op
+Iteration   3: 152.068 ns/op
+Iteration   4: 152.088 ns/op
+Iteration   5: 152.136 ns/op
+Iteration   6: 152.157 ns/op
+Iteration   7: 152.163 ns/op
+Iteration   8: 152.185 ns/op
+Iteration   9: 152.191 ns/op
+Iteration  10: 152.217 ns/op
+
+# Run progress: 95.00% complete, ETA 00:12:34
+# Fork: 6 of 10
+# Warmup Iteration   1: 169.477 ns/op
+# Warmup Iteration   2: 155.358 ns/op
+# Warmup Iteration   3: 152.372 ns/op
+# Warmup Iteration   4: 152.353 ns/op
+# Warmup Iteration   5: 152.359 ns/op
+Iteration   1: 152.399 ns/op
+Iteration   2: 152.354 ns/op
+Iteration   3: 152.400 ns/op
+Iteration   4: 152.422 ns/op
+Iteration   5: 152.468 ns/op
+Iteration   6: 152.454 ns/op
+Iteration   7: 152.431 ns/op
+Iteration   8: 152.867 ns/op
+Iteration   9: 152.459 ns/op
+Iteration  10: 152.475 ns/op
+
+# Run progress: 96.00% complete, ETA 00:10:03
+# Fork: 7 of 10
+# Warmup Iteration   1: 169.445 ns/op
+# Warmup Iteration   2: 155.021 ns/op
+# Warmup Iteration   3: 152.166 ns/op
+# Warmup Iteration   4: 152.040 ns/op
+# Warmup Iteration   5: 152.018 ns/op
+Iteration   1: 152.037 ns/op
+Iteration   2: 152.003 ns/op
+Iteration   3: 151.988 ns/op
+Iteration   4: 152.010 ns/op
+Iteration   5: 152.013 ns/op
+Iteration   6: 152.027 ns/op
+Iteration   7: 152.032 ns/op
+Iteration   8: 152.049 ns/op
+Iteration   9: 152.041 ns/op
+Iteration  10: 152.067 ns/op
+
+# Run progress: 97.00% complete, ETA 00:07:32
+# Fork: 8 of 10
+# Warmup Iteration   1: 169.582 ns/op
+# Warmup Iteration   2: 155.677 ns/op
+# Warmup Iteration   3: 152.151 ns/op
+# Warmup Iteration   4: 152.153 ns/op
+# Warmup Iteration   5: 152.155 ns/op
+Iteration   1: 152.231 ns/op
+Iteration   2: 152.220 ns/op
+Iteration   3: 152.099 ns/op
+Iteration   4: 152.115 ns/op
+Iteration   5: 152.144 ns/op
+Iteration   6: 152.176 ns/op
+Iteration   7: 152.171 ns/op
+Iteration   8: 152.175 ns/op
+Iteration   9: 152.153 ns/op
+Iteration  10: 152.127 ns/op
+
+# Run progress: 98.00% complete, ETA 00:05:01
+# Fork: 9 of 10
+# Warmup Iteration   1: 169.265 ns/op
+# Warmup Iteration   2: 155.243 ns/op
+# Warmup Iteration   3: 152.469 ns/op
+# Warmup Iteration   4: 152.480 ns/op
+# Warmup Iteration   5: 152.456 ns/op
+Iteration   1: 152.510 ns/op
+Iteration   2: 152.417 ns/op
+Iteration   3: 152.454 ns/op
+Iteration   4: 152.329 ns/op
+Iteration   5: 152.265 ns/op
+Iteration   6: 152.339 ns/op
+Iteration   7: 152.254 ns/op
+Iteration   8: 152.231 ns/op
+Iteration   9: 152.251 ns/op
+Iteration  10: 152.260 ns/op
+
+# Run progress: 99.00% complete, ETA 00:02:30
+# Fork: 10 of 10
+# Warmup Iteration   1: 169.569 ns/op
+# Warmup Iteration   2: 154.924 ns/op
+# Warmup Iteration   3: 152.093 ns/op
+# Warmup Iteration   4: 152.040 ns/op
+# Warmup Iteration   5: 151.986 ns/op
+Iteration   1: 151.949 ns/op
+Iteration   2: 151.987 ns/op
+Iteration   3: 151.924 ns/op
+Iteration   4: 151.841 ns/op
+Iteration   5: 151.854 ns/op
+Iteration   6: 151.895 ns/op
+Iteration   7: 151.827 ns/op
+Iteration   8: 151.793 ns/op
+Iteration   9: 151.856 ns/op
+Iteration  10: 151.874 ns/op
+
+
+Result "jmh1596468027285.bench_9_flake_create_and_parse_string.run":
+  152.124 ±(99.9%) 0.070 ns/op [Average]
+  (min, avg, max) = (151.679, 152.124, 152.867), stdev = 0.207
+  CI (99.9%): [152.053, 152.194] (assumes normal distribution)
+
+
+# Run complete. Total time: 04:11:26
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+Benchmark                                    Mode  Cnt    Score    Error  Units
+j.bench_0_log_call_simple.run                avgt  100  393.306 ±  1.478  ns/op
+j.bench_1_log_call_with_context.run          avgt  100  417.716 ±  2.023  ns/op
+j.bench_2_log_call_with_context2.run         avgt  100  535.033 ± 10.416  ns/op
+j.bench_3_trace_call_simple.run              avgt  100  672.614 ±  1.976  ns/op
+j.bench_4_trace_call_with_capture.run        avgt  100  553.437 ±  2.032  ns/op
+j.bench_5_flake_creation.run                 avgt  100   35.448 ±  0.217  ns/op
+j.bench_6_flake_string_representation.run    avgt  100   81.381 ±  0.144  ns/op
+j.bench_7_flake_snowflake.run                avgt  100   89.498 ±  0.212  ns/op
+j.bench_8_flake_hex_representation.run       avgt  100   88.842 ±  0.059  ns/op
+j.bench_9_flake_create_and_parse_string.run  avgt  100  152.124 ±  0.070  ns/op

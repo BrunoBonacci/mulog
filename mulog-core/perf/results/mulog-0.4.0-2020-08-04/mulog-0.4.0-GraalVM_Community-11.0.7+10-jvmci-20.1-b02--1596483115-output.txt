@@ -1,0 +1,2105 @@
+OpenJDK 64-Bit Server VM warning: forcing TieredStopAtLevel to full optimization because JVMCI is enabled
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.openjdk.jmh.util.Utils (file:/home/admin/.m2/repository/org/openjdk/jmh/jmh-core/1.23/jmh-core-1.23.jar) to field java.io.PrintStream.charOut
+WARNING: Please consider reporting this to the maintainers of org.openjdk.jmh.util.Utils
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+# JMH version: 1.23
+# VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-jvmci-20.1-b02
+# VM invoker: /opt/graalvm-ce-java11-20.1.0/bin/java
+# VM options: -XX:+UnlockExperimentalVMOptions -XX:+EnableJVMCIProduct -XX:-UnlockExperimentalVMOptions -XX:ThreadPriorityPolicy=1 -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.4.0 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 10 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1596483120235.bench_0_log_call_simple.run
+
+# Run progress: 0.00% complete, ETA 04:10:00
+# Fork: 1 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 334.581 ns/op
+# Warmup Iteration   2: 316.899 ns/op
+# Warmup Iteration   3: 317.220 ns/op
+# Warmup Iteration   4: 317.062 ns/op
+# Warmup Iteration   5: 316.401 ns/op
+Iteration   1: 316.484 ns/op
+Iteration   2: 314.472 ns/op
+Iteration   3: 321.750 ns/op
+Iteration   4: 316.112 ns/op
+Iteration   5: 314.888 ns/op
+Iteration   6: 314.102 ns/op
+Iteration   7: 315.251 ns/op
+Iteration   8: 315.973 ns/op
+Iteration   9: 315.868 ns/op
+Iteration  10: 315.666 ns/op
+
+# Run progress: 1.00% complete, ETA 04:09:15
+# Fork: 2 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 334.793 ns/op
+# Warmup Iteration   2: 314.892 ns/op
+# Warmup Iteration   3: 315.053 ns/op
+# Warmup Iteration   4: 315.180 ns/op
+# Warmup Iteration   5: 314.936 ns/op
+Iteration   1: 315.048 ns/op
+Iteration   2: 315.794 ns/op
+Iteration   3: 320.861 ns/op
+Iteration   4: 315.008 ns/op
+Iteration   5: 314.545 ns/op
+Iteration   6: 314.661 ns/op
+Iteration   7: 314.452 ns/op
+Iteration   8: 314.826 ns/op
+Iteration   9: 315.425 ns/op
+Iteration  10: 314.794 ns/op
+
+# Run progress: 2.00% complete, ETA 04:06:42
+# Fork: 3 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 323.615 ns/op
+# Warmup Iteration   2: 305.846 ns/op
+# Warmup Iteration   3: 304.335 ns/op
+# Warmup Iteration   4: 304.107 ns/op
+# Warmup Iteration   5: 303.769 ns/op
+Iteration   1: 303.786 ns/op
+Iteration   2: 303.266 ns/op
+Iteration   3: 304.511 ns/op
+Iteration   4: 304.160 ns/op
+Iteration   5: 305.589 ns/op
+Iteration   6: 303.790 ns/op
+Iteration   7: 303.268 ns/op
+Iteration   8: 303.601 ns/op
+Iteration   9: 304.019 ns/op
+Iteration  10: 304.096 ns/op
+
+# Run progress: 3.00% complete, ETA 04:04:10
+# Fork: 4 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 336.030 ns/op
+# Warmup Iteration   2: 316.243 ns/op
+# Warmup Iteration   3: 314.898 ns/op
+# Warmup Iteration   4: 315.134 ns/op
+# Warmup Iteration   5: 314.787 ns/op
+Iteration   1: 314.546 ns/op
+Iteration   2: 314.377 ns/op
+Iteration   3: 314.546 ns/op
+Iteration   4: 315.532 ns/op
+Iteration   5: 314.675 ns/op
+Iteration   6: 314.466 ns/op
+Iteration   7: 313.848 ns/op
+Iteration   8: 314.089 ns/op
+Iteration   9: 314.526 ns/op
+Iteration  10: 313.944 ns/op
+
+# Run progress: 4.00% complete, ETA 04:01:39
+# Fork: 5 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 325.156 ns/op
+# Warmup Iteration   2: 307.320 ns/op
+# Warmup Iteration   3: 308.263 ns/op
+# Warmup Iteration   4: 308.543 ns/op
+# Warmup Iteration   5: 308.362 ns/op
+Iteration   1: 308.212 ns/op
+Iteration   2: 307.237 ns/op
+Iteration   3: 307.270 ns/op
+Iteration   4: 307.603 ns/op
+Iteration   5: 307.117 ns/op
+Iteration   6: 306.845 ns/op
+Iteration   7: 305.682 ns/op
+Iteration   8: 305.782 ns/op
+Iteration   9: 305.524 ns/op
+Iteration  10: 305.434 ns/op
+
+# Run progress: 5.00% complete, ETA 03:59:07
+# Fork: 6 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 328.748 ns/op
+# Warmup Iteration   2: 305.923 ns/op
+# Warmup Iteration   3: 305.726 ns/op
+# Warmup Iteration   4: 306.137 ns/op
+# Warmup Iteration   5: 305.783 ns/op
+Iteration   1: 305.704 ns/op
+Iteration   2: 305.649 ns/op
+Iteration   3: 303.751 ns/op
+Iteration   4: 303.920 ns/op
+Iteration   5: 304.607 ns/op
+Iteration   6: 304.409 ns/op
+Iteration   7: 304.640 ns/op
+Iteration   8: 305.066 ns/op
+Iteration   9: 304.839 ns/op
+Iteration  10: 304.732 ns/op
+
+# Run progress: 6.00% complete, ETA 03:56:35
+# Fork: 7 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 320.307 ns/op
+# Warmup Iteration   2: 302.952 ns/op
+# Warmup Iteration   3: 302.654 ns/op
+# Warmup Iteration   4: 302.857 ns/op
+# Warmup Iteration   5: 302.996 ns/op
+Iteration   1: 302.825 ns/op
+Iteration   2: 303.352 ns/op
+Iteration   3: 303.406 ns/op
+Iteration   4: 303.201 ns/op
+Iteration   5: 303.507 ns/op
+Iteration   6: 303.497 ns/op
+Iteration   7: 303.603 ns/op
+Iteration   8: 304.261 ns/op
+Iteration   9: 303.581 ns/op
+Iteration  10: 303.604 ns/op
+
+# Run progress: 7.00% complete, ETA 03:54:05
+# Fork: 8 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 336.852 ns/op
+# Warmup Iteration   2: 319.846 ns/op
+# Warmup Iteration   3: 319.968 ns/op
+# Warmup Iteration   4: 319.814 ns/op
+# Warmup Iteration   5: 319.921 ns/op
+Iteration   1: 319.934 ns/op
+Iteration   2: 319.966 ns/op
+Iteration   3: 320.234 ns/op
+Iteration   4: 319.918 ns/op
+Iteration   5: 320.112 ns/op
+Iteration   6: 320.316 ns/op
+Iteration   7: 320.029 ns/op
+Iteration   8: 320.064 ns/op
+Iteration   9: 320.064 ns/op
+Iteration  10: 320.074 ns/op
+
+# Run progress: 8.00% complete, ETA 03:51:34
+# Fork: 9 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 326.360 ns/op
+# Warmup Iteration   2: 309.100 ns/op
+# Warmup Iteration   3: 307.091 ns/op
+# Warmup Iteration   4: 307.483 ns/op
+# Warmup Iteration   5: 307.432 ns/op
+Iteration   1: 308.054 ns/op
+Iteration   2: 308.456 ns/op
+Iteration   3: 308.569 ns/op
+Iteration   4: 308.232 ns/op
+Iteration   5: 308.578 ns/op
+Iteration   6: 308.924 ns/op
+Iteration   7: 315.373 ns/op
+Iteration   8: 309.759 ns/op
+Iteration   9: 309.777 ns/op
+Iteration  10: 309.638 ns/op
+
+# Run progress: 9.00% complete, ETA 03:49:04
+# Fork: 10 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 324.420 ns/op
+# Warmup Iteration   2: 305.527 ns/op
+# Warmup Iteration   3: 305.298 ns/op
+# Warmup Iteration   4: 305.399 ns/op
+# Warmup Iteration   5: 305.463 ns/op
+Iteration   1: 305.136 ns/op
+Iteration   2: 304.689 ns/op
+Iteration   3: 304.959 ns/op
+Iteration   4: 304.781 ns/op
+Iteration   5: 304.789 ns/op
+Iteration   6: 304.023 ns/op
+Iteration   7: 304.118 ns/op
+Iteration   8: 304.680 ns/op
+Iteration   9: 304.196 ns/op
+Iteration  10: 303.725 ns/op
+
+
+Result "jmh1596483120235.bench_0_log_call_simple.run":
+  309.906 ±(99.9%) 2.016 ns/op [Average]
+  (min, avg, max) = (302.825, 309.906, 321.750), stdev = 5.945
+  CI (99.9%): [307.890, 311.923] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-jvmci-20.1-b02
+# VM invoker: /opt/graalvm-ce-java11-20.1.0/bin/java
+# VM options: -XX:+UnlockExperimentalVMOptions -XX:+EnableJVMCIProduct -XX:-UnlockExperimentalVMOptions -XX:ThreadPriorityPolicy=1 -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.4.0 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 10 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1596483120235.bench_1_log_call_with_context.run
+
+# Run progress: 10.00% complete, ETA 03:46:33
+# Fork: 1 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 353.121 ns/op
+# Warmup Iteration   2: 333.716 ns/op
+# Warmup Iteration   3: 333.127 ns/op
+# Warmup Iteration   4: 332.896 ns/op
+# Warmup Iteration   5: 332.661 ns/op
+Iteration   1: 333.039 ns/op
+Iteration   2: 333.220 ns/op
+Iteration   3: 333.318 ns/op
+Iteration   4: 333.165 ns/op
+Iteration   5: 332.738 ns/op
+Iteration   6: 332.614 ns/op
+Iteration   7: 332.684 ns/op
+Iteration   8: 333.330 ns/op
+Iteration   9: 332.843 ns/op
+Iteration  10: 333.120 ns/op
+
+# Run progress: 11.00% complete, ETA 03:44:02
+# Fork: 2 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 354.919 ns/op
+# Warmup Iteration   2: 334.848 ns/op
+# Warmup Iteration   3: 334.811 ns/op
+# Warmup Iteration   4: 334.720 ns/op
+# Warmup Iteration   5: 334.591 ns/op
+Iteration   1: 334.606 ns/op
+Iteration   2: 334.524 ns/op
+Iteration   3: 334.870 ns/op
+Iteration   4: 335.416 ns/op
+Iteration   5: 335.468 ns/op
+Iteration   6: 336.386 ns/op
+Iteration   7: 335.958 ns/op
+Iteration   8: 335.781 ns/op
+Iteration   9: 335.599 ns/op
+Iteration  10: 335.552 ns/op
+
+# Run progress: 12.00% complete, ETA 03:41:31
+# Fork: 3 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 349.190 ns/op
+# Warmup Iteration   2: 329.060 ns/op
+# Warmup Iteration   3: 328.065 ns/op
+# Warmup Iteration   4: 327.917 ns/op
+# Warmup Iteration   5: 327.766 ns/op
+Iteration   1: 326.857 ns/op
+Iteration   2: 326.841 ns/op
+Iteration   3: 327.106 ns/op
+Iteration   4: 326.966 ns/op
+Iteration   5: 326.827 ns/op
+Iteration   6: 326.115 ns/op
+Iteration   7: 326.371 ns/op
+Iteration   8: 326.429 ns/op
+Iteration   9: 326.748 ns/op
+Iteration  10: 326.988 ns/op
+
+# Run progress: 13.00% complete, ETA 03:38:59
+# Fork: 4 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 363.985 ns/op
+# Warmup Iteration   2: 345.219 ns/op
+# Warmup Iteration   3: 345.655 ns/op
+# Warmup Iteration   4: 346.045 ns/op
+# Warmup Iteration   5: 345.738 ns/op
+Iteration   1: 345.825 ns/op
+Iteration   2: 344.045 ns/op
+Iteration   3: 343.550 ns/op
+Iteration   4: 343.471 ns/op
+Iteration   5: 343.738 ns/op
+Iteration   6: 343.713 ns/op
+Iteration   7: 344.158 ns/op
+Iteration   8: 344.176 ns/op
+Iteration   9: 344.069 ns/op
+Iteration  10: 344.055 ns/op
+
+# Run progress: 14.00% complete, ETA 03:36:28
+# Fork: 5 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 347.124 ns/op
+# Warmup Iteration   2: 328.190 ns/op
+# Warmup Iteration   3: 328.788 ns/op
+# Warmup Iteration   4: 328.540 ns/op
+# Warmup Iteration   5: 328.350 ns/op
+Iteration   1: 328.540 ns/op
+Iteration   2: 327.820 ns/op
+Iteration   3: 328.482 ns/op
+Iteration   4: 329.021 ns/op
+Iteration   5: 328.726 ns/op
+Iteration   6: 329.812 ns/op
+Iteration   7: 329.504 ns/op
+Iteration   8: 329.270 ns/op
+Iteration   9: 329.599 ns/op
+Iteration  10: 329.198 ns/op
+
+# Run progress: 15.00% complete, ETA 03:33:57
+# Fork: 6 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 360.372 ns/op
+# Warmup Iteration   2: 337.985 ns/op
+# Warmup Iteration   3: 337.864 ns/op
+# Warmup Iteration   4: 338.102 ns/op
+# Warmup Iteration   5: 338.294 ns/op
+Iteration   1: 337.480 ns/op
+Iteration   2: 337.679 ns/op
+Iteration   3: 338.071 ns/op
+Iteration   4: 337.938 ns/op
+Iteration   5: 338.193 ns/op
+Iteration   6: 338.207 ns/op
+Iteration   7: 337.877 ns/op
+Iteration   8: 337.882 ns/op
+Iteration   9: 338.103 ns/op
+Iteration  10: 338.000 ns/op
+
+# Run progress: 16.00% complete, ETA 03:31:26
+# Fork: 7 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 362.865 ns/op
+# Warmup Iteration   2: 346.135 ns/op
+# Warmup Iteration   3: 344.118 ns/op
+# Warmup Iteration   4: 343.389 ns/op
+# Warmup Iteration   5: 342.901 ns/op
+Iteration   1: 342.395 ns/op
+Iteration   2: 342.408 ns/op
+Iteration   3: 342.427 ns/op
+Iteration   4: 342.738 ns/op
+Iteration   5: 342.580 ns/op
+Iteration   6: 342.169 ns/op
+Iteration   7: 342.256 ns/op
+Iteration   8: 341.911 ns/op
+Iteration   9: 341.988 ns/op
+Iteration  10: 342.182 ns/op
+
+# Run progress: 17.00% complete, ETA 03:28:55
+# Fork: 8 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 356.009 ns/op
+# Warmup Iteration   2: 341.808 ns/op
+# Warmup Iteration   3: 341.544 ns/op
+# Warmup Iteration   4: 342.520 ns/op
+# Warmup Iteration   5: 342.225 ns/op
+Iteration   1: 342.231 ns/op
+Iteration   2: 342.232 ns/op
+Iteration   3: 342.360 ns/op
+Iteration   4: 342.832 ns/op
+Iteration   5: 343.233 ns/op
+Iteration   6: 342.468 ns/op
+Iteration   7: 342.592 ns/op
+Iteration   8: 343.522 ns/op
+Iteration   9: 343.268 ns/op
+Iteration  10: 342.538 ns/op
+
+# Run progress: 18.00% complete, ETA 03:26:23
+# Fork: 9 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 357.154 ns/op
+# Warmup Iteration   2: 338.145 ns/op
+# Warmup Iteration   3: 337.423 ns/op
+# Warmup Iteration   4: 337.252 ns/op
+# Warmup Iteration   5: 337.480 ns/op
+Iteration   1: 336.733 ns/op
+Iteration   2: 336.223 ns/op
+Iteration   3: 336.264 ns/op
+Iteration   4: 336.212 ns/op
+Iteration   5: 336.028 ns/op
+Iteration   6: 335.881 ns/op
+Iteration   7: 336.263 ns/op
+Iteration   8: 338.058 ns/op
+Iteration   9: 336.437 ns/op
+Iteration  10: 337.197 ns/op
+
+# Run progress: 19.00% complete, ETA 03:23:52
+# Fork: 10 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 357.493 ns/op
+# Warmup Iteration   2: 340.117 ns/op
+# Warmup Iteration   3: 339.802 ns/op
+# Warmup Iteration   4: 340.597 ns/op
+# Warmup Iteration   5: 340.081 ns/op
+Iteration   1: 339.996 ns/op
+Iteration   2: 339.631 ns/op
+Iteration   3: 339.813 ns/op
+Iteration   4: 339.825 ns/op
+Iteration   5: 340.106 ns/op
+Iteration   6: 340.482 ns/op
+Iteration   7: 340.541 ns/op
+Iteration   8: 340.650 ns/op
+Iteration   9: 340.828 ns/op
+Iteration  10: 341.068 ns/op
+
+
+Result "jmh1596483120235.bench_1_log_call_with_context.run":
+  336.802 ±(99.9%) 1.906 ns/op [Average]
+  (min, avg, max) = (326.115, 336.802, 345.825), stdev = 5.621
+  CI (99.9%): [334.896, 338.709] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-jvmci-20.1-b02
+# VM invoker: /opt/graalvm-ce-java11-20.1.0/bin/java
+# VM options: -XX:+UnlockExperimentalVMOptions -XX:+EnableJVMCIProduct -XX:-UnlockExperimentalVMOptions -XX:ThreadPriorityPolicy=1 -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.4.0 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 10 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1596483120235.bench_2_log_call_with_context2.run
+
+# Run progress: 20.00% complete, ETA 03:21:22
+# Fork: 1 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 437.145 ns/op
+# Warmup Iteration   2: 415.732 ns/op
+# Warmup Iteration   3: 415.634 ns/op
+# Warmup Iteration   4: 415.784 ns/op
+# Warmup Iteration   5: 415.438 ns/op
+Iteration   1: 415.186 ns/op
+Iteration   2: 415.301 ns/op
+Iteration   3: 415.443 ns/op
+Iteration   4: 415.194 ns/op
+Iteration   5: 415.699 ns/op
+Iteration   6: 415.327 ns/op
+Iteration   7: 415.420 ns/op
+Iteration   8: 415.647 ns/op
+Iteration   9: 415.164 ns/op
+Iteration  10: 415.029 ns/op
+
+# Run progress: 21.00% complete, ETA 03:18:51
+# Fork: 2 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 446.134 ns/op
+# Warmup Iteration   2: 414.331 ns/op
+# Warmup Iteration   3: 411.282 ns/op
+# Warmup Iteration   4: 410.599 ns/op
+# Warmup Iteration   5: 410.168 ns/op
+Iteration   1: 410.085 ns/op
+Iteration   2: 410.083 ns/op
+Iteration   3: 409.972 ns/op
+Iteration   4: 409.931 ns/op
+Iteration   5: 409.919 ns/op
+Iteration   6: 409.770 ns/op
+Iteration   7: 410.661 ns/op
+Iteration   8: 410.499 ns/op
+Iteration   9: 410.186 ns/op
+Iteration  10: 409.527 ns/op
+
+# Run progress: 22.00% complete, ETA 03:16:20
+# Fork: 3 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 433.700 ns/op
+# Warmup Iteration   2: 402.399 ns/op
+# Warmup Iteration   3: 402.044 ns/op
+# Warmup Iteration   4: 402.011 ns/op
+# Warmup Iteration   5: 401.304 ns/op
+Iteration   1: 401.121 ns/op
+Iteration   2: 402.016 ns/op
+Iteration   3: 402.138 ns/op
+Iteration   4: 402.117 ns/op
+Iteration   5: 401.970 ns/op
+Iteration   6: 401.941 ns/op
+Iteration   7: 402.177 ns/op
+Iteration   8: 401.965 ns/op
+Iteration   9: 402.012 ns/op
+Iteration  10: 402.331 ns/op
+
+# Run progress: 23.00% complete, ETA 03:13:48
+# Fork: 4 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 425.735 ns/op
+# Warmup Iteration   2: 399.436 ns/op
+# Warmup Iteration   3: 398.936 ns/op
+# Warmup Iteration   4: 399.046 ns/op
+# Warmup Iteration   5: 398.816 ns/op
+Iteration   1: 399.013 ns/op
+Iteration   2: 399.062 ns/op
+Iteration   3: 404.726 ns/op
+Iteration   4: 399.339 ns/op
+Iteration   5: 399.734 ns/op
+Iteration   6: 399.836 ns/op
+Iteration   7: 399.694 ns/op
+Iteration   8: 398.970 ns/op
+Iteration   9: 403.582 ns/op
+Iteration  10: 405.465 ns/op
+
+# Run progress: 24.00% complete, ETA 03:11:18
+# Fork: 5 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 428.945 ns/op
+# Warmup Iteration   2: 407.348 ns/op
+# Warmup Iteration   3: 407.598 ns/op
+# Warmup Iteration   4: 407.207 ns/op
+# Warmup Iteration   5: 407.390 ns/op
+Iteration   1: 407.208 ns/op
+Iteration   2: 407.217 ns/op
+Iteration   3: 407.051 ns/op
+Iteration   4: 407.200 ns/op
+Iteration   5: 412.683 ns/op
+Iteration   6: 415.174 ns/op
+Iteration   7: 415.203 ns/op
+Iteration   8: 414.903 ns/op
+Iteration   9: 414.734 ns/op
+Iteration  10: 414.843 ns/op
+
+# Run progress: 25.00% complete, ETA 03:08:46
+# Fork: 6 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 437.345 ns/op
+# Warmup Iteration   2: 417.146 ns/op
+# Warmup Iteration   3: 415.493 ns/op
+# Warmup Iteration   4: 415.677 ns/op
+# Warmup Iteration   5: 415.469 ns/op
+Iteration   1: 414.971 ns/op
+Iteration   2: 415.642 ns/op
+Iteration   3: 416.398 ns/op
+Iteration   4: 416.164 ns/op
+Iteration   5: 416.788 ns/op
+Iteration   6: 416.727 ns/op
+Iteration   7: 415.584 ns/op
+Iteration   8: 416.232 ns/op
+Iteration   9: 416.115 ns/op
+Iteration  10: 415.976 ns/op
+
+# Run progress: 26.00% complete, ETA 03:06:15
+# Fork: 7 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 434.460 ns/op
+# Warmup Iteration   2: 410.788 ns/op
+# Warmup Iteration   3: 412.287 ns/op
+# Warmup Iteration   4: 421.354 ns/op
+# Warmup Iteration   5: 421.351 ns/op
+Iteration   1: 421.450 ns/op
+Iteration   2: 421.870 ns/op
+Iteration   3: 423.288 ns/op
+Iteration   4: 421.791 ns/op
+Iteration   5: 421.258 ns/op
+Iteration   6: 421.347 ns/op
+Iteration   7: 421.220 ns/op
+Iteration   8: 413.723 ns/op
+Iteration   9: 410.105 ns/op
+Iteration  10: 410.042 ns/op
+
+# Run progress: 27.00% complete, ETA 03:03:44
+# Fork: 8 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 454.170 ns/op
+# Warmup Iteration   2: 432.332 ns/op
+# Warmup Iteration   3: 433.966 ns/op
+# Warmup Iteration   4: 434.216 ns/op
+# Warmup Iteration   5: 434.661 ns/op
+Iteration   1: 434.862 ns/op
+Iteration   2: 433.396 ns/op
+Iteration   3: 433.031 ns/op
+Iteration   4: 432.674 ns/op
+Iteration   5: 432.634 ns/op
+Iteration   6: 431.675 ns/op
+Iteration   7: 431.391 ns/op
+Iteration   8: 431.162 ns/op
+Iteration   9: 431.155 ns/op
+Iteration  10: 431.220 ns/op
+
+# Run progress: 28.00% complete, ETA 03:01:13
+# Fork: 9 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 441.855 ns/op
+# Warmup Iteration   2: 418.695 ns/op
+# Warmup Iteration   3: 419.967 ns/op
+# Warmup Iteration   4: 419.087 ns/op
+# Warmup Iteration   5: 418.735 ns/op
+Iteration   1: 418.810 ns/op
+Iteration   2: 421.529 ns/op
+Iteration   3: 421.776 ns/op
+Iteration   4: 421.462 ns/op
+Iteration   5: 422.227 ns/op
+Iteration   6: 422.038 ns/op
+Iteration   7: 422.189 ns/op
+Iteration   8: 421.844 ns/op
+Iteration   9: 421.646 ns/op
+Iteration  10: 421.679 ns/op
+
+# Run progress: 29.00% complete, ETA 02:58:42
+# Fork: 10 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 449.455 ns/op
+# Warmup Iteration   2: 426.379 ns/op
+# Warmup Iteration   3: 426.377 ns/op
+# Warmup Iteration   4: 426.371 ns/op
+# Warmup Iteration   5: 426.376 ns/op
+Iteration   1: 426.506 ns/op
+Iteration   2: 426.096 ns/op
+Iteration   3: 426.216 ns/op
+Iteration   4: 425.985 ns/op
+Iteration   5: 425.783 ns/op
+Iteration   6: 425.931 ns/op
+Iteration   7: 425.755 ns/op
+Iteration   8: 425.737 ns/op
+Iteration   9: 425.939 ns/op
+Iteration  10: 425.621 ns/op
+
+
+Result "jmh1596483120235.bench_2_log_call_with_context2.run":
+  415.441 ±(99.9%) 3.277 ns/op [Average]
+  (min, avg, max) = (398.970, 415.441, 434.862), stdev = 9.663
+  CI (99.9%): [412.164, 418.719] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-jvmci-20.1-b02
+# VM invoker: /opt/graalvm-ce-java11-20.1.0/bin/java
+# VM options: -XX:+UnlockExperimentalVMOptions -XX:+EnableJVMCIProduct -XX:-UnlockExperimentalVMOptions -XX:ThreadPriorityPolicy=1 -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.4.0 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 10 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1596483120235.bench_3_trace_call_simple.run
+
+# Run progress: 30.00% complete, ETA 02:56:11
+# Fork: 1 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 459.896 ns/op
+# Warmup Iteration   2: 436.822 ns/op
+# Warmup Iteration   3: 437.195 ns/op
+# Warmup Iteration   4: 437.916 ns/op
+# Warmup Iteration   5: 437.668 ns/op
+Iteration   1: 437.680 ns/op
+Iteration   2: 437.993 ns/op
+Iteration   3: 437.071 ns/op
+Iteration   4: 437.358 ns/op
+Iteration   5: 437.181 ns/op
+Iteration   6: 437.280 ns/op
+Iteration   7: 437.527 ns/op
+Iteration   8: 438.361 ns/op
+Iteration   9: 438.782 ns/op
+Iteration  10: 438.774 ns/op
+
+# Run progress: 31.00% complete, ETA 02:53:40
+# Fork: 2 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 460.101 ns/op
+# Warmup Iteration   2: 436.732 ns/op
+# Warmup Iteration   3: 436.299 ns/op
+# Warmup Iteration   4: 436.630 ns/op
+# Warmup Iteration   5: 436.514 ns/op
+Iteration   1: 436.359 ns/op
+Iteration   2: 434.996 ns/op
+Iteration   3: 435.549 ns/op
+Iteration   4: 436.578 ns/op
+Iteration   5: 436.465 ns/op
+Iteration   6: 436.208 ns/op
+Iteration   7: 436.306 ns/op
+Iteration   8: 435.830 ns/op
+Iteration   9: 435.759 ns/op
+Iteration  10: 436.462 ns/op
+
+# Run progress: 32.00% complete, ETA 02:51:09
+# Fork: 3 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 464.454 ns/op
+# Warmup Iteration   2: 441.717 ns/op
+# Warmup Iteration   3: 442.548 ns/op
+# Warmup Iteration   4: 441.594 ns/op
+# Warmup Iteration   5: 441.430 ns/op
+Iteration   1: 441.688 ns/op
+Iteration   2: 442.025 ns/op
+Iteration   3: 442.895 ns/op
+Iteration   4: 442.643 ns/op
+Iteration   5: 443.030 ns/op
+Iteration   6: 442.595 ns/op
+Iteration   7: 442.636 ns/op
+Iteration   8: 442.451 ns/op
+Iteration   9: 443.739 ns/op
+Iteration  10: 442.828 ns/op
+
+# Run progress: 33.00% complete, ETA 02:48:38
+# Fork: 4 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 459.903 ns/op
+# Warmup Iteration   2: 437.674 ns/op
+# Warmup Iteration   3: 438.194 ns/op
+# Warmup Iteration   4: 438.038 ns/op
+# Warmup Iteration   5: 437.895 ns/op
+Iteration   1: 438.490 ns/op
+Iteration   2: 438.977 ns/op
+Iteration   3: 440.141 ns/op
+Iteration   4: 438.377 ns/op
+Iteration   5: 438.066 ns/op
+Iteration   6: 437.820 ns/op
+Iteration   7: 438.100 ns/op
+Iteration   8: 438.218 ns/op
+Iteration   9: 438.213 ns/op
+Iteration  10: 438.355 ns/op
+
+# Run progress: 34.00% complete, ETA 02:46:07
+# Fork: 5 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 460.168 ns/op
+# Warmup Iteration   2: 435.094 ns/op
+# Warmup Iteration   3: 434.813 ns/op
+# Warmup Iteration   4: 435.453 ns/op
+# Warmup Iteration   5: 435.571 ns/op
+Iteration   1: 435.597 ns/op
+Iteration   2: 435.548 ns/op
+Iteration   3: 435.803 ns/op
+Iteration   4: 436.332 ns/op
+Iteration   5: 435.145 ns/op
+Iteration   6: 434.940 ns/op
+Iteration   7: 434.365 ns/op
+Iteration   8: 434.874 ns/op
+Iteration   9: 435.376 ns/op
+Iteration  10: 436.458 ns/op
+
+# Run progress: 35.00% complete, ETA 02:43:36
+# Fork: 6 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 466.726 ns/op
+# Warmup Iteration   2: 445.914 ns/op
+# Warmup Iteration   3: 445.630 ns/op
+# Warmup Iteration   4: 445.993 ns/op
+# Warmup Iteration   5: 444.536 ns/op
+Iteration   1: 435.659 ns/op
+Iteration   2: 447.145 ns/op
+Iteration   3: 439.291 ns/op
+Iteration   4: 445.862 ns/op
+Iteration   5: 447.280 ns/op
+Iteration   6: 447.153 ns/op
+Iteration   7: 447.540 ns/op
+Iteration   8: 442.821 ns/op
+Iteration   9: 436.099 ns/op
+Iteration  10: 435.885 ns/op
+
+# Run progress: 36.00% complete, ETA 02:41:05
+# Fork: 7 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 458.242 ns/op
+# Warmup Iteration   2: 439.586 ns/op
+# Warmup Iteration   3: 439.207 ns/op
+# Warmup Iteration   4: 438.638 ns/op
+# Warmup Iteration   5: 438.929 ns/op
+Iteration   1: 440.594 ns/op
+Iteration   2: 439.830 ns/op
+Iteration   3: 440.068 ns/op
+Iteration   4: 438.943 ns/op
+Iteration   5: 438.871 ns/op
+Iteration   6: 438.948 ns/op
+Iteration   7: 439.260 ns/op
+Iteration   8: 439.177 ns/op
+Iteration   9: 439.699 ns/op
+Iteration  10: 439.777 ns/op
+
+# Run progress: 37.00% complete, ETA 02:38:34
+# Fork: 8 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 459.781 ns/op
+# Warmup Iteration   2: 433.750 ns/op
+# Warmup Iteration   3: 435.404 ns/op
+# Warmup Iteration   4: 435.748 ns/op
+# Warmup Iteration   5: 435.726 ns/op
+Iteration   1: 435.639 ns/op
+Iteration   2: 436.272 ns/op
+Iteration   3: 435.603 ns/op
+Iteration   4: 436.791 ns/op
+Iteration   5: 435.737 ns/op
+Iteration   6: 435.787 ns/op
+Iteration   7: 435.969 ns/op
+Iteration   8: 435.917 ns/op
+Iteration   9: 435.806 ns/op
+Iteration  10: 436.329 ns/op
+
+# Run progress: 38.00% complete, ETA 02:36:03
+# Fork: 9 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 474.730 ns/op
+# Warmup Iteration   2: 454.480 ns/op
+# Warmup Iteration   3: 454.597 ns/op
+# Warmup Iteration   4: 454.678 ns/op
+# Warmup Iteration   5: 454.685 ns/op
+Iteration   1: 454.656 ns/op
+Iteration   2: 454.266 ns/op
+Iteration   3: 454.049 ns/op
+Iteration   4: 445.236 ns/op
+Iteration   5: 450.908 ns/op
+Iteration   6: 453.381 ns/op
+Iteration   7: 453.420 ns/op
+Iteration   8: 453.544 ns/op
+Iteration   9: 453.242 ns/op
+Iteration  10: 453.389 ns/op
+
+# Run progress: 39.00% complete, ETA 02:33:32
+# Fork: 10 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 481.441 ns/op
+# Warmup Iteration   2: 443.654 ns/op
+# Warmup Iteration   3: 443.824 ns/op
+# Warmup Iteration   4: 443.653 ns/op
+# Warmup Iteration   5: 444.631 ns/op
+Iteration   1: 443.993 ns/op
+Iteration   2: 447.320 ns/op
+Iteration   3: 459.467 ns/op
+Iteration   4: 459.047 ns/op
+Iteration   5: 458.932 ns/op
+Iteration   6: 458.696 ns/op
+Iteration   7: 459.204 ns/op
+Iteration   8: 459.055 ns/op
+Iteration   9: 458.801 ns/op
+Iteration  10: 458.818 ns/op
+
+
+Result "jmh1596483120235.bench_3_trace_call_simple.run":
+  441.734 ±(99.9%) 2.485 ns/op [Average]
+  (min, avg, max) = (434.365, 441.734, 459.467), stdev = 7.326
+  CI (99.9%): [439.250, 444.219] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-jvmci-20.1-b02
+# VM invoker: /opt/graalvm-ce-java11-20.1.0/bin/java
+# VM options: -XX:+UnlockExperimentalVMOptions -XX:+EnableJVMCIProduct -XX:-UnlockExperimentalVMOptions -XX:ThreadPriorityPolicy=1 -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.4.0 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 10 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1596483120235.bench_4_trace_call_with_capture.run
+
+# Run progress: 40.00% complete, ETA 02:31:01
+# Fork: 1 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 529.998 ns/op
+# Warmup Iteration   2: 502.738 ns/op
+# Warmup Iteration   3: 503.944 ns/op
+# Warmup Iteration   4: 502.790 ns/op
+# Warmup Iteration   5: 503.274 ns/op
+Iteration   1: 503.053 ns/op
+Iteration   2: 502.940 ns/op
+Iteration   3: 502.385 ns/op
+Iteration   4: 503.168 ns/op
+Iteration   5: 503.387 ns/op
+Iteration   6: 503.553 ns/op
+Iteration   7: 504.101 ns/op
+Iteration   8: 503.295 ns/op
+Iteration   9: 503.930 ns/op
+Iteration  10: 504.603 ns/op
+
+# Run progress: 41.00% complete, ETA 02:28:30
+# Fork: 2 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 480.471 ns/op
+# Warmup Iteration   2: 456.467 ns/op
+# Warmup Iteration   3: 456.142 ns/op
+# Warmup Iteration   4: 457.447 ns/op
+# Warmup Iteration   5: 456.351 ns/op
+Iteration   1: 457.293 ns/op
+Iteration   2: 456.826 ns/op
+Iteration   3: 456.340 ns/op
+Iteration   4: 456.890 ns/op
+Iteration   5: 455.781 ns/op
+Iteration   6: 455.079 ns/op
+Iteration   7: 455.474 ns/op
+Iteration   8: 455.679 ns/op
+Iteration   9: 455.377 ns/op
+Iteration  10: 455.260 ns/op
+
+# Run progress: 42.00% complete, ETA 02:25:59
+# Fork: 3 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 486.215 ns/op
+# Warmup Iteration   2: 462.197 ns/op
+# Warmup Iteration   3: 461.919 ns/op
+# Warmup Iteration   4: 460.845 ns/op
+# Warmup Iteration   5: 461.503 ns/op
+Iteration   1: 461.559 ns/op
+Iteration   2: 461.554 ns/op
+Iteration   3: 461.446 ns/op
+Iteration   4: 461.422 ns/op
+Iteration   5: 461.040 ns/op
+Iteration   6: 461.417 ns/op
+Iteration   7: 461.588 ns/op
+Iteration   8: 461.545 ns/op
+Iteration   9: 461.775 ns/op
+Iteration  10: 461.525 ns/op
+
+# Run progress: 43.00% complete, ETA 02:23:28
+# Fork: 4 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 482.300 ns/op
+# Warmup Iteration   2: 470.059 ns/op
+# Warmup Iteration   3: 469.785 ns/op
+# Warmup Iteration   4: 469.840 ns/op
+# Warmup Iteration   5: 470.324 ns/op
+Iteration   1: 469.819 ns/op
+Iteration   2: 457.517 ns/op
+Iteration   3: 458.019 ns/op
+Iteration   4: 457.906 ns/op
+Iteration   5: 458.397 ns/op
+Iteration   6: 458.764 ns/op
+Iteration   7: 458.485 ns/op
+Iteration   8: 458.566 ns/op
+Iteration   9: 458.380 ns/op
+Iteration  10: 458.679 ns/op
+
+# Run progress: 44.00% complete, ETA 02:20:57
+# Fork: 5 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 488.773 ns/op
+# Warmup Iteration   2: 463.696 ns/op
+# Warmup Iteration   3: 464.051 ns/op
+# Warmup Iteration   4: 463.924 ns/op
+# Warmup Iteration   5: 463.251 ns/op
+Iteration   1: 463.451 ns/op
+Iteration   2: 462.595 ns/op
+Iteration   3: 463.332 ns/op
+Iteration   4: 463.175 ns/op
+Iteration   5: 459.343 ns/op
+Iteration   6: 452.801 ns/op
+Iteration   7: 453.443 ns/op
+Iteration   8: 453.098 ns/op
+Iteration   9: 453.746 ns/op
+Iteration  10: 452.439 ns/op
+
+# Run progress: 45.00% complete, ETA 02:18:26
+# Fork: 6 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 482.125 ns/op
+# Warmup Iteration   2: 471.424 ns/op
+# Warmup Iteration   3: 471.649 ns/op
+# Warmup Iteration   4: 471.682 ns/op
+# Warmup Iteration   5: 471.612 ns/op
+Iteration   1: 464.463 ns/op
+Iteration   2: 457.534 ns/op
+Iteration   3: 457.355 ns/op
+Iteration   4: 461.792 ns/op
+Iteration   5: 467.285 ns/op
+Iteration   6: 466.803 ns/op
+Iteration   7: 466.682 ns/op
+Iteration   8: 466.774 ns/op
+Iteration   9: 467.034 ns/op
+Iteration  10: 467.259 ns/op
+
+# Run progress: 46.00% complete, ETA 02:15:55
+# Fork: 7 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 492.323 ns/op
+# Warmup Iteration   2: 459.876 ns/op
+# Warmup Iteration   3: 455.672 ns/op
+# Warmup Iteration   4: 455.763 ns/op
+# Warmup Iteration   5: 456.349 ns/op
+Iteration   1: 456.464 ns/op
+Iteration   2: 456.105 ns/op
+Iteration   3: 459.734 ns/op
+Iteration   4: 464.253 ns/op
+Iteration   5: 464.592 ns/op
+Iteration   6: 464.505 ns/op
+Iteration   7: 464.561 ns/op
+Iteration   8: 464.026 ns/op
+Iteration   9: 463.874 ns/op
+Iteration  10: 463.934 ns/op
+
+# Run progress: 47.00% complete, ETA 02:13:24
+# Fork: 8 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 493.456 ns/op
+# Warmup Iteration   2: 476.470 ns/op
+# Warmup Iteration   3: 476.632 ns/op
+# Warmup Iteration   4: 476.406 ns/op
+# Warmup Iteration   5: 476.587 ns/op
+Iteration   1: 476.629 ns/op
+Iteration   2: 477.156 ns/op
+Iteration   3: 476.663 ns/op
+Iteration   4: 475.997 ns/op
+Iteration   5: 476.217 ns/op
+Iteration   6: 476.596 ns/op
+Iteration   7: 477.998 ns/op
+Iteration   8: 470.165 ns/op
+Iteration   9: 469.018 ns/op
+Iteration  10: 470.519 ns/op
+
+# Run progress: 48.00% complete, ETA 02:10:53
+# Fork: 9 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 487.927 ns/op
+# Warmup Iteration   2: 461.844 ns/op
+# Warmup Iteration   3: 462.487 ns/op
+# Warmup Iteration   4: 462.933 ns/op
+# Warmup Iteration   5: 463.025 ns/op
+Iteration   1: 462.556 ns/op
+Iteration   2: 461.747 ns/op
+Iteration   3: 461.980 ns/op
+Iteration   4: 462.201 ns/op
+Iteration   5: 463.485 ns/op
+Iteration   6: 462.380 ns/op
+Iteration   7: 462.704 ns/op
+Iteration   8: 462.225 ns/op
+Iteration   9: 462.421 ns/op
+Iteration  10: 463.002 ns/op
+
+# Run progress: 49.00% complete, ETA 02:08:22
+# Fork: 10 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 490.125 ns/op
+# Warmup Iteration   2: 465.088 ns/op
+# Warmup Iteration   3: 464.708 ns/op
+# Warmup Iteration   4: 464.853 ns/op
+# Warmup Iteration   5: 465.567 ns/op
+Iteration   1: 468.544 ns/op
+Iteration   2: 472.815 ns/op
+Iteration   3: 472.312 ns/op
+Iteration   4: 472.856 ns/op
+Iteration   5: 472.891 ns/op
+Iteration   6: 472.676 ns/op
+Iteration   7: 472.929 ns/op
+Iteration   8: 472.885 ns/op
+Iteration   9: 473.176 ns/op
+Iteration  10: 473.374 ns/op
+
+
+Result "jmh1596483120235.bench_4_trace_call_with_capture.run":
+  467.424 ±(99.9%) 4.615 ns/op [Average]
+  (min, avg, max) = (452.439, 467.424, 504.603), stdev = 13.607
+  CI (99.9%): [462.809, 472.039] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-jvmci-20.1-b02
+# VM invoker: /opt/graalvm-ce-java11-20.1.0/bin/java
+# VM options: -XX:+UnlockExperimentalVMOptions -XX:+EnableJVMCIProduct -XX:-UnlockExperimentalVMOptions -XX:ThreadPriorityPolicy=1 -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.4.0 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 10 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1596483120235.bench_5_flake_creation.run
+
+# Run progress: 50.00% complete, ETA 02:05:51
+# Fork: 1 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 35.841 ns/op
+# Warmup Iteration   2: 34.672 ns/op
+# Warmup Iteration   3: 34.598 ns/op
+# Warmup Iteration   4: 34.593 ns/op
+# Warmup Iteration   5: 34.599 ns/op
+Iteration   1: 34.593 ns/op
+Iteration   2: 34.608 ns/op
+Iteration   3: 34.607 ns/op
+Iteration   4: 34.610 ns/op
+Iteration   5: 34.608 ns/op
+Iteration   6: 34.605 ns/op
+Iteration   7: 34.604 ns/op
+Iteration   8: 34.603 ns/op
+Iteration   9: 34.615 ns/op
+Iteration  10: 34.605 ns/op
+
+# Run progress: 51.00% complete, ETA 02:03:20
+# Fork: 2 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 36.084 ns/op
+# Warmup Iteration   2: 34.720 ns/op
+# Warmup Iteration   3: 34.675 ns/op
+# Warmup Iteration   4: 34.667 ns/op
+# Warmup Iteration   5: 34.623 ns/op
+Iteration   1: 34.612 ns/op
+Iteration   2: 34.608 ns/op
+Iteration   3: 34.613 ns/op
+Iteration   4: 34.617 ns/op
+Iteration   5: 34.609 ns/op
+Iteration   6: 34.611 ns/op
+Iteration   7: 34.604 ns/op
+Iteration   8: 34.611 ns/op
+Iteration   9: 34.610 ns/op
+Iteration  10: 34.608 ns/op
+
+# Run progress: 52.00% complete, ETA 02:00:49
+# Fork: 3 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 35.959 ns/op
+# Warmup Iteration   2: 34.664 ns/op
+# Warmup Iteration   3: 34.626 ns/op
+# Warmup Iteration   4: 34.619 ns/op
+# Warmup Iteration   5: 34.624 ns/op
+Iteration   1: 34.639 ns/op
+Iteration   2: 34.615 ns/op
+Iteration   3: 34.616 ns/op
+Iteration   4: 34.609 ns/op
+Iteration   5: 34.619 ns/op
+Iteration   6: 34.617 ns/op
+Iteration   7: 34.616 ns/op
+Iteration   8: 34.617 ns/op
+Iteration   9: 34.618 ns/op
+Iteration  10: 34.611 ns/op
+
+# Run progress: 53.00% complete, ETA 01:58:17
+# Fork: 4 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 36.031 ns/op
+# Warmup Iteration   2: 34.624 ns/op
+# Warmup Iteration   3: 34.618 ns/op
+# Warmup Iteration   4: 34.608 ns/op
+# Warmup Iteration   5: 34.615 ns/op
+Iteration   1: 34.609 ns/op
+Iteration   2: 34.614 ns/op
+Iteration   3: 34.615 ns/op
+Iteration   4: 34.612 ns/op
+Iteration   5: 34.615 ns/op
+Iteration   6: 34.610 ns/op
+Iteration   7: 34.612 ns/op
+Iteration   8: 34.619 ns/op
+Iteration   9: 34.621 ns/op
+Iteration  10: 34.612 ns/op
+
+# Run progress: 54.00% complete, ETA 01:55:46
+# Fork: 5 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 36.058 ns/op
+# Warmup Iteration   2: 34.620 ns/op
+# Warmup Iteration   3: 34.442 ns/op
+# Warmup Iteration   4: 34.428 ns/op
+# Warmup Iteration   5: 34.438 ns/op
+Iteration   1: 34.431 ns/op
+Iteration   2: 34.430 ns/op
+Iteration   3: 34.435 ns/op
+Iteration   4: 34.442 ns/op
+Iteration   5: 34.438 ns/op
+Iteration   6: 34.430 ns/op
+Iteration   7: 34.435 ns/op
+Iteration   8: 34.426 ns/op
+Iteration   9: 34.434 ns/op
+Iteration  10: 34.442 ns/op
+
+# Run progress: 55.00% complete, ETA 01:53:15
+# Fork: 6 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 36.006 ns/op
+# Warmup Iteration   2: 34.666 ns/op
+# Warmup Iteration   3: 34.386 ns/op
+# Warmup Iteration   4: 34.382 ns/op
+# Warmup Iteration   5: 34.387 ns/op
+Iteration   1: 34.370 ns/op
+Iteration   2: 34.381 ns/op
+Iteration   3: 34.400 ns/op
+Iteration   4: 34.381 ns/op
+Iteration   5: 34.552 ns/op
+Iteration   6: 34.386 ns/op
+Iteration   7: 34.391 ns/op
+Iteration   8: 34.390 ns/op
+Iteration   9: 34.386 ns/op
+Iteration  10: 34.380 ns/op
+
+# Run progress: 56.00% complete, ETA 01:50:44
+# Fork: 7 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 36.026 ns/op
+# Warmup Iteration   2: 34.618 ns/op
+# Warmup Iteration   3: 34.424 ns/op
+# Warmup Iteration   4: 34.426 ns/op
+# Warmup Iteration   5: 34.421 ns/op
+Iteration   1: 34.430 ns/op
+Iteration   2: 34.459 ns/op
+Iteration   3: 34.426 ns/op
+Iteration   4: 34.430 ns/op
+Iteration   5: 34.432 ns/op
+Iteration   6: 34.415 ns/op
+Iteration   7: 34.409 ns/op
+Iteration   8: 34.407 ns/op
+Iteration   9: 34.402 ns/op
+Iteration  10: 34.407 ns/op
+
+# Run progress: 57.00% complete, ETA 01:48:13
+# Fork: 8 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 35.753 ns/op
+# Warmup Iteration   2: 33.766 ns/op
+# Warmup Iteration   3: 33.811 ns/op
+# Warmup Iteration   4: 33.822 ns/op
+# Warmup Iteration   5: 33.823 ns/op
+Iteration   1: 33.829 ns/op
+Iteration   2: 33.826 ns/op
+Iteration   3: 33.827 ns/op
+Iteration   4: 33.827 ns/op
+Iteration   5: 33.832 ns/op
+Iteration   6: 33.831 ns/op
+Iteration   7: 33.829 ns/op
+Iteration   8: 33.823 ns/op
+Iteration   9: 33.825 ns/op
+Iteration  10: 33.822 ns/op
+
+# Run progress: 58.00% complete, ETA 01:45:42
+# Fork: 9 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 36.043 ns/op
+# Warmup Iteration   2: 34.670 ns/op
+# Warmup Iteration   3: 34.614 ns/op
+# Warmup Iteration   4: 34.615 ns/op
+# Warmup Iteration   5: 34.603 ns/op
+Iteration   1: 34.597 ns/op
+Iteration   2: 34.609 ns/op
+Iteration   3: 34.603 ns/op
+Iteration   4: 34.598 ns/op
+Iteration   5: 34.605 ns/op
+Iteration   6: 34.604 ns/op
+Iteration   7: 34.594 ns/op
+Iteration   8: 34.603 ns/op
+Iteration   9: 34.603 ns/op
+Iteration  10: 34.604 ns/op
+
+# Run progress: 59.00% complete, ETA 01:43:11
+# Fork: 10 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 35.638 ns/op
+# Warmup Iteration   2: 33.781 ns/op
+# Warmup Iteration   3: 33.763 ns/op
+# Warmup Iteration   4: 33.765 ns/op
+# Warmup Iteration   5: 33.768 ns/op
+Iteration   1: 33.767 ns/op
+Iteration   2: 33.768 ns/op
+Iteration   3: 33.769 ns/op
+Iteration   4: 33.771 ns/op
+Iteration   5: 33.769 ns/op
+Iteration   6: 33.765 ns/op
+Iteration   7: 33.773 ns/op
+Iteration   8: 33.765 ns/op
+Iteration   9: 33.769 ns/op
+Iteration  10: 33.775 ns/op
+
+
+Result "jmh1596483120235.bench_5_flake_creation.run":
+  34.390 ±(99.9%) 0.105 ns/op [Average]
+  (min, avg, max) = (33.765, 34.390, 34.639), stdev = 0.310
+  CI (99.9%): [34.285, 34.495] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-jvmci-20.1-b02
+# VM invoker: /opt/graalvm-ce-java11-20.1.0/bin/java
+# VM options: -XX:+UnlockExperimentalVMOptions -XX:+EnableJVMCIProduct -XX:-UnlockExperimentalVMOptions -XX:ThreadPriorityPolicy=1 -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.4.0 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 10 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1596483120235.bench_6_flake_string_representation.run
+
+# Run progress: 60.00% complete, ETA 01:40:40
+# Fork: 1 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 70.125 ns/op
+# Warmup Iteration   2: 66.470 ns/op
+# Warmup Iteration   3: 66.430 ns/op
+# Warmup Iteration   4: 66.433 ns/op
+# Warmup Iteration   5: 66.430 ns/op
+Iteration   1: 66.454 ns/op
+Iteration   2: 66.448 ns/op
+Iteration   3: 66.419 ns/op
+Iteration   4: 66.421 ns/op
+Iteration   5: 66.414 ns/op
+Iteration   6: 66.431 ns/op
+Iteration   7: 66.438 ns/op
+Iteration   8: 66.409 ns/op
+Iteration   9: 66.428 ns/op
+Iteration  10: 66.423 ns/op
+
+# Run progress: 61.00% complete, ETA 01:38:09
+# Fork: 2 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 70.257 ns/op
+# Warmup Iteration   2: 66.452 ns/op
+# Warmup Iteration   3: 66.381 ns/op
+# Warmup Iteration   4: 66.315 ns/op
+# Warmup Iteration   5: 66.313 ns/op
+Iteration   1: 66.304 ns/op
+Iteration   2: 66.318 ns/op
+Iteration   3: 66.307 ns/op
+Iteration   4: 66.316 ns/op
+Iteration   5: 66.306 ns/op
+Iteration   6: 66.272 ns/op
+Iteration   7: 66.314 ns/op
+Iteration   8: 66.297 ns/op
+Iteration   9: 66.308 ns/op
+Iteration  10: 66.312 ns/op
+
+# Run progress: 62.00% complete, ETA 01:35:38
+# Fork: 3 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 70.180 ns/op
+# Warmup Iteration   2: 66.212 ns/op
+# Warmup Iteration   3: 66.173 ns/op
+# Warmup Iteration   4: 66.163 ns/op
+# Warmup Iteration   5: 66.169 ns/op
+Iteration   1: 66.178 ns/op
+Iteration   2: 66.165 ns/op
+Iteration   3: 66.168 ns/op
+Iteration   4: 66.161 ns/op
+Iteration   5: 66.174 ns/op
+Iteration   6: 66.158 ns/op
+Iteration   7: 66.164 ns/op
+Iteration   8: 66.164 ns/op
+Iteration   9: 66.169 ns/op
+Iteration  10: 66.165 ns/op
+
+# Run progress: 63.00% complete, ETA 01:33:07
+# Fork: 4 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 70.223 ns/op
+# Warmup Iteration   2: 66.306 ns/op
+# Warmup Iteration   3: 66.220 ns/op
+# Warmup Iteration   4: 66.184 ns/op
+# Warmup Iteration   5: 66.183 ns/op
+Iteration   1: 66.197 ns/op
+Iteration   2: 66.228 ns/op
+Iteration   3: 66.234 ns/op
+Iteration   4: 66.230 ns/op
+Iteration   5: 66.237 ns/op
+Iteration   6: 66.235 ns/op
+Iteration   7: 66.230 ns/op
+Iteration   8: 66.180 ns/op
+Iteration   9: 66.175 ns/op
+Iteration  10: 66.185 ns/op
+
+# Run progress: 64.00% complete, ETA 01:30:36
+# Fork: 5 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 69.959 ns/op
+# Warmup Iteration   2: 66.296 ns/op
+# Warmup Iteration   3: 66.240 ns/op
+# Warmup Iteration   4: 66.293 ns/op
+# Warmup Iteration   5: 66.307 ns/op
+Iteration   1: 66.307 ns/op
+Iteration   2: 66.329 ns/op
+Iteration   3: 66.303 ns/op
+Iteration   4: 66.284 ns/op
+Iteration   5: 66.335 ns/op
+Iteration   6: 66.337 ns/op
+Iteration   7: 66.325 ns/op
+Iteration   8: 66.304 ns/op
+Iteration   9: 66.268 ns/op
+Iteration  10: 66.263 ns/op
+
+# Run progress: 65.00% complete, ETA 01:28:05
+# Fork: 6 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 70.130 ns/op
+# Warmup Iteration   2: 66.266 ns/op
+# Warmup Iteration   3: 66.203 ns/op
+# Warmup Iteration   4: 66.210 ns/op
+# Warmup Iteration   5: 66.203 ns/op
+Iteration   1: 66.242 ns/op
+Iteration   2: 66.234 ns/op
+Iteration   3: 66.204 ns/op
+Iteration   4: 66.209 ns/op
+Iteration   5: 66.235 ns/op
+Iteration   6: 66.273 ns/op
+Iteration   7: 66.408 ns/op
+Iteration   8: 66.388 ns/op
+Iteration   9: 66.405 ns/op
+Iteration  10: 66.417 ns/op
+
+# Run progress: 66.00% complete, ETA 01:25:34
+# Fork: 7 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 70.060 ns/op
+# Warmup Iteration   2: 66.285 ns/op
+# Warmup Iteration   3: 66.226 ns/op
+# Warmup Iteration   4: 66.214 ns/op
+# Warmup Iteration   5: 66.218 ns/op
+Iteration   1: 66.210 ns/op
+Iteration   2: 66.202 ns/op
+Iteration   3: 66.201 ns/op
+Iteration   4: 66.183 ns/op
+Iteration   5: 66.194 ns/op
+Iteration   6: 66.186 ns/op
+Iteration   7: 66.189 ns/op
+Iteration   8: 66.194 ns/op
+Iteration   9: 66.195 ns/op
+Iteration  10: 66.197 ns/op
+
+# Run progress: 67.00% complete, ETA 01:23:03
+# Fork: 8 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 69.844 ns/op
+# Warmup Iteration   2: 66.089 ns/op
+# Warmup Iteration   3: 66.094 ns/op
+# Warmup Iteration   4: 66.076 ns/op
+# Warmup Iteration   5: 66.092 ns/op
+Iteration   1: 66.018 ns/op
+Iteration   2: 65.965 ns/op
+Iteration   3: 65.965 ns/op
+Iteration   4: 65.965 ns/op
+Iteration   5: 65.961 ns/op
+Iteration   6: 65.957 ns/op
+Iteration   7: 65.952 ns/op
+Iteration   8: 66.001 ns/op
+Iteration   9: 66.033 ns/op
+Iteration  10: 65.979 ns/op
+
+# Run progress: 68.00% complete, ETA 01:20:32
+# Fork: 9 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 69.768 ns/op
+# Warmup Iteration   2: 66.222 ns/op
+# Warmup Iteration   3: 66.201 ns/op
+# Warmup Iteration   4: 66.243 ns/op
+# Warmup Iteration   5: 66.234 ns/op
+Iteration   1: 66.231 ns/op
+Iteration   2: 66.243 ns/op
+Iteration   3: 66.322 ns/op
+Iteration   4: 66.402 ns/op
+Iteration   5: 66.416 ns/op
+Iteration   6: 66.400 ns/op
+Iteration   7: 66.415 ns/op
+Iteration   8: 66.401 ns/op
+Iteration   9: 66.475 ns/op
+Iteration  10: 66.455 ns/op
+
+# Run progress: 69.00% complete, ETA 01:18:01
+# Fork: 10 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 70.134 ns/op
+# Warmup Iteration   2: 66.220 ns/op
+# Warmup Iteration   3: 66.211 ns/op
+# Warmup Iteration   4: 66.181 ns/op
+# Warmup Iteration   5: 66.184 ns/op
+Iteration   1: 66.180 ns/op
+Iteration   2: 66.178 ns/op
+Iteration   3: 66.188 ns/op
+Iteration   4: 66.207 ns/op
+Iteration   5: 66.177 ns/op
+Iteration   6: 66.182 ns/op
+Iteration   7: 66.191 ns/op
+Iteration   8: 66.181 ns/op
+Iteration   9: 66.234 ns/op
+Iteration  10: 66.185 ns/op
+
+
+Result "jmh1596483120235.bench_6_flake_string_representation.run":
+  66.246 ±(99.9%) 0.043 ns/op [Average]
+  (min, avg, max) = (65.952, 66.246, 66.475), stdev = 0.127
+  CI (99.9%): [66.203, 66.289] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-jvmci-20.1-b02
+# VM invoker: /opt/graalvm-ce-java11-20.1.0/bin/java
+# VM options: -XX:+UnlockExperimentalVMOptions -XX:+EnableJVMCIProduct -XX:-UnlockExperimentalVMOptions -XX:ThreadPriorityPolicy=1 -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.4.0 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 10 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1596483120235.bench_7_flake_snowflake.run
+
+# Run progress: 70.00% complete, ETA 01:15:30
+# Fork: 1 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 71.588 ns/op
+# Warmup Iteration   2: 68.086 ns/op
+# Warmup Iteration   3: 68.253 ns/op
+# Warmup Iteration   4: 68.253 ns/op
+# Warmup Iteration   5: 68.239 ns/op
+Iteration   1: 68.229 ns/op
+Iteration   2: 68.244 ns/op
+Iteration   3: 68.231 ns/op
+Iteration   4: 68.248 ns/op
+Iteration   5: 68.239 ns/op
+Iteration   6: 68.233 ns/op
+Iteration   7: 68.242 ns/op
+Iteration   8: 68.241 ns/op
+Iteration   9: 68.250 ns/op
+Iteration  10: 68.258 ns/op
+
+# Run progress: 71.00% complete, ETA 01:12:59
+# Fork: 2 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 71.826 ns/op
+# Warmup Iteration   2: 67.955 ns/op
+# Warmup Iteration   3: 68.054 ns/op
+# Warmup Iteration   4: 68.073 ns/op
+# Warmup Iteration   5: 68.059 ns/op
+Iteration   1: 68.054 ns/op
+Iteration   2: 68.081 ns/op
+Iteration   3: 68.060 ns/op
+Iteration   4: 68.063 ns/op
+Iteration   5: 68.080 ns/op
+Iteration   6: 68.061 ns/op
+Iteration   7: 68.061 ns/op
+Iteration   8: 68.076 ns/op
+Iteration   9: 68.052 ns/op
+Iteration  10: 68.045 ns/op
+
+# Run progress: 72.00% complete, ETA 01:10:28
+# Fork: 3 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 69.050 ns/op
+# Warmup Iteration   2: 65.598 ns/op
+# Warmup Iteration   3: 65.555 ns/op
+# Warmup Iteration   4: 65.550 ns/op
+# Warmup Iteration   5: 65.553 ns/op
+Iteration   1: 65.542 ns/op
+Iteration   2: 65.544 ns/op
+Iteration   3: 65.492 ns/op
+Iteration   4: 65.489 ns/op
+Iteration   5: 65.479 ns/op
+Iteration   6: 65.493 ns/op
+Iteration   7: 65.512 ns/op
+Iteration   8: 65.524 ns/op
+Iteration   9: 65.510 ns/op
+Iteration  10: 65.490 ns/op
+
+# Run progress: 73.00% complete, ETA 01:07:57
+# Fork: 4 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 71.545 ns/op
+# Warmup Iteration   2: 67.795 ns/op
+# Warmup Iteration   3: 68.040 ns/op
+# Warmup Iteration   4: 68.035 ns/op
+# Warmup Iteration   5: 68.034 ns/op
+Iteration   1: 68.030 ns/op
+Iteration   2: 68.250 ns/op
+Iteration   3: 68.023 ns/op
+Iteration   4: 68.028 ns/op
+Iteration   5: 68.023 ns/op
+Iteration   6: 68.016 ns/op
+Iteration   7: 68.014 ns/op
+Iteration   8: 68.015 ns/op
+Iteration   9: 68.024 ns/op
+Iteration  10: 68.074 ns/op
+
+# Run progress: 74.00% complete, ETA 01:05:26
+# Fork: 5 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 71.813 ns/op
+# Warmup Iteration   2: 67.819 ns/op
+# Warmup Iteration   3: 68.058 ns/op
+# Warmup Iteration   4: 68.058 ns/op
+# Warmup Iteration   5: 68.073 ns/op
+Iteration   1: 68.085 ns/op
+Iteration   2: 68.082 ns/op
+Iteration   3: 68.083 ns/op
+Iteration   4: 68.083 ns/op
+Iteration   5: 68.091 ns/op
+Iteration   6: 68.084 ns/op
+Iteration   7: 68.073 ns/op
+Iteration   8: 68.072 ns/op
+Iteration   9: 68.066 ns/op
+Iteration  10: 68.058 ns/op
+
+# Run progress: 75.00% complete, ETA 01:02:55
+# Fork: 6 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 71.508 ns/op
+# Warmup Iteration   2: 67.677 ns/op
+# Warmup Iteration   3: 67.931 ns/op
+# Warmup Iteration   4: 67.925 ns/op
+# Warmup Iteration   5: 67.909 ns/op
+Iteration   1: 67.896 ns/op
+Iteration   2: 67.875 ns/op
+Iteration   3: 67.869 ns/op
+Iteration   4: 67.858 ns/op
+Iteration   5: 67.868 ns/op
+Iteration   6: 67.861 ns/op
+Iteration   7: 67.865 ns/op
+Iteration   8: 67.872 ns/op
+Iteration   9: 67.921 ns/op
+Iteration  10: 67.916 ns/op
+
+# Run progress: 76.00% complete, ETA 01:00:24
+# Fork: 7 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 69.055 ns/op
+# Warmup Iteration   2: 65.580 ns/op
+# Warmup Iteration   3: 65.569 ns/op
+# Warmup Iteration   4: 65.565 ns/op
+# Warmup Iteration   5: 65.564 ns/op
+Iteration   1: 65.567 ns/op
+Iteration   2: 65.565 ns/op
+Iteration   3: 65.569 ns/op
+Iteration   4: 65.563 ns/op
+Iteration   5: 65.569 ns/op
+Iteration   6: 65.560 ns/op
+Iteration   7: 65.557 ns/op
+Iteration   8: 65.557 ns/op
+Iteration   9: 65.557 ns/op
+Iteration  10: 65.561 ns/op
+
+# Run progress: 77.00% complete, ETA 00:57:53
+# Fork: 8 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 74.405 ns/op
+# Warmup Iteration   2: 70.251 ns/op
+# Warmup Iteration   3: 70.841 ns/op
+# Warmup Iteration   4: 70.845 ns/op
+# Warmup Iteration   5: 70.846 ns/op
+Iteration   1: 70.856 ns/op
+Iteration   2: 70.850 ns/op
+Iteration   3: 70.846 ns/op
+Iteration   4: 70.846 ns/op
+Iteration   5: 70.820 ns/op
+Iteration   6: 70.808 ns/op
+Iteration   7: 70.806 ns/op
+Iteration   8: 70.809 ns/op
+Iteration   9: 70.778 ns/op
+Iteration  10: 70.756 ns/op
+
+# Run progress: 78.00% complete, ETA 00:55:22
+# Fork: 9 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 71.551 ns/op
+# Warmup Iteration   2: 67.835 ns/op
+# Warmup Iteration   3: 68.048 ns/op
+# Warmup Iteration   4: 68.038 ns/op
+# Warmup Iteration   5: 67.978 ns/op
+Iteration   1: 67.965 ns/op
+Iteration   2: 67.966 ns/op
+Iteration   3: 67.969 ns/op
+Iteration   4: 67.968 ns/op
+Iteration   5: 67.969 ns/op
+Iteration   6: 67.970 ns/op
+Iteration   7: 67.973 ns/op
+Iteration   8: 67.973 ns/op
+Iteration   9: 67.974 ns/op
+Iteration  10: 67.958 ns/op
+
+# Run progress: 79.00% complete, ETA 00:52:51
+# Fork: 10 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 71.539 ns/op
+# Warmup Iteration   2: 67.809 ns/op
+# Warmup Iteration   3: 68.035 ns/op
+# Warmup Iteration   4: 68.016 ns/op
+# Warmup Iteration   5: 68.024 ns/op
+Iteration   1: 68.046 ns/op
+Iteration   2: 68.110 ns/op
+Iteration   3: 68.122 ns/op
+Iteration   4: 68.088 ns/op
+Iteration   5: 68.024 ns/op
+Iteration   6: 68.012 ns/op
+Iteration   7: 68.015 ns/op
+Iteration   8: 68.019 ns/op
+Iteration   9: 68.004 ns/op
+Iteration  10: 68.002 ns/op
+
+
+Result "jmh1596483120235.bench_7_flake_snowflake.run":
+  67.821 ±(99.9%) 0.480 ns/op [Average]
+  (min, avg, max) = (65.479, 67.821, 70.856), stdev = 1.417
+  CI (99.9%): [67.341, 68.302] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-jvmci-20.1-b02
+# VM invoker: /opt/graalvm-ce-java11-20.1.0/bin/java
+# VM options: -XX:+UnlockExperimentalVMOptions -XX:+EnableJVMCIProduct -XX:-UnlockExperimentalVMOptions -XX:ThreadPriorityPolicy=1 -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.4.0 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 10 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1596483120235.bench_8_flake_hex_representation.run
+
+# Run progress: 80.00% complete, ETA 00:50:20
+# Fork: 1 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 76.890 ns/op
+# Warmup Iteration   2: 72.591 ns/op
+# Warmup Iteration   3: 72.701 ns/op
+# Warmup Iteration   4: 72.713 ns/op
+# Warmup Iteration   5: 72.696 ns/op
+Iteration   1: 72.713 ns/op
+Iteration   2: 72.708 ns/op
+Iteration   3: 72.699 ns/op
+Iteration   4: 72.702 ns/op
+Iteration   5: 72.699 ns/op
+Iteration   6: 72.698 ns/op
+Iteration   7: 72.687 ns/op
+Iteration   8: 72.707 ns/op
+Iteration   9: 72.685 ns/op
+Iteration  10: 72.727 ns/op
+
+# Run progress: 81.00% complete, ETA 00:47:49
+# Fork: 2 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 77.100 ns/op
+# Warmup Iteration   2: 72.833 ns/op
+# Warmup Iteration   3: 72.532 ns/op
+# Warmup Iteration   4: 72.548 ns/op
+# Warmup Iteration   5: 72.554 ns/op
+Iteration   1: 72.550 ns/op
+Iteration   2: 72.875 ns/op
+Iteration   3: 72.862 ns/op
+Iteration   4: 72.856 ns/op
+Iteration   5: 72.867 ns/op
+Iteration   6: 72.860 ns/op
+Iteration   7: 72.857 ns/op
+Iteration   8: 72.862 ns/op
+Iteration   9: 72.857 ns/op
+Iteration  10: 72.860 ns/op
+
+# Run progress: 82.00% complete, ETA 00:45:18
+# Fork: 3 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 77.283 ns/op
+# Warmup Iteration   2: 72.867 ns/op
+# Warmup Iteration   3: 72.880 ns/op
+# Warmup Iteration   4: 72.876 ns/op
+# Warmup Iteration   5: 72.881 ns/op
+Iteration   1: 72.887 ns/op
+Iteration   2: 72.857 ns/op
+Iteration   3: 72.859 ns/op
+Iteration   4: 72.872 ns/op
+Iteration   5: 72.930 ns/op
+Iteration   6: 72.885 ns/op
+Iteration   7: 72.918 ns/op
+Iteration   8: 72.952 ns/op
+Iteration   9: 72.908 ns/op
+Iteration  10: 72.891 ns/op
+
+# Run progress: 83.00% complete, ETA 00:42:47
+# Fork: 4 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 77.126 ns/op
+# Warmup Iteration   2: 72.755 ns/op
+# Warmup Iteration   3: 72.819 ns/op
+# Warmup Iteration   4: 72.806 ns/op
+# Warmup Iteration   5: 72.785 ns/op
+Iteration   1: 72.755 ns/op
+Iteration   2: 72.830 ns/op
+Iteration   3: 72.795 ns/op
+Iteration   4: 72.849 ns/op
+Iteration   5: 73.227 ns/op
+Iteration   6: 72.832 ns/op
+Iteration   7: 72.922 ns/op
+Iteration   8: 72.911 ns/op
+Iteration   9: 72.892 ns/op
+Iteration  10: 72.904 ns/op
+
+# Run progress: 84.00% complete, ETA 00:40:16
+# Fork: 5 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 77.271 ns/op
+# Warmup Iteration   2: 72.884 ns/op
+# Warmup Iteration   3: 72.993 ns/op
+# Warmup Iteration   4: 73.028 ns/op
+# Warmup Iteration   5: 73.018 ns/op
+Iteration   1: 73.010 ns/op
+Iteration   2: 72.992 ns/op
+Iteration   3: 73.067 ns/op
+Iteration   4: 73.109 ns/op
+Iteration   5: 73.084 ns/op
+Iteration   6: 73.022 ns/op
+Iteration   7: 73.001 ns/op
+Iteration   8: 73.019 ns/op
+Iteration   9: 73.026 ns/op
+Iteration  10: 72.974 ns/op
+
+# Run progress: 85.00% complete, ETA 00:37:45
+# Fork: 6 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 77.154 ns/op
+# Warmup Iteration   2: 72.861 ns/op
+# Warmup Iteration   3: 73.069 ns/op
+# Warmup Iteration   4: 73.075 ns/op
+# Warmup Iteration   5: 73.061 ns/op
+Iteration   1: 73.065 ns/op
+Iteration   2: 73.063 ns/op
+Iteration   3: 73.061 ns/op
+Iteration   4: 73.067 ns/op
+Iteration   5: 73.066 ns/op
+Iteration   6: 73.061 ns/op
+Iteration   7: 73.058 ns/op
+Iteration   8: 73.059 ns/op
+Iteration   9: 73.058 ns/op
+Iteration  10: 73.057 ns/op
+
+# Run progress: 86.00% complete, ETA 00:35:14
+# Fork: 7 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 77.040 ns/op
+# Warmup Iteration   2: 72.887 ns/op
+# Warmup Iteration   3: 72.920 ns/op
+# Warmup Iteration   4: 72.923 ns/op
+# Warmup Iteration   5: 72.937 ns/op
+Iteration   1: 72.974 ns/op
+Iteration   2: 73.019 ns/op
+Iteration   3: 73.005 ns/op
+Iteration   4: 72.946 ns/op
+Iteration   5: 72.944 ns/op
+Iteration   6: 72.932 ns/op
+Iteration   7: 72.919 ns/op
+Iteration   8: 72.961 ns/op
+Iteration   9: 72.981 ns/op
+Iteration  10: 72.990 ns/op
+
+# Run progress: 87.00% complete, ETA 00:32:43
+# Fork: 8 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 77.090 ns/op
+# Warmup Iteration   2: 72.898 ns/op
+# Warmup Iteration   3: 72.962 ns/op
+# Warmup Iteration   4: 72.962 ns/op
+# Warmup Iteration   5: 72.941 ns/op
+Iteration   1: 72.949 ns/op
+Iteration   2: 72.935 ns/op
+Iteration   3: 72.967 ns/op
+Iteration   4: 72.934 ns/op
+Iteration   5: 72.944 ns/op
+Iteration   6: 72.858 ns/op
+Iteration   7: 72.822 ns/op
+Iteration   8: 72.811 ns/op
+Iteration   9: 72.809 ns/op
+Iteration  10: 72.800 ns/op
+
+# Run progress: 88.00% complete, ETA 00:30:12
+# Fork: 9 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 76.964 ns/op
+# Warmup Iteration   2: 72.666 ns/op
+# Warmup Iteration   3: 72.736 ns/op
+# Warmup Iteration   4: 72.714 ns/op
+# Warmup Iteration   5: 72.686 ns/op
+Iteration   1: 72.697 ns/op
+Iteration   2: 72.686 ns/op
+Iteration   3: 72.689 ns/op
+Iteration   4: 72.688 ns/op
+Iteration   5: 72.681 ns/op
+Iteration   6: 72.689 ns/op
+Iteration   7: 72.784 ns/op
+Iteration   8: 72.853 ns/op
+Iteration   9: 72.856 ns/op
+Iteration  10: 72.862 ns/op
+
+# Run progress: 89.00% complete, ETA 00:27:41
+# Fork: 10 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 76.864 ns/op
+# Warmup Iteration   2: 72.560 ns/op
+# Warmup Iteration   3: 72.687 ns/op
+# Warmup Iteration   4: 72.686 ns/op
+# Warmup Iteration   5: 72.687 ns/op
+Iteration   1: 72.723 ns/op
+Iteration   2: 72.664 ns/op
+Iteration   3: 72.656 ns/op
+Iteration   4: 72.660 ns/op
+Iteration   5: 72.654 ns/op
+Iteration   6: 72.639 ns/op
+Iteration   7: 72.665 ns/op
+Iteration   8: 72.658 ns/op
+Iteration   9: 72.662 ns/op
+Iteration  10: 72.635 ns/op
+
+
+Result "jmh1596483120235.bench_8_flake_hex_representation.run":
+  72.867 ±(99.9%) 0.048 ns/op [Average]
+  (min, avg, max) = (72.550, 72.867, 73.227), stdev = 0.142
+  CI (99.9%): [72.819, 72.915] (assumes normal distribution)
+
+
+# JMH version: 1.23
+# VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-jvmci-20.1-b02
+# VM invoker: /opt/graalvm-ce-java11-20.1.0/bin/java
+# VM options: -XX:+UnlockExperimentalVMOptions -XX:+EnableJVMCIProduct -XX:-UnlockExperimentalVMOptions -XX:ThreadPriorityPolicy=1 -Dfile.encoding=UTF-8 -Djdk.attach.allowAttachSelf -Dclojure.compile.path=/home/admin/mulog/mulog-core/target/classes -Dmulog.version=0.4.0 -Dclojure.debug=false
+# Warmup: 5 iterations, 10 s each
+# Measurement: 10 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: jmh1596483120235.bench_9_flake_create_and_parse_string.run
+
+# Run progress: 90.00% complete, ETA 00:25:10
+# Fork: 1 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 151.237 ns/op
+# Warmup Iteration   2: 143.993 ns/op
+# Warmup Iteration   3: 143.999 ns/op
+# Warmup Iteration   4: 143.993 ns/op
+# Warmup Iteration   5: 144.017 ns/op
+Iteration   1: 143.988 ns/op
+Iteration   2: 144.036 ns/op
+Iteration   3: 144.031 ns/op
+Iteration   4: 144.020 ns/op
+Iteration   5: 144.000 ns/op
+Iteration   6: 143.978 ns/op
+Iteration   7: 143.984 ns/op
+Iteration   8: 143.987 ns/op
+Iteration   9: 143.990 ns/op
+Iteration  10: 144.066 ns/op
+
+# Run progress: 91.00% complete, ETA 00:22:39
+# Fork: 2 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 151.167 ns/op
+# Warmup Iteration   2: 143.798 ns/op
+# Warmup Iteration   3: 143.971 ns/op
+# Warmup Iteration   4: 143.978 ns/op
+# Warmup Iteration   5: 143.963 ns/op
+Iteration   1: 143.967 ns/op
+Iteration   2: 143.994 ns/op
+Iteration   3: 143.958 ns/op
+Iteration   4: 143.960 ns/op
+Iteration   5: 143.947 ns/op
+Iteration   6: 143.956 ns/op
+Iteration   7: 143.960 ns/op
+Iteration   8: 143.958 ns/op
+Iteration   9: 143.955 ns/op
+Iteration  10: 143.956 ns/op
+
+# Run progress: 92.00% complete, ETA 00:20:08
+# Fork: 3 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 151.155 ns/op
+# Warmup Iteration   2: 144.111 ns/op
+# Warmup Iteration   3: 144.040 ns/op
+# Warmup Iteration   4: 144.039 ns/op
+# Warmup Iteration   5: 144.048 ns/op
+Iteration   1: 144.036 ns/op
+Iteration   2: 144.048 ns/op
+Iteration   3: 144.038 ns/op
+Iteration   4: 144.057 ns/op
+Iteration   5: 144.034 ns/op
+Iteration   6: 144.005 ns/op
+Iteration   7: 144.000 ns/op
+Iteration   8: 144.000 ns/op
+Iteration   9: 144.020 ns/op
+Iteration  10: 144.020 ns/op
+
+# Run progress: 93.00% complete, ETA 00:17:37
+# Fork: 4 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 151.432 ns/op
+# Warmup Iteration   2: 144.158 ns/op
+# Warmup Iteration   3: 144.261 ns/op
+# Warmup Iteration   4: 144.068 ns/op
+# Warmup Iteration   5: 143.831 ns/op
+Iteration   1: 143.748 ns/op
+Iteration   2: 143.686 ns/op
+Iteration   3: 143.681 ns/op
+Iteration   4: 143.680 ns/op
+Iteration   5: 143.680 ns/op
+Iteration   6: 143.677 ns/op
+Iteration   7: 143.671 ns/op
+Iteration   8: 143.682 ns/op
+Iteration   9: 143.756 ns/op
+Iteration  10: 143.685 ns/op
+
+# Run progress: 94.00% complete, ETA 00:15:06
+# Fork: 5 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 151.295 ns/op
+# Warmup Iteration   2: 143.943 ns/op
+# Warmup Iteration   3: 143.677 ns/op
+# Warmup Iteration   4: 143.634 ns/op
+# Warmup Iteration   5: 143.630 ns/op
+Iteration   1: 143.638 ns/op
+Iteration   2: 143.621 ns/op
+Iteration   3: 143.604 ns/op
+Iteration   4: 143.613 ns/op
+Iteration   5: 143.625 ns/op
+Iteration   6: 143.613 ns/op
+Iteration   7: 143.604 ns/op
+Iteration   8: 143.611 ns/op
+Iteration   9: 143.624 ns/op
+Iteration  10: 143.633 ns/op
+
+# Run progress: 95.00% complete, ETA 00:12:35
+# Fork: 6 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 157.379 ns/op
+# Warmup Iteration   2: 152.114 ns/op
+# Warmup Iteration   3: 152.030 ns/op
+# Warmup Iteration   4: 152.042 ns/op
+# Warmup Iteration   5: 152.078 ns/op
+Iteration   1: 152.904 ns/op
+Iteration   2: 152.020 ns/op
+Iteration   3: 152.000 ns/op
+Iteration   4: 151.990 ns/op
+Iteration   5: 152.071 ns/op
+Iteration   6: 152.910 ns/op
+Iteration   7: 152.057 ns/op
+Iteration   8: 152.074 ns/op
+Iteration   9: 152.135 ns/op
+Iteration  10: 152.159 ns/op
+
+# Run progress: 96.00% complete, ETA 00:10:04
+# Fork: 7 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 149.450 ns/op
+# Warmup Iteration   2: 141.813 ns/op
+# Warmup Iteration   3: 142.226 ns/op
+# Warmup Iteration   4: 142.621 ns/op
+# Warmup Iteration   5: 142.263 ns/op
+Iteration   1: 142.216 ns/op
+Iteration   2: 142.200 ns/op
+Iteration   3: 142.172 ns/op
+Iteration   4: 142.146 ns/op
+Iteration   5: 142.187 ns/op
+Iteration   6: 142.696 ns/op
+Iteration   7: 142.796 ns/op
+Iteration   8: 142.524 ns/op
+Iteration   9: 142.728 ns/op
+Iteration  10: 142.319 ns/op
+
+# Run progress: 97.00% complete, ETA 00:07:33
+# Fork: 8 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 151.160 ns/op
+# Warmup Iteration   2: 143.987 ns/op
+# Warmup Iteration   3: 143.961 ns/op
+# Warmup Iteration   4: 143.959 ns/op
+# Warmup Iteration   5: 143.962 ns/op
+Iteration   1: 143.958 ns/op
+Iteration   2: 143.955 ns/op
+Iteration   3: 143.957 ns/op
+Iteration   4: 143.954 ns/op
+Iteration   5: 143.945 ns/op
+Iteration   6: 143.956 ns/op
+Iteration   7: 143.955 ns/op
+Iteration   8: 143.940 ns/op
+Iteration   9: 143.947 ns/op
+Iteration  10: 143.955 ns/op
+
+# Run progress: 98.00% complete, ETA 00:05:02
+# Fork: 9 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 149.145 ns/op
+# Warmup Iteration   2: 142.021 ns/op
+# Warmup Iteration   3: 142.029 ns/op
+# Warmup Iteration   4: 141.994 ns/op
+# Warmup Iteration   5: 141.958 ns/op
+Iteration   1: 142.051 ns/op
+Iteration   2: 142.023 ns/op
+Iteration   3: 142.028 ns/op
+Iteration   4: 142.037 ns/op
+Iteration   5: 141.984 ns/op
+Iteration   6: 142.044 ns/op
+Iteration   7: 142.013 ns/op
+Iteration   8: 142.007 ns/op
+Iteration   9: 141.990 ns/op
+Iteration  10: 142.099 ns/op
+
+# Run progress: 99.00% complete, ETA 00:02:31
+# Fork: 10 of 10
+OpenJDK 64-Bit Server VM warning: -XX:ThreadPriorityPolicy=1 may require system level permission, e.g., being the root user. If the necessary permission is not possessed, changes to priority will be silently ignored.
+# Warmup Iteration   1: 151.253 ns/op
+# Warmup Iteration   2: 144.038 ns/op
+# Warmup Iteration   3: 143.785 ns/op
+# Warmup Iteration   4: 143.783 ns/op
+# Warmup Iteration   5: 143.788 ns/op
+Iteration   1: 143.779 ns/op
+Iteration   2: 143.783 ns/op
+Iteration   3: 143.791 ns/op
+Iteration   4: 143.800 ns/op
+Iteration   5: 143.782 ns/op
+Iteration   6: 143.818 ns/op
+Iteration   7: 143.810 ns/op
+Iteration   8: 143.785 ns/op
+Iteration   9: 143.785 ns/op
+Iteration  10: 143.793 ns/op
+
+
+Result "jmh1596483120235.bench_9_flake_create_and_parse_string.run":
+  144.371 ±(99.9%) 0.923 ns/op [Average]
+  (min, avg, max) = (141.984, 144.371, 152.910), stdev = 2.721
+  CI (99.9%): [143.448, 145.294] (assumes normal distribution)
+
+
+# Run complete. Total time: 04:11:41
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+Benchmark                                    Mode  Cnt    Score   Error  Units
+j.bench_0_log_call_simple.run                avgt  100  309.906 ± 2.016  ns/op
+j.bench_1_log_call_with_context.run          avgt  100  336.802 ± 1.906  ns/op
+j.bench_2_log_call_with_context2.run         avgt  100  415.441 ± 3.277  ns/op
+j.bench_3_trace_call_simple.run              avgt  100  441.734 ± 2.485  ns/op
+j.bench_4_trace_call_with_capture.run        avgt  100  467.424 ± 4.615  ns/op
+j.bench_5_flake_creation.run                 avgt  100   34.390 ± 0.105  ns/op
+j.bench_6_flake_string_representation.run    avgt  100   66.246 ± 0.043  ns/op
+j.bench_7_flake_snowflake.run                avgt  100   67.821 ± 0.480  ns/op
+j.bench_8_flake_hex_representation.run       avgt  100   72.867 ± 0.048  ns/op
+j.bench_9_flake_create_and_parse_string.run  avgt  100  144.371 ± 0.923  ns/op
