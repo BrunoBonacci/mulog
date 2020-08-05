@@ -13,13 +13,12 @@
   [config]
   (->>
       (safely
-          (->> (http/get (get-in config [:endpoints :roads])
-               {:as "UTF-8"
-                :accept :json
-                :socket-timeout 3000
-                :connection-timeout 3000})
-            :body
-            (json/parse-string))
+          (http/get (get-in config [:endpoints :roads])
+            {:as "UTF-8"
+             :accept :json
+             :socket-timeout 3000
+             :connection-timeout 3000})
+
         :on-error
         :max-retries   :forever
         :track-as      :disruptions/list-roads
@@ -28,7 +27,9 @@
         :circuit-breaker :list-roads
         :message "Problem retrieving the list of roads"
         :log-stacktrace false)
-
+    ;; extracting the body
+    :body
+    (json/parse-string)
     ;; selecting relevant fields
     (map #(as-> % $
             (select-keys $  ["id" "url" "displayName" "statusSeverity"
@@ -42,14 +43,12 @@
   [config road-id]
   (->>
       (safely
-          (->> ;; http-rest request to TFL api
-              (http/get ((get-in config [:endpoints :disruptions]) road-id)
-                {:as                 "UTF-8"
-                 :accept             :json
-                 :socket-timeout     3000
-                 :connection-timeout 3000})
-            :body
-            (json/parse-string))
+          ;; http-rest request to TFL api
+          (http/get ((get-in config [:endpoints :disruptions]) road-id)
+            {:as                 "UTF-8"
+             :accept             :json
+             :socket-timeout     3000
+             :connection-timeout 3000})
         :on-error
         :max-retries 5
         :default     []
@@ -59,6 +58,10 @@
         :circuit-breaker  :disruptions
         :message "Problem retrieving the disruptions"
         :log-stacktrace false)
+
+    ;; extracting the body
+    :body
+    (json/parse-string)
 
     ;; selecting relevant fields
     (map #(as-> % $
