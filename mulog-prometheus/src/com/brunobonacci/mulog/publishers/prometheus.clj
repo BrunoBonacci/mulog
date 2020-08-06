@@ -54,8 +54,9 @@
 (def ^:const DEFAULT-CONFIG
   {:max-items     1000
    :publish-delay 100
-   ;; publish-method :push-gateway | :scape
+   ;; publish-method :push-gateway | :scrape
    ;; push-gateway-endpoint ""
+   ;; :register    (...)
    ;; ....
 
    ;; function to transform records
