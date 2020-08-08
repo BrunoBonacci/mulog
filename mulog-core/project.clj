@@ -1,5 +1,5 @@
 (defn ver [] (-> "../ver/mulog.version" slurp .trim))
-(defn ts [] (System/currentTimeMillis))
+(defn ts  [] (System/currentTimeMillis))
 (defn jdk [] (clojure.string/replace (str (System/getProperty "java.vm.vendor") "-" (System/getProperty "java.vm.version")) #" " "_"))
 
 (defproject com.brunobonacci/mulog (ver)

@@ -252,7 +252,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   "Traces the execution of an operation with the outcome and the time
   taken in nanoseconds.
 
-  *NOTE: API under development, might change in future releases.*
+  ### Track duration and outcome (errors)
 
   ***μ/trace*** will generate a trace object which can be understood by
   distributed tracing systems.
@@ -308,6 +308,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   in mind that *parent-trace* and *root-trace* might come from another
   system and they are propagated by the context.
 
+  ### Capture evaluation result
 
   Sometimes it is useful to add to the trace pairs which come from the
   result of the body's evaluation. For example to capture the http
@@ -329,7 +330,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   (u/trace ::availability
     {:pairs [:product-id product-id, :order order-id, :user user-id]
      :capture (fn [r] {:http-status (:status r)
-                      :etag (get-in r [:headers \"etag\"])})
+                       :etag (get-in r [:headers \"etag\"])})
     (product-availability product-id))
   ```
 
