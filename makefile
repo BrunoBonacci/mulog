@@ -34,7 +34,8 @@ define helpdoc
 # - build:   compiles and run unit tests for each modules
 # - deploy:  it deploys the jars into clojar (FOR RELEASE ONLY)
 # - ancient: updates all the dependencies
-# - all:     same as `make ancient clean build`
+# - format:  re-format source code across all modules
+# - all:     same as `make ancient format clean build`
 #
 endef
 
@@ -56,7 +57,7 @@ help:
 #
 # Preparing all
 #
-all: ancient clean build
+all: ancient format clean build
 
 
 #
@@ -204,6 +205,24 @@ ancient:
 - (cd mulog-slack;                lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-zipkin;               lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd examples/roads-disruptions; lein with-profile tools ancient upgrade ; lein do clean, install)
+
+
+#
+# uniforms formatting on all sources
+#
+.PHONY: format
+format:
+- @printf "#\n# Re-Format source code \n#\n"
+- (cd mulog-core;                 lein with-profile tools cljfmt fix)
+- (cd mulog-json;                 lein with-profile tools cljfmt fix)
+- (cd mulog-elasticsearch;        lein with-profile tools cljfmt fix)
+- (cd mulog-jvm-metrics;          lein with-profile tools cljfmt fix)
+- (cd mulog-kafka;                lein with-profile tools cljfmt fix)
+- (cd mulog-kinesis;              lein with-profile tools cljfmt fix)
+- (cd mulog-cloudwatch;           lein with-profile tools cljfmt fix)
+- (cd mulog-slack;                lein with-profile tools cljfmt fix)
+- (cd mulog-zipkin;               lein with-profile tools cljfmt fix)
+- (cd examples/roads-disruptions; lein with-profile tools cljfmt fix)
 
 
 #
