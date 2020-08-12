@@ -174,7 +174,8 @@
         buffer
         ;; else send to ELS
         (do
-          (post-records config (transform (map second items)))
+          (some->> (seq (transform (map second items)))
+            (post-records config))
           (rb/dequeue buffer last-offset))))))
 
 
@@ -204,3 +205,20 @@
       (assoc $ :index* (index-name (:index-pattern $))))
     (rb/agent-buffer 20000)
     (or (:transform config) identity)))
+
+
+(comment
+
+  (let [epub (elasticsearch-publisher
+               {:url "http://localhost:9200/_bulk"
+                :transform (constantly '())})]
+    (->> (rb/enqueue @(p/agent-buffer epub) {:k :v})
+      (p/publish epub)))
+
+  (let [epub (elasticsearch-publisher
+               {:url "http://localhost:9200/_bulk"
+                :transform (constantly nil)})]
+    (->> (rb/enqueue @(p/agent-buffer epub) {:k :v})
+      (p/publish epub)))
+
+  )
