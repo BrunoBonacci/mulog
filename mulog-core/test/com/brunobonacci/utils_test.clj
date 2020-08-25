@@ -7,8 +7,8 @@
 (fact "remove-nils from maps recursively"
 
   (ut/remove-nils
-      {:a 1 :b 2 :c nil :d false nil :alpha
-       :e {:foo 1 :bar nil :zoo {:zulu nil :v [1 nil 3]}}})
+    {:a 1 :b 2 :c nil :d false nil :alpha
+     :e {:foo 1 :bar nil :zoo {:zulu nil :v [1 nil 3]}}})
   => {:a 1, :b 2, :d false, :e {:foo 1, :zoo {:v [1 nil 3]}}}
 
   (ut/remove-nils {:a nil}) => {}

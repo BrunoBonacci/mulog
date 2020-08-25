@@ -1,6 +1,6 @@
 (ns ^{:author "Pablo Reszczynski (@PabloReszczynski) and Bruno Bonacci (@BrunoBonacci)"
       :doc "Publisher for sampling some JVM metrics"}
-    com.brunobonacci.mulog.publishers.jvm-metrics
+ com.brunobonacci.mulog.publishers.jvm-metrics
   (:require [clojure.spec.alpha :as s]
             [clojure.string :as str]
             [com.brunobonacci.mulog.utils :refer [os-java-pid]]
@@ -321,8 +321,7 @@
 ;;                                                                            ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(deftype JvmMetricsPublisher
-    [config buffer]
+(deftype JvmMetricsPublisher [config buffer]
 
   com.brunobonacci.mulog.publisher.PPublisher
   (agent-buffer [_]

@@ -106,9 +106,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(deftype KafkaPublisher
-    [config buffer transform]
-
+(deftype KafkaPublisher [config buffer transform]
 
   com.brunobonacci.mulog.publisher.PPublisher
   (agent-buffer [_]

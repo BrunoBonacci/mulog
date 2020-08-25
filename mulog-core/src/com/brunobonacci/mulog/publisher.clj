@@ -39,9 +39,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(deftype ConsolePublisher
-    [config buffer transform]
-
+(deftype ConsolePublisher [config buffer transform]
 
   com.brunobonacci.mulog.publisher.PPublisher
   (agent-buffer [_]
@@ -76,9 +74,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(deftype SimpleFilePublisher
-    [config ^java.io.Writer filewriter buffer transform]
-
+(deftype SimpleFilePublisher [config ^java.io.Writer filewriter buffer transform]
 
   com.brunobonacci.mulog.publisher.PPublisher
   (agent-buffer [_]

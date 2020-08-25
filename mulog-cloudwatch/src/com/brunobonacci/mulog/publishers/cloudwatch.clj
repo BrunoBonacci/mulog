@@ -77,8 +77,7 @@
 ;;                                                                                ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(deftype CloudwatchPublisher
-    [config buffer transform cw-client stream-name next-token]
+(deftype CloudwatchPublisher [config buffer transform cw-client stream-name next-token]
 
   com.brunobonacci.mulog.publisher.PPublisher
   (agent-buffer [_]

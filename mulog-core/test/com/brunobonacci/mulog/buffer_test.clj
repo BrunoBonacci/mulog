@@ -33,10 +33,10 @@
   (prop/for-all
     [ops ops-sequence]
     (reduce (fn [rb [op v]]
-         (case op
-           :enqueue (enqueue rb v)
-           :dequeue (dequeue rb v)
-           :clear   (clear   rb)))
+              (case op
+                :enqueue (enqueue rb v)
+                :dequeue (dequeue rb v)
+                :clear   (clear   rb)))
       (ring-buffer 5)
       ops)))
 

@@ -11,8 +11,8 @@
     (u/log :test))
 
   => (just
-        [(contains
-           {:mulog/event-name :test})])
+       [(contains
+          {:mulog/event-name :test})])
   )
 
 
@@ -31,12 +31,12 @@
 (fact "if the publisher fails it retries"
 
   (tp/with-processing-publisher
-      {:process (tp/rounds [:fail :ok]) :rounds 2}
+    {:process (tp/rounds [:fail :ok]) :rounds 2}
     (u/log :test))
 
   => (just
-        [(contains
-           {:mulog/event-name :test})])
+       [(contains
+          {:mulog/event-name :test})])
   )
 
 
@@ -44,10 +44,10 @@
 (fact "if the publisher fails it retries until it succeeds"
 
   (tp/with-processing-publisher
-      {:process (tp/rounds [:fail :fail :fail :fail :ok]) :rounds 5}
+    {:process (tp/rounds [:fail :fail :fail :fail :ok]) :rounds 5}
     (u/log :test))
 
   => (just
-        [(contains
-           {:mulog/event-name :test})])
+       [(contains
+          {:mulog/event-name :test})])
   )

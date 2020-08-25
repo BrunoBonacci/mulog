@@ -52,8 +52,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(deftype SlackPublisher
-    [config buffer]
+(deftype SlackPublisher [config buffer]
 
   com.brunobonacci.mulog.publisher.PPublisher
   (agent-buffer [_]

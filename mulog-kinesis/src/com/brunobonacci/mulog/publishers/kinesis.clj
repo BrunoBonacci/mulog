@@ -56,8 +56,7 @@
 ;;                                                                                ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(deftype KinesisPublisher
-    [config buffer transform kinesis-client]
+(deftype KinesisPublisher [config buffer transform kinesis-client]
 
   com.brunobonacci.mulog.publisher.PPublisher
   (agent-buffer [_]

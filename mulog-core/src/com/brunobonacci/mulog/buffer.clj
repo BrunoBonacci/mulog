@@ -6,7 +6,7 @@ This namespace contains the implementation of a ring-buffer and a
 wrapper agent used to buffer the events before their are published
 to the downstream systems by the publishers.
 "}
-    com.brunobonacci.mulog.buffer
+ com.brunobonacci.mulog.buffer
   (:require [amalloy.ring-buffer :as rb])
   (:import [java.util.concurrent ScheduledThreadPoolExecutor
             TimeUnit ScheduledFuture Future ThreadFactory]))
@@ -90,10 +90,10 @@ to the downstream systems by the publishers.
     ^ThreadFactory
     (reify ThreadFactory
       (^Thread newThread [this ^Runnable r]
-       (let [t (Thread. r)]
-         (.setName   t (str "mu/log-task-" (.getId t)))
-         (.setDaemon t true)
-         t)))))
+        (let [t (Thread. r)]
+          (.setName   t (str "mu/log-task-" (.getId t)))
+          (.setDaemon t true)
+          t)))))
 
 
 

@@ -28,28 +28,28 @@
   (fact "Memory"
     (jvm-sample {:memory true})
     => (just {:memory
-             (just {:total
-                    (contains {:init      int?
-                               :used      int?
-                               :max       int?
-                               :committed int?})
-                    :heap
-                    (contains
-                      {:init        int?
-                       :used        int?
-                       :max         int?
-                       :committed   int?
-                       :usage-ratio double?})
+              (just {:total
+                     (contains {:init      int?
+                                :used      int?
+                                :max       int?
+                                :committed int?})
+                     :heap
+                     (contains
+                       {:init        int?
+                        :used        int?
+                        :max         int?
+                        :committed   int?
+                        :usage-ratio double?})
 
-                    :non-heap
-                    (contains
-                      {:init        int?
-                       :used        int?
-                       :max         int?
-                       :committed   int?
-                       :usage-ratio #(or (int? %) (double? %))})
+                     :non-heap
+                     (contains
+                       {:init        int?
+                        :used        int?
+                        :max         int?
+                        :committed   int?
+                        :usage-ratio #(or (int? %) (double? %))})
 
-                    :pools map?})}))
+                     :pools map?})}))
 
 
   (fact "Garbage collector metrics"
@@ -74,17 +74,17 @@
 
     (fact "from mxbean, can ask for the total memory"
       (:total
-          (#'com.brunobonacci.mulog.publishers.jvm-metrics/capture-memory mxbean {:total true}))
+       (#'com.brunobonacci.mulog.publishers.jvm-metrics/capture-memory mxbean {:total true}))
       =>
       (just
-          {:init      anything
-           :used      anything
-           :max       anything
-           :committed anything}))
+        {:init      anything
+         :used      anything
+         :max       anything
+         :committed anything}))
 
     (fact "from memory pool, keys should use kebab notation "
       (->>
-          (#'com.brunobonacci.mulog.publishers.jvm-metrics/capture-memory-pools pools))
+        (#'com.brunobonacci.mulog.publishers.jvm-metrics/capture-memory-pools pools))
       =>
       each-key-is-kebab?)))
 

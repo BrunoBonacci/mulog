@@ -241,9 +241,7 @@
     '[clojure.pprint :refer [pprint]])
 
 
-  (deftype MyCustomPublisher
-      [config buffer]
-
+  (deftype MyCustomPublisher [config buffer]
 
     com.brunobonacci.mulog.publisher.PPublisher
     (agent-buffer [_]
@@ -285,9 +283,7 @@
       (pprint v)))
 
 
-  (deftype MyCustomPublisher
-      [config buffer ^java.io.Writer filewriter]
-
+  (deftype MyCustomPublisher [config buffer ^java.io.Writer filewriter]
 
     com.brunobonacci.mulog.publisher.PPublisher
     (agent-buffer [_]

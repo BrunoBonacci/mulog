@@ -87,8 +87,7 @@ events or to simply print them one per line.
             [clojure.pprint :refer [pprint]]))
 
 
-(deftype MyCustomPublisher
-    [config buffer]
+(deftype MyCustomPublisher [config buffer]
 
   com.brunobonacci.mulog.publisher.PPublisher
   (agent-buffer [_]
@@ -142,9 +141,7 @@ Now let's amend `MyCustomPublisher` to accept the filerwriter and push
 at most 1000 items.
 
 ``` clojure
-(deftype MyCustomPublisher
-  [config buffer ^java.io.Writer filewriter]
-
+(deftype MyCustomPublisher [config buffer ^java.io.Writer filewriter]
 
   com.brunobonacci.mulog.publisher.PPublisher
   (agent-buffer [_]
@@ -236,8 +233,7 @@ For example, in our previous example:
             [clojure.pprint :refer [pprint]]))
 
 
-(deftype MyCustomPublisher
-    [config buffer]
+(deftype MyCustomPublisher [config buffer]
 
   com.brunobonacci.mulog.publisher.PPublisher
   (agent-buffer [_]

@@ -2,7 +2,7 @@
       :doc
       "Logging library designed to log data events instead of plain words."
       :no-doc true}
-    com.brunobonacci.mulog.core
+ com.brunobonacci.mulog.core
   (:require [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.publisher :as p]
             [com.brunobonacci.mulog.utils :as ut]

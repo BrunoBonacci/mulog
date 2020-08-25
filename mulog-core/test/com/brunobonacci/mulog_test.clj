@@ -18,11 +18,11 @@
     (u/log :test))
 
   => (just
-        [(just
-           {:mulog/event-name :test
-            :mulog/timestamp anything
-            :mulog/trace-id anything
-            :mulog/namespace (str *ns*)})])
+       [(just
+          {:mulog/event-name :test
+           :mulog/timestamp anything
+           :mulog/trace-id anything
+           :mulog/namespace (str *ns*)})])
   )
 
 
@@ -33,9 +33,9 @@
     (u/log :test :value1 1 :v2 "b" :v3 {:d [:e :f :g]}))
 
   => (just
-        [(contains
-           {:mulog/event-name :test
-            :value1 1 :v2 "b" :v3 {:d [:e :f :g]}})])
+       [(contains
+          {:mulog/event-name :test
+           :value1 1 :v2 "b" :v3 {:d [:e :f :g]}})])
   )
 
 
@@ -47,9 +47,9 @@
     (u/log :test :v1 1))
 
   => (just
-        [(contains
-           {:mulog/event-name :test :v1 1
-            :app "demo" :version 1 :env "local"})])
+       [(contains
+          {:mulog/event-name :test :v1 1
+           :app "demo" :version 1 :env "local"})])
   )
 
 
@@ -63,12 +63,12 @@
     (u/log :test :v1 2))
 
   => (just
-        [(contains
-           {:mulog/event-name :test :v1 1
-            :app "demo" :version 1 :env "local"})
-         (contains
-           {:mulog/event-name :test :v1 2
-            :app "demo" :version 2 :env "local"})])
+       [(contains
+          {:mulog/event-name :test :v1 1
+           :app "demo" :version 1 :env "local"})
+        (contains
+          {:mulog/event-name :test :v1 2
+           :app "demo" :version 2 :env "local"})])
   )
 
 
@@ -82,12 +82,12 @@
     (u/log :test :v1 2))
 
   => (just
-        [(contains
-           {:mulog/event-name :test :v1 1
-            :app "demo" :version 1 :env "local"})
-         (contains
-           {:mulog/event-name :test :v1 2
-            :app "demo" :version 2 :env "local"})])
+       [(contains
+          {:mulog/event-name :test :v1 1
+           :app "demo" :version 1 :env "local"})
+        (contains
+          {:mulog/event-name :test :v1 2
+           :app "demo" :version 2 :env "local"})])
   )
 
 
@@ -99,9 +99,9 @@
     (u/log :test :app "new-app"))
 
   => (just
-        [(contains
-           {:mulog/event-name :test
-            :app "new-app" :version 1 :env "local"})])
+       [(contains
+          {:mulog/event-name :test
+           :app "new-app" :version 1 :env "local"})])
   )
 
 
@@ -113,8 +113,8 @@
       (u/log :test)))
 
   => (just
-        [(contains
-           {:mulog/event-name :test :local 1})])
+       [(contains
+          {:mulog/event-name :test :local 1})])
   )
 
 
@@ -127,8 +127,8 @@
         (u/log :test))))
 
   => (just
-        [(contains
-           {:mulog/event-name :test :local 1 :sub-local :a})])
+       [(contains
+          {:mulog/event-name :test :local 1 :sub-local :a})])
   )
 
 
@@ -145,16 +145,16 @@
     (u/log :after :l 0))
 
   => (just
-        [(contains
-           {:mulog/event-name :before :l 0})
-         (contains
-           {:mulog/event-name :ctx :l 1 :local 1})
-         (contains
-           {:mulog/event-name :ctx :l 2 :local 1 :sub-local :a})
-         (contains
-           {:mulog/event-name :ctx :l 1 :local 1 :out true})
-         (contains
-           {:mulog/event-name :after :l 0})])
+       [(contains
+          {:mulog/event-name :before :l 0})
+        (contains
+          {:mulog/event-name :ctx :l 1 :local 1})
+        (contains
+          {:mulog/event-name :ctx :l 2 :local 1 :sub-local :a})
+        (contains
+          {:mulog/event-name :ctx :l 1 :local 1 :out true})
+        (contains
+          {:mulog/event-name :after :l 0})])
   )
 
 
@@ -167,8 +167,8 @@
         (u/log :test))))
 
   => (just
-        [(contains
-           {:mulog/event-name :test :local 2 :sub-local :a})])
+       [(contains
+          {:mulog/event-name :test :local 2 :sub-local :a})])
   )
 
 
@@ -182,10 +182,10 @@
       (u/log :test)))
 
   => (just
-        [(contains
-           {:mulog/event-name :test :global 1})
-         (contains
-           {:mulog/event-name :test :global 2 :local :a})])
+       [(contains
+          {:mulog/event-name :test :global 1})
+        (contains
+          {:mulog/event-name :test :global 2 :local :a})])
   )
 
 
@@ -199,10 +199,10 @@
       (u/log :test :global :overwrite2 :local :overwrite2)))
 
   => (just
-        [(contains
-           {:mulog/event-name :test :global :overwrite})
-         (contains
-           {:mulog/event-name :test :global :overwrite2 :local :overwrite2})])
+       [(contains
+          {:mulog/event-name :test :global :overwrite})
+        (contains
+          {:mulog/event-name :test :global :overwrite2 :local :overwrite2})])
   )
 
 
@@ -258,17 +258,17 @@
     )
 
   => (just
-        [(just
-           {:mulog/event-name   :test
-            :mulog/timestamp    anything
-            :mulog/trace-id     anything
+       [(just
+          {:mulog/event-name   :test
+           :mulog/timestamp    anything
+           :mulog/trace-id     anything
             ;; no parent trace
-            :mulog/parent-trace nil?
-            :mulog/root-trace   anything
-            :mulog/namespace    (str *ns*)
-            :mulog/outcome      :ok
+           :mulog/parent-trace nil?
+           :mulog/root-trace   anything
+           :mulog/namespace    (str *ns*)
+           :mulog/outcome      :ok
             ;; duration is in nanoseconds
-            :mulog/duration     #(and (number? %) (> % 1000000))})])
+           :mulog/duration     #(and (number? %) (> % 1000000))})])
   )
 
 
@@ -285,18 +285,18 @@
     )
 
   => (just
-        [(just
-           {:mulog/event-name   :test
-            :mulog/timestamp    anything
-            :mulog/trace-id     anything
+       [(just
+          {:mulog/event-name   :test
+           :mulog/timestamp    anything
+           :mulog/trace-id     anything
             ;; no parent trace
-            :mulog/parent-trace nil?
-            :mulog/root-trace   anything
-            :mulog/namespace    (str *ns*)
-            :mulog/outcome      :error
+           :mulog/parent-trace nil?
+           :mulog/root-trace   anything
+           :mulog/namespace    (str *ns*)
+           :mulog/outcome      :error
             ;; duration is in nanoseconds
-            :mulog/duration     #(and (number? %) (> % 1000000))
-            :exception          #(instance? Exception %)})])
+           :mulog/duration     #(and (number? %) (> % 1000000))
+           :exception          #(instance? Exception %)})])
   )
 
 
@@ -314,14 +314,14 @@
     )
 
   => (just
-        [(contains
-           {:mulog/event-name :inner
-            :key3             3})
+       [(contains
+          {:mulog/event-name :inner
+           :key3             3})
 
-         (contains
-           {:mulog/event-name :test
-            :key1             :value1
-            :key2             2})])
+        (contains
+          {:mulog/event-name :test
+           :key1             :value1
+           :key2             2})])
 
   )
 
@@ -339,16 +339,16 @@
     )
 
   => (just
-        [(contains
-           {:mulog/event-name :inner
-            :key3             3
-            :cntx1            "value1"})
+       [(contains
+          {:mulog/event-name :inner
+           :key3             3
+           :cntx1            "value1"})
 
-         (contains
-           {:mulog/event-name :test
-            :key1             :value1
-            :key2             2
-            :cntx1            "value1"})])
+        (contains
+          {:mulog/event-name :test
+           :key1             :value1
+           :key2             2
+           :cntx1            "value1"})])
 
   )
 
@@ -366,16 +366,16 @@
     )
 
   => (just
-        [(contains
-           {:mulog/event-name :inner
-            :key3             3
-            :global           1})
+       [(contains
+          {:mulog/event-name :inner
+           :key3             3
+           :global           1})
 
-         (contains
-           {:mulog/event-name :test
-            :key1             :value1
-            :key2             2
-            :global           1})])
+        (contains
+          {:mulog/event-name :test
+           :key1             :value1
+           :key2             2
+           :global           1})])
 
   )
 
@@ -385,19 +385,19 @@
 
   (let [result
         (->>
-            (tp/with-test-publisher
+          (tp/with-test-publisher
 
-              (u/trace :outer
-                [:key1 "value1"]
+            (u/trace :outer
+              [:key1 "value1"]
 
-                (u/trace :middle
-                  [:key1 "value2"]
+              (u/trace :middle
+                [:key1 "value2"]
 
-                  (u/trace :inner
-                    [:key1 "value3"]
+                (u/trace :inner
+                  [:key1 "value3"]
 
-                    (u/log :message :key1 "value4")
-                    {:foo "bar"}))))
+                  (u/log :message :key1 "value4")
+                  {:foo "bar"}))))
           #_(def result))]
 
     (count result) => 4
@@ -460,10 +460,10 @@
          :capture #(select-keys % [:http-status])}
         {:http-status 200 :body "OK"}))
     => (just
-          [(contains
-             {:mulog/event-name :test
-              :key1             "value1"
-              :http-status      200})]))
+         [(contains
+            {:mulog/event-name :test
+             :key1             "value1"
+             :http-status      200})]))
 
 
   (fact "fail case"
@@ -475,19 +475,19 @@
           (throw (ex-info "BOOM" {})))))
 
     => (just
-          [(contains
-             {:mulog/event-name :test
-              :key1             "value1"
-              :mulog/outcome    :error})]))
+         [(contains
+            {:mulog/event-name :test
+             :key1             "value1"
+             :mulog/outcome    :error})]))
 
 
   (fact "fail case, doesn't contain the extraction"
     (->> (tp/with-test-publisher
-         (tp/ignore
-           (u/trace :test
-             {:pairs   [:key1 "value1"]
-              :capture #(select-keys % [:http-status])}
-             (throw (ex-info "BOOM" {})))))
+           (tp/ignore
+             (u/trace :test
+               {:pairs   [:key1 "value1"]
+                :capture #(select-keys % [:http-status])}
+               (throw (ex-info "BOOM" {})))))
       first
       :http-status) => nil)
 
@@ -500,10 +500,10 @@
         {:http-status 200 :body "OK"}))
 
     => (just
-          [(contains
-             {:mulog/event-name :test
-              :key1             "value1"
-              :mulog/capture    :error})]))
+         [(contains
+            {:mulog/event-name :test
+             :key1             "value1"
+             :mulog/capture    :error})]))
 
 
   (fact "extraction can redefine internal properties such as :outcome and :exception"
@@ -513,12 +513,12 @@
          :capture (constantly {:mulog/outcome :error :exception (ex-info "Logical errror" {})})}
         {:http-status 500 :body "some error as a value"}))
     => (just
-          [(contains
-             {:mulog/event-name :test
-              :mulog/outcome    :error
-              :exception        (partial instance? Exception)
-              :key1             "value1"
-              })]))
+         [(contains
+            {:mulog/event-name :test
+             :mulog/outcome    :error
+             :exception        (partial instance? Exception)
+             :key1             "value1"
+             })]))
   )
 
 
@@ -555,13 +555,13 @@
     (u/log :test :p1 :v1 :unbalanced))
 
   => (just
-        [(just
-           {:mulog/event-name   :test
-            :mulog/timestamp    anything
-            :mulog/trace-id     anything
-            :mulog/namespace    (str *ns*)
-            :p1                 :v1
-            })])
+       [(just
+          {:mulog/event-name   :test
+           :mulog/timestamp    anything
+           :mulog/trace-id     anything
+           :mulog/namespace    (str *ns*)
+           :p1                 :v1
+           })])
   )
 
 
@@ -574,19 +574,19 @@
       (Thread/sleep 1)))
 
   => (just
-        [(just
-           {:mulog/event-name   :test
-            :mulog/timestamp    anything
-            :mulog/trace-id     anything
+       [(just
+          {:mulog/event-name   :test
+           :mulog/timestamp    anything
+           :mulog/trace-id     anything
             ;; no parent trace
-            :mulog/parent-trace nil?
-            :mulog/root-trace   anything
-            :mulog/namespace    (str *ns*)
-            :mulog/outcome      :ok
+           :mulog/parent-trace nil?
+           :mulog/root-trace   anything
+           :mulog/namespace    (str *ns*)
+           :mulog/outcome      :ok
             ;; duration is in nanoseconds
-            :mulog/duration     #(and (number? %) (> % 1000000))
+           :mulog/duration     #(and (number? %) (> % 1000000))
             ;; just the balanced pair
-            :p1                 :v1})])
+           :p1                 :v1})])
   )
 
 
@@ -599,20 +599,20 @@
       (Thread/sleep 1)))
 
   => (just
-        [(just
-           {:mulog/event-name   :test
-            :mulog/timestamp    anything
-            :mulog/trace-id     anything
+       [(just
+          {:mulog/event-name   :test
+           :mulog/timestamp    anything
+           :mulog/trace-id     anything
             ;; no parent trace
-            :mulog/parent-trace nil?
-            :mulog/root-trace   anything
-            :mulog/namespace    (str *ns*)
-            :mulog/outcome      :ok
+           :mulog/parent-trace nil?
+           :mulog/root-trace   anything
+           :mulog/namespace    (str *ns*)
+           :mulog/outcome      :ok
             ;; duration is in nanoseconds
-            :mulog/duration     #(and (number? %) (> % 1000000))
+           :mulog/duration     #(and (number? %) (> % 1000000))
             ;; pairs
-            :p1                 :v1
-            :p2                 :v2})])
+           :p1                 :v1
+           :p2                 :v2})])
   )
 
 
@@ -621,24 +621,24 @@
 
   (tp/with-test-publisher
     (u/trace :test
-      (concat[:p1 :v1] [:p2 :v2])
+      (concat [:p1 :v1] [:p2 :v2])
       (Thread/sleep 1)))
 
   => (just
-        [(just
-           {:mulog/event-name   :test
-            :mulog/timestamp    anything
-            :mulog/trace-id     anything
+       [(just
+          {:mulog/event-name   :test
+           :mulog/timestamp    anything
+           :mulog/trace-id     anything
             ;; no parent trace
-            :mulog/parent-trace nil?
-            :mulog/root-trace   anything
-            :mulog/namespace    (str *ns*)
-            :mulog/outcome      :ok
+           :mulog/parent-trace nil?
+           :mulog/root-trace   anything
+           :mulog/namespace    (str *ns*)
+           :mulog/outcome      :ok
             ;; duration is in nanoseconds
-            :mulog/duration     #(and (number? %) (> % 1000000))
+           :mulog/duration     #(and (number? %) (> % 1000000))
             ;; pairs
-            :p1                 :v1
-            :p2                 :v2})])
+           :p1                 :v1
+           :p2                 :v2})])
   )
 
 
@@ -653,20 +653,20 @@
       (+ 1 1)))
 
   => (just
-        [(just
-           {:mulog/event-name   :test
-            :mulog/timestamp    anything
-            :mulog/trace-id     anything
+       [(just
+          {:mulog/event-name   :test
+           :mulog/timestamp    anything
+           :mulog/trace-id     anything
             ;; no parent trace
-            :mulog/parent-trace nil?
-            :mulog/root-trace   anything
-            :mulog/namespace    (str *ns*)
-            :mulog/outcome      :ok
+           :mulog/parent-trace nil?
+           :mulog/root-trace   anything
+           :mulog/namespace    (str *ns*)
+           :mulog/outcome      :ok
             ;; duration is in nanoseconds
-            :mulog/duration     #(and (number? %) (> % 1000000))
+           :mulog/duration     #(and (number? %) (> % 1000000))
             ;; pairs
-            :p1                 :v1
-            :p2                 :v2
+           :p1                 :v1
+           :p2                 :v2
             ;; capture
-            :value              2})])
+           :value              2})])
   )

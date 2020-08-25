@@ -67,7 +67,7 @@
         Overhead used : 1.881732 ns
 
   "}
-    com.brunobonacci.mulog.flakes
+ com.brunobonacci.mulog.flakes
   (:import com.brunobonacci.mulog.core.Flake))
 
 

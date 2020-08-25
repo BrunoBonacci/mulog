@@ -153,9 +153,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(deftype ElasticsearchPublisher
-    [config buffer transform]
-
+(deftype ElasticsearchPublisher [config buffer transform]
 
   com.brunobonacci.mulog.publisher.PPublisher
   (agent-buffer [_]

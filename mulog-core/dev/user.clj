@@ -348,9 +348,7 @@
     '[clojure.pprint :refer [pprint]])
 
 
-  (deftype ExamplesPublisher
-      [config buffer]
-
+  (deftype ExamplesPublisher [config buffer]
 
     com.brunobonacci.mulog.publisher.PPublisher
     (agent-buffer [_]

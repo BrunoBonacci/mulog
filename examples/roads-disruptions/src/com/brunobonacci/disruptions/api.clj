@@ -38,9 +38,9 @@
           (swap! active-disruptions
             (fn [old new]
               (->>
-                  (merge
-                      (index-by #(get % "id") old)
-                    (index-by #(get % "id") new))
+                (merge
+                  (index-by #(get % "id") old)
+                  (index-by #(get % "id") new))
                 (map second)))
             disruptions))
         :on-error

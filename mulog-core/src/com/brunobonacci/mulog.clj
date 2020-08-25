@@ -35,7 +35,7 @@ custom publisher and use it in your system.
 
 For more information, please visit: https://github.com/BrunoBonacci/mulog
 "}
-    com.brunobonacci.mulog
+ com.brunobonacci.mulog
   (:require [com.brunobonacci.mulog.core :as core]
             [com.brunobonacci.mulog.utils
              :refer [defalias fast-map-merge thread-local-binding]]

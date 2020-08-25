@@ -19,9 +19,7 @@
 ;;                                                                            ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(deftype PrometheusPublisher
-    [config buffer transform]
-
+(deftype PrometheusPublisher [config buffer transform]
 
   com.brunobonacci.mulog.publisher.PPublisher
   (agent-buffer [_]
