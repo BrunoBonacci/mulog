@@ -205,20 +205,3 @@
       (assoc $ :index* (index-name (:index-pattern $))))
     (rb/agent-buffer 20000)
     (or (:transform config) identity)))
-
-
-(comment
-
-  (let [epub (elasticsearch-publisher
-               {:url "http://localhost:9200/_bulk"
-                :transform (constantly '())})]
-    (->> (rb/enqueue @(p/agent-buffer epub) {:k :v})
-      (p/publish epub)))
-
-  (let [epub (elasticsearch-publisher
-               {:url "http://localhost:9200/_bulk"
-                :transform (constantly nil)})]
-    (->> (rb/enqueue @(p/agent-buffer epub) {:k :v})
-      (p/publish epub)))
-
-  )
