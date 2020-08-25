@@ -32,10 +32,11 @@ define helpdoc
 #
 # - clean:   removes compilation outputs
 # - build:   compiles and run unit tests for each modules
+# - prep:    prep for release: same as `make clean ancient format build`
 # - deploy:  it deploys the jars into clojar (FOR RELEASE ONLY)
 # - ancient: updates all the dependencies
 # - format:  re-format source code across all modules
-# - all:     same as `make ancient format clean build`
+# - all:     same as `make clean build`
 #
 endef
 
@@ -55,9 +56,15 @@ help:
 
 
 #
-# Preparing all
+# all
 #
-all: ancient format clean build
+all:  clean build
+
+
+#
+# prep
+#
+prep: clean ancient format build
 
 
 #
