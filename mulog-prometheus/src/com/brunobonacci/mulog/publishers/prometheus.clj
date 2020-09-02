@@ -1,15 +1,24 @@
 (ns com.brunobonacci.mulog.publishers.prometheus
-  (:require [com.brunobonacci.mulog.publisher :as p]
-            [com.brunobonacci.mulog.buffer :as rb]
-            [com.brunobonacci.mulog.utils :as ut]
-            [clojure.string :as str]))
+  (:require
+   [clojure.java.io :refer [as-url]]
+   [com.brunobonacci.mulog.publisher :as p]
+   [com.brunobonacci.mulog.buffer :as rb]
+   [com.brunobonacci.mulog.publishers.prometheus.metrics   :as met]
+   [com.brunobonacci.mulog.publishers.prometheus.registry  :as reg]
+   [com.brunobonacci.mulog.publishers.prometheus.collector :as col])
+  (:import [io.prometheus.client CollectorRegistry]
+           [io.prometheus.client.exporter PushGateway]))
 
-
-
-(defn publish-records!
-  [config events]
-  ;; TODO: increment counters
-  )
+(defn- publish-records!
+  [{:keys [^CollectorRegistry registry transform-metrics]
+    {:keys [^PushGateway gateway ^String job]} :push-gateway} events]
+  (->> events
+       (met/events->metrics)
+       (transform-metrics)
+       (col/cleanup-metrics)
+       (map (partial reg/register-dynamically registry))
+       (run! col/record-collection))
+  (when gateway (.push gateway registry job)))
 
 
 
@@ -19,16 +28,16 @@
 ;;                                                                            ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(deftype PrometheusPublisher [config buffer transform]
+
+(deftype PrometheusPublisher
+         [config buffer registry transform]
 
   com.brunobonacci.mulog.publisher.PPublisher
   (agent-buffer [_]
     buffer)
 
-
   (publish-delay [_]
     (:publish-delay config))
-
 
   (publish [_ buffer]
     ;; items are pairs [offset <item>]
@@ -41,31 +50,55 @@
           (publish-records! config (transform (map second items)))
           (rb/dequeue buffer last-offset)))))
 
-
   java.io.Closeable
-  (close [_]
-    ;; TODO:
-    ))
+  (close [_]))
 
-
-
-(def ^:const DEFAULT-CONFIG
+(def ^:private DEFAULT-CONFIG
   {:max-items     1000
    :publish-delay 100
-   ;; publish-method :push-gateway | :scrape
-   ;; push-gateway-endpoint ""
-   ;; :register    (...)
-   ;; ....
+   :registry      (reg/create-default)
+   :push-gateway  {:endpoint nil
+                   :job      nil
+                   :gateway  nil}
 
    ;; function to transform records
-   :transform     identity
-   })
-
-
+   :transform         identity
+   ;; function to transform metrics
+   :transform-metrics identity})
 
 (defn prometheus-publisher
   [config]
   (PrometheusPublisher.
-    (merge DEFAULT-CONFIG config)
-    (rb/agent-buffer 10000)
-    (or (:transform config) identity)))
+   (let [{{:keys [endpoint job gateway]} :push-gateway :as config} (merge DEFAULT-CONFIG config)]
+     (assoc-in config [:push-gateway :gateway]
+               (when (and (not gateway) endpoint job)
+                 (PushGateway. (as-url endpoint)))))
+   (rb/agent-buffer 10000)
+   (get config :registry  (reg/create-default))
+   (get config :transform identity)))
+
+(comment
+  ;; to be removed
+  (def pp (prometheus-publisher {}))
+
+  (publish-records! (.config pp)
+                    [{:app-name "sample-app"
+                      :version "0.1.0"
+                      :env "local"
+                      :mulog/trace-id #mulog/flake "4XWSuAXIyabhrxYHukmN5dPgv2mvcXg2"
+                      :mulog/timestamp 1596629322013
+                      :mulog/event-name :disruptions/initiated-poll
+                      :mulog/namespace "user"
+                      :foo 0.1
+                      :mulog/duration 396739657}
+                     {:app-name "sample-app"
+                      :version "0.1.0"
+                      :env "local"
+                      :mulog/trace-id #mulog/flake "4XWSuAXIyabhrxYHukmN5dPgv2mvcXg2"
+                      :mulog/timestamp 1596629322013
+                      :mulog/event-name :disruptions/initiated-poll
+                      :mulog/namespace "user"
+                      :foo 0.2
+                      :mulog/duration 396739657}])
+
+  (print (reg/text-format (.registry ^PrometheusPublisher pp))))
