@@ -11,11 +11,9 @@
 
 
 ;;
-;; OpenZipkin only accepts a 32 characters long ID for the root trace in hexadecimal format
-;; while it accepts 16 characters for a span ID (in hexadecimal format)
-
-
-
+;; OpenZipkin only accepts a 32 characters long ID for the root trace
+;; in hexadecimal format while it accepts 16 characters for a span ID
+;; (in hexadecimal format).
 ;;
 (defn- hexify
   "Returns an hexadecimal representation of a flake.
@@ -72,6 +70,8 @@
             ;; use app-name as localEndpoint if available
             :localEndpoint {:serviceName (or app-name "unknown")}
             ;; tags values must be a string (can't be maps)
+            ;; although numbers are accepted in zipkin, they're not
+            ;; accepted in Jaeger (and maybe other).
             :tags      (ut/map-values str (ut/remove-nils (flag-if-error e)))}))))
 
 
@@ -95,7 +95,22 @@
   (def publish-delay 5000)
   (def config {:url url :publish-delay publish-delay})
 
-  (def events user/sample-traces)
+  (def f1 (f/flake))
+  (def events
+    [{:mulog/event-name :mulog/sample-event
+      :mulog/timestamp  (System/currentTimeMillis)
+      :mulog/duration   242414196,
+      :mulog/namespace  "com.brunobonacci.mulog",
+      :mulog/outcome    :ok,
+      :mulog/root-trace f1
+      :mulog/trace-id   f1
+      :http-status      202
+      :factor1          3.5
+      :factor2          2/5
+      :app-name         "sample",
+      :env              "local1",
+      :version          "0.1.0"}])
+
   (post-records config events)
 
   (-> events first :mulog/root-trace (f/flake-hex) (#(subs % 0 32)))
