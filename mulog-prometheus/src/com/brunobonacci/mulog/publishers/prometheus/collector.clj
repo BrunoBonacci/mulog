@@ -24,6 +24,8 @@
    :histogram  "hstgm"
    :summary    "smry"})
 
+
+
 (defprotocol ChildWithLabels
   (child-with-labels [t label-values]))
 
@@ -56,6 +58,9 @@
   ObserveValue
   (observe-value [t value] (.observe t value)))
 
+
+
+
 (defn- simple-collector-builder
   [builder-constructor
    {:keys [name namespace description label-keys]}]
@@ -66,6 +71,8 @@
       (.help description)
       (.labelNames label-keys)
       (.create)))
+
+
 
 (defmulti create-collection (fn [metric] (:metric-type metric)))
 
@@ -88,6 +95,7 @@
   [{:keys [quantiles max-age-seconds] :as metric}]
   (simple-collector-builder #(summary-builder quantiles max-age-seconds) metric))
 
+
 (defn add-quantile [^Summary$Builder builder [quantile error]]
   (.quantile builder quantile error))
 
@@ -96,6 +104,9 @@
   (cond-> (Summary/build)
     max-age-seconds (.maxAgeSeconds max-age-seconds)
     :always         ((partial reduce add-quantile) (or (seq quantiles) summary-quantiles-default))))
+
+
+
 
 (defmulti record-collection (fn [[metric collection]] (:metric-type metric)))
 
@@ -118,6 +129,8 @@
   [[{:keys [label-values metric-value]} collection :as met-col]]
   (observe-value (child-with-labels collection label-values) metric-value)
   met-col)
+
+
 
 (defn cleanup-metrics
   [metrics]

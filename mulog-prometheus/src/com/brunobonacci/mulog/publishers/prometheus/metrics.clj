@@ -6,12 +6,16 @@
   [e]
   (instance? java.lang.Exception e))
 
+
+
 (defn- cleanup-event
   [event]
   (->> event
        (#(dissoc % :mulog/trace-id :mulog/parent-trace :mulog/root-trace :mulog/timestamp))
        (filter (fn [[_ v]] (or (string? v) (number? v) (keyword? v) (exception? v))))
        (into {})))
+
+
 
 (defn- kw-str
   [k]
@@ -21,6 +25,8 @@
           (name k))
         (str k))
       (str/replace #"[^a-zA-Z0-9_:]+" "_")))
+
+
 
 (defn- as-labels
   [m]
@@ -38,6 +44,8 @@
                  :else (str v))]))
        (into {})
        ((fn [m] [(keys m) (vals m)]))))
+
+
 
 (defn- event->metrics
   [{:keys [mulog/namespace mulog/event-name] :as event}]
@@ -60,6 +68,8 @@
            :name        event-name
            :description (str event-name " counter")
            :labels      labels})))
+
+
 
 (defn events->metrics
   [events]

@@ -11,6 +11,8 @@
                                              (.getDeclaredField "namesCollectorsLock")
                                              (doto (.setAccessible true))))
 
+
+
 (defprotocol Registry
   (get-nc-map  [t])
   (get-nc-lock [t])
@@ -40,5 +42,7 @@
     (with-open [out (java.io.StringWriter.)]
       (write-out t out)
       (str out))))
+
+
 
 (defn create-default [] (CollectorRegistry/defaultRegistry))
