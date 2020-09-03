@@ -31,7 +31,7 @@
     [t metric]
     (locking (get-nc-lock t)
       [metric
-       (let [collection (get (get-nc-map t) (:full-name metric))]
+       (let [collection (get (get-nc-map t) (:metric/full-name metric))]
          (if-not collection
            (let [collection (col/create-collection metric)]
              (.register t collection)

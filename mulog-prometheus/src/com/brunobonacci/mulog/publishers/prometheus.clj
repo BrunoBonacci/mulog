@@ -92,7 +92,7 @@
   ;; to be removed
   (def pp (prometheus-publisher {}))
 
-  (publish-records! (.config pp)
+  (publish-records! (.config ^PrometheusPublisher pp)
     [{:app-name "sample-app"
       :version "0.1.0"
       :env "local"

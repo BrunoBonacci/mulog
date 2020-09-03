@@ -1,4 +1,6 @@
 (ns com.brunobonacci.mulog.publishers.prometheus.collector
+  (:require [clojure.spec.alpha :as s]
+            [com.brunobonacci.mulog.publishers.prometheus.metrics_spec :as ms])
   (:import [io.prometheus.client
             SimpleCollector
             SimpleCollector$Builder
@@ -63,7 +65,7 @@
 
 (defn- simple-collector-builder
   [builder-constructor
-   {:keys [name namespace description label-keys]}]
+   {:metric/keys [name namespace description label-keys]}]
   (-> ^SimpleCollector$Builder (builder-constructor)
     (.name name)
     (.namespace namespace)
@@ -73,7 +75,7 @@
 
 
 
-(defmulti create-collection (fn [metric] (:metric-type metric)))
+(defmulti create-collection (fn [metric] (:metric/metric-type metric)))
 
 (defmethod create-collection :counter
   [metric]
@@ -84,14 +86,14 @@
   (simple-collector-builder #(Gauge/build) metric))
 
 (defmethod create-collection :histogram
-  [{:keys [buckets] :as metric}]
+  [{:metric/keys [buckets] :as metric}]
   (simple-collector-builder #(cond-> (Histogram/build)
                                (seq buckets) (.buckets buckets))
     metric))
 
 (declare summary-builder)
 (defmethod create-collection :summary
-  [{:keys [quantiles max-age-seconds] :as metric}]
+  [{:metric/keys [quantiles max-age-seconds] :as metric}]
   (simple-collector-builder #(summary-builder quantiles max-age-seconds) metric))
 
 
@@ -107,25 +109,25 @@
 
 
 
-(defmulti record-collection (fn [[metric collection]] (:metric-type metric)))
+(defmulti record-collection (fn [[metric collection]] (:metric/metric-type metric)))
 
 (defmethod record-collection :counter
-  [[{:keys [label-values]} collection :as met-col]]
+  [[{:metric/keys [label-values]} collection :as met-col]]
   (increment (child-with-labels collection label-values))
   met-col)
 
 (defmethod record-collection :gauge
-  [[{:keys [label-values metric-value]} collection :as met-col]]
+  [[{:metric/keys [label-values metric-value]} collection :as met-col]]
   (set-value (child-with-labels collection label-values) metric-value)
   met-col)
 
 (defmethod record-collection :histogram
-  [[{:keys [label-values metric-value]} collection :as met-col]]
+  [[{:metric/keys [label-values metric-value]} collection :as met-col]]
   (observe-value (child-with-labels collection label-values) metric-value)
   met-col)
 
 (defmethod record-collection :summary
-  [[{:keys [label-values metric-value]} collection :as met-col]]
+  [[{:metric/keys [label-values metric-value]} collection :as met-col]]
   (observe-value (child-with-labels collection label-values) metric-value)
   met-col)
 
@@ -133,15 +135,16 @@
 
 (defn cleanup-metrics
   [metrics]
-  (map (fn [{:keys [metric-type metric-value namespace name description labels buckets] :as m}]
+  {:pre [(s/every #(s/valid? ::ms.metric %))]}
+  (map (fn [{:metric/keys [metric-type metric-value namespace name description labels buckets] :as m}]
          (let [new-name (str name "_" (metric-type metric-suffix))]
            (merge m
-             {:metric-value (when metric-value (double metric-value))
-              :namespace    (str namespace)
-              :name         (str new-name)
-              :full-name    (str namespace "_" new-name)
-              :description  (str description)
-              :label-keys   (into-array String (first labels))
-              :label-values (into-array String (second labels))
-              :buckets      (double-array buckets)})))
+             #:metric{:metric-value (when metric-value (double metric-value))
+                      :namespace    (str namespace)
+                      :name         (str new-name)
+                      :full-name    (str namespace "_" new-name)
+                      :description  (str description)
+                      :label-keys   (into-array String (keys labels))
+                      :label-values (into-array String (vals labels))
+                      :buckets      (double-array buckets)})))
     metrics))
