@@ -11,9 +11,9 @@
 (defn- cleanup-event
   [event]
   (->> event
-       (#(dissoc % :mulog/trace-id :mulog/parent-trace :mulog/root-trace :mulog/timestamp))
-       (filter (fn [[_ v]] (or (string? v) (number? v) (keyword? v) (exception? v))))
-       (into {})))
+    (#(dissoc % :mulog/trace-id :mulog/parent-trace :mulog/root-trace :mulog/timestamp))
+    (filter (fn [[_ v]] (or (string? v) (number? v) (keyword? v) (exception? v))))
+    (into {})))
 
 
 
@@ -24,26 +24,26 @@
           (str (namespace k) "_" (name k))
           (name k))
         (str k))
-      (str/replace #"[^a-zA-Z0-9_:]+" "_")))
+    (str/replace #"[^a-zA-Z0-9_:]+" "_")))
 
 
 
 (defn- as-labels
   [m]
   (->> m
-       (#(dissoc % :mulog/namespace :mulog/event-name))
-       (map (fn [[k v]]
-              [(->
-                (cond
-                  (keyword? k) (kw-str k)
-                  :else (str k))
-                (str/replace #"[^a-zA-Z0-9_:]+" "_"))
-               (cond
-                 (keyword? v) (name v)
-                 (exception? v) (str (type v) ": " (.getMessage ^Exception v))
-                 :else (str v))]))
-       (into {})
-       ((fn [m] [(keys m) (vals m)]))))
+    (#(dissoc % :mulog/namespace :mulog/event-name))
+    (map (fn [[k v]]
+           [(->
+              (cond
+                (keyword? k) (kw-str k)
+                :else (str k))
+              (str/replace #"[^a-zA-Z0-9_:]+" "_"))
+            (cond
+              (keyword? v) (name v)
+              (exception? v) (str (type v) ": " (.getMessage ^Exception v))
+              :else (str v))]))
+    (into {})
+    ((fn [m] [(keys m) (vals m)]))))
 
 
 
@@ -63,17 +63,17 @@
              :name         e-name
              :description  (str/join " " [event-name key-str (name type)])
              :labels labels})
-          {:metric-type :counter
-           :namespace   namespace
-           :name        event-name
-           :description (str event-name " counter")
-           :labels      labels})))
+      {:metric-type :counter
+       :namespace   namespace
+       :name        event-name
+       :description (str event-name " counter")
+       :labels      labels})))
 
 
 
 (defn events->metrics
   [events]
   (->> events
-       (map cleanup-event)
-       (mapcat event->metrics)
-       (remove nil?)))
+    (map cleanup-event)
+    (mapcat event->metrics)
+    (remove nil?)))

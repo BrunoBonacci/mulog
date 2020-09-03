@@ -1,5 +1,4 @@
-(defn ver [] (-> "../ver/mulog.version" slurp .trim))
-(defproject com.brunobonacci/mulog-prometheus #=(ver)
+(defproject com.brunobonacci/mulog-prometheus "0.5.0-SNAPSHOT"
   :description "A publisher for μ/log to Prometheus."
 
   :url "https://github.com/BrunoBonacci/mulog"
@@ -10,7 +9,7 @@
   :scm {:name "git" :url "https://github.com/BrunoBonacci/mulog.git"}
 
   :dependencies [[org.clojure/clojure "1.10.1"]
-                 [com.brunobonacci/mulog #=(ver)]
+                 [com.brunobonacci/mulog "0.5.0-SNAPSHOT"]
                  [io.prometheus/simpleclient             "0.9.0"]
                  [io.prometheus/simpleclient_common      "0.9.0"]
                  [io.prometheus/simpleclient_pushgateway "0.9.0"]]

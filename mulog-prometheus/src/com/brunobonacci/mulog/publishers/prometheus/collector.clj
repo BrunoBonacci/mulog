@@ -64,13 +64,12 @@
 (defn- simple-collector-builder
   [builder-constructor
    {:keys [name namespace description label-keys]}]
-  (-> ^SimpleCollector$Builder
-   (builder-constructor)
-      (.name name)
-      (.namespace namespace)
-      (.help description)
-      (.labelNames label-keys)
-      (.create)))
+  (-> ^SimpleCollector$Builder (builder-constructor)
+    (.name name)
+    (.namespace namespace)
+    (.help description)
+    (.labelNames label-keys)
+    (.create)))
 
 
 
@@ -88,7 +87,7 @@
   [{:keys [buckets] :as metric}]
   (simple-collector-builder #(cond-> (Histogram/build)
                                (seq buckets) (.buckets buckets))
-                            metric))
+    metric))
 
 (declare summary-builder)
 (defmethod create-collection :summary
@@ -137,12 +136,12 @@
   (map (fn [{:keys [metric-type metric-value namespace name description labels buckets] :as m}]
          (let [new-name (str name "_" (metric-type metric-suffix))]
            (merge m
-                  {:metric-value (when metric-value (double metric-value))
-                   :namespace    (str namespace)
-                   :name         (str new-name)
-                   :full-name    (str namespace "_" new-name)
-                   :description  (str description)
-                   :label-keys   (into-array String (first labels))
-                   :label-values (into-array String (second labels))
-                   :buckets      (double-array buckets)})))
-       metrics))
+             {:metric-value (when metric-value (double metric-value))
+              :namespace    (str namespace)
+              :name         (str new-name)
+              :full-name    (str namespace "_" new-name)
+              :description  (str description)
+              :label-keys   (into-array String (first labels))
+              :label-values (into-array String (second labels))
+              :buckets      (double-array buckets)})))
+    metrics))
