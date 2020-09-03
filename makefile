@@ -70,7 +70,7 @@ prep: clean ancient format build
 #
 # Build
 #
-build: build-core build-json build-els build-jvm-metrics build-kafka build-kinesis build-cloudwatch build-slack build-zipkin build-examples
+build: build-core build-json build-els build-jvm-metrics build-kafka build-kinesis build-cloudwatch build-slack build-zipkin build-examples build-prometheus
 - @printf "#\n# Building μ/log Completed!\n#\n"
 
 
@@ -165,6 +165,16 @@ mulog-zipkin/target/mulog*.jar: $(zipkin_src)
 
 
 #
+# Build prometheus
+#
+prometheus_src = $(shell find mulog-prometheus/project.clj mulog-prometheus/src mulog-prometheus/resources -type f)
+build-prometheus: build-core mulog-prometheus/target/mulog*.jar
+mulog-prometheus/target/mulog*.jar: $(prometheus_src)
+- @printf "#\n# Building mulog-prometheus\n#\n"
+- (cd mulog-prometheus; lein do check, test, install)
+
+
+#
 # Build examples
 #
 build-examples: build-examples-disruptions
@@ -194,6 +204,7 @@ deploy:
 - (cd mulog-cloudwatch;           lein deploy clojars)
 - (cd mulog-slack;                lein deploy clojars)
 - (cd mulog-zipkin;               lein deploy clojars)
+- (cd mulog-prometheus;           lein deploy clojars)
 
 
 #
@@ -211,6 +222,7 @@ ancient:
 - (cd mulog-cloudwatch;           lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-slack;                lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-zipkin;               lein with-profile tools ancient upgrade ; lein do clean, install)
+- (cd mulog-prometheus;           lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd examples/roads-disruptions; lein with-profile tools ancient upgrade ; lein do clean, install)
 
 
@@ -229,6 +241,7 @@ format:
 - (cd mulog-cloudwatch;           lein with-profile tools cljfmt fix)
 - (cd mulog-slack;                lein with-profile tools cljfmt fix)
 - (cd mulog-zipkin;               lein with-profile tools cljfmt fix)
+- (cd mulog-prometheus;           lein with-profile tools cljfmt fix)
 - (cd examples/roads-disruptions; lein with-profile tools cljfmt fix)
 
 
@@ -247,4 +260,5 @@ clean:
 - (cd mulog-cloudwatch;           rm -fr target)
 - (cd mulog-slack;                rm -fr target)
 - (cd mulog-zipkin;               rm -fr target)
+- (cd mulog-prometheus;           rm -fr target)
 - (cd examples/roads-disruptions; rm -fr target)
