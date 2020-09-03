@@ -1,6 +1,6 @@
 (ns com.brunobonacci.mulog.publishers.prometheus.collector
   (:require [clojure.spec.alpha :as s]
-            [com.brunobonacci.mulog.publishers.prometheus.metrics_spec :as ms])
+            [com.brunobonacci.mulog.publishers.prometheus.metrics-spec :as ms])
   (:import [io.prometheus.client
             SimpleCollector
             SimpleCollector$Builder
@@ -75,7 +75,10 @@
 
 
 
-(defmulti create-collection (fn [metric] (:metric/type metric)))
+(defmulti create-collection
+  "Dispatches on the `:metric/type`.
+  Returns a `SimpleCollector`"
+  (fn [metric] (:metric/type metric)))
 
 (defmethod create-collection :counter
   [metric]
@@ -93,23 +96,29 @@
 
 (declare summary-builder)
 (defmethod create-collection :summary
-  [{:metric/keys [quantiles max-age-seconds] :as metric}]
-  (simple-collector-builder #(summary-builder quantiles max-age-seconds) metric))
+  [{:metric/keys [quantiles max-age-seconds age-buckets] :as metric}]
+  (simple-collector-builder #(summary-builder quantiles max-age-seconds age-buckets) metric))
 
 
 (defn add-quantile [^Summary$Builder builder [quantile error]]
   (.quantile builder quantile error))
 
 (defn summary-builder
-  [quantiles max-age-seconds]
+  [quantiles max-age-seconds age-buckets]
   (cond-> (Summary/build)
+    age-buckets     (.ageBuckets age-buckets)
     max-age-seconds (.maxAgeSeconds max-age-seconds)
     :always         ((partial reduce add-quantile) (or (seq quantiles) summary-quantiles-default))))
 
 
 
 
-(defmulti record-collection (fn [[metric collection]] (:metric/type metric)))
+(defmulti record-collection
+  "Receives a `[metric collection]`.
+  Dispatches on the `:metric/type`.
+  This will cause the collection to realise the events value.
+  Returns `[metric collection]`"
+  (fn [[metric collection]] (:metric/type metric)))
 
 (defmethod record-collection :counter
   [[{:metric/keys [label-values]} collection :as met-col]]
@@ -136,15 +145,16 @@
 (defn cleanup-metrics
   [metrics]
   {:pre [(s/every #(s/valid? ::ms.metric %))]}
-  (map (fn [{:metric/keys [type value namespace name description labels buckets] :as m}]
-         (let [new-name (str name "_" (get metric-suffix type))]
-           (merge m
-             #:metric{:value (when value (double value))
-                      :namespace    (str namespace)
-                      :name         (str new-name)
-                      :full-name    (str namespace "_" new-name)
-                      :description  (str description)
-                      :label-keys   (into-array String (keys labels))
-                      :label-values (into-array String (vals labels))
-                      :buckets      (double-array buckets)})))
-    metrics))
+  (->> metrics
+    (remove nil?)
+    (map (fn [{:metric/keys [type value namespace name description labels buckets] :as m}]
+           (let [new-name (str name "_" (get metric-suffix type))]
+             (merge m
+               #:metric{:value (when value (double value))
+                        :namespace    (str namespace)
+                        :name         (str new-name)
+                        :full-name    (str namespace "_" new-name)
+                        :description  (str description)
+                        :label-keys   (into-array String (keys labels))
+                        :label-values (into-array String (vals labels))
+                        :buckets      (double-array buckets)}))))))

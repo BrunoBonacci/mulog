@@ -1,8 +1,8 @@
 (ns com.brunobonacci.mulog.publishers.prometheus.metrics
   (:require [clojure.string :as str]
-            [com.brunobonacci.mulog.publishers.prometheus.metrics_spec :refer [sanitize-metric-name-re
-                                                                               sanitize-metric-label-name-re
-                                                                               reserved-metric-label-name-re]]))
+            [com.brunobonacci.mulog.publishers.prometheus.metrics-spec :refer [invalid-metric-name-chars
+                                                                               invalid-metric-label-chars
+                                                                               reserved-metric-label-chars]]))
 
 (defn- exception?
   [e]
@@ -26,7 +26,7 @@
           (str (namespace k) "_" (name k))
           (name k))
         (str k))
-    (str/replace sanitize-metric-name-re "_")))
+    (str/replace invalid-metric-name-chars "_")))
 
 
 
@@ -39,8 +39,8 @@
               (cond
                 (keyword? k) (kw-str k)
                 :else (str k))
-              (str/replace sanitize-metric-label-name-re "_")
-              (str/replace reserved-metric-label-name-re "_"))
+              (str/replace invalid-metric-label-chars  "_")
+              (str/replace reserved-metric-label-chars "_"))
             (cond
               (keyword? v) (name v)
               (exception? v) (str (type v) ": " (.getMessage ^Exception v))

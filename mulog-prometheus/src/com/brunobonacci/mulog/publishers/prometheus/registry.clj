@@ -14,14 +14,36 @@
 
 
 (defprotocol Registry
-  (get-nc-map           [t])
-  (get-nc-lock          [t])
-  (register-dynamically [t metric]))
+  "This protocol is used to extend the `CollectorRegistry`.
+  This is done to ultimately ensure thread safety and to dynamically register collections.
+  The prometheus java client currently only lets you register new collections, existing
+  collections will throw an `IllegalArgumentException`"
+  (get-nc-map
+    [t]
+    "Retrieve the `namesToCollectors` map")
+  (get-nc-lock
+    [t]
+    "Retrieve the `nameCollectorsLock` lock Object")
+  (register-dynamically
+    [t metric]
+    "This will try and register a new collection if it doesn't or return an existing collection
+    by doing the following:
+    - syncronize a lock on `nameCollectorsLock`
+    - get collection from `namesToCollectors` using `:metric/full-name`
+    - if collection exists return
+    - else register new collection and return"))
 
 (defprotocol ReadRegistry
-  (get-registry [t])
-  (write-out    [t out])
-  (write-text  [t]))
+  "This protocol is used to extract the metric information from the registry."
+  (get-registry
+    [t]
+    "Returns the `^CollectorRegistry t`.")
+  (write-out
+    [t out]
+    "Writes the `^CollectorRegistry t` to `^java.io.Writer out`.")
+  (write-text
+    [t]
+    "Writes the `^CollectorRegistry t` to a `java.io.StringWriter` and returns the String result."))
 
 (extend-type CollectorRegistry
   Registry
