@@ -11,8 +11,8 @@
 
 (defn- good-name? [name] (s/and string? (re-matches metric-name-re name)))
 
-(s/def :metric/metric-type #{:counter :gauge :histogram :summary})
-(s/def :metric/metric-value double?)
+(s/def :metric/type #{:counter :gauge :histogram :summary})
+(s/def :metric/value double?)
 (s/def :metric/namespace good-name?)
 (s/def :metric/name good-name?)
 (s/def :metric/description string?)
@@ -25,7 +25,7 @@
                                     (s/every #(<= 0 % 1)))))
 
 
-(s/def ::metric (s/and (s/keys :req [:metric/metric-type
+(s/def ::metric (s/and (s/keys :req [:metric/type
                                      :metric/namespace
                                      :metric/name]
                          :opt [:metric/value
@@ -33,5 +33,5 @@
                                :metric/description
                                :metric/buckets
                                :metric/quantiles])
-                  (fn [{:metric/keys [metric-type metric-value]}]
-                    (if (contains? #{:histogram :summary} metric-type) metric-value true))))
+                  (fn [{:metric/keys [type value]}]
+                    (if (contains? #{:histogram :summary} type) value true))))

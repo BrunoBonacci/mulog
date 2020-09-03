@@ -75,7 +75,7 @@
 
 
 
-(defmulti create-collection (fn [metric] (:metric/metric-type metric)))
+(defmulti create-collection (fn [metric] (:metric/type metric)))
 
 (defmethod create-collection :counter
   [metric]
@@ -109,7 +109,7 @@
 
 
 
-(defmulti record-collection (fn [[metric collection]] (:metric/metric-type metric)))
+(defmulti record-collection (fn [[metric collection]] (:metric/type metric)))
 
 (defmethod record-collection :counter
   [[{:metric/keys [label-values]} collection :as met-col]]
@@ -117,18 +117,18 @@
   met-col)
 
 (defmethod record-collection :gauge
-  [[{:metric/keys [label-values metric-value]} collection :as met-col]]
-  (set-value (child-with-labels collection label-values) metric-value)
+  [[{:metric/keys [label-values value]} collection :as met-col]]
+  (set-value (child-with-labels collection label-values) value)
   met-col)
 
 (defmethod record-collection :histogram
-  [[{:metric/keys [label-values metric-value]} collection :as met-col]]
-  (observe-value (child-with-labels collection label-values) metric-value)
+  [[{:metric/keys [label-values value]} collection :as met-col]]
+  (observe-value (child-with-labels collection label-values) value)
   met-col)
 
 (defmethod record-collection :summary
-  [[{:metric/keys [label-values metric-value]} collection :as met-col]]
-  (observe-value (child-with-labels collection label-values) metric-value)
+  [[{:metric/keys [label-values value]} collection :as met-col]]
+  (observe-value (child-with-labels collection label-values) value)
   met-col)
 
 
@@ -136,10 +136,10 @@
 (defn cleanup-metrics
   [metrics]
   {:pre [(s/every #(s/valid? ::ms.metric %))]}
-  (map (fn [{:metric/keys [metric-type metric-value namespace name description labels buckets] :as m}]
-         (let [new-name (str name "_" (metric-type metric-suffix))]
+  (map (fn [{:metric/keys [type value namespace name description labels buckets] :as m}]
+         (let [new-name (str name "_" (get metric-suffix type))]
            (merge m
-             #:metric{:metric-value (when metric-value (double metric-value))
+             #:metric{:value (when value (double value))
                       :namespace    (str namespace)
                       :name         (str new-name)
                       :full-name    (str namespace "_" new-name)

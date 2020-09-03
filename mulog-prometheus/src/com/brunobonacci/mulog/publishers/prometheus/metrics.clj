@@ -59,13 +59,13 @@
                 [k v] numeric
                 :let  [key-str (kw-str k)
                        e-name  (str event-name "_" key-str)]]
-            #:metric{:metric-type  type
-                     :metric-value v
+            #:metric{:type  type
+                     :value v
                      :namespace    namespace
                      :name         e-name
                      :description  (str/join " " [event-name key-str (name type)])
                      :labels labels})
-      #:metric{:metric-type :counter
+      #:metric{:type :counter
                :namespace   namespace
                :name        event-name
                :description (str event-name " counter")
