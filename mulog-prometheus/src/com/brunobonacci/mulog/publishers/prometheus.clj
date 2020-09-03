@@ -87,7 +87,7 @@
 
    ;; A function to apply to the sequence of metrics before converting into a collection.
    ;; You will receive a `com.brunobonacci.mulog.publishers.prometheus.metrics-spec/metric` and
-   ;; should produce the same or nil.
+   ;; should return the same or nil.
    ;; This tranformation function can be used to remove metric types, (alter/add/remove) labels
    ;; or add more detailed descriptions of what the metric does.
    ;; 
