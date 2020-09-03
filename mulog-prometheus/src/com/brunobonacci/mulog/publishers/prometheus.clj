@@ -67,6 +67,8 @@
    :publish-delay 100
 
    ;; You can supply your own registry which will be used for all events.
+   ;; If you do not specify a registry, the default registry is used.
+   ;; The default registry is the static `CollectorRegistry.defaultRegistry`
    :registry      (reg/create-default)
 
    ;; You can setup the prometheus-publisher to push to a prometheus push gateway.
@@ -92,7 +94,7 @@
    ;; or add more detailed descriptions of what the metric does.
    ;; 
    ;; For the :histogram metric type. You can supply buckets which will be used instead of the defaults.
-   ;; default: [0.005 0.01 0.025 0.05 0.075 .1 .25 .5 .75 1 2.5 5 7.5 10]
+   ;; default: [0.005 0.01 0.025 0.05 0.075 0.1 0.25 0.5 0.75 1 2.5 5 7.5 10]
    ;; 
    ;; For the :summary metric type. You can suppy the following to be used instead of the defaults.
    ;; quantiles - quantiles to be used over the sliding window of time.
