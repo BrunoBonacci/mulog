@@ -70,7 +70,7 @@ prep: clean ancient format build
 #
 # Build
 #
-build: build-core build-json build-els build-jvm-metrics build-kafka build-kinesis build-cloudwatch build-slack build-zipkin build-examples build-prometheus
+build: build-core build-json build-els build-jvm-metrics build-kafka build-kinesis build-cloudwatch build-slack build-zipkin build-prometheus build-examples
 - @printf "#\n# Building μ/log Completed!\n#\n"
 
 
