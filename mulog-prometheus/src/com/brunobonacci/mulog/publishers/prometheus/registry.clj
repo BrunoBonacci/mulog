@@ -18,10 +18,10 @@
   This is done to ultimately ensure thread safety and to dynamically register collections.
   The prometheus java client currently only lets you register new collections, existing
   collections will throw an `IllegalArgumentException`"
-  (get-nc-map
+  (nc-map
     [t]
     "Retrieve the `namesToCollectors` map")
-  (get-nc-lock
+  (nc-lock
     [t]
     "Retrieve the `nameCollectorsLock` lock Object")
   (register-dynamically
@@ -35,20 +35,20 @@
 
 (defprotocol ReadRegistry
   "This protocol is used to extract the metric information from the registry."
-  (get-registry
+  (registry
     [t]
     "Returns the `^CollectorRegistry t`.")
   (write-out
     [t out]
     "Writes the `^CollectorRegistry t` to `^java.io.Writer out`.")
-  (write-text
+  (write-str
     [t]
     "Writes the `^CollectorRegistry t` to a `java.io.StringWriter` and returns the String result."))
 
 (extend-type CollectorRegistry
   Registry
-  (get-nc-map  [t] (.get ^java.lang.reflect.Field names-to-collectors   t))
-  (get-nc-lock [t] (.get ^java.lang.reflect.Field names-collectors-lock t))
+  (nc-map  [t] (.get ^java.lang.reflect.Field names-to-collectors   t))
+  (nc-lock [t] (.get ^java.lang.reflect.Field names-collectors-lock t))
   (register-dynamically
     [t metric]
     (locking (get-nc-lock t)
@@ -61,11 +61,11 @@
            collection))]))
 
   ReadRegistry
-  (get-registry [t] t)
+  (registry [t] t)
   (write-out
     [t out]
     (TextFormat/write004 out (.metricFamilySamples t)))
-  (write-text
+  (write-str
     [t]
     (with-open [out (java.io.StringWriter.)]
       (write-out t out)
