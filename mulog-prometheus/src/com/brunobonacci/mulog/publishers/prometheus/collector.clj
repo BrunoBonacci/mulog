@@ -14,6 +14,10 @@
             Summary$Builder
             Summary$Child]))
 
+(defonce ^:private label-names-f (-> SimpleCollector
+                                   (.getDeclaredField "labelNames")
+                                   (doto (.setAccessible true))))
+
 (def ^:private summary-quantiles-default [[0.5   0.001]
                                           [0.9   0.001]
                                           [0.95  0.001]
@@ -28,8 +32,9 @@
 
 
 
-(defprotocol ChildWithLabels
-  (child-with-labels [t label-values]))
+(defprotocol SimpleCollectorLabels
+  (label-names ^"[Ljava.lang.String;" [t])
+  (child-with-labels                  [t label-values]))
 
 (defprotocol Increment
   (increment [t]))
@@ -41,7 +46,8 @@
   (observe-value [t value]))
 
 (extend-type SimpleCollector
-  ChildWithLabels
+  SimpleCollectorLabels
+  (label-names [t] (.get ^java.lang.reflect.Field label-names-f t))
   (child-with-labels [t label-values] (.labels t label-values)))
 
 (extend-type Counter$Child
@@ -116,7 +122,7 @@
 (defmulti record-collection
   "Receives a `[metric collection]`.
   Dispatches on the `:metric/type`.
-  This will cause the collection to realise the events value.
+  This will cause the collection to record the events value.
   Returns `[metric collection]`"
   (fn [[metric collection]] (:metric/type metric)))
 
@@ -139,6 +145,21 @@
   [[{:metric/keys [label-values value]} collection :as met-col]]
   (observe-value (child-with-labels collection label-values) value)
   met-col)
+
+
+
+(defn cleanup-labels
+  "Collection labels are not allowed to change.
+  This guarantees only first detected labels are used
+  and that label order is maintained."
+  [[{:metric/keys [labels] :as metric} collection]]
+  (let [label-k (label-names collection)]
+    [(merge metric
+       #:metric{:label-keys label-k
+                :label-values (into-array String
+                                               ;; labels are not allowed to be null, replacing with ""
+                                (reduce #(conj %1 (or (get labels %2) "")) [] label-k))})
+     collection]))
 
 
 

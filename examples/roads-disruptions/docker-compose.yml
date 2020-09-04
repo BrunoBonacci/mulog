@@ -118,3 +118,8 @@ services:
       - ES_HOSTS=elasticsearch:9200
     ports:
       - 9411:9411
+
+  prometheus:
+    image: prom/pushgateway
+    ports:
+      - 9091:9091

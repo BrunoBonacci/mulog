@@ -13,11 +13,12 @@
   "Converts events into collections that are recorded in the registry."
   [registry transform-metrics events]
   (->> events
-       (met/events->metrics)
-       (transform-metrics)
-       (col/cleanup-metrics)
-       (map (partial reg/register-dynamically registry))
-       (run! col/record-collection)))
+    (met/events->metrics)
+    (transform-metrics)
+    (col/cleanup-metrics)
+    (map (partial reg/register-dynamically registry))
+    (map col/cleanup-labels)
+    (run! col/record-collection)))
 
 
 
@@ -149,43 +150,43 @@
 (defn- setup-pushgateway
   [{{:keys [endpoint job gateway]} :push-gateway :as config}]
   (assoc-in config [:push-gateway :gateway]
-            (when (and (not gateway) endpoint job)
-              (PushGateway. (as-url endpoint)))))
+    (when (and (not gateway) endpoint job)
+      (PushGateway. (as-url endpoint)))))
 
 (defn prometheus-publisher
   [config]
   (let [cfg (-> (merge DEFAULT-CONFIG config)
-                (setup-pushgateway))]
+              (setup-pushgateway))]
     ;; create the prometheus publisher
     (PrometheusPublisher.
-     cfg
-     (rb/agent-buffer 10000)
-     (or (:registry cfg)  (reg/create-default))
-     (or (:transform cfg) identity))))
+      cfg
+      (rb/agent-buffer 10000)
+      (or (:registry cfg)  (reg/create-default))
+      (or (:transform cfg) identity))))
 
 (comment
   ;; to be removed
-  (def pp (prometheus-publisher {:push-gateway {:job      "prometheus-publisher"
-                                                :endpoint "http://localhost:9091"}}))
+  (def pp (prometheus-publisher {} #_{:push-gateway {:job      "prometheus-publisher"
+                                                     :endpoint "http://localhost:9091"}}))
 
   (publish-records! (.config ^PrometheusPublisher pp)
-                    [{:app-name "sample-app"
-                      :version "0.1.0"
-                      :env "local"
-                      :mulog/trace-id #mulog/flake "4XWSuAXIyabhrxYHukmN5dPgv2mvcXg2"
-                      :mulog/timestamp 1596629322013
-                      :mulog/event-name :disruptions/initiated-poll
-                      :mulog/namespace "user"
-                      :foo 0.1
-                      :mulog/duration 396739657}
-                     {:app-name "sample-app"
-                      :version "0.1.0"
-                      :env "local"
-                      :mulog/trace-id #mulog/flake "4XWSuAXIyabhrxYHukmN5dPgv2mvcXg2"
-                      :mulog/timestamp 1596629322013
-                      :mulog/event-name :disruptions/initiated-poll
-                      :mulog/namespace "user"
-                      :foo 0.2
-                      :mulog/duration 396739657}])
+    [{:app-name "sample-app"
+      :version "0.1.0"
+      :env "local"
+      :mulog/trace-id #mulog/flake "4XWSuAXIyabhrxYHukmN5dPgv2mvcXg2"
+      :mulog/timestamp 1596629322013
+      :mulog/event-name :disruptions/initiated-poll
+      :mulog/namespace "user"
+      :foo 0.1
+      :mulog/duration 396739657}
+     {:app-name "sample-app"
+      :version "0.1.0"
+      :env "local"
+      :mulog/trace-id #mulog/flake "4XWSuAXIyabhrxYHukmN5dPgv2mvcXg2"
+      :mulog/timestamp 1596629322013
+      :mulog/event-name :disruptions/initiated-poll
+      :mulog/namespace "user"
+      :foo 0.2
+      :mulog/duration 396739657}])
 
   (print (.write-str ^PrometheusPublisher pp)))
