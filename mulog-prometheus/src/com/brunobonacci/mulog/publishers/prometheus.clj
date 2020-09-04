@@ -9,15 +9,28 @@
   (:import [io.prometheus.client CollectorRegistry]
            [io.prometheus.client.exporter PushGateway]))
 
-(defn record-metrics
-  "Converts events into collections that are recorded in the registry."
-  [registry transform-metrics events]
+(defn- events->metrics
+  "Takes a seq of events and converts it into a seq of metrics.
+  Applying the `transform-metrics` function that you can provide in the config."
+  [transform-metrics events]
   (->> events
     (met/events->metrics)
     (transform-metrics)
-    (col/cleanup-metrics)
+    (col/cleanup-metrics)))
+
+(defn- metrics->met-cols
+  "Takes a seq of metrics and converts it into a seq of `[metric collection]`"
+  [registry metrics]
+  (->> metrics
     (map (partial reg/register-dynamically registry))
-    (map col/cleanup-labels)
+    (map col/cleanup-labels)))
+
+(defn- record-metrics
+  "Converts events into collections and records them in the registry."
+  [registry transform-metrics events]
+  (->> events
+    (events->metrics transform-metrics)
+    (metrics->met-cols registry)
     (run! col/record-collection)))
 
 
