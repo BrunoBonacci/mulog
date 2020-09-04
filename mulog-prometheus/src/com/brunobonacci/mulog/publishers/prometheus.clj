@@ -65,13 +65,13 @@
 
   com.brunobonacci.mulog.publishers.prometheus.registry.ReadRegistry
   (registry [_]
-    (reg/get-registry registry))
+    (reg/registry registry))
 
   (write-out [_ out]
     (reg/write-out registry out))
 
   (write-str [_]
-    (reg/write-text registry))
+    (reg/write-str registry))
 
   java.io.Closeable
   (close [_]))
@@ -164,45 +164,23 @@
   (def pp (prometheus-publisher {}))
 
   (publish-records! (.config ^PrometheusPublisher pp)
-                    [{:mulog/event-name :disruptions/list-roads
-                      :mulog/timestamp 1599157187146
-                      :mulog/trace-id #mulog/flake "4Y4NzHzOMYl0TY3xP5AgY_z2EzPPzdY-"
-                      :mulog/root-trace #mulog/flake "4Y4NzHyXE8-cZtCuyl2L-jabMpQFYrOS"
-                      :mulog/parent-trace #mulog/flake "4Y4NzHyy2PVHp5FAYkJrWEJYsnCDqiRq"
-                      :mulog/duration 538582300
-                      :mulog/namespace "user"
-                      :mulog/origin :safely.core
-                      :mulog/outcome :ok
-                      :app-name "roads-disruptions"
-                      :env "local"
-                      :http-status 200
-                      :request-type :remote-api-call
-                      :version "0.1.0"
-                      :safely/attempt 0
-                      :safely/call-level :inner
-                      :safely/call-site "com.brunobonacci.disruptions.tfl-api[l:15, c:5]"
-                      :safely/call-type :circuit-breaker
-                      :safely/circuit-breaker :list-roads
-                      :safely/circuit-breaker-outcome :success
-                      :safely/max-retries 9223372036854775807
-                      :safely/timeout nil}
-                     {:mulog/event-name :disruptions/list-roads
-                      :mulog/timestamp 1599157187144
-                      :mulog/trace-id #mulog/flake "4Y4NzHyy2PVHp5FAYkJrWEJYsnCDqiRq"
-                      :mulog/root-trace #mulog/flake "4Y4NzHyXE8-cZtCuyl2L-jabMpQFYrOS"
-                      :mulog/parent-trace #mulog/flake "4Y4NzHyXE8-cZtCuyl2L-jabMpQFYrOS"
-                      :mulog/duration 540638400
-                      :mulog/namespace "user"
-                      :mulog/outcome :ok
-                      :app-name "roads-disruptions"
-                      :env "local"
-                      :http-status 200
-                      :request-type :remote-api-call
-                      :version "0.1.0"
-                      :safely/call-level :outer
-                      :safely/call-site "com.brunobonacci.disruptions.tfl-api[l:15, c:5]"
-                      :safely/circuit-breaker :list-roads}])
-
-  (= [:a {:foo [(quote bar)], :bar (quote foo)} nil] [:a {:foo ['bar] :bar 'foo} nil])
+                    [{:app-name "sample-app"
+      :version "0.1.0"
+      :env "local"
+      :mulog/trace-id #mulog/flake "4XWSuAXIyabhrxYHukmN5dPgv2mvcXg2"
+      :mulog/timestamp 1596629322013
+      :mulog/event-name :disruptions/initiated-poll
+      :mulog/namespace "user"
+      :foo 0.1
+      :mulog/duration 396739657}
+     {:app-name "sample-app"
+      :version "0.1.0"
+      :env "local"
+      :mulog/trace-id #mulog/flake "4XWSuAXIyabhrxYHukmN5dPgv2mvcXg2"
+      :mulog/timestamp 1596629322013
+      :mulog/event-name :disruptions/initiated-poll
+      :mulog/namespace "user"
+      :foo 0.2
+      :mulog/duration 396739657}])
   
-  (print (.write-text ^PrometheusPublisher pp)))
+  (print (.write-str ^PrometheusPublisher pp)))
