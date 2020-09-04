@@ -1,5 +1,6 @@
 (ns com.brunobonacci.mulog.publishers.prometheus.collector
   (:require [clojure.spec.alpha :as s]
+            [com.brunobonacci.mulog.publishers.prometheus.metrics :as met]
             [com.brunobonacci.mulog.publishers.prometheus.metrics-spec :as ms])
   (:import [io.prometheus.client
             SimpleCollector
@@ -151,7 +152,7 @@
     [(merge metric
        #:metric{:label-keys label-k
                 :label-values (into-array String
-                                               ;; labels are not allowed to be null, replacing with ""
+                                ;; labels are not allowed to be null, replacing with ""
                                 (reduce #(conj %1 (or (get labels %2) "")) [] label-k))})
      collection]))
 
@@ -159,17 +160,16 @@
 
 (defn cleanup-metrics
   [metrics]
-  {:pre [(s/every #(s/valid? ::ms.metric %))]}
   (->> metrics
     (remove nil?)
     (map (fn [{:metric/keys [value namespace name description labels buckets] :as m}]
-              ;; TODO - this is going to be cleaned up. 
-           (merge m
-             #:metric{:value        (when value (double value))
-                      :namespace    (str namespace)
-                      :name         (str name)
-                      :full-name    (str namespace "_" name)
-                      :description  (str description)
-                      :label-keys   (into-array String (keys labels))
-                      :label-values (into-array String (vals labels))
-                      :buckets      (double-array buckets)})))))
+           (let [nmspace (met/kw-str namespace)
+                 nm      (met/kw-str name)]
+             (merge m
+               #:metric {:value        (when value (double value))
+                         :namespace    nmspace
+                         :name         nm
+                         :full-name    (str nmspace "_" nm)
+                         :description  (str description)
+                         :label-keys   (into-array String (map met/label-key-str (keys labels)))
+                         :buckets      (double-array buckets)}))))))

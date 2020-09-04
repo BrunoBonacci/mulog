@@ -19,7 +19,7 @@
 
 
 
-(defn- kw-str
+(defn kw-str
   [k]
   (-> (if (keyword? k)
         (if (namespace k)
@@ -30,17 +30,23 @@
 
 
 
+(defn label-key-str
+  [k]
+  (->
+    (cond
+      (keyword? k) (kw-str k)
+      :else (str k))
+    (str/replace invalid-metric-label-chars  "_")
+    (str/replace reserved-metric-label-chars "_")))
+
+
+
 (defn- as-labels
   [m]
   (->> m
     (#(dissoc % :mulog/namespace :mulog/event-name))
     (map (fn [[k v]]
-           [(->
-              (cond
-                (keyword? k) (kw-str k)
-                :else (str k))
-              (str/replace invalid-metric-label-chars  "_")
-              (str/replace reserved-metric-label-chars "_"))
+           [(label-key-str k)
             (cond
               (keyword? v) (name v)
               (exception? v) (str (type v) ": " (.getMessage ^Exception v))
