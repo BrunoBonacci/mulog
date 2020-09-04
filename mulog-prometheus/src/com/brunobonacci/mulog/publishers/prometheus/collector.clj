@@ -24,12 +24,6 @@
                                           [0.99  0.001]
                                           [0.999 0.001]])
 
-(def ^:private metric-suffix
-  {:counter    "cntr"
-   :gauge      "gauge"
-   :histogram  "hstgm"
-   :summary    "smry"})
-
 
 
 (defprotocol SimpleCollectorLabels
@@ -168,14 +162,14 @@
   {:pre [(s/every #(s/valid? ::ms.metric %))]}
   (->> metrics
     (remove nil?)
-    (map (fn [{:metric/keys [type value namespace name description labels buckets] :as m}]
-           (let [new-name (str name "_" (get metric-suffix type))]
-             (merge m
-               #:metric{:value (when value (double value))
-                        :namespace    (str namespace)
-                        :name         (str new-name)
-                        :full-name    (str namespace "_" new-name)
-                        :description  (str description)
-                        :label-keys   (into-array String (keys labels))
-                        :label-values (into-array String (vals labels))
-                        :buckets      (double-array buckets)}))))))
+    (map (fn [{:metric/keys [value namespace name description labels buckets] :as m}]
+              ;; TODO - this is going to be cleaned up. 
+           (merge m
+             #:metric{:value        (when value (double value))
+                      :namespace    (str namespace)
+                      :name         (str name)
+                      :full-name    (str namespace "_" name)
+                      :description  (str description)
+                      :label-keys   (into-array String (keys labels))
+                      :label-values (into-array String (vals labels))
+                      :buckets      (double-array buckets)})))))

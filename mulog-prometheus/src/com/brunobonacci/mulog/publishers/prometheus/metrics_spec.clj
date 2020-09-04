@@ -12,7 +12,7 @@
 (defn- good-name? [name] (s/and string? (re-matches valid-metric-name-chars name)))
 
 (s/def :metric/type #{:counter :gauge :histogram :summary})
-(s/def :metric/value double?)
+(s/def :metric/value number?)
 (s/def :metric/namespace good-name?)
 (s/def :metric/name good-name?)
 (s/def :metric/description string?)

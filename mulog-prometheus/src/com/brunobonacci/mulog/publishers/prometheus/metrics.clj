@@ -50,21 +50,28 @@
 
 
 (defn- event->metrics
-  [{:keys [mulog/namespace mulog/event-name] :as event}]
-  (let [numeric      (filter (comp number? second) event)
+  [{:keys [mulog/namespace mulog/event-name mulog/duration] :as event}]
+  (let [numeric      (filter (comp number? second) (dissoc event :mulog/duration))
         namespace    (kw-str namespace)
         event-name   (kw-str event-name)
         labels       (as-labels event)]
-    (conj (for [type  [:gauge :histogram :summary]
-                [k v] numeric
-                :let  [key-str (kw-str k)
-                       e-name  (str event-name "_" key-str)]]
-            #:metric{:type  type
-                     :value v
-                     :namespace    namespace
-                     :name         e-name
-                     :description  (str/join " " [event-name key-str (name type)])
-                     :labels labels})
+    (conj (map (fn [[k v]]
+                 (let [key-str (kw-str k)
+                       e-name  (str event-name "_" key-str)]
+                   #:metric{:type         :gauge
+                            :value        v
+                            :namespace    namespace
+                            :name         e-name
+                            :description  (str/join " " [event-name key-str "gauge"])
+                            :labels       labels}))
+            numeric)
+      (when duration
+        #:metric{:type        :summary
+                 :value       duration
+                 :namespace   namespace
+                 :name        (str event-name "_timer_nanos")
+                 :description (str event-name " Summary timer in nanos")
+                 :labels      labels})
       #:metric{:type :counter
                :namespace   namespace
                :name        event-name
