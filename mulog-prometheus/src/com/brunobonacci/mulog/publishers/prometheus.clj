@@ -74,7 +74,7 @@
 
   (publish [_ buffer]
     ;; items are pairs [offset <item>]
-    (let [items (take (:max-items config) (rb/items buffer))
+    (let [items (rb/items buffer)
           last-offset (-> items last first)]
       (if-not (seq items)
         buffer
@@ -99,8 +99,7 @@
 
 
 (def ^:private DEFAULT-CONFIG
-  {:max-items     1000
-   :publish-delay 100
+  {:publish-delay 100
 
    ;; You can supply your own registry which will be used for all
    ;; events.  If you do not specify a registry, the default registry
@@ -109,22 +108,22 @@
    :registry      (reg/create-default)
 
    ;; You can setup the prometheus-publisher to push to a prometheus
-   ;; pushgateway.  When to use the pushgateway:
+   ;; PushGateway.  When to use the pushgateway:
    ;; https://prometheus.io/docs/practices/pushing/
    ;;
-   ;; `job` is a string identification used within the Promethues
+   ;; `:job` is a string identification used within the Promethues
    ;; PushGateway and it is always required. The pushgateway adds this
    ;; to the `job` label.  Typically a unique job/application name is
    ;; used. You can read more here:
    ;; https://github.com/prometheus/pushgateway#about-the-job-and-instance-labels
    ;;
-   ;; `gateway` is a `io.prometheus.client.exporter.PushGateway` you
+   ;; `:gateway` is a `io.prometheus.client.exporter.PushGateway` you
    ;; can provide an existing one that your application/job uses. If
    ;; one is not provided a new one is created with the `endpoint`
    ;; configuration.
    ;;
-   ;; `endpoint` is the address which the PushGateway client should
-   ;; push to.  e.g "localhost:9091"
+   ;; `:endpoint` is the address which the PushGateway client should
+   ;; push to.  e.g `"http://localhost:9091"`
    ;;
    ;;
    ;; For example:
