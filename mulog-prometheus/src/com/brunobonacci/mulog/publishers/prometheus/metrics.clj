@@ -1,8 +1,11 @@
 (ns com.brunobonacci.mulog.publishers.prometheus.metrics
   (:require [clojure.string :as str]
-            [com.brunobonacci.mulog.publishers.prometheus.metrics-spec :refer [invalid-metric-name-chars
-                                                                               invalid-metric-label-chars
-                                                                               reserved-metric-label-chars]]))
+            [com.brunobonacci.mulog.publishers.prometheus.metrics-spec
+             :refer [invalid-metric-name-chars
+                     invalid-metric-label-chars
+                     reserved-metric-label-chars]]))
+
+
 
 (defn- exception?
   [e]
@@ -57,32 +60,42 @@
 
 (defn- event->metrics
   [{:keys [mulog/namespace mulog/event-name mulog/duration] :as event}]
-  (let [numeric      (filter (comp number? second) (dissoc event :mulog/duration))
-        namespace    (kw-str namespace)
-        event-name   (kw-str event-name)
-        labels       (as-labels event)]
-    (conj (map (fn [[k v]]
-                 (let [key-str (kw-str k)
-                       e-name  (str event-name "_" key-str)]
-                   #:metric{:type         :gauge
-                            :value        v
-                            :namespace    namespace
-                            :name         e-name
-                            :description  (str/join " " [event-name key-str "gauge"])
-                            :labels       labels}))
-            numeric)
+  (let [numeric    (filter (comp number? second) (dissoc event :mulog/duration))
+        namespace  (kw-str namespace)
+        event-name (kw-str event-name)
+        labels     (as-labels event)]
+    (conj
+      ;;
+      ;; for every numeric value, setup a gauge
+      ;;
+      (map (fn [[k v]]
+             (let [key-str (kw-str k)
+                   e-name  (str event-name "_" key-str)]
+               {:metric/type        :gauge
+                :metric/value       v
+                :metric/namespace   namespace
+                :metric/name        e-name
+                :metric/description (str/join " " [event-name key-str "gauge"])
+                :metric/labels      labels}))
+        numeric)
+      ;;
+      ;; if the event has a :mulog/duration, then add a summary timer
+      ;;
       (when duration
-        #:metric{:type        :summary
-                 :value       duration
-                 :namespace   namespace
-                 :name        (str event-name "_timer_nanos")
-                 :description (str event-name " Summary timer in nanos")
-                 :labels      labels})
-      #:metric{:type :counter
-               :namespace   namespace
-               :name        event-name
-               :description (str event-name " counter")
-               :labels      labels})))
+        {:metric/type        :summary
+         :metric/value       duration
+         :metric/namespace   namespace
+         :metric/name        (str event-name "_timer_nanos")
+         :metric/description (str event-name " Summary timer in nanos")
+         :metric/labels      labels})
+      ;;
+      ;; For every event, add a counter on the event name.
+      ;;
+      {:metric/type        :counter
+       :metric/namespace   namespace
+       :metric/name        event-name
+       :metric/description (str event-name " counter")
+       :metric/labels      labels})))
 
 
 

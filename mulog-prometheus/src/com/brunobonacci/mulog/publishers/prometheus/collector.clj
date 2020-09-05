@@ -15,15 +15,28 @@
             Summary$Builder
             Summary$Child]))
 
-(defonce ^:private label-names-f (-> SimpleCollector
-                                   (.getDeclaredField "labelNames")
-                                   (doto (.setAccessible true))))
 
-(def ^:private summary-quantiles-default [[0.5   0.001]
-                                          [0.9   0.001]
-                                          [0.95  0.001]
-                                          [0.99  0.001]
-                                          [0.999 0.001]])
+
+(defonce ^:private label-names-f
+  (-> SimpleCollector
+    (.getDeclaredField "labelNames")
+    (doto (.setAccessible true))))
+
+
+
+(defn- field-value
+  "Reflective call to retrieve internal registry value"
+  [^java.lang.reflect.Field f o]
+  (.get f o))
+
+
+
+(def ^:private summary-quantiles-default
+  [[0.5   0.001]
+   [0.9   0.001]
+   [0.95  0.001]
+   [0.99  0.001]
+   [0.999 0.001]])
 
 
 
@@ -31,31 +44,47 @@
   (label-names ^"[Ljava.lang.String;" [t])
   (child-with-labels                  [t label-values]))
 
+
+
 (defprotocol Increment
   (increment [t]))
+
+
 
 (defprotocol SetValue
   (set-value [t value]))
 
+
+
 (defprotocol ObserveValue
   (observe-value [t value]))
 
+
+
 (extend-type SimpleCollector
   SimpleCollectorLabels
-  (label-names [t] (.get ^java.lang.reflect.Field label-names-f t))
+  (label-names [t] (field-value label-names-f t))
   (child-with-labels [t label-values] (.labels t label-values)))
+
+
 
 (extend-type Counter$Child
   Increment
   (increment [t] (.inc t)))
 
+
+
 (extend-type Gauge$Child
   SetValue
   (set-value [t value] (.set t value)))
 
+
+
 (extend-type Histogram$Child
   ObserveValue
   (observe-value [t value] (.observe t value)))
+
+
 
 (extend-type Summary$Child
   ObserveValue
@@ -63,10 +92,9 @@
 
 
 
-
 (defn- simple-collector-builder
   [builder-constructor
-   {:metric/keys [name namespace description label-keys]}]
+   {:keys [metric/name metric/namespace metric/description metric/label-keys]}]
   (-> ^SimpleCollector$Builder (builder-constructor)
     (.name name)
     (.namespace namespace)
@@ -81,28 +109,42 @@
   Returns a `SimpleCollector`"
   (fn [metric] (:metric/type metric)))
 
+
+
 (defmethod create-collection :counter
   [metric]
   (simple-collector-builder #(Counter/build) metric))
+
+
 
 (defmethod create-collection :gauge
   [metric]
   (simple-collector-builder #(Gauge/build) metric))
 
+
+
 (defmethod create-collection :histogram
-  [{:metric/keys [buckets] :as metric}]
+  [{:keys [metric/buckets] :as metric}]
   (simple-collector-builder #(cond-> (Histogram/build)
                                (seq buckets) (.buckets buckets))
     metric))
 
+
+
 (declare summary-builder)
+
+
+
 (defmethod create-collection :summary
-  [{:metric/keys [quantiles max-age-seconds age-buckets] :as metric}]
+  [{:keys [metric/quantiles metric/max-age-seconds metric/age-buckets] :as metric}]
   (simple-collector-builder #(summary-builder quantiles max-age-seconds age-buckets) metric))
+
 
 
 (defn add-quantile [^Summary$Builder builder [quantile error]]
   (.quantile builder quantile error))
+
+
 
 (defn summary-builder
   [quantiles max-age-seconds age-buckets]
@@ -113,7 +155,6 @@
 
 
 
-
 (defmulti record-collection
   "Receives a `[metric collection]`.
   Dispatches on the `:metric/type`.
@@ -121,23 +162,31 @@
   Returns `[metric collection]`"
   (fn [[metric collection]] (:metric/type metric)))
 
+
+
 (defmethod record-collection :counter
-  [[{:metric/keys [label-values]} collection :as met-col]]
+  [[{:keys [metric/label-values]} collection :as met-col]]
   (increment (child-with-labels collection label-values))
   met-col)
 
+
+
 (defmethod record-collection :gauge
-  [[{:metric/keys [label-values value]} collection :as met-col]]
+  [[{:keys [metric/label-values metric/value]} collection :as met-col]]
   (set-value (child-with-labels collection label-values) value)
   met-col)
 
+
+
 (defmethod record-collection :histogram
-  [[{:metric/keys [label-values value]} collection :as met-col]]
+  [[{:keys [metric/label-values metric/value]} collection :as met-col]]
   (observe-value (child-with-labels collection label-values) value)
   met-col)
 
+
+
 (defmethod record-collection :summary
-  [[{:metric/keys [label-values value]} collection :as met-col]]
+  [[{:keys [metric/label-values metric/value]} collection :as met-col]]
   (observe-value (child-with-labels collection label-values) value)
   met-col)
 
@@ -147,13 +196,13 @@
   "Collection labels are not allowed to change.
   This guarantees only first detected labels are used
   and that label order is maintained."
-  [[{:metric/keys [labels] :as metric} collection]]
+  [[{:keys [metric/labels] :as metric} collection]]
   (let [label-k (label-names collection)]
     [(merge metric
-       #:metric{:label-keys label-k
-                :label-values (into-array String
-                                ;; labels are not allowed to be null, replacing with ""
-                                (reduce #(conj %1 (or (get labels %2) "")) [] label-k))})
+       {:metric/label-keys label-k
+        :metric/label-values (into-array String
+                        ;; labels are not allowed to be null, replacing with ""
+                               (reduce #(conj %1 (or (get labels %2) "")) [] label-k))})
      collection]))
 
 
@@ -162,14 +211,15 @@
   [metrics]
   (->> metrics
     (remove nil?)
-    (map (fn [{:metric/keys [value namespace name description labels buckets] :as m}]
+    (map (fn [{:keys [ metric/value metric/namespace metric/name
+                      metric/description metric/labels metric/buckets] :as m}]
            (let [nmspace (met/kw-str namespace)
                  nm      (met/kw-str name)]
              (merge m
-               #:metric {:value        (when value (double value))
-                         :namespace    nmspace
-                         :name         nm
-                         :full-name    (str nmspace "_" nm)
-                         :description  (str description)
-                         :label-keys   (into-array String (map met/label-key-str (keys labels)))
-                         :buckets      (double-array buckets)}))))))
+               {:metric/value        (when value (double value))
+                :metric/namespace    nmspace
+                :metric/name         nm
+                :metric/full-name    (str nmspace "_" nm)
+                :metric/description  (str description)
+                :metric/label-keys   (into-array String (map met/label-key-str (keys labels)))
+                :metric/buckets      (double-array buckets)}))))))
