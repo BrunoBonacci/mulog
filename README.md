@@ -498,6 +498,15 @@ following:
 ## JVM Metrics sampling
 ![since v0.3.0](https://img.shields.io/badge/since-v0.3.0-brightgreen)
 
+``` clojure
+;; Leiningen project
+[com.brunobonacci/mulog-jvm-metrics "x.x.x"]
+
+;; deps.edn format
+{:deps { com.brunobonacci/mulog-jvm-metrics {:mvn/version "x.x.x"}}}
+```
+Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog-jvm-metrics.svg)](https://clojars.org/com.brunobonacci/mulog-jvm-metrics)
+
 It is possible to sample JVM metrics such as **memory, garbage
 collector, threads, etc** using a special publisher.
 
@@ -673,7 +682,7 @@ In order to use the library add the dependency to your `project.clj`
 [com.brunobonacci/mulog-elasticsearch "x.x.x"]
 
 ;; deps.edn format
-{:deps { com.brunobonacci/mulog {:mvn/version "x.x.x"}}}
+{:deps { com.brunobonacci/mulog-elasticsearch {:mvn/version "x.x.x"}}}
 ```
 Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog-elasticsearch.svg)](https://clojars.org/com.brunobonacci/mulog-elasticsearch)
 
@@ -741,7 +750,7 @@ In order to use the library add the dependency to your `project.clj`
 [com.brunobonacci/mulog-kafka "x.x.x"]
 
 ;; deps.edn format
-{:deps { com.brunobonacci/mulog {:mvn/version "x.x.x"}}}
+{:deps { com.brunobonacci/mulog-kafka {:mvn/version "x.x.x"}}}
 ```
 Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog-kafka.svg)](https://clojars.org/com.brunobonacci/mulog-kafka)
 
@@ -804,7 +813,7 @@ In order to use the library add the dependency to your `project.clj`
 [com.brunobonacci/mulog-kinesis "x.x.x"]
 
 ;; deps.edn format
-{:deps { com.brunobonacci/mulog {:mvn/version "x.x.x"}}}
+{:deps { com.brunobonacci/mulog-kinesis {:mvn/version "x.x.x"}}}
 ```
 Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog-kinesis.svg)](https://clojars.org/com.brunobonacci/mulog-kinesis)
 
@@ -866,7 +875,7 @@ In order to use the library add the dependency to your `project.clj`
 [com.brunobonacci/mulog-cloudwatch "x.x.x"]
 
 ;; deps.edn format
-{:deps { com.brunobonacci/mulog {:mvn/version "x.x.x"}}}
+{:deps { com.brunobonacci/mulog-cloudwatch {:mvn/version "x.x.x"}}}
 ```
 Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog-cloudwatch.svg)](https://clojars.org/com.brunobonacci/mulog-cloudwatch)
 
@@ -919,7 +928,7 @@ In order to use the library add the dependency to your `project.clj`
 [com.brunobonacci/mulog-slack "x.x.x"]
 
 ;; deps.edn format
-{:deps { com.brunobonacci/mulog {:mvn/version "x.x.x"}}}
+{:deps { com.brunobonacci/mulog-slack {:mvn/version "x.x.x"}}}
 ```
 Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog-slack.svg)](https://clojars.org/com.brunobonacci/mulog-slack)
 
@@ -1001,7 +1010,7 @@ In order to use the library add the dependency to your `project.clj`
 [com.brunobonacci/mulog-zipkin "x.x.x"]
 
 ;; deps.edn format
-{:deps { com.brunobonacci/mulog {:mvn/version "x.x.x"}}}
+{:deps { com.brunobonacci/mulog-zipkin {:mvn/version "x.x.x"}}}
 ```
 Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog-zipkin.svg)](https://clojars.org/com.brunobonacci/mulog-zipkin)
 
