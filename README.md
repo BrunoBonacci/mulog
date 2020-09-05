@@ -1006,7 +1006,7 @@ The available configuration options:
 
 How to use it:
 
-* Example with PushGateway
+* Example with PushGateway:
 
 ``` clojure
 (u/start-publisher!
@@ -1016,11 +1016,48 @@ How to use it:
 ```
 
 
-* Example with Scraping (TODO:)
+* Example with Prometheus scraping:
+
+To expose the metrics such that they will be scraped by Prometheus
+***μ/log*** exposes the registry and offers a facility to expose the metrics
+in a Ring (or Compojure) application.
 
 ``` clojure
-(def p (u/start-publisher! {:type :prometheus}))
+(require '[com.brunobonacci.mulog.publishers.prometheus :as p])
+;; create your publisher
+(def pub (p/prometheus-publisher {:type :prometheus}))
+;; start the publisher
+(def px (u/start-publisher! {:type :inline :publisher pub}))
 
+;; now it is possible to access the registry
+(require '[com.brunobonacci.mulog.publishers.prometheus.registry  :as reg])
+(reg/registry pub)  ;; => registry
+(reg/write-str pub) ;; formatted string with metrics in scrape format
+```
+
+In order to expose these metrics you need a standard Ring handler,
+here an example:
+
+``` clojure
+;; ring handler to export metrics
+(fn [_]
+  {:status  200
+   :headers {"Content-Type" "text/plain; version=0.0.4"}
+   :body    (reg/write-str pub)})
+```
+
+Or if you are using Compojure then:
+
+``` clojure
+(def my-routes
+    (routes
+      (GET "/foo" [] "Hello Foo")
+      ;; here you can expose the metrics to Prometheus scraping process.
+      (GET "/metrics" []
+        {:status  200
+         :headers {"Content-Type" "text/plain; version=0.0.4"}
+         :body    (reg/write-str pub)})
+      (route/not-found "<h1>Page not found</h1>")))
 ```
 
 

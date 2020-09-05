@@ -333,11 +333,42 @@
   (def x (u/start-publisher!
            {:type :prometheus
             :push-gateway
-            {:job "mulog-demo"
+            {:job      "mulog-demo"
              :endpoint "http://localhost:9091"}}))
 
   (x)
 
+
+  (require '[com.brunobonacci.mulog.publishers.prometheus :as p])
+  ;; create your publisher
+  (def pub (p/prometheus-publisher {:type :prometheus}))
+  ;; start the publisher
+  (def px (u/start-publisher! {:type :inline :publisher pub}))
+
+
+  (require '[com.brunobonacci.mulog.publishers.prometheus.registry  :as reg])
+  (reg/registry pub)
+  (reg/write-str pub)
+
+  ;; ring - handler to export
+  (fn [_]
+    {:status  200
+     :headers {"Content-Type" "text/plain; version=0.0.4"}
+     :body    (reg/write-str pub)})
+
+
+  ;; compojure example
+  (def my-routes
+    (routes
+      (GET "/foo" [] "Hello Foo")
+      ;; here you can expose the metrics to Prometheus scraping process.
+      (GET "/metrics" []
+        {:status  200
+         :headers {"Content-Type" "text/plain; version=0.0.4"}
+         :body    (reg/write-str pub)})
+      (route/not-found "<h1>Page not found</h1>")))
+
+  ;;(def x (u/start-publisher! {:type :prometheus}))
 
   )
 
