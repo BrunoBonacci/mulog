@@ -4,7 +4,19 @@
            [io.prometheus.client.exporter.common TextFormat]))
 
 ;;
-;; TODO: explain why we need the accessors
+;; Access to the private fields
+;; `namesToCollectors` and `namesCollectorsLock`
+;; are required in order to share a registry
+;; if a user provides one. This ensures thread
+;; safety when adding a new collection and will
+;; use the same collection if it already exists.
+;;
+;; `namesToCollectors` is a map of
+;; collectionName -> collection
+;; 
+;; `namesCollectorsLock` is a lock object that
+;; is synchronized when doing any operation with
+;; `namesToCollectors`.
 ;;
 
 (defonce ^:private names-to-collectors

@@ -23,13 +23,15 @@
 
 
 (defn kw-str
-  [k]
-  (-> (if (keyword? k)
-        (if (namespace k)
-          (str (namespace k) "_" (name k))
-          (name k))
-        (str k))
-    (str/replace invalid-metric-name-chars "_")))
+  ([k]
+   (kw-str k false))
+  ([k namespace?]
+   (-> (if (keyword? k)
+         (if (and namespace? (namespace k))
+           (str (namespace k) "_" (name k))
+           (name k))
+         (str k))
+     (str/replace invalid-metric-name-chars "_"))))
 
 
 
@@ -60,10 +62,11 @@
 
 (defn- event->metrics
   [{:keys [mulog/namespace mulog/event-name mulog/duration] :as event}]
-  (let [numeric    (filter (comp number? second) (dissoc event :mulog/duration))
-        namespace  (kw-str namespace)
-        event-name (kw-str event-name)
-        labels     (as-labels event)]
+  (let [numeric        (filter (comp number? second) (dissoc event :mulog/duration))
+        numeric-labels (conj (map label-key-str (keys numeric)) "duration")
+        namespace      (kw-str namespace)
+        event-name     (kw-str event-name)
+        labels         (as-labels event)]
     (conj
       ;;
       ;; for every numeric value, setup a gauge
@@ -76,7 +79,7 @@
                 :metric/namespace   namespace
                 :metric/name        e-name
                 :metric/description (str/join " " [event-name key-str "gauge"])
-                :metric/labels      labels}))
+                :metric/labels      (dissoc labels (label-key-str k) "duration")}))
         numeric)
       ;;
       ;; if the event has a :mulog/duration, then add a summary timer
@@ -87,7 +90,7 @@
          :metric/namespace   namespace
          :metric/name        (str event-name "_timer_nanos")
          :metric/description (str event-name " Summary timer in nanos")
-         :metric/labels      labels})
+         :metric/labels      (dissoc labels "duration")})
       ;;
       ;; For every event, add a counter on the event name.
       ;;
@@ -95,7 +98,7 @@
        :metric/namespace   namespace
        :metric/name        event-name
        :metric/description (str event-name " counter")
-       :metric/labels      labels})))
+       :metric/labels      (apply dissoc labels numeric-labels)})))
 
 
 

@@ -3,7 +3,7 @@
 
 (def valid-metric-name-chars     #"[a-zA-Z0-9_:]*")
 (def valid-metric-label-chars    #"[a-zA-Z0-9_]*")
-(def reserved-metric-label-chars #"__.*")
+(def reserved-metric-label-chars #"^__*")
 (def invalid-metric-name-chars   #"[^a-zA-Z0-9_:]+")
 (def invalid-metric-label-chars  #"[^a-zA-Z0-9_]+")
 
