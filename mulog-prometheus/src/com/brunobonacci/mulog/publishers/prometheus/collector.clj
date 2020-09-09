@@ -201,7 +201,7 @@
     [(merge metric
        {:metric/label-keys label-k
         :metric/label-values (into-array String
-                        ;; labels are not allowed to be null, replacing with ""
+                               ;; labels are not allowed to be null, replacing with ""
                                (reduce #(conj %1 (or (get labels %2) "")) [] label-k))})
      collection]))
 

@@ -135,8 +135,8 @@
 
 (facts "Given metrics identical collection types should be registered"
 
-       ;; A new registry is created every time for a clean test.
-       ;; This is to prevent any labeling issues during checks
+  ;; A new registry is created every time for a clean test.
+  ;; This is to prevent any labeling issues during checks
 
   (def col-check-reg (CollectorRegistry.))
   (fact "It should register a counter collection"
