@@ -330,6 +330,10 @@
 
   (u/log ::hello2 :to "World!" :v (rand-int 1000))
 
+  (u/trace ::long-op
+    [:mode :test]
+    (Thread/sleep (+ 1000 (rand-int 300))))
+
   (def x (u/start-publisher!
            {:type :prometheus
             :push-gateway

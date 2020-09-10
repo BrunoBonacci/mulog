@@ -3,6 +3,7 @@
    [clojure.java.io :refer [as-url]]
    [com.brunobonacci.mulog.publisher :as p]
    [com.brunobonacci.mulog.buffer :as rb]
+   [com.brunobonacci.mulog.utils :as ut]
    [com.brunobonacci.mulog.publishers.prometheus.metrics   :as met]
    [com.brunobonacci.mulog.publishers.prometheus.registry  :as reg]
    [com.brunobonacci.mulog.publishers.prometheus.collector :as col])
@@ -44,15 +45,24 @@
 (defn- push-metrics
   "Will push metrics to the `PushGateway` when defined."
   [^CollectorRegistry registry ^PushGateway gateway ^String job]
-  (when (and gateway job) (.push gateway registry job)))
+  (when (and gateway job)
+    (.push gateway registry job)))
 
 
 
 (defn- publish-records!
   [{:keys [registry transform-metrics]
-    {:keys [gateway job]} :push-gateway} events]
+    {:keys [gateway job push-interval-ms]} :push-gateway} push-ts events]
+  ;; metrics are collected every 100ms
   (record-metrics registry transform-metrics events)
-  (push-metrics registry gateway job))
+  ;; if a PushGateway is setup then we publish the metrics
+  ;; only once every 10s (configured)
+  (when (and gateway job
+          ;; if last push was more than 10s (push-interval-ms) ago
+          ;; then perform a new push
+          (< (+ @push-ts push-interval-ms) (System/currentTimeMillis)))
+    (push-metrics registry gateway job)
+    (swap! push-ts (constantly (System/currentTimeMillis)))))
 
 
 
@@ -63,7 +73,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (deftype PrometheusPublisher
-         [config buffer registry transform]
+         [config buffer registry transform push-ts]
 
   com.brunobonacci.mulog.publisher.PPublisher
   (agent-buffer [_]
@@ -76,12 +86,9 @@
     ;; items are pairs [offset <item>]
     (let [items (rb/items buffer)
           last-offset (-> items last first)]
-      (if-not (seq items)
-        buffer
-        ;; else send to prometheus
-        (do
-          (publish-records! config (transform (map second items)))
-          (rb/dequeue buffer last-offset)))))
+      ;; send to prometheus
+      (publish-records! config push-ts (transform (map second items)))
+      (rb/dequeue buffer last-offset)))
 
   com.brunobonacci.mulog.publishers.prometheus.registry.ReadRegistry
   (registry [_]
@@ -105,7 +112,7 @@
    ;; events.  If you do not specify a registry, the default registry
    ;; is used.  The default registry is the static
    ;; `CollectorRegistry.defaultRegistry`
-   :registry      (reg/create-default)
+   :registry (reg/create-default)
 
    ;; You can setup the prometheus-publisher to push to a prometheus
    ;; PushGateway.  When to use the pushgateway:
@@ -125,6 +132,9 @@
    ;; `:endpoint` is the address which the PushGateway client should
    ;; push to.  e.g `"http://localhost:9091"`
    ;;
+   ;; `:push-interval-ms` is how often (in millis) the metrics needs
+   ;; to be published to the PushGateway (if configured) by default
+   ;; will be every `10000` (`10s`)
    ;;
    ;; For example:
    ;;  * endpoint configuration:
@@ -140,15 +150,16 @@
    ;;    ```
    ;; Notice in either configuration `job` is required.
    ;;
-   :push-gateway  {:endpoint nil
-                   :job      nil
-                   :gateway  nil}
+   :push-gateway {:endpoint         nil
+                  :job              nil
+                  :gateway          nil
+                  :push-interval-ms 10000}
 
    ;; A function to apply to the sequence of events before publishing.
    ;; This transformation function can be used to filter, transform,
    ;; anonymise events before they are published to a external system.
    ;; by default there is no transformation.  (since v0.1.8)
-   :transform         identity
+   :transform identity
 
    ;; A function to apply to the sequence of metrics before converting
    ;; into a collection.  This tranformation function can be used to
@@ -187,16 +198,30 @@
 
 
 
+(defn- normalize-push-interval
+  "The push interval can only be a multiple of the `publish-delay`
+  because it will be called in the same loop. It cannot be called each
+  time because it would overwhelm the PushGateway"
+  [{:keys [publish-delay] :as cfg}]
+  (let [push-interval-ms (or (get-in cfg [:push-gatewaty :push-interval-ms]) 10000)
+        push-interval-ms (max publish-delay push-interval-ms 1000)
+        push-interval-ms (* (long (Math/ceil (/ push-interval-ms publish-delay) )) publish-delay)]
+    (assoc-in cfg [:push-gatewaty :push-interval-ms] push-interval-ms)))
+
+
+
 (defn prometheus-publisher
   [config]
-  (let [cfg (-> (merge DEFAULT-CONFIG config)
+  (let [cfg (-> (ut/deep-merge DEFAULT-CONFIG config)
+              (normalize-push-interval)
               (setup-pushgateway))]
     ;; create the prometheus publisher
     (PrometheusPublisher.
       cfg
       (rb/agent-buffer 10000)
       (or (:registry cfg)  (reg/create-default))
-      (or (:transform cfg) identity))))
+      (or (:transform cfg) identity)
+      (atom 0))))
 
 
 
