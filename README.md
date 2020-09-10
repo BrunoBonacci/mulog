@@ -953,6 +953,10 @@ The available configuration options:
    ;; `:endpoint` is the address which the PushGateway client should
    ;; push to.  e.g `"http://localhost:9091"`
    ;;
+   ;; `:push-interval-ms` is how often (in millis) the metrics needs
+   ;; to be published to the PushGateway (if configured) by default
+   ;; will be every `10000` (`10s`)
+   ;;
    ;;
    ;; For example:
    ;;  * endpoint configuration:
