@@ -87,18 +87,6 @@
 
 
 
-(defn deep-merge
-  "Like merge, but merges maps recursively. It merges the maps from left
-  to right and the right-most value wins. It is useful to merge the
-  user defined configuration on top of the default configuration."
-  [& maps]
-  (let [maps (filter (comp not nil?) maps)]
-    (if (every? map? maps)
-      (apply merge-with deep-merge maps)
-      (last maps))))
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
 ;;                         ----==| K A F K A |==----                          ;;
@@ -157,7 +145,7 @@
   {:pre [(get-in config [:kafka :bootstrap.servers])]}
   (KafkaPublisher.
     (as-> config $
-      (deep-merge DEFAULT-CONFIG $)
+      (ut/deep-merge DEFAULT-CONFIG $)
       (assoc $ :producer* (producer (:kafka $))))
     (rb/agent-buffer 10000)
     (or (:transform config) identity)))
