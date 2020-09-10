@@ -23,15 +23,13 @@
 
 
 (defn kw-str
-  ([k]
-   (kw-str k false))
-  ([k namespace?]
-   (-> (if (keyword? k)
-         (if (and namespace? (namespace k))
-           (str (namespace k) "_" (name k))
-           (name k))
-         (str k))
-     (str/replace invalid-metric-name-chars "_"))))
+  [k]
+  (-> (if (keyword? k)
+        (if (namespace k)
+          (str (namespace k) "_" (name k))
+          (name k))
+        (str k))
+    (str/replace invalid-metric-name-chars "_")))
 
 
 
@@ -50,6 +48,7 @@
   [m]
   (->> m
     (#(dissoc % :mulog/namespace :mulog/event-name))
+    (remove (comp number? second))
     (map (fn [[k v]]
            [(label-key-str k)
             (cond
@@ -62,47 +61,52 @@
 
 (defn- event->metrics
   [{:keys [mulog/namespace mulog/event-name mulog/duration] :as event}]
-  (let [numeric        (filter (comp number? second) (dissoc event :mulog/duration))
-        numeric-labels (conj (map label-key-str (keys numeric)) "duration")
+  (let [;; labels
         namespace      (kw-str namespace)
+        namespace      (if-not (str/blank? namespace) (str namespace "_") namespace)
         event-name     (kw-str event-name)
+        metric-name    (if (str/starts-with? event-name namespace) event-name (str namespace event-name))
+        ;; labels
+        numeric        (filter (fn [[k v]] (and (number? v) (not= k :mulog/duration))) event)
+        numeric-labels (map label-key-str (keys numeric))
         labels         (as-labels event)]
-    (conj
+    (concat
+      ;;
+      ;; For every event, add a counter on the event name.
+      ;;
+      [{:metric/type        :counter
+        :metric/name        metric-name
+        :metric/description (format "Counter of %s/%s events."
+                              (str (:mulog/namespace event)) (pr-str (:mulog/event-name event)))
+        :metric/labels      labels}
+       ;;
+       ;; if the event has a :mulog/duration, then add a summary timer
+       ;;
+       (when duration
+         {:metric/type        :summary
+          :metric/value       duration
+          :metric/name        (str metric-name "_timer_nanos")
+          :metric/description (format "Time distribution of %s/%s event's duration (in nanoseconds)."
+                                (str (:mulog/namespace event)) (pr-str (:mulog/event-name event)))
+          :metric/labels      labels})]
       ;;
       ;; for every numeric value, setup a gauge
       ;;
       (map (fn [[k v]]
              (let [key-str (kw-str k)
-                   e-name  (str event-name "_" key-str)]
+                   e-name  (str metric-name "_" key-str)]
                {:metric/type        :gauge
                 :metric/value       v
-                :metric/namespace   namespace
                 :metric/name        e-name
-                :metric/description (str/join " " [event-name key-str "gauge"])
-                :metric/labels      (dissoc labels (label-key-str k) "duration")}))
-        numeric)
-      ;;
-      ;; if the event has a :mulog/duration, then add a summary timer
-      ;;
-      (when duration
-        {:metric/type        :summary
-         :metric/value       duration
-         :metric/namespace   namespace
-         :metric/name        (str event-name "_timer_nanos")
-         :metric/description (str event-name " Summary timer in nanos")
-         :metric/labels      (dissoc labels "duration")})
-      ;;
-      ;; For every event, add a counter on the event name.
-      ;;
-      {:metric/type        :counter
-       :metric/namespace   namespace
-       :metric/name        event-name
-       :metric/description (str event-name " counter")
-       :metric/labels      (apply dissoc labels numeric-labels)})))
-
+                :metric/description (format "Current value of %s in event %s/%s"
+                                      (pr-str k) (str (:mulog/namespace event)) (pr-str (:mulog/event-name event)))
+                :metric/labels      (dissoc labels (label-key-str k))}))
+        numeric))))
 
 
 (defn events->metrics
+  "Given a bunch of events it returns a number of metrics
+   which describe the given events in a number of dimensions."
   [events]
   (->> events
     (map cleanup-event)

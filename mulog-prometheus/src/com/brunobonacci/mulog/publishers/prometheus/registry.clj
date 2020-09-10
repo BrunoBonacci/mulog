@@ -3,6 +3,8 @@
   (:import [io.prometheus.client CollectorRegistry]
            [io.prometheus.client.exporter.common TextFormat]))
 
+
+
 ;;
 ;; Access to the private fields
 ;; `namesToCollectors` and `namesCollectorsLock`
@@ -13,7 +15,7 @@
 ;;
 ;; `namesToCollectors` is a map of
 ;; collectionName -> collection
-;; 
+;;
 ;; `namesCollectorsLock` is a lock object that
 ;; is synchronized when doing any operation with
 ;; `namesToCollectors`.
@@ -58,7 +60,7 @@
     return an existing collection by doing the following:
 
     - syncronize a lock on `nameCollectorsLock`
-    - get collection from `namesToCollectors` using `:metric/full-name`
+    - get collection from `namesToCollectors` using `:metric/name`
     - if collection exists return
     - else register new collection and return"))
 
@@ -93,7 +95,7 @@
     [t metric]
     (locking (nc-lock t)
       [metric
-       (let [collection (get (nc-map t) (:metric/full-name metric))]
+       (let [collection (get (nc-map t) (:metric/name metric))]
          (if-not collection
            (let [collection (col/create-collection metric)]
              (.register t collection)

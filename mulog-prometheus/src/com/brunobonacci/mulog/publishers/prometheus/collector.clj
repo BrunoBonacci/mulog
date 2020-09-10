@@ -94,10 +94,9 @@
 
 (defn- simple-collector-builder
   [builder-constructor
-   {:keys [metric/name metric/namespace metric/description metric/label-keys]}]
+   {:keys [metric/name metric/description metric/label-keys]}]
   (-> ^SimpleCollector$Builder (builder-constructor)
     (.name name)
-    (.namespace namespace)
     (.help description)
     (.labelNames label-keys)
     (.create)))
@@ -211,15 +210,12 @@
   [metrics]
   (->> metrics
     (remove nil?)
-    (map (fn [{:keys [ metric/value metric/namespace metric/name
-                      metric/description metric/labels metric/buckets] :as m}]
-           (let [nmspace (met/kw-str namespace)
-                 nm      (met/kw-str name)]
+    (map (fn [{:keys [ metric/value metric/name metric/description
+                      metric/labels metric/buckets] :as m}]
+           (let [nm      (met/kw-str name)]
              (merge m
                {:metric/value        (when value (double value))
-                :metric/namespace    nmspace
                 :metric/name         nm
-                :metric/full-name    (str nmspace "_" nm)
                 :metric/description  (str description)
                 :metric/label-keys   (into-array String (map met/label-key-str (keys labels)))
                 :metric/buckets      (double-array buckets)}))))))
