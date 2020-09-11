@@ -1029,11 +1029,11 @@ How to use it:
 ```
 
 
-* Example with Prometheus scraping:
+* Usage example with *Prometheus endpoint* scraping:
 
-To expose the metrics such that they will be scraped by Prometheus
-***μ/log*** exposes the registry and offers a facility to expose the metrics
-in a Ring (or Compojure) application.
+To expose the metrics such that they will be scraped by Prometheus,
+***μ/log*** exposes the registry and offers a facility to expose the
+metrics in a Ring (or Compojure) application.
 
 ``` clojure
 (require '[com.brunobonacci.mulog.publishers.prometheus :as prom])
@@ -1063,7 +1063,8 @@ Or if you are using Compojure then:
 ``` clojure
 (def my-routes
     (routes
-      (GET "/foo" [] "Hello Foo")
+      ;; your existing routes
+      (GET "/hello" [] "Hello World!")
       ;; here you can expose the metrics to Prometheus scraping process.
       (GET "/metrics" []
         {:status  200
@@ -1282,7 +1283,6 @@ marked as [help wanted](https://github.com/BrunoBonacci/mulog/labels/help%20want
 
 For example:
 
-  - [ ] Prometheus publisher
   - [ ] InfluxDB publisher
   - [ ] Advanced Console publisher
   - [ ] Advanced File publisher

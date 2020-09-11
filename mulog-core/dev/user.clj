@@ -362,7 +362,8 @@
   ;; compojure example
   (def my-routes
     (routes
-      (GET "/foo" [] "Hello Foo")
+      ;; your existing routes
+      (GET "/hello" [] "Hello World!")
       ;; here you can expose the metrics to Prometheus scraping process.
       (GET "/metrics" []
         {:status  200
