@@ -334,10 +334,10 @@
   because it will be called in the same loop. It cannot be called each
   time because it would overwhelm the PushGateway"
   [{:keys [publish-delay] :as cfg}]
-  (let [push-interval-ms (or (get-in cfg [:push-gatewaty :push-interval-ms]) 10000)
+  (let [push-interval-ms (or (get-in cfg [:push-gateway :push-interval-ms]) 10000)
         push-interval-ms (max publish-delay push-interval-ms 1000)
         push-interval-ms (* (long (Math/ceil (/ push-interval-ms publish-delay) )) publish-delay)]
-    (assoc-in cfg [:push-gatewaty :push-interval-ms] push-interval-ms)))
+    (assoc-in cfg [:push-gateway :push-interval-ms] push-interval-ms)))
 
 
 
