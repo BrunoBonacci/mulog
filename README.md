@@ -1034,8 +1034,8 @@ in a Ring (or Compojure) application.
 (def px (u/start-publisher! {:type :inline :publisher pub}))
 
 ;; now it is possible to access the registry
-(promregistry pub)  ;; => registry
-(promwrite-str pub) ;; formatted string with metrics in scrape format
+(prom/registry pub)  ;; => registry
+(prom/write-str pub) ;; formatted string with metrics in scrape format
 ```
 
 In order to expose these metrics you need a standard Ring handler,
@@ -1046,7 +1046,7 @@ here an example:
 (fn [_]
   {:status  200
    :headers {"Content-Type" "text/plain; version=0.0.4"}
-   :body    (promwrite-str pub)})
+   :body    (prom/write-str pub)})
 ```
 
 Or if you are using Compojure then:
@@ -1059,7 +1059,7 @@ Or if you are using Compojure then:
       (GET "/metrics" []
         {:status  200
          :headers {"Content-Type" "text/plain; version=0.0.4"}
-         :body    (promwrite-str pub)})
+         :body    (prom/write-str pub)})
       (route/not-found "<h1>Page not found</h1>")))
 ```
 
