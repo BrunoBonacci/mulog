@@ -24,6 +24,15 @@
                                   [criterium "0.4.6"]
                                   [org.slf4j/slf4j-log4j12 "2.0.0-alpha1"]]
                    :resource-paths ["dev-resources"]
-                   :plugins      [[lein-midje "3.2.2"]]}}
+                   :plugins      [[lein-midje "3.2.2"]
+                                  [lein-shell "0.5.0"]]}}
 
-  :aliases {"test" "midje"})
+  :aliases {"utest" ["midje" ":filter" "-integration"]
+            "itest" ["do"
+                     ["shell" "docker-compose" "up" "-d"]
+                     ["shell" "sleep" "5"]
+                     ["midje" ":filter" "integration"]
+                     ["shell" "docker-compose" "kill"]
+                     ["shell" "docker-compose" "rm" "-f"]]
+            "test" ["do" "utest," "itest"]}
+  )
