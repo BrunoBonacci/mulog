@@ -317,6 +317,67 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
+;;                    ----==| P R O M E T H E U S |==----                     ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(comment
+
+  (u/log ::hello :to "World!")
+
+  (u/start-publisher! {:type :console})
+
+  (u/log ::hello2 :to "World!" :v (rand-int 1000))
+
+  (u/trace ::long-op
+    [:mode :test]
+    (Thread/sleep (+ 1000 (rand-int 300))))
+
+  (def x (u/start-publisher!
+           {:type :prometheus
+            :push-gateway
+            {:job      "mulog-demo"
+             :endpoint "http://localhost:9091"}}))
+
+  (x)
+
+
+  (require '[com.brunobonacci.mulog.publishers.prometheus :as prom])
+  ;; create your publisher
+  (def pub (prom/prometheus-publisher {:type :prometheus}))
+  ;; start the publisher
+  (def px (u/start-publisher! {:type :inline :publisher pub}))
+
+  (prom/registry pub)
+  (prom/write-str pub)
+
+  ;; ring - handler to export
+  (fn [_]
+    {:status  200
+     :headers {"Content-Type" "text/plain; version=0.0.4"}
+     :body    (prom/write-str pub)})
+
+
+  ;; compojure example
+  (def my-routes
+    (routes
+      (GET "/foo" [] "Hello Foo")
+      ;; here you can expose the metrics to Prometheus scraping process.
+      (GET "/metrics" []
+        {:status  200
+         :headers {"Content-Type" "text/plain; version=0.0.4"}
+         :body    (prom/write-str pub)})
+      (route/not-found "<h1>Page not found</h1>")))
+
+  ;;(def x (u/start-publisher! {:type :prometheus}))
+
+  )
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
 ;;                    ----==| E V E N T S   D O C |==----                     ;;
 ;;                                                                            ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

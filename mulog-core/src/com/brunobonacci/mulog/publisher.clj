@@ -292,3 +292,11 @@
   (load-dynamic-publisher
     "com.brunobonacci.mulog.publishers.slack/slack-publisher"
     config))
+
+
+
+(defmethod publisher-factory :prometheus
+  [config]
+  (load-dynamic-publisher
+    "com.brunobonacci.mulog.publishers.prometheus/prometheus-publisher"
+    config))

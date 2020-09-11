@@ -187,3 +187,15 @@
            b# (deref sym#)]
        (.set sym# val#)
        (try ~@body (finally (.set sym# b#))))))
+
+
+
+(defn deep-merge
+  "Like merge, but merges maps recursively. It merges the maps from left
+  to right and the right-most value wins. It is useful to merge the
+  user defined configuration on top of the default configuration."
+  [& maps]
+  (let [maps (filter (comp not nil?) maps)]
+    (if (every? map? maps)
+      (apply merge-with deep-merge maps)
+      (last maps))))

@@ -32,7 +32,7 @@ This is necessary for the producer to connect to the broker.
 2. Update `src/com/brunobonacci/disruptions/main.clj/DEFAULT-CONFIG`'s
    Slack Publisher's `:webhook-url` to the Webhook you created in the
    previous step, uncomment the configuration section
-3. Start Kafka and Elasticsearch in background
+3. Start docker services in background
 ``` shell
 docker-compose rm -f && docker-compose up
 ```
@@ -64,6 +64,7 @@ The logs will be sent to the following destinations:
   - Kafka topic: `mulog`
   - Elasticsearch index `mulog-YYYY.MM.DD`
   - Zipkin + Elasticsearch (console http://localhost:9411/)
+  - Prometheus pushgateway (http://localhost:9091) to view the metrics (http://localhost:9091/metrics)
 
 To see the events sent to Kafka run:
 

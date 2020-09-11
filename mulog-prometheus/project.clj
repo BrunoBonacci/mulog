@@ -11,7 +11,9 @@
 
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [com.brunobonacci/mulog #=(ver)]
-                 [io.prometheus/simpleclient "0.9.0"]]
+                 [io.prometheus/simpleclient             "0.9.0"]
+                 [io.prometheus/simpleclient_common      "0.9.0"]
+                 [io.prometheus/simpleclient_pushgateway "0.9.0"]]
 
   :global-vars {*warn-on-reflection* true}
 
@@ -24,5 +26,4 @@
                    :resource-paths ["dev-resources"]
                    :plugins      [[lein-midje "3.2.2"]]}}
 
-  :aliases {"test" "midje"}
-  )
+  :aliases {"test" "midje"})
