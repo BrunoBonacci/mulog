@@ -1027,16 +1027,15 @@ To expose the metrics such that they will be scraped by Prometheus
 in a Ring (or Compojure) application.
 
 ``` clojure
-(require '[com.brunobonacci.mulog.publishers.prometheus :as p])
+(require '[com.brunobonacci.mulog.publishers.prometheus :as prom])
 ;; create your publisher
-(def pub (p/prometheus-publisher {:type :prometheus}))
+(def pub (prom/prometheus-publisher {:type :prometheus}))
 ;; start the publisher
 (def px (u/start-publisher! {:type :inline :publisher pub}))
 
 ;; now it is possible to access the registry
-(require '[com.brunobonacci.mulog.publishers.prometheus.registry  :as reg])
-(reg/registry pub)  ;; => registry
-(reg/write-str pub) ;; formatted string with metrics in scrape format
+(promregistry pub)  ;; => registry
+(promwrite-str pub) ;; formatted string with metrics in scrape format
 ```
 
 In order to expose these metrics you need a standard Ring handler,
@@ -1047,7 +1046,7 @@ here an example:
 (fn [_]
   {:status  200
    :headers {"Content-Type" "text/plain; version=0.0.4"}
-   :body    (reg/write-str pub)})
+   :body    (promwrite-str pub)})
 ```
 
 Or if you are using Compojure then:
@@ -1060,7 +1059,7 @@ Or if you are using Compojure then:
       (GET "/metrics" []
         {:status  200
          :headers {"Content-Type" "text/plain; version=0.0.4"}
-         :body    (reg/write-str pub)})
+         :body    (promwrite-str pub)})
       (route/not-found "<h1>Page not found</h1>")))
 ```
 

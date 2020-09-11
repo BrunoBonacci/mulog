@@ -343,22 +343,20 @@
   (x)
 
 
-  (require '[com.brunobonacci.mulog.publishers.prometheus :as p])
+  (require '[com.brunobonacci.mulog.publishers.prometheus :as prom])
   ;; create your publisher
-  (def pub (p/prometheus-publisher {:type :prometheus}))
+  (def pub (prom/prometheus-publisher {:type :prometheus}))
   ;; start the publisher
   (def px (u/start-publisher! {:type :inline :publisher pub}))
 
-
-  (require '[com.brunobonacci.mulog.publishers.prometheus.registry  :as reg])
-  (reg/registry pub)
-  (reg/write-str pub)
+  (prom/registry pub)
+  (prom/write-str pub)
 
   ;; ring - handler to export
   (fn [_]
     {:status  200
      :headers {"Content-Type" "text/plain; version=0.0.4"}
-     :body    (reg/write-str pub)})
+     :body    (prom/write-str pub)})
 
 
   ;; compojure example
@@ -369,7 +367,7 @@
       (GET "/metrics" []
         {:status  200
          :headers {"Content-Type" "text/plain; version=0.0.4"}
-         :body    (reg/write-str pub)})
+         :body    (prom/write-str pub)})
       (route/not-found "<h1>Page not found</h1>")))
 
   ;;(def x (u/start-publisher! {:type :prometheus}))
