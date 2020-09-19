@@ -258,6 +258,6 @@
          :mulog/duration     ~duration
          :mulog/timestamp    ~ts
          :mulog/outcome      ~outcome
-         :mulog/namespace   ~(str *ns*))
+         :mulog/namespace    ~(str *ns*))
        ~pairs
        ~captures)))
