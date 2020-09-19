@@ -3,6 +3,8 @@
 ## v0.5.0 - (unreleased)
 
   - [**NEW**] Added Prometheus publisher (thanks to @brandonstubbs)
+  - [#35] Fixed issue by which the wrong namespace was captured when
+    using ***μ/trace*** (thanks @DarinDouglass)
 
 
 ## v0.4.0 - (2020-08-04)
