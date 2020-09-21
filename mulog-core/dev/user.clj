@@ -277,7 +277,7 @@
 
   (u/log ::hello :to "World!")
 
-  (u/start-publisher! {:type :console})
+  (u/start-publisher! {:type :console :pretty? true})
 
   (def x (u/start-publisher! {:type :zipkin
                               :url "http://localhost:9411/"}))

@@ -123,4 +123,10 @@
   => (contains {:pass? true}))
 
 
+
+(fact "Is it a flake?"
+  (f/flake? nil) => false
+  (f/flake? "foo") => false
+  (f/flake? (f/flake)) => true)
+
 ;;

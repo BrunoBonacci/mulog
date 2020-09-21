@@ -108,6 +108,13 @@
 
 
 
+(defn flake?
+  "returns true if `f` is an instance of a Flake."
+  [f]
+  (instance? Flake f))
+
+
+
 (defmethod print-dup Flake
   [f ^java.io.Writer w]
   (print-method f w))

@@ -59,8 +59,8 @@
                       app-name] :as e}]
            ;; zipkin IDs are much lower bits than flakes
            {:id        (hexify trace-id 16)
-            :traceId   (hexify root-trace 32)
-            :parentId  (hexify parent-trace 16)
+            :traceId   (if (f/flake? root-trace)   (hexify root-trace 32)   root-trace)
+            :parentId  (if (f/flake? parent-trace) (hexify parent-trace 16) parent-trace)
             :name      event-name
             :kind      "SERVER"
             ;; timestamp in μs

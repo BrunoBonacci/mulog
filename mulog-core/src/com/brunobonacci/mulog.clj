@@ -242,8 +242,8 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   are in the same execution thread and which the scope of the block.
   "
   {:style/indent 1}
-  [context & body]
-  `(thread-local-binding [core/local-context (fast-map-merge @core/local-context ~context)]
+  [context-map & body]
+  `(thread-local-binding [core/local-context (fast-map-merge @core/local-context ~context-map)]
      ~@body))
 
 
