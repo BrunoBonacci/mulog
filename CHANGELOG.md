@@ -4,7 +4,7 @@
 
   - [**NEW**] Added Prometheus publisher (thanks to @brandonstubbs)
   - [#35] Fixed issue by which the wrong namespace was captured when
-    Using ***μ/trace*** (thanks @DarinDouglass)
+    using ***μ/trace*** (thanks @DarinDouglass)
   - Support for external root-trace and parent-trace
   - Updated dependencies
 
@@ -14,7 +14,8 @@
   - [**NEW**] Added CloudWatch Logs publisher (thanks to @etolbakov)
   - [**NEW**] Jaeger Tracing publisher
   - Performance improvement in ***μ/trace*** and `with-context`
-  - Zipkin, Kafka, Kinesis, File publisher stability improvements and small bug fixes
+  - Zipkin, Kafka, Kinesis, File publisher stability improvements and
+    small bug fixes
   - Publishers failures are now tracked with ***μ/log***
   - Relaxed compile-time requirement for pairs
 
@@ -35,7 +36,8 @@
 ## v0.2.0 - (2020-05-03)
 
   - Added flag to support Elasticsearch v6.x correctly
-  - Added `:mulog/trace-id` to base event with a flake (192 bit time-ordered unique id)
+  - Added `:mulog/trace-id` to base event with a flake (192 bit
+    time-ordered unique id)
   - [**NEW**] Added Zipkin publisher
   - `μ/trace` function api change. (**BREAKING CHANGE**)
     * If you were using the ***μ/trace*** function
