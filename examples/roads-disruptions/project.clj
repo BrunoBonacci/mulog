@@ -11,11 +11,11 @@
 
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [cheshire "5.10.0"]
-                 [compojure "1.6.1"]
+                 [compojure "1.6.2"]
                  [ring/ring-jetty-adapter "1.8.1"]
                  [ring/ring-core "1.8.1"]
                  [ring/ring-json "0.5.0"]
-                 [clj-http "3.10.1"]
+                 [clj-http "3.10.3"]
                  [com.cemerick/url "0.1.1"]
                  [com.brunobonacci/safely "0.7.0-alpha1"]
                  [org.clojure/tools.logging "1.1.0"]
