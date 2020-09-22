@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.5.0 - (unreleased)
+## v0.5.0 - (2020-09-22)
 
   - [**NEW**] Added Prometheus publisher (thanks to @brandonstubbs)
   - [#35] Fixed issue by which the wrong namespace was captured when
