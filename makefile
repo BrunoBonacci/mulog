@@ -131,7 +131,7 @@ kinesis_src = $(shell find mulog-kinesis/project.clj mulog-kinesis/src mulog-kin
 build-kinesis: build-core mulog-kinesis/target/mulog*.jar
 mulog-kinesis/target/mulog*.jar: $(kinesis_src)
 - @printf "#\n# Building mulog-kinesis\n#\n"
-- (cd mulog-kinesis; lein do check, install) # TODO: fix Region error and add test
+- (cd mulog-kinesis; lein do check, test, install)
 
 
 #
@@ -141,7 +141,7 @@ cloudwatch_src = $(shell find mulog-cloudwatch/project.clj mulog-cloudwatch/src 
 build-cloudwatch: build-core mulog-cloudwatch/target/mulog*.jar
 mulog-cloudwatch/target/mulog*.jar: $(cloudwatch_src)
 - @printf "#\n# Building mulog-cloudwatch\n#\n"
-- (cd mulog-cloudwatch; lein do check, install) # TODO: fix Region error and add test
+- (cd mulog-cloudwatch; lein do check, test, install)
 
 
 #

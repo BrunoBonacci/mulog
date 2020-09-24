@@ -7,11 +7,12 @@
 
 
 
-(def KINESIS-LOCAL-SETTINGS {:api :kinesis
-                             :endpoint-override
-                             {:protocol :http
-                              :hostname "localhost"
-                              :port 4568}})
+(def KINESIS-LOCAL-SETTINGS
+  {:api :kinesis
+   :endpoint-override
+   {:protocol :http
+    :hostname "localhost"
+    :port 4566}})
 
 
 
