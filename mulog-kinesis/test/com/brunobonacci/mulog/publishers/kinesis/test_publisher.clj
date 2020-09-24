@@ -2,7 +2,8 @@
   (:require [com.brunobonacci.mulog :as μ]
             [com.brunobonacci.mulog.utils :as ut]
             [com.brunobonacci.mulog.common.json :as json]
-            [cognitect.aws.client.api :as aws])
+            [cognitect.aws.client.api :as aws]
+            [clojure.pprint :as pp])
   (:import (java.util.concurrent TimeUnit)))
 
 
@@ -29,8 +30,14 @@
 
 (defn kinesis-invoke
   [client name op params]
-  (let [rq (merge params {:StreamName name})]
-    (aws/invoke client {:op op :request rq})))
+  (let [rq (merge params {:StreamName name})
+        rs (aws/invoke client {:op op :request rq})]
+    ;; for debugging purposes
+    (when  (:cognitect.anomalies/category rs)
+      (println (format "------------------- KINESIS OP: %s -------------------" (str op)))
+      (pp/pprint (meta rs))
+      (println "-----------------------------------------------------------------------"))
+    rs))
 
 
 
