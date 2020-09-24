@@ -14,11 +14,11 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-        keys:
-          # when lock file changes, use increasingly general patterns to restore cache
-          #- maven-repo-v1-{{ .Branch }}-{{ checksum "pom.xml" }}
-          - maven-repo-v1-{{ .Branch }}-
-          - maven-repo-v1-
+          keys:
+            # when lock file changes, use increasingly general patterns to restore cache
+            #- maven-repo-v1-{{ .Branch }}-{{ checksum "pom.xml" }}
+            - maven-repo-v1-{{ .Branch }}-
+            - maven-repo-v1-
 
       - run: make all
 
