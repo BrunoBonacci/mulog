@@ -2,16 +2,18 @@
   (:require [com.brunobonacci.mulog :as μ]
             [com.brunobonacci.mulog.utils :as ut]
             [com.brunobonacci.mulog.common.json :as json]
-            [cognitect.aws.client.api :as aws])
+            [cognitect.aws.client.api :as aws]
+            [clojure.pprint :as pp])
   (:import (java.util.concurrent TimeUnit)))
 
 
 
-(def KINESIS-LOCAL-SETTINGS {:api :kinesis
-                             :endpoint-override
-                             {:protocol :http
-                              :hostname "localhost"
-                              :port 4568}})
+(def KINESIS-LOCAL-SETTINGS
+  {:api :kinesis
+   :endpoint-override
+   {:protocol :http
+    :hostname "localhost"
+    :port 4566}})
 
 
 
@@ -28,8 +30,16 @@
 
 (defn kinesis-invoke
   [client name op params]
-  (let [rq (merge params {:StreamName name})]
-    (aws/invoke client {:op op :request rq})))
+  (let [rq (merge params {:StreamName name})
+        rs (aws/invoke client {:op op :request rq})]
+    ;; for debugging purposes
+    (when  (:cognitect.anomalies/category rs)
+      (println (format "------------------- KINESIS OP: %s -------------------" (str op)))
+      (pp/pprint rs)
+      (println "-----------------------------------------------------------------------")
+      (pp/pprint (meta rs))
+      (println "======================================================================="))
+    rs))
 
 
 
