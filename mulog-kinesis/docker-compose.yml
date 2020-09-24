@@ -11,3 +11,4 @@ services:
       - SERVICES=kinesis
       - DEBUG=1
       - LAMBDA_EXECUTOR=local
+      - DEFAULT_REGION=eu-west-1
