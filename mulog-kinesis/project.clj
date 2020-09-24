@@ -34,7 +34,7 @@
 
   :aliases {"test" ["do"
                     ["shell" "docker-compose" "up" "-d"]
-                    ["shell" "sleep" "35"]
+                    ["shell" "../scripts/wait_for.sh" "Localstack" "localhost" "4566"]
                     ["midje"]
                     ["shell" "docker-compose" "kill"]
                     ["shell" "docker-compose" "rm" "-f"]]}
