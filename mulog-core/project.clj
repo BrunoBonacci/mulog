@@ -44,7 +44,7 @@
 
   :aliases
   {"test"
-   ["with-profile" "+1.8:+1.9:+1.10.0:+1.10.1:+1.10.2" "midje"]
+   ["with-profile" "+1.8:+1.9:+1.10.0:+1.10.1" "midje"]
 
    "perf-quick"
    ["with-profile" "dev" "jmh"
