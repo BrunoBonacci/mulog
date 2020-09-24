@@ -9,3 +9,4 @@ services:
       - SERVICES=cloudwatch,logs
       - DEBUG=1
       - LAMBDA_EXECUTOR=local
+      - DEFAULT_REGION=eu-west-1

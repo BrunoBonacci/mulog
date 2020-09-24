@@ -70,9 +70,10 @@ prep: clean ancient format build
 #
 # Build
 #
-build: build-core build-json build-jvm-metrics
-build: build-cloudwatch build-els build-kafka build-kinesis build-prometheus
-build: build-slack build-zipkin build-examples
+MULOG_MODULES := build-core build-json build-jvm-metrics
+MULOG_MODULES += build-cloudwatch build-els build-kafka build-kinesis build-prometheus
+MULOG_MODULES += build-slack build-zipkin build-examples
+build: $(MULOG_MODULES)
 - @printf "#\n# Building μ/log Completed!\n#\n"
 
 
