@@ -6,6 +6,15 @@
 
 
 
+;; Unfortunately, there doesn't seem to be a supported way to get the mount path
+;; for a FileStore object, despite it always having one, and it even appearing in
+;; the string representation. Therefore we use reflection to access the private
+;; file or root field (depending on the concrete class type). This produces a
+;; number of warnings, and in future Java versions it may fail. If that happens we
+;; will need to take an alternative approach, such as parsing the path out of the
+;; .toString() representation of the FileStore object.
+;; See this StackOverflow question for more details:
+;; https://stackoverflow.com/questions/10678363/find-the-directory-for-a-filestore
 (def store-hacks
   [(when-let [klazz (try (Class/forName "sun.nio.fs.UnixFileStore")
                          (catch ClassNotFoundException _ nil))]
