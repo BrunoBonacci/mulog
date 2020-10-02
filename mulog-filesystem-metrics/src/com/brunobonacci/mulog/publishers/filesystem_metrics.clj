@@ -58,10 +58,8 @@
 
 
 (defn publish-fs-metrics
-  [^FileSystem fs filter]
-  (doseq [store (.getFileStores fs)
-          :let  [metrics (capture-fs-metrics store)]
-          :when (filter metrics)]
+  [^FileSystem fs transform]
+  (doseq [metrics (->> fs .getFileStores (map capture-fs-metrics) transform)]
     (u/log :mulog/filesystem-metrics-sampled
       :filesystem-metrics metrics)))
 
@@ -84,14 +82,14 @@
 
   (publish [_ buffer]
     ;; sampling the file system metrics
-    (publish-fs-metrics (FileSystems/getDefault) (or (:disk-filter config) identity))))
+    (publish-fs-metrics (FileSystems/getDefault) (or (:transform config) identity))))
 
 
 
 (def ^:const DEFAULT-CONFIG
   {;; Interval in milliseconds between two samples
    :sampling-interval 60000
-   :disk-filter nil})
+   :transform nil})
 
 
 

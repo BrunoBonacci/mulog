@@ -608,10 +608,10 @@ It is possible to sample filesystem metrics such as **total and available disk s
     {:type :filesystem-metrics
      ;; the interval in millis between two samples (default: 60s)
      :sampling-interval 60000
-     ;; filter only certain disks (e.g. only volumes over 1 GB)
-     ;; (default: `nil` includes all disks)
-     :fs-filter
-     #(> (:total-bytes %) 1e9)}))
+     ;; transform metrics (e.g. filter only volumes over 1 GB)
+     ;; (default: `nil` leaves metrics unchanged)
+     :transform
+     (partial filter #(> (:total-bytes %) 1e9)}))
 ```
 
 Here an example of the metrics sampled for one filesystem
