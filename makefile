@@ -118,6 +118,16 @@ mulog-jvm-metrics/target/mulog*.jar: $(jvm-metrics_src)
 
 
 #
+# Build filesystem-metrics
+#
+filesystem-metrics_src = $(shell find mulog-filesystem-metrics/project.clj mulog-filesystem-metrics/src mulog-filesystem-metrics/resources -type f)
+build-filesystem-metrics: build-core mulog-filesystem-metrics/target/mulog*.jar
+mulog-filesystem-metrics/target/mulog*.jar: $(filesystem-metrics_src)
+- @printf "#\n# Building mulog-filesystem-metrics\n#\n"
+- (cd mulog-filesystem-metrics; lein do check, test, install)
+
+
+#
 # Build kafka
 #
 kafka_src = $(shell find mulog-kafka/project.clj mulog-kafka/src mulog-kafka/resources -type f)
