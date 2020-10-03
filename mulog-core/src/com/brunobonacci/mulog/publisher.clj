@@ -258,8 +258,8 @@
 (defmethod publisher-factory :filesystem-metrics
   [config]
   (load-dynamic-publisher
-   "com.brunobonacci.mulog.publishers.filesystem-metrics/filesystem-metrics-publisher"
-   config))
+    "com.brunobonacci.mulog.publishers.filesystem-metrics/filesystem-metrics-publisher"
+    config))
 
 
 

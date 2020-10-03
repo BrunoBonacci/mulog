@@ -21,4 +21,3 @@
               :total-bytes int?
               :unallocated-bytes int?
               :usable-bytes int?})))
-

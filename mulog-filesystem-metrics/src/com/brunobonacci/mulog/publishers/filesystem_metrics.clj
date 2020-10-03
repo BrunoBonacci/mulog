@@ -6,14 +6,15 @@
 
 
 
-;; Unfortunately, there doesn't seem to be a supported way to get the mount path
-;; for a FileStore object, despite it always having one, and it even appearing in
-;; the string representation. Therefore we use reflection to access the private
-;; file or root field (depending on the concrete class type). This produces a
-;; number of warnings, and in future Java versions it may fail. If that happens we
-;; will need to take an alternative approach, such as parsing the path out of the
-;; .toString() representation of the FileStore object.
-;; See this StackOverflow question for more details:
+;; Unfortunately, there doesn't seem to be a supported way to get the
+;; mount path for a FileStore object, despite it always having one,
+;; and it even appearing in the string representation. Therefore we
+;; use reflection to access the private file or root field (depending
+;; on the concrete class type). This produces a number of warnings,
+;; and in future Java versions it may fail. If that happens we will
+;; need to take an alternative approach, such as parsing the path out
+;; of the `.toString()` representation of the FileStore object.  See
+;; this StackOverflow question for more details:
 ;; https://stackoverflow.com/questions/10678363/find-the-directory-for-a-filestore
 (def store-hacks
   [(when-let [klazz (try (Class/forName "sun.nio.fs.UnixFileStore")
@@ -33,11 +34,11 @@
 (defn- file-store-path
   [^FileStore store]
   (->> store-hacks
-       (map (fn hack-path [[klazz hack]]
-              (when (and klazz (instance? klazz store))
-                (hack store))))
-       (remove nil?)
-       first))
+    (map (fn hack-path [[klazz hack]]
+           (when (and klazz (instance? klazz store))
+             (hack store))))
+    (remove nil?)
+    first))
 
 
 
@@ -107,6 +108,6 @@
   (let [config (as-> config $
                  (merge DEFAULT-CONFIG $)
                  (assoc $ :sampling-interval
-                        (max sampling-interval 1000)))]
+                   (max sampling-interval 1000)))]
     ;; create the metrics publisher
     (FilesystemMetricsPublisher. config (rb/agent-buffer 1))))
