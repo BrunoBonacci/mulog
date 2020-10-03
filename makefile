@@ -70,7 +70,7 @@ prep: clean ancient format build
 #
 # Build
 #
-MULOG_MODULES := build-core build-json build-jvm-metrics
+MULOG_MODULES := build-core build-json build-jvm-metrics build-filesystem-metrics
 MULOG_MODULES += build-cloudwatch build-els build-kafka build-kinesis build-prometheus
 MULOG_MODULES += build-slack build-zipkin build-examples
 build: $(MULOG_MODULES)
@@ -115,6 +115,16 @@ build-jvm-metrics: build-core mulog-jvm-metrics/target/mulog*.jar
 mulog-jvm-metrics/target/mulog*.jar: $(jvm-metrics_src)
 - @printf "#\n# Building mulog-jvm-metrics\n#\n"
 - (cd mulog-jvm-metrics; lein do check, test, install)
+
+
+#
+# Build filesystem-metrics
+#
+filesystem-metrics_src = $(shell find mulog-filesystem-metrics/project.clj mulog-filesystem-metrics/src mulog-filesystem-metrics/resources -type f)
+build-filesystem-metrics: build-core mulog-filesystem-metrics/target/mulog*.jar
+mulog-filesystem-metrics/target/mulog*.jar: $(filesystem-metrics_src)
+- @printf "#\n# Building mulog-filesystem-metrics\n#\n"
+- (cd mulog-filesystem-metrics; lein do check, test, install)
 
 
 #
@@ -202,6 +212,7 @@ deploy:
 - (cd mulog-json;                 lein deploy clojars)
 - (cd mulog-elasticsearch;        lein deploy clojars)
 - (cd mulog-jvm-metrics;          lein deploy clojars)
+- (cd mulog-filesystem-metrics;   lein deploy clojars)
 - (cd mulog-kafka;                lein deploy clojars)
 - (cd mulog-kinesis;              lein deploy clojars)
 - (cd mulog-cloudwatch;           lein deploy clojars)
@@ -220,6 +231,7 @@ ancient:
 - (cd mulog-json;                 lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-elasticsearch;        lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-jvm-metrics;          lein with-profile tools ancient upgrade ; lein do clean, install)
+- (cd mulog-filesystem-metrics;   lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-kafka;                lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-kinesis;              lein with-profile tools ancient upgrade ; lein do clean, install)
 - (cd mulog-cloudwatch;           lein with-profile tools ancient upgrade ; lein do clean, install)
@@ -239,6 +251,7 @@ format:
 - (cd mulog-json;                 lein with-profile tools cljfmt fix)
 - (cd mulog-elasticsearch;        lein with-profile tools cljfmt fix)
 - (cd mulog-jvm-metrics;          lein with-profile tools cljfmt fix)
+- (cd mulog-filesystem-metrics;   lein with-profile tools cljfmt fix)
 - (cd mulog-kafka;                lein with-profile tools cljfmt fix)
 - (cd mulog-kinesis;              lein with-profile tools cljfmt fix)
 - (cd mulog-cloudwatch;           lein with-profile tools cljfmt fix)
@@ -258,6 +271,7 @@ clean:
 - (cd mulog-json;                 rm -fr target)
 - (cd mulog-elasticsearch;        rm -fr target)
 - (cd mulog-jvm-metrics;          rm -fr target)
+- (cd mulog-filesystem-metrics;   rm -fr target)
 - (cd mulog-kafka;                rm -fr target)
 - (cd mulog-kinesis;              rm -fr target)
 - (cd mulog-cloudwatch;           rm -fr target)

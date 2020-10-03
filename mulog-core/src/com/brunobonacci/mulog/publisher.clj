@@ -255,6 +255,14 @@
 
 
 
+(defmethod publisher-factory :filesystem-metrics
+  [config]
+  (load-dynamic-publisher
+    "com.brunobonacci.mulog.publishers.filesystem-metrics/filesystem-metrics-publisher"
+    config))
+
+
+
 (defmethod publisher-factory :kafka
   [config]
   (load-dynamic-publisher

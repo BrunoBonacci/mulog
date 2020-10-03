@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.6.0 - (unreleased)
+
+  - [**NEW**] Added Filesystem metrics sampler (thanks to @emlyn)
+
+
 ## v0.5.0 - (2020-09-22)
 
   - [**NEW**] Added Prometheus publisher (thanks to @brandonstubbs)
