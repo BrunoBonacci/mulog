@@ -3,6 +3,7 @@
 ## v0.6.0 - (unreleased)
 
   - [**NEW**] Added Filesystem metrics sampler (thanks to @emlyn)
+  - Fixed issue SlackPublisher trying to send empty messages #41 (thanks @ak-coram)
 
 
 ## v0.5.0 - (2020-09-22)
