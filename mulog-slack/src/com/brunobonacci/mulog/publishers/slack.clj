@@ -69,13 +69,15 @@
           transformed-events (transform (map second items))
           render-message (:render-message config)
           rendered-messages (map render-message transformed-events)]
-      (if-not (seq items)
-        buffer
-        (do
-          (send-slack-message (:webhook-url config)
-            (str/join "\n" rendered-messages)
-            (:publish-delay config))
-          (rb/dequeue buffer last-offset))))))
+      ;; if the are rendered events, then send them
+      (when (seq rendered-messages)
+        (send-slack-message (:webhook-url config)
+          (str/join "\n" rendered-messages)
+          (:publish-delay config)))
+      ;; discard the events we processed
+      (if (seq items)
+        (rb/dequeue buffer last-offset)
+        buffer))))
 
 
 
