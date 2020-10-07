@@ -53,6 +53,7 @@
 
 
 (deftype SlackPublisher [config buffer]
+
   com.brunobonacci.mulog.publisher.PPublisher
   (agent-buffer [_]
     buffer)
@@ -68,10 +69,12 @@
           transformed-events (transform (map second items))
           render-message (:render-message config)
           rendered-messages (map render-message transformed-events)]
+      ;; if the are rendered events, then send them
       (when (seq rendered-messages)
         (send-slack-message (:webhook-url config)
-                            (str/join "\n" rendered-messages)
-                            (:publish-delay config)))
+          (str/join "\n" rendered-messages)
+          (:publish-delay config)))
+      ;; discard the events we processed
       (if (seq items)
         (rb/dequeue buffer last-offset)
         buffer))))
