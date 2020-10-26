@@ -104,8 +104,9 @@
   [{:keys [filename transform] :as config}]
   {:pre [filename]}
   (let [filename (io/file filename)]
-    ;; make parte dirs
-    (.mkdirs (.getParentFile filename))
+    ;; make parent dirs
+    (when-let [path (.getParentFile filename)]
+      (.mkdirs path))
     (SimpleFilePublisher.
       config
       (io/writer filename :append true)
