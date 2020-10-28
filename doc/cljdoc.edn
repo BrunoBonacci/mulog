@@ -1,7 +1,7 @@
 {:cljdoc.doc/tree
  [["Readme" {:file "README.md"}]
   ["Changelog" {:file "CHANGELOG.md"}]
-  ["F.A.Q." {:file "faq.md"}]
+  ["F.A.Q." {:file "doc/faq.md"}]
   ["Publishers"
    ["Simple Console Publisher" {:file "doc/publishers/simple-console-publisher.md"}]
    ["Simple File Publisher" {:file "doc/publishers/simple-file-publisher.md"}]
