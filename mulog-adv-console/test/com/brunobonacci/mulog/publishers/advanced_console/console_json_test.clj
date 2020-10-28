@@ -14,7 +14,7 @@
        ;; different thread
        (with-redefs [*out* out#]
          ~@body
-         (Thread/sleep 250)
+         (Thread/sleep 550)
          (flush)
          (str out#))
        (finally (pub#)))))
