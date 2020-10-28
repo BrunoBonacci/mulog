@@ -63,4 +63,4 @@ How to use it:
 
 Supported versions: `6.7+`, `7.x`
 
-Read more on [Elasticsearch name mangling](./doc/els-name-mangling.md) here.
+Read more on [Elasticsearch name mangling](../els-name-mangling.md) here.

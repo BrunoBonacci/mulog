@@ -75,7 +75,7 @@ How to use it:
 
 Once you send a message you should get a Slack notification which looks as follow:
 
-![mulog slack example](./doc/images/mulog-slack-exmaple.png)
+![mulog slack example](../images/mulog-slack-exmaple.png)
 
 You can customize the look by providing a `:render-message` function
 which returns one or more [Slack Blocks](https://api.slack.com/reference/block-kit/blocks).

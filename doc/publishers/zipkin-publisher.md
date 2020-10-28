@@ -49,6 +49,11 @@ How to use it:
    :url  "http://localhost:9411/"})
 ```
 
+Here is an example of how the traces look like:
+
+![zipkin traces](../images/nested-traces.png)
+
+
 **NOTE: Zipkin requires an application name for the traces, use
 `set-global-context` to define one**, like:
 

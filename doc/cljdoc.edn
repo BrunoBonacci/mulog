@@ -2,6 +2,8 @@
  [["Readme" {:file "README.md"}]
   ["Changelog" {:file "CHANGELOG.md"}]
   ["F.A.Q." {:file "doc/faq.md"}]
+  ["μ/log internals" {:file "doc/mulog-internals.md"}]
+
   ["Publishers"
    ["Simple Console Publisher" {:file "doc/publishers/simple-console-publisher.md"}]
    ["Simple File Publisher" {:file "doc/publishers/simple-file-publisher.md"}]
@@ -24,9 +26,10 @@
    ["Jvm Metrics Sampling" {:file "doc/publishers/jvm-metrics-sampling.md"}]
    ["Filesystem Metrics Sampling" {:file "doc/publishers/filesystem-metrics-sampling.md"}]]
 
-  ["μ/log internals" {:file "doc/mulog-internals.md"}]
-  ["How to write custom publishers" {:file "doc/custom-publishers.md"}]
-  ["How to transfer the local-context" {:file "doc/transfer-context.md"}]
+  ["HowTos"
+   ["How to write custom publishers" {:file "doc/custom-publishers.md"}]
+   ["How to transfer the local-context" {:file "doc/transfer-context.md"}]]
+
   ["Attribute name mangling on Elasticsearch" {:file "doc/els-name-mangling.md"}]
 
   ]}
