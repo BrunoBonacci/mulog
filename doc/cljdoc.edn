@@ -16,11 +16,11 @@
    ["Zipkin Publisher" {:file "doc/publishers/zipkin-publisher.md"}]
    ]
   ["Special publishers"
-   ["Inline Publishers" {:file "doc/publishers/inline-publishers.md"}]
    ["Custom Publishers" {:file "doc/publishers/custom-publishers.md"}]
+   ["Inline Publishers" {:file "doc/publishers/inline-publishers.md"}]
    ["Multi Publisher" {:file "doc/publishers/multi-publisher.md"}]
    ]
-  ["Samplers"
+  ["Samplers" {:file "doc/samplers.md"}
    ["Jvm Metrics Sampling" {:file "doc/publishers/jvm-metrics-sampling.md"}]
    ["Filesystem Metrics Sampling" {:file "doc/publishers/filesystem-metrics-sampling.md"}]]
 
