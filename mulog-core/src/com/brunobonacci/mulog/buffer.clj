@@ -91,7 +91,7 @@ to the downstream systems by the publishers.
     (reify ThreadFactory
       (^Thread newThread [this ^Runnable r]
         (let [t (Thread. r)]
-          (.setName   t (str "mu/log-task-" (.getId t)))
+          (.setName   t (str "μ/log-task-" (.getId t)))
           (.setDaemon t true)
           t)))))
 

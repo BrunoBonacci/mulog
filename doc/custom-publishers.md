@@ -39,7 +39,7 @@ read [μ/log internals](./mulog-internals.md).
 
   (publish-delay [this]
     "The number of milliseconds between two calls to `publish` function.
-     return `nil` if you don't want mu/log call the `publish` function")
+     return `nil` if you don't want μ/log call the `publish` function")
 
   (publish [this buffer]
     "publishes the items in the buffer and returns the new state of

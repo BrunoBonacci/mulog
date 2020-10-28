@@ -25,8 +25,10 @@
 
 (defn to-json
   "It takes a map and return a JSON encoded string of the given map data."
-  [m]
-  (json/generate-string m {:date-format "yyyy-MM-dd'T'HH:mm:ss.SSSX"}))
+  ([m]
+   (json/generate-string m {:date-format "yyyy-MM-dd'T'HH:mm:ss.SSSX"}))
+  ([m {:keys [pretty?] :as cfg}]
+   (json/generate-string m {:date-format "yyyy-MM-dd'T'HH:mm:ss.SSSX" :pretty pretty?})))
 
 
 

@@ -94,6 +94,7 @@ aggregators. *So here is ***μ/log*** designed for this very purpose.*
      - [Simple console publisher](#simple-console-publisher)
      - [Simple file publisher](#simple-file-publisher)
      - [Multi publisher](#multi-publisher)
+     - [Advanced console publisher](#advanced-console-publisher)
      - [Elasticsearch publisher](#elasticsearch-publisher)
      - [Apache Kafka publisher](#apache-kafka-publisher)
      - [Kinesis publisher](#kinesis-publisher)
@@ -641,6 +642,7 @@ be stored, indexed, transformed or visualised.
 ### Simple console publisher
 ![since v0.1.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)
 
+It is bundled with the core module, no extra dependencies required.
 It outputs the events into the standard output in EDN format, mostly
 intended for local development.
 
@@ -666,9 +668,51 @@ How to use it:
 (μ/start-publisher! {:type :console})
 ```
 
+### Advanced console publisher
+![since v0.6.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)
+
+It outputs the events into the standard output in JSON format
+
+In order to use the library add the dependency to your `project.clj`
+
+``` clojure
+;; Leiningen project
+[com.brunobonacci/mulog-adv-console "x.x.x"]
+
+;; deps.edn format
+{:deps { com.brunobonacci/mulog-adv-console {:mvn/version "x.x.x"}}}
+```
+Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog-adv-console.svg)](https://clojars.org/com.brunobonacci/mulog-adv-console)
+
+The events must be serializeable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
+
+The available configuration options:
+
+``` clojure
+{:type :console-json
+
+ ;; Whether or not to output must be pretty-printed (multiple lines)
+ :pretty? false
+
+ ;; a function to apply to the sequence of events before publishing.
+ ;; This transformation function can be used to filter, tranform,
+ ;; anonymise events before they are published to a external system.
+ ;; by defatult there is no transformation.  (since v0.1.8)
+ :transform identity
+ }
+```
+
+How to use it:
+
+``` clojure
+(μ/start-publisher! {:type :console-json})
+```
+
+
 ### Simple file publisher
 ![since v0.1.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)
 
+It is bundled with the core module, no extra dependencies required.
 It sends the output of each log into a file in EDN format.
 
 The available configuration options:

@@ -21,7 +21,7 @@
 
   (publish-delay [this]
     "The number of milliseconds between two calls to `publish` function.
-     return `nil` if you don't want mu/log call the `publish` function")
+     return `nil` if you don't want μ/log call the `publish` function")
 
   (publish [this buffer]
     "publishes the items in the buffer and returns the new state of
@@ -205,7 +205,7 @@
 (defmethod publisher-factory :default
   [cfg]
   (throw
-    (ex-info "mu/log Invalid or no reporting method selected."
+    (ex-info "μ/log Invalid or no reporting method selected."
       {:type (:type cfg)
        :config cfg})))
 
@@ -231,6 +231,14 @@
 (defmethod publisher-factory :console
   [config]
   (console-publisher config))
+
+
+
+(defmethod publisher-factory :console-json
+  [config]
+  (load-dynamic-publisher
+    "com.brunobonacci.mulog.publishers.console-json/json-console-publisher"
+    config))
 
 
 

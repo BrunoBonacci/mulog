@@ -3,7 +3,9 @@
 ## v0.6.0 - (unreleased)
 
   - [**NEW**] Added Filesystem metrics sampler (thanks to @emlyn)
-  - Fixed issue SlackPublisher trying to send empty messages #41 (thanks @ak-coram)
+  - [**NEW**] Added Advanced Console Publisher with JSON formatting.
+  - Fixed issue in SlackPublisher trying to send empty messages #41 (thanks @ak-coram)
+  - Fixed issue in `simple-file-publisher` not handling files without parent dir #43 (thanks to @emlyn)
 
 
 ## v0.5.0 - (2020-09-22)
