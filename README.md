@@ -88,23 +88,7 @@ aggregators. *So here is ***μ/log*** designed for this very purpose.*
      - [Use of context](#use-of-context)
  - [Best practices](#best-practices)
  - [***μ/trace***](#μtrace)
- - [JVM Metrics sampling](#jvm-metrics-sampling)
- - [Filesystem Metrics sampling](#filesystem-metrics-sampling)
  - [Publishers](#publishers)
-     - [Simple console publisher](#simple-console-publisher)
-     - [Simple file publisher](#simple-file-publisher)
-     - [Multi publisher](#multi-publisher)
-     - [Advanced console publisher](#advanced-console-publisher)
-     - [Elasticsearch publisher](#elasticsearch-publisher)
-     - [Apache Kafka publisher](#apache-kafka-publisher)
-     - [Kinesis publisher](#kinesis-publisher)
-     - [Cloudwatch Logs publisher](#cloudwatch-logs-publisher)
-     - [Prometheus publisher](#prometheus-publisher)
-     - [Slack publisher](#slack-publisher)
-     - [Zipkin publisher](#zipkin-publisher)
-     - [Jaeger publisher](#jaeger-publisher)
-     - [Custom publishers](#custom-publishers)
-     - [Inline publishers](#inline-publishers)
  - [Additional topics](#additional-topics)
  - [Contributions](#contributions)
  - [Related projects](#related-projects)
@@ -505,35 +489,44 @@ following:
 Publishers allow to send the events to external system where they can
 be stored, indexed, transformed or visualised.
 
+Most of the publishers are in separated modules to reduce the risk of
+dependencies clash. Please see the specific publisher documentation
+for the name of the module to add in your dependencies.
 
-### Simple console publisher
-![since v0.1.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)
-
-It is bundled with the core module, no extra dependencies required.
-It outputs the events into the standard output in EDN format, mostly
-intended for local development.
-
-The available configuration options:
+Modules can be started as follow:
 
 ``` clojure
-{:type :console
-
- ;; Whether or not to output must be pretty-printed (multiple lines)
- :pretty? false
-
- ;; a function to apply to the sequence of events before publishing.
- ;; This transformation function can be used to filter, tranform,
- ;; anonymise events before they are published to a external system.
- ;; by defatult there is no transformation.  (since v0.1.8)
- :transform identity
- }
+(def pub (μ/start-publisher! {:type :console :pretty? true}))
 ```
 
-How to use it:
+The map contains the configuration which is specific to the publisher.
 
-``` clojure
-(μ/start-publisher! {:type :console})
-```
+It returns a function with no arguments which when called stops the
+publisher and flushes the records currently present in the buffer.
+Finally, if the publisher implements the `java.io.Closeable` it will
+call the `close` method to release/close external resources.
+
+Here the list of all available publishers:
+
+  - Publishers
+    - [Simple Console Publisher](./doc/publishers/simple-console-publisher.md)
+    - [Simple File Publisher](./doc/publishers/simple-file-publisher.md)
+    - [Advanced Console Publisher](./doc/publishers/advanced-console-publisher.md)
+    - [Cloudwatch Logs Publisher](./doc/publishers/cloudwatch-logs-publisher.md)
+    - [Elasticsearch Publisher](./doc/publishers/elasticsearch-publisher.md)
+    - [Jaeger Publisher](./doc/publishers/jaeger-publisher.md)
+    - [Kafka Publisher](./doc/publishers/kafka-publisher.md)
+    - [Kinesis Publisher](./doc/publishers/kinesis-publisher.md)
+    - [Prometheus Publisher](./doc/publishers/prometheus-publisher.md)
+    - [Slack Publisher](./doc/publishers/slack-publisher.md)
+    - [Zipkin Publisher](./doc/publishers/zipkin-publisher.md)
+  - Special publishers
+    - [Inline Publishers](./doc/publishers/inline-publishers.md)
+    - [Custom Publishers](./doc/publishers/custom-publishers.md)
+    - [Multi Publisher](./doc/publishers/multi-publisher.md)
+  - Samplers
+    - [Jvm Metrics Sampling](./doc/publishers/jvm-metrics-sampling.md)
+    - [Filesystem Metrics Sampling](./doc/publishers/filesystem-metrics-sampling.md)
 
 
 ## Additional topics
