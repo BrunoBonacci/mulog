@@ -30,6 +30,7 @@
    ["How to write custom publishers" {:file "doc/custom-publishers.md"}]
    ["How to transfer the local-context" {:file "doc/transfer-context.md"}]]
 
-  ["Attribute name mangling on Elasticsearch" {:file "doc/els-name-mangling.md"}]
+  ["Other topics"
+   ["Attribute name mangling on Elasticsearch" {:file "doc/els-name-mangling.md"}]]
 
   ]}
