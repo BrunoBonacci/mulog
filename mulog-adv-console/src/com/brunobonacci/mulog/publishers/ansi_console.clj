@@ -1,6 +1,7 @@
  (ns com.brunobonacci.mulog.publishers.ansi-console
-   (:require [com.brunobonacci.mulog.buffer :as rb]
-             [com.brunobonacci.mulog.publishers.helper.clansi :as ansi]))
+   (:require [com.brunobonacci.mulog.publisher :as p]
+             [com.brunobonacci.mulog.buffer :as rb]
+             [com.brunobonacci.mulog.publishers.helpers.clansi :as ansi]))
 
 (defn colorize
   [thing color]
