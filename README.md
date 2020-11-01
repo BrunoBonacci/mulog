@@ -8,7 +8,7 @@
 
 > From the Greek letter **μ**, **mu** *(Pronunciation: /mjuː/)* <br/>
 > The twelfth letter of the
-> Greek alphabet (Μ, μ), often used as a prefix for *mirco-* which is
+> Greek alphabet (Μ, μ), often used as a prefix for *micro-* which is
 > 10<sup>-6</sup> in the SI (System of Unis). Lowercase letter "`u`" is often
 > substituted for "`μ`" when the Greek character is not typographically
 > available.<p/>
