@@ -1,17 +1,9 @@
  (ns com.brunobonacci.mulog.publishers.advanced-console
    (:require [com.brunobonacci.mulog.flakes :refer [flake?]]
              [com.brunobonacci.mulog.publisher :as p]
-             [com.brunobonacci.mulog.utils :refer [pprint-event-str]]
-             [clojure.pprint :refer [pprint]]
-             [clojure.string :as str]
              [com.brunobonacci.mulog.buffer :as rb]
              [com.brunobonacci.mulog.publishers.helpers.clansi :as ansi]))
 
-
-;; TODO: clean-up & simplify code
-;; TODO: make pretty printing work
-;; TODO: write some tests
-;; TODO: integrate the JSON publisher
 
 (defn wrap-quotes
   [^String s]
