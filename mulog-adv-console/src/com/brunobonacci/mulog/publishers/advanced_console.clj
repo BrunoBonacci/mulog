@@ -1,6 +1,9 @@
  (ns com.brunobonacci.mulog.publishers.advanced-console
    (:require [com.brunobonacci.mulog.flakes :refer [flake?]]
              [com.brunobonacci.mulog.publisher :as p]
+             [com.brunobonacci.mulog.utils :refer [pprint-event-str]]
+             [clojure.pprint :refer [pprint]]
+             [clojure.string :as str]
              [com.brunobonacci.mulog.buffer :as rb]
              [com.brunobonacci.mulog.publishers.helpers.clansi :as ansi]))
 
@@ -30,6 +33,16 @@
                       (colorize v color)))
              {}
              item))
+
+(defn naive-prettify
+  [items]
+  (as-> items $
+    (reduce-kv (fn [acc k v]
+                 (conj acc (str k " " v ",\n")))
+               ["{\n"]
+               $)
+    (conj $ "}")
+    (apply str $)))
 
 (def formatters
   (atom {}))
@@ -93,7 +106,7 @@
 
   (publish [_ buffer]
     (doseq [item (map second (rb/items buffer))
-            :let [rules (:format config)
+            :let [{:keys [rules pretty?]} config
                   event-fmt (entry-format item rules)
                   pair-formats (pair-formats item rules)
                   pair-keys (keys pair-formats)
@@ -105,7 +118,9 @@
                                                          (get-in pair-formats [k :pair]))))
                                    (apply merge
                                           (colorize-item event-without-pair-fmt event-fmt)))]]
-      (println item-output))
+      (println (if pretty? 
+                 (naive-prettify item-output)
+                 item-output)))
     (flush)
     (rb/clear buffer)))
 
