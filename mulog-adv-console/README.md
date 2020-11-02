@@ -10,6 +10,59 @@ advanced formatting options.
 
 Please see [README](../README.md#advanced-console-publisher) on main page.
 
+### ANSI color printing
+For better visual checks of the logs there is an ANSI color printer.
+
+To use it you need to setup the rules when the format applies, as well as the formatters
+
+#### Example for setting up the formats:
+
+There are three types of formatters:
+- `event` - when the value is found in an log item it will color the whole event
+  - when there are two or more matches it will pick the last rule it matches
+  - when there are not matches it will pick the `:default-formatter` otherwise it will print a plain string
+- `pair` - it overrides the event color and colors a specific key-value pair.
+  - when there are two or more matches it will pick the last rule
+
+```clojure
+(advanced-console/register-formatters
+ {:http-format          {:event :yellow}
+  :event-format         {:event :green}
+  :http-error-format    {:pair :red}
+  :override-pair-format {:pair :blue}
+  :default-formatter    :magenta})
+```
+
+#### Example for setting up the rules
+
+To make use of the rules setup you need `where` to be included in your project: `[com.brunobonacci/where "0.5.5"]`
+
+```clojure
+;; notice that the matching values are used to match the formatter.
+(def format-rules
+  [(where :mulog/event-name :is? :line-test)
+   {:line-test :event-format}
+
+   (where contains? :http-test)
+   {:http-test :http-format}
+
+   (where contains? :http-error)
+   {:http-error :http-error-format}
+   
+   (where :http-error :is? 500)
+   {:http-error :override-pair-format}])
+```
+
+The rules need to be passed onto the publisher. The publisher supports simple pretty printing for the event. Key-value pairs in the event are displayed on separate line.
+
+When the values are nested data structures they are displayed as one line.
+
+```clojure
+(mu/start-publisher!
+   {:type :advanced-console
+    :rules format-rules
+    :pretty? true})
+```
 
 ## License
 
