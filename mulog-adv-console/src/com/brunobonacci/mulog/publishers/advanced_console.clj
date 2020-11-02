@@ -5,6 +5,11 @@
              [com.brunobonacci.mulog.publishers.helpers.clansi :as ansi]))
 
 
+;; TODO: clean-up & simplify code
+;; TODO: make pretty printing work
+;; TODO: write some tests
+;; TODO: integrate the JSON publisher
+
 (defn wrap-quotes
   [^String s]
   (str "\"" s "\""))
@@ -93,13 +98,14 @@
                   pair-formats (pair-formats item rules)
                   pair-keys (keys pair-formats)
                   event-without-pair-fmt (apply dissoc item pair-keys)
-                  event-pairs (select-keys item pair-keys)]]
-      (println (->> event-pairs
-                    (map (fn [[k v]]
-                           (colorize-item (hash-map k v)
-                                          (get-in pair-formats [k :pair]))))
-                    (apply merge
-                           (colorize-item event-without-pair-fmt event-fmt)))))
+                  event-pairs (select-keys item pair-keys)
+                  item-output (->> event-pairs
+                                   (map (fn [[k v]]
+                                          (colorize-item (hash-map k v)
+                                                         (get-in pair-formats [k :pair]))))
+                                   (apply merge
+                                          (colorize-item event-without-pair-fmt event-fmt)))]]
+      (println item-output))
     (flush)
     (rb/clear buffer)))
 
