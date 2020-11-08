@@ -27,7 +27,7 @@ The current setup supports 8 colors:
 
 You can add a background using `:bg-` in front of the color - e.g. `:bg-red` will make the background red.
 
-In addition to these you can use `:bright` to achieve a similar effect to bold, `:underline`
+In addition to these you can use `:bright` to achieve a similar effect to bold. Use `:underline` to underline.
 
 `:inverse` will inverse the font color and the background color.
 
