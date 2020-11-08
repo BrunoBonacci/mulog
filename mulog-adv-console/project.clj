@@ -10,6 +10,8 @@
   :scm {:name "git" :url "https://github.com/BrunoBonacci/mulog.git"}
 
   :dependencies [[org.clojure/clojure "1.10.1"]
+                 [com.brunobonacci/where "0.5.5"]
+                 [clansi "1.0.0"]
                  [com.brunobonacci/mulog #=(ver)]
                  [com.brunobonacci/mulog-json #=(ver)]]
 

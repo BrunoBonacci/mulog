@@ -2,7 +2,7 @@
    (:require [com.brunobonacci.mulog.flakes :refer [flake?]]
              [com.brunobonacci.mulog.publisher :as p]
              [com.brunobonacci.mulog.buffer :as rb]
-             [com.brunobonacci.mulog.publishers.helpers.clansi :as ansi]))
+             [clansi :refer [style]]))
 
 
 (defn wrap-quotes
@@ -11,11 +11,13 @@
 
 (defn colorize
   [thing color]
-  (ansi/style (if (or (string? thing)
+  (apply style (if (or (string? thing)
                       (flake? thing))
                 (wrap-quotes thing)
                 thing)
-              color))
+              (if (keyword? color)
+                [color]
+                color)))
 
 (defn colorize-item
   [item color]
