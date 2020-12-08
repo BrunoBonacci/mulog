@@ -204,6 +204,10 @@
   (def x (u/start-publisher! {:type :elasticsearch
                               :url "http://localhost:9200/"}))
 
+  (def x (u/start-publisher! {:type :elasticsearch
+                              :url "http://localhost:9200/"
+                              :data-stream "mulog-stream"}))
+
   (x)
 
   )
