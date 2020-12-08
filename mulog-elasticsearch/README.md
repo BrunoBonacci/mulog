@@ -17,6 +17,10 @@ docker-compose rm -f && docker-compose up -d
 
 Then open: http://localhost:9000/ for Kibana, then add the index pattern `mulog-*`
 
+Follow the instructions at
+https://www.elastic.co/guide/en/elasticsearch/reference/current/set-up-a-data-stream.html
+to set up a data stream `mulog-stream`
+
 ## License
 
 Copyright © 2019-2020 Bruno Bonacci - Distributed under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0)

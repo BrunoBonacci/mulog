@@ -36,8 +36,18 @@ The available configuration options:
  ;; with the interval specified.
  :publish-delay 5000
 
+ ;; Choose an indexing strategy:
+ ;; between `:index-pattern` or `:data-stream`, the default is `:index-pattern`
+
  ;; The index pattern to use for the events
- :index-pattern "'mulog-'yyyy.MM.dd"
+ ;; :index-pattern "'mulog-'yyyy.MM.dd"
+
+ ;; data streams are available since Elasticsearch 7.9
+ ;; :data-stream   "mulog-stream"
+
+ ;; extra http options to pass to the HTTP client
+ :http-opts {}
+
 
  ;; Whether or not to change the attribute names
  ;; to facilitate queries and avoid type clashing
