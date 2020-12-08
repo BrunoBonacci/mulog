@@ -32,6 +32,20 @@
 
 
 
+(fact "ensure that dates are serialised with milliseconds precision"
+
+  (let [date (java.util.Date. 1607446659809)]
+    (to-json {:date date}))
+  => "{\"date\":\"2020-12-08T16:57:39.809Z\"}"
+
+  (let [date (java.time.Instant/ofEpochMilli 1607446659809)]
+    (to-json {:date date}))
+  => "{\"date\":\"2020-12-08T16:57:39.809Z\"}"
+
+  )
+
+
+
 (fact "can serialize and parse"
 
   (->> {:a 1 :b "hello" :c {:foo true}}
