@@ -28,12 +28,12 @@
 
 
 
-(def plain-mappper
+(def plain-mapper
   (json/object-mapper object-mapper-options))
 
 
 
-(def pretty-mappper
+(def pretty-mapper
   (json/object-mapper
     (assoc object-mapper-options :pretty? true)))
 
@@ -42,9 +42,9 @@
 (defn to-json
   "It takes a map and return a JSON encoded string of the given map data."
   ([m]
-   (json/write-value-as-string m plain-mappper))
+   (json/write-value-as-string m plain-mapper))
   ([m {:keys [pretty?]}]
-   (json/write-value-as-string m (if pretty? pretty-mappper plain-mappper))))
+   (json/write-value-as-string m (if pretty? pretty-mapper plain-mapper))))
 
 
 
