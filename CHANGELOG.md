@@ -4,6 +4,7 @@
 
   - [**NEW**] Added Filesystem metrics sampler (thanks to @emlyn)
   - [**NEW**] Added Advanced Console Publisher with JSON formatting.
+  - [**NEW**] Added support for Elasticsearch data-streams. (thanks to @ozimos)
   - Fixed issue in SlackPublisher trying to send empty messages #41 (thanks @ak-coram)
   - Fixed issue in `simple-file-publisher` not handling files without parent dir #43 (thanks to @emlyn)
 
