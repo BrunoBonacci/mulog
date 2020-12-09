@@ -16,7 +16,7 @@
 > <br/>
 
 
-## Upcoming talk
+## Announcement: Upcoming talk
 
 > Hi all,
 >
