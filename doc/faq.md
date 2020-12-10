@@ -284,11 +284,7 @@ for example
 
 When you call the /stopping function/, ***μ/log*** will call one last
 time the `publish` function and then the `close` function if your
-publisher is `java.io.Closeable`.
-
-See source code:
-
-https://github.com/BrunoBonacci/mulog/blob/53c531866401f29652c098a3a538133518c187c9/mulog-core/src/com/brunobonacci/mulog/core.clj#L210-L224
+publisher is `java.io.Closeable` (see [source code](https://github.com/BrunoBonacci/mulog/blob/53c531866401f29652c098a3a538133518c187c9/mulog-core/src/com/brunobonacci/mulog/core.clj#L210-L224)).
 
 Therefore to flush the events in the publisher inbox you only need to
 call the stop function.
