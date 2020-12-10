@@ -44,7 +44,7 @@ Here is an example of how to add the Web hexadecimal encoding for
 `java.awt.Color`.
 
 ``` Clojure
-;; type hits are important for performances.
+;; type hints are important for performances.
 (swap! com.brunobonacci.mulog.common.json/encoders
   assoc java.awt.Color
   (fn [^java.awt.Color x
