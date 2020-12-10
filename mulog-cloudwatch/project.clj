@@ -12,9 +12,9 @@
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [com.brunobonacci/mulog #=(ver)]
                  [com.brunobonacci/mulog-json #=(ver)]
-                 [com.cognitect.aws/api "0.8.474"]
-                 [com.cognitect.aws/endpoints "1.1.11.842"]
-                 [com.cognitect.aws/logs "798.2.672.0"]]
+                 [com.cognitect.aws/api "0.8.484"]
+                 [com.cognitect.aws/endpoints "1.1.11.914"]
+                 [com.cognitect.aws/logs "809.2.784.0"]]
 
   :global-vars {*warn-on-reflection* true}
 
