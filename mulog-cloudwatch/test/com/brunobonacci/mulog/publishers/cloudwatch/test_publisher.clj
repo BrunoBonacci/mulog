@@ -1,7 +1,7 @@
 (ns com.brunobonacci.mulog.publishers.cloudwatch.test-publisher
   (:require [com.brunobonacci.mulog :as μ]
             [com.brunobonacci.mulog.utils :as ut]
-            [cheshire.core :as json]
+            [com.brunobonacci.mulog.common.json :refer [from-json]]
             [cognitect.aws.client.api :as aws])
   (:import (java.util.concurrent TimeUnit)))
 
@@ -31,7 +31,7 @@
     (:events)
     first
     (:message)
-    (json/parse-string true)))
+    (from-json)))
 
 
 
