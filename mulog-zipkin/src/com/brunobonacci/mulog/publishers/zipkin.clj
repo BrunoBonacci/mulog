@@ -78,14 +78,13 @@
 
 (defn- post-records
   [{:keys [url publish-delay] :as config} records]
-  (-> (http/post
-        url
-        {:content-type "application/json"
-         :accept :json
-         :socket-timeout     publish-delay
-         :connection-timeout publish-delay
-         :body (json/to-json (prepare-records config records))})
-    (update :body json/from-json)))
+  (http/post
+    url
+    {:content-type "application/json"
+     :accept :json
+     :socket-timeout     publish-delay
+     :connection-timeout publish-delay
+     :body (json/to-json (prepare-records config records))}))
 
 
 
