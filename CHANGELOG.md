@@ -5,6 +5,10 @@
   - [**NEW**] Added Filesystem metrics sampler (thanks to @emlyn)
   - [**NEW**] Added Advanced Console Publisher with JSON formatting.
   - [**NEW**] Added support for Elasticsearch data-streams. (thanks to @ozimos)
+  - [**POTENTIALLY BREAKING**] Migrated to JSON encoding from Cheshire
+    to Jasonista (thanks to @ozimos).  It is potentially breaking if
+    you have custom JSON encoders setup for Cheshire you will need to
+    add add them as described into [How to JSON encode custom Java classes](./doc/json-encode.md)
   - Fixed issue in SlackPublisher trying to send empty messages #41 (thanks @ak-coram)
   - Fixed issue in `simple-file-publisher` not handling files without parent dir #43 (thanks to @emlyn)
 
