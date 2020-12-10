@@ -13,23 +13,8 @@ around London.
 
 ## Testing
 
-0. Prepare the network and create an alias with
-``` shell
-# on linux
-sudo ip addr add 192.168.200.200/32 dev wlan0
-
-# on Mac OSX
-sudo ifconfig en0 alias 192.168.200.200/32 up
-
-# to remove alias
-# sudo ifconfig en0 -alias 192.168.200.200/32
-```
-
-Alternatively, edit the `docker-compose.yaml` and add your local ip (non 127.0.0.1).
-This is necessary for the producer to connect to the broker.
-
-1. Create a Slack Webhook at https://api.slack.com/messaging/webhooks.
-2. Update `src/com/brunobonacci/disruptions/main.clj/DEFAULT-CONFIG`'s
+1. (OPTIONAL) Create a Slack Webhook at https://api.slack.com/messaging/webhooks.
+2. (OPTIONAL) Update `src/com/brunobonacci/disruptions/main.clj/DEFAULT-CONFIG`'s
    Slack Publisher's `:webhook-url` to the Webhook you created in the
    previous step, uncomment the configuration section
 3. Start docker services in background
@@ -69,7 +54,7 @@ The logs will be sent to the following destinations:
 To see the events sent to Kafka run:
 
 ``` shell
-docker exec -ti roads-disruptions_broker_1 /usr/bin/kafka-console-consumer --bootstrap-server localhost:9093 --topic mulog
+docker exec -ti roads-disruptions_broker_1 /usr/bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic mulog
 ```
 
 Here is an example of Zipkin traces:
