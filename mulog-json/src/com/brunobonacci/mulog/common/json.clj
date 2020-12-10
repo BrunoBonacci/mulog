@@ -8,43 +8,47 @@
 ;;
 ;; Add encoders for various types
 ;;
-;; TODO: add ability to register/deregister new types
 (def encoders
-  {;; Add Exception encoder to JSON generator
-   java.lang.Throwable
-   (fn [x ^WriterBasedJsonGenerator gen]
-     (.writeString gen ^String (ut/exception-stacktrace x)))
+  (atom
+    {;; Add Exception encoder to JSON generator
+     java.lang.Throwable
+     (fn [x ^WriterBasedJsonGenerator gen]
+       (.writeString gen ^String (ut/exception-stacktrace x)))
 
-   ;; Add Flake encoder to JSON generator
-   com.brunobonacci.mulog.core.Flake
-   (fn [x ^WriterBasedJsonGenerator gen]
-     (.writeString gen ^String (str x)))})
-
-
-
-(def object-mapper-options
-  {:date-format "yyyy-MM-dd'T'HH:mm:ss.SSSX"
-   :encoders encoders})
+     ;; Add Flake encoder to JSON generator
+     com.brunobonacci.mulog.core.Flake
+     (fn [x ^WriterBasedJsonGenerator gen]
+       (.writeString gen ^String (str x)))}))
 
 
 
-(def plain-mapper
-  (json/object-mapper object-mapper-options))
+(def default-mapper-options
+  {:date-format "yyyy-MM-dd'T'HH:mm:ss.SSSX"})
+
+
+
+(def ^:private mapper-options
+  (memoize
+    (fn [pretty? encoders]
+      (json/object-mapper
+        (assoc default-mapper-options
+          :pretty? pretty?
+          :encoders encoders)))))
 
 
 
 (def pretty-mapper
   (json/object-mapper
-    (assoc object-mapper-options :pretty? true)))
+    (assoc default-mapper-options :pretty? true)))
 
 
 
 (defn to-json
   "It takes a map and return a JSON encoded string of the given map data."
   ([m]
-   (json/write-value-as-string m plain-mapper))
+   (json/write-value-as-string m (mapper-options false @encoders)))
   ([m {:keys [pretty?]}]
-   (json/write-value-as-string m (if pretty? pretty-mapper plain-mapper))))
+   (json/write-value-as-string m (mapper-options pretty? @encoders))))
 
 
 
