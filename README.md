@@ -568,6 +568,12 @@ To contribute:
   - follow the guidelines in the ticket
   - in doubt, just ask!
 
+## Need help?
+
+If you have questions or you need help please open an issue or post
+your questions into [Github Discussions](https://github.com/BrunoBonacci/mulog/discussions)
+board.
+
 ## Related projects
 
 Here there are some other open-source projects which are related to ***μ/log***:
