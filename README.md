@@ -331,7 +331,7 @@ Here some best practices to follow while logging events:
 ![mutrace](./doc/images/mutrace.png)
 
 ***μ/trace*** *(Pronounced: /mjuːtrace/)* is a micro distributed
-tracing library that with the focus on tracking data.
+tracing library with the focus on tracking data with custom attributes.
 
 ***μ/trace*** is a subsystem of ***μ/log*** and it relies heavily on
 it.  While the objective of ***μ/log*** is to record and publish a
