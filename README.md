@@ -16,15 +16,6 @@
 > <br/>
 
 
-## Announcement: Upcoming talk
-
-> Hi all,
->
-> on December 15th I will be presenting ***μ/log*** at the London Clojurians meetup (online talk),
-> if you are interested to know more about ***μ/log*** you can join me here:
-> https://www.meetup.com/London-Clojurians/events/274302629/
-
-
 ## Features
 
 Here some features and key design decisions that make ***μ/log*** special:
