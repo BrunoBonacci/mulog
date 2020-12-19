@@ -28,7 +28,7 @@ Here some features and key design decisions that make ***μ/log*** special:
   * Ability to add contextual logging.
   * Adding publishers won't affect logging performances
   * Extremely easy to create *stateful* publishers for new systems
-  * Wide range of publishers available ([see available list](#table-of-contents))
+  * Wide range of publishers available ([see available list](./doc/publishers))
   * *Event logs are useful, but not as important as process flow
     (therefore preferable to drop events rather than crashing the
     process)*

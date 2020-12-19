@@ -46,7 +46,6 @@ The available configuration options:
  ;; documentation: https://github.com/ptaoussanis/nippy
  ;; :nippy {:compressor nippy/lz4-compressor}
 
-
  ;; The name of the field which it will be used as partition key
  ;; :mulog/trace-id is a unique identifier for the event it ensures
  ;; a reasonably even spread of events across all partitions
