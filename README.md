@@ -76,6 +76,9 @@ event loggers, *not message loggers*, which are designed for dynamic
 distributed systems living in cloud and using centralized log
 aggregators. *So here is ***μ/log*** designed for this very purpose.*
 
+Watch my talk on ***μ/log*** at the *London Clojurians Meetup*:
+
+[![μ/log and the next 100 logging systems](https://img.youtube.com/vi/P1149dWnl3k/0.jpg)](https://www.youtube.com/watch?v=P1149dWnl3k)
 
 ## Table of contents
 
