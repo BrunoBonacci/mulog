@@ -49,6 +49,10 @@ With this middleware you will be able extract the following information:
   - Requests by content-type or content-encoding
   - Requests by request method
 
+If you added the `app-name`, `version` and `environment` as described
+in the best practices all above queries can be done by version or
+environment.
+
 And if you add caller information such as: `ip-address`,
 `principal-id` or the resource type and identifier the query
 possibilities grow exponentially. For example, you will be able to run
