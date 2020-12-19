@@ -5,6 +5,7 @@
   - [**NEW**] Added Filesystem metrics sampler (thanks to @emlyn)
   - [**NEW**] Added Advanced Console Publisher with JSON formatting.
   - [**NEW**] Added support for Elasticsearch data-streams. (thanks to @ozimos)
+  - [**NEW**] Added support for Nippy encoding in Kafka publisher
   - [**POTENTIALLY BREAKING**] Migrated to JSON encoding from Cheshire
     to Jasonista (thanks to @ozimos).  It is potentially breaking if
     you have custom JSON encoders setup for Cheshire you will need to

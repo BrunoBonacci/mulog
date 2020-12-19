@@ -36,8 +36,16 @@ The available configuration options:
  ;; :publish-delay 1000
 
  ;; the format of the events to send into the topic
- ;; can be one of: :json, :edn (default :json)
+ ;; can be one of: :json, :edn, :nippy (default :json)
  ;; :format        :json
+
+ ;; If you choose the :nippy encoding you can provide a nippy
+ ;; configuration. By default it compresses the data using
+ ;; LZ4 fast compressor.
+ ;; For more info on the nippy configuration see official
+ ;; documentation: https://github.com/ptaoussanis/nippy
+ ;; :nippy {:compressor nippy/lz4-compressor}
+
 
  ;; The name of the field which it will be used as partition key
  ;; :mulog/trace-id is a unique identifier for the event it ensures
@@ -48,7 +56,7 @@ The available configuration options:
  ;; This transformation function can be used to filter, tranform,
  ;; anonymise events before they are published to a external system.
  ;; by defatult there is no transformation.  (since v0.1.8)
- :transform identity
+ ;; :transform identity
  }
 ```
 

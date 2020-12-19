@@ -253,7 +253,8 @@
   (u/log ::hello :to "World!" :v (rand-int 1000))
 
   (def x (u/start-publisher! {:type :kafka
-                              :kafka {:bootstrap.servers "192.168.200.200:9092"}}))
+                              :format :nippy
+                              :kafka {:bootstrap.servers "localhost:9092"}}))
 
   (x)
 
