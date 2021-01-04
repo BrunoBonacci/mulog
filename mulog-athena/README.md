@@ -64,7 +64,8 @@ The module supports [Terraform](#Terraform setup) and [Serverless](#Serverless s
     will give the result:
     ![athena-terraform](img/terraform_athena_result.png) 
      
-    `Mulog` reports `mulog/timestamp` and `mulog/trace-id` for any event. It aligns nicely with AWS recommendations regarding each record to have a timestamp and unique id.       
+    `Mulog` reports `mulog/timestamp` and `mulog/trace-id` for any event. It aligns nicely with AWS recommendations regarding each record to have a timestamp and unique id.
+    Other columns can be updated if necessary.       
 
 4. execute commands to deploy AWS resources:
     ```
@@ -111,6 +112,7 @@ The module supports [Terraform](#Terraform setup) and [Serverless](#Serverless s
     ![athena-terraform](img/serverless_athena_result.png) 
     
     `Mulog` reports `mulog/timestamp` and `mulog/trace-id` for any event. It aligns nicely with AWS recommendations regarding each record to have a timestamp and unique id. 
+    Other columns can be updated if necessary.  
 
  4. execute commands to deploy AWS resources:
     ```
