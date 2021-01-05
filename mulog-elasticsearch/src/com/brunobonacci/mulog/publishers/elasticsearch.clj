@@ -109,16 +109,18 @@
 
 
 (defn- post-records
-  [{:keys [url publish-delay] :as config} records]
+  [{:keys [url publish-delay http-opts] :as config} records]
   (-> (http/post
         (normalize-endpoint-url url)
-        {:content-type "application/x-ndjson"
-         :accept :json
-         :socket-timeout publish-delay
-         :connection-timeout publish-delay
-         :body
-         (->> (prepare-records config records)
-           (apply str))})
+        (merge
+          http-opts
+          {:content-type "application/x-ndjson"
+           :accept :json
+           :socket-timeout publish-delay
+           :connection-timeout publish-delay
+           :body
+           (->> (prepare-records config records)
+             (apply str))}))
     (update :body json/from-json)))
 
 
