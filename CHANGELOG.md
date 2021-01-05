@@ -2,6 +2,12 @@
 
 ## v0.7.0 - (under development)
 
+## v0.6.1 - (2021-01-05)
+
+  - Fix Json pretty printing
+  - Bumped Jasonista version
+  - Fix Elasticsearch custom http-options #56 (thanks @ozimos)
+
 
 ## v0.6.0 - (2020-12-19)
 
