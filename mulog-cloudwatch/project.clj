@@ -13,7 +13,7 @@
                  [com.brunobonacci/mulog #=(ver)]
                  [com.brunobonacci/mulog-json #=(ver)]
                  [com.cognitect.aws/api "0.8.484"]
-                 [com.cognitect.aws/endpoints "1.1.11.914"]
+                 [com.cognitect.aws/endpoints "1.1.11.926"]
                  [com.cognitect.aws/logs "809.2.784.0"]]
 
   :global-vars {*warn-on-reflection* true}

@@ -16,7 +16,7 @@
                  [clj-time "0.15.2"]
 
                  [com.cognitect.aws/api "0.8.484"]
-                 [com.cognitect.aws/endpoints "1.1.11.914"]
+                 [com.cognitect.aws/endpoints "1.1.11.926"]
                  [com.cognitect.aws/kinesis "809.2.784.0"]
                  [com.cognitect.aws/sts "809.2.784.0"]]
 

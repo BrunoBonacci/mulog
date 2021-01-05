@@ -11,7 +11,7 @@
 
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [com.brunobonacci/mulog #=(ver)]
-                 [metosin/jsonista "0.2.7"]]
+                 [metosin/jsonista "0.3.0"]]
 
   :global-vars {*warn-on-reflection* true}
 
