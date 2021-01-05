@@ -32,7 +32,7 @@
     (fn [pretty? encoders]
       (json/object-mapper
         (assoc default-mapper-options
-          :pretty? pretty?
+          :pretty pretty?
           :encoders encoders)))))
 
 
