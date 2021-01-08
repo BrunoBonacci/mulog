@@ -26,12 +26,11 @@
 
 
 (defn parse-events
-  [events]
-  (some-> events
+  [response]
+  (->> response
     (:events)
-    first
-    (:message)
-    (from-json)))
+    (map :message)
+    (map from-json)))
 
 
 
@@ -70,7 +69,5 @@
                                                            :logStreamName stream-exact-name#}})
              remove-lg#         (aws/invoke lc# {:op  :DeleteLogGroup
                                                  :request {:logGroupName lg-exact-name#}})]
-         (do
-           (println (operation-status "remove log-group" remove-lg#))
-           (if (seq (:events log-events#))
-             (parse-events log-events#) {}))))))
+         (println (operation-status "remove log-group" remove-lg#))
+         (parse-events log-events#)))))
