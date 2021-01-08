@@ -2,6 +2,11 @@
 
 ## v0.7.0 - (under development)
 
+## v0.6.2 - (2021-01-08)
+
+  - Fix order of events in Cloudwatch publisher
+
+
 ## v0.6.1 - (2021-01-05)
 
   - Fix Json pretty printing
