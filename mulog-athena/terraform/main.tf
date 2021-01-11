@@ -322,7 +322,7 @@ resource "aws_kinesis_firehose_delivery_stream" "mulog_events_firehose_delivery_
   extended_s3_configuration {
     role_arn = aws_iam_role.firehose_delivery_role.arn
     bucket_arn = aws_s3_bucket.mulog_events_bucket.arn
-    prefix = "events/dt=!{timestamp:yyyy-MM-dd}/hour=!{timestamp:HH}/"
+    prefix = "${var.glue_catalog_reporting_table}/dt=!{timestamp:yyyy-MM-dd}/hour=!{timestamp:HH}/"
     error_output_prefix = "errors/errtype=!{firehose:error-output-type}/dt=!{timestamp:yyyy-MM-dd}/hour=!{timestamp:HH}/"
     buffer_interval = "300"
     buffer_size = 64

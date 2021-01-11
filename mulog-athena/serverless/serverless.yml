@@ -155,7 +155,7 @@ resources:
             Enabled: true
             LogGroupName: !Ref FirehoseLogGroup
             LogStreamName: !Ref FirehoseLogStream
-          Prefix: "events/dt=!{timestamp:yyyy-MM-dd}/hour=!{timestamp:HH}/"
+          Prefix: "${self:custom.reporting.tableName}/dt=!{timestamp:yyyy-MM-dd}/hour=!{timestamp:HH}/"
           ErrorOutputPrefix: "errors/errtype=!{firehose:error-output-type}/dt=!{timestamp:yyyy-MM-dd}/hour=!{timestamp:HH}/"
           RoleARN: !GetAtt FirehoseDeliveryRole.Arn
 
