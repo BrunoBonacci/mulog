@@ -30,7 +30,7 @@ default_vars: &default_vars
         Type: string
       - Name: mulog/namespace
         Type: string
-      - Name: to
+      - Name: message
         Type: string
 
 dev: *default_vars
