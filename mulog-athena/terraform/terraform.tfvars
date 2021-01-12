@@ -19,8 +19,7 @@ firehose_delivery_stream_role = "mulog-firehose-delivery-role"
 firehose_delivery_policy      = "mulog-firehose-delivery-policy"
 
 #### glue
-glue_catalog                  = "mulog_events"
-glue_catalog_reporting_table  = "mulog-events-reporting"
+glue_table                    = "mulog_events"
 glue_database                 = "mulog_events_db"
 glue_crawler_name             = "mulog_events_crawler"
 glue_crawler_schedule         = "cron(45 0/1 * * ? *)" # At 45 minutes past the hour

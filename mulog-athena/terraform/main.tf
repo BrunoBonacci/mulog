@@ -10,8 +10,7 @@ variable bucket_name {}
 variable athena_log_group {}
 variable athena_log_stream {}
 
-variable glue_catalog {}
-variable glue_catalog_reporting_table {}
+variable glue_table {}
 variable glue_crawler_role {}
 variable glue_crawler_policy {}
 variable mulog_stream_name {}
@@ -41,7 +40,7 @@ resource "aws_s3_bucket" "mulog_events_bucket" {
   lifecycle_rule {
     id      = "ObjectExpiry_Day"
     enabled = true
-    prefix = "${var.bucket_name}-${var.stage}/events"
+    prefix = "${var.bucket_name}-${var.stage}/${var.glue_table}"
     tags = {
       "rule"      = "log"
       "autoclean" = "true"
@@ -90,10 +89,10 @@ resource "aws_glue_catalog_database" "mulog_events_database" {
 }
 
 resource "aws_glue_catalog_table" "mulog_events_table" {
-  name = "events"
+  name = var.glue_table
   database_name = aws_glue_catalog_database.mulog_events_database.name
   description = "mulog events table"
-  owner= "${var.glue_catalog_reporting_table}-${var.stage}"
+  owner= "${var.glue_table}-${var.stage}"
   table_type = "EXTERNAL_TABLE"
   parameters = {
     EXTERNAL = "TRUE"
@@ -110,7 +109,7 @@ resource "aws_glue_catalog_table" "mulog_events_table" {
   }
   storage_descriptor {
     stored_as_sub_directories= false
-    location = "s3://${var.bucket_name}-${var.stage}/events/"
+    location = "s3://${var.bucket_name}-${var.stage}/${var.glue_table}/"
     input_format = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat"
     output_format = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat"
 
@@ -138,7 +137,7 @@ resource "aws_glue_catalog_table" "mulog_events_table" {
       type = "string"
     }
     columns {
-      name = "to"
+      name = "message"
       type = "string"
     }
     compressed= true
@@ -150,9 +149,9 @@ resource "aws_glue_crawler" "glue_crawler" {
   description   = "builds and keeps up-to-date data catalog."
   database_name = aws_glue_catalog_database.mulog_events_database.name
   role          = aws_iam_role.mulog_events_crawler_role.arn
-  schedule      = "${var.glue_crawler_schedule}"
+  schedule      = var.glue_crawler_schedule
   s3_target {
-    path = "s3://${var.bucket_name}-${var.stage}/events/"
+    path = "s3://${var.bucket_name}-${var.stage}/${var.glue_table}/"
   }
   schema_change_policy {
     delete_behavior = "LOG"
@@ -200,7 +199,7 @@ resource "aws_iam_role_policy" "mulog_events_crawler_policy" {
         "s3:PutObject"
       ],
       "Resource": [
-        "arn:aws:s3:::${var.bucket_name}-${var.stage}/events/*"
+        "arn:aws:s3:::${var.bucket_name}-${var.stage}/${var.glue_table}/*"
       ]
     }
   ]
@@ -322,7 +321,7 @@ resource "aws_kinesis_firehose_delivery_stream" "mulog_events_firehose_delivery_
   extended_s3_configuration {
     role_arn = aws_iam_role.firehose_delivery_role.arn
     bucket_arn = aws_s3_bucket.mulog_events_bucket.arn
-    prefix = "${var.glue_catalog_reporting_table}/dt=!{timestamp:yyyy-MM-dd}/hour=!{timestamp:HH}/"
+    prefix = "${var.glue_table}/dt=!{timestamp:yyyy-MM-dd}/hour=!{timestamp:HH}/"
     error_output_prefix = "errors/errtype=!{firehose:error-output-type}/dt=!{timestamp:yyyy-MM-dd}/hour=!{timestamp:HH}/"
     buffer_interval = "300"
     buffer_size = 64
@@ -348,7 +347,7 @@ resource "aws_kinesis_firehose_delivery_stream" "mulog_events_firehose_delivery_
         database_name = aws_glue_catalog_table.mulog_events_table.database_name
         role_arn = aws_iam_role.firehose_delivery_role.arn
         region = var.region
-        table_name = "events"
+        table_name = aws_glue_catalog_table.mulog_events_table.name
         version_id = "LATEST"
       }
     }
