@@ -2,7 +2,7 @@
 
 If you are already using **[`mulog-kinesis`module](../mulog-kinesis)**
 and would like to **go further** with some **analytics** on top of it you are in the right section.
-We've implemented **[`mulog-athena`](../mulog-athena)** exactly for this case. 
+We've implemented **[`mulog-athena-integration`](./athena-integration-provisioning)** exactly for this case. 
 One simple command and everything that is required for analytics will be created for you automatically.
 
 * [Architecture](#architecture)
@@ -16,7 +16,7 @@ One simple command and everything that is required for analytics will be created
 # Architecture
 The analytics pipeline architecture is built with serverless components that follow the standard “pay-as-you-go” models.
 You are paying only when you are sending or storing events.
-![architecture](img/architecture.png)
+![architecture](./images/athena-integration/architecture.png)
 An application publishes events via `mulog-kinesis` to the Kinesis stream(`MulogStream`) that is connected to Kinesis Firehose(`MulogEventsFirehoseDeliveryStream`). 
 Amazon Kinesis Firehose batches the data and stores it in S3 based on either buffer size (1–128 MB) or buffer interval (60–900 seconds). 
 The criterion that is met first triggers the data delivery to Amazon S3 bucket(`MulogEventsBucket`). 
@@ -30,10 +30,10 @@ Please, follow the instructions of the relevant section below.
 ### Terraform setup
 *Please, make sure the [Terraform](https://www.terraform.io/) framework has already been installed.*
 
- 1. navigate to the [`terraform`](terraform) folder inside `mulog-athena` module.
- 2. assign the **name of your Kinesis stream** to the **`mulog_stream_name`** property in [`terraform.tfvars`](./terraform/terraform.tfvars) file.<br/>
+ 1. navigate to the [`terraform`](./athena-integration-provisioning/terraform) folder inside `mulog-athena` module.
+ 2. assign the **name of your Kinesis stream** to the **`mulog_stream_name`** property in [`terraform.tfvars`](./athena-integration-provisioning/terraform/terraform.tfvars) file.<br/>
  Also set `profile`, `region`, `account_id` and `stage`. The scheduled crawler task is configured by `glue_crawler_schedule` variable.<br/>
- 3. **customize** glue table **columns** to match your events: `"aws_glue_catalog_table" "mulog_events_table"s` resource in the [`main.tf`](./terraform/main.tf) file.<br/>
+ 3. **customize** glue table **columns** to match your events: `"aws_glue_catalog_table" "mulog_events_table"s` resource in the [`main.tf`](./athena-integration-provisioning/terraform/main.tf) file.<br/>
     For example, your application has the following `kinesis` publisher:
     ```
     (def kp
@@ -44,7 +44,7 @@ Please, follow the instructions of the relevant section below.
     ```
     (μ/log ::analytics :message "Verify Terraform configuration")
     ```
-    The **column declaration** for this event in the [`main.tf`](./terraform/main.tf) file will look like:
+    The **column declaration** for this event in the [`main.tf`](./athena-integration-provisioning/terraform/main.tf) file will look like:
     ```
     resource "aws_glue_catalog_table" "mulog_events_table" {
         ...
@@ -75,9 +75,9 @@ Please, follow the instructions of the relevant section below.
     ```
     SELECT * FROM "mulog_events_db"."mulog_events" limit 10;
     ```
-    where **`"mulog_events_db"`** and **`"mulog_events"`** are the database and table names configured in the [`main.tf`](./terraform/main.tf) file.<br>
+    where **`"mulog_events_db"`** and **`"mulog_events"`** are the database and table names configured in the [`main.tf`](./athena-integration-provisioning/terraform/main.tf) file.<br>
     The query result looks like:
-    ![athena-terraform](img/athena/terraform_query_result.png) 
+    ![athena-terraform](./images/athena-integration/athena/terraform_query_result.png) 
      
     `Mulog` reports `mulog/timestamp` and `mulog/trace-id` for any event. It aligns nicely with AWS recommendations regarding glue table partitions.
     Other columns can be updated if necessary.       
@@ -88,16 +88,16 @@ Please, follow the instructions of the relevant section below.
     terraform apply --auto-approve
     ```
  5. once the AWS resources are provisioned make sure Athena has **`Query result location`** specified in `Settings`.
-![query-result-location](img/athena/query_result_location.png) 
+![query-result-location](./images/athena-integration/athena/query_result_location.png) 
 
 ### Serverless setup
 *Please, make sure the [Serverless](https://www.serverless.com/framework/docs/) framework has already been installed.*
 
- 1. navigate to the [`serverless`](serverless) folder inside `mulog-athena` module.
- 2. assign the **name of your Kinesis stream** to the **`mulogStreamName`** property in the [`serverless_properties.yml`](./serverless/serverless_properties.yml) file.<br>
+ 1. navigate to the [`serverless`](./athena-integration-provisioning/serverless) folder inside `mulog-athena` module.
+ 2. assign the **name of your Kinesis stream** to the **`mulogStreamName`** property in the [`serverless_properties.yml`](./athena-integration-provisioning/serverless/serverless_properties.yml) file.<br>
  Also set `region` and `deploymentBucket` (any S3 bucket that serverless can use to store deployment meta-data). 
  The scheduled crawler task is configured by `crawler.schedule` variable.<br/>
- 3. **customize** glue table **columns** to match your events: `reporting.columns` property in the [`serverless_properties.yml`](./serverless/serverless_properties.yml) file.<br/>
+ 3. **customize** glue table **columns** to match your events: `reporting.columns` property in the [`serverless_properties.yml`](./athena-integration-provisioning/serverless/serverless_properties.yml) file.<br/>
     For example, you have the following `kinesis` publisher:
     ```
     (def kp
@@ -127,9 +127,9 @@ Please, follow the instructions of the relevant section below.
     ```
     SELECT * FROM "mulog_events_db"."mulog_events" limit 10;
     ```
-    where **`"mulog_events_db"`** and **`"mulog_events"`** are the database and table names configured in the [`serverless_properties.yml`](./serverless/serverless_properties.yml) file.<br/>
+    where **`"mulog_events_db"`** and **`"mulog_events"`** are the database and table names configured in the [`serverless_properties.yml`](./athena-integration-provisioning/serverless/serverless_properties.yml) file.<br/>
     The query result looks like:
-    ![athena-serverless](img/athena/serverless_query_result.png) 
+    ![athena-serverless](./images/athena-integration/athena/serverless_query_result.png) 
     
     `Mulog` reports `mulog/timestamp` and `mulog/trace-id` for any event. It aligns nicely with AWS recommendations regarding glue table partitions.
     Other columns can be updated if necessary. 
@@ -139,7 +139,7 @@ Please, follow the instructions of the relevant section below.
     sls deploy  -v --stage your_stage
     ```
  5. once the AWS stack is provisioned make sure Athena has **`Query result location`** specified in `Settings`.
-![query-result-location](img/athena/query_result_location.png) 
+![query-result-location](./images/athena-integration/athena/query_result_location.png) 
 
 ### New Column
 This section describes the case if new events appear with new columns.
@@ -186,11 +186,11 @@ This is how the first 10 records look in Athena. The query:
     FROM "mulog_events_db_etolbakov"."events" limit 10;
 ```
 and the result:
-![writers](img/writers.png)
-If we would like to differentiate writes by their nationality it's not possible without introducing the new `nationality` column.
+![writers](./images/athena-integration/writers.png)
+If we would like to differentiate writes by their nationality it's not possible without **introducing the new `nationality` column**.
 In order to do that we need:<br>
 
- 1. Update the `columns` description (in the [`main.tf`](./terraform/main.tf) file or in the [`serverless_properties.yml`](./serverless/serverless_properties.yml) file)
+ 1. Update the `columns` description (in the [`main.tf`](./athena-integration-provisioning/terraform/main.tf) file or in the [`serverless_properties.yml`](./athena-integration-provisioning/serverless/serverless_properties.yml) file)
     ```
         columns:
         ....
@@ -205,20 +205,20 @@ In order to do that we need:<br>
     ```
  3. run the glue crawler 
  4. see the result(make sure that the new column appeared in the glue table schema)
-![writers_new_column](img/writers_new_column.png)
+![writers_new_column](./images/athena-integration/writers_new_column.png)
 
 # Troubleshooting
 If for some reason you don't see events in Athena, the following things worth checking:<br>
 1. if the events were published to the Kinesis stream. There are several useful Cloudwatch Metrics, for example `IncomingRecords` or `GetRecords`<br>: 
- ![check_kinesis](img/troubleshooting/kinesis.png) 
+ ![check_kinesis](./images/athena-integration/troubleshooting/kinesis.png) 
 2. the next node is the Kinesis Firehose:<br> 
- ![check_firehose](img/troubleshooting/firehose.png) 
+ ![check_firehose](./images/athena-integration/troubleshooting/firehose.png) 
 3. if there were no errors in previous steps you should see a `parquet` file in S3.
 Sometimes it makes sense to check the file itself, f.e. in online [Apache Parquet Viewer](http://parquet-viewer-online.com/) .
 Please note, that Firehose perform buffering, so the events transfer to S3 doesn't happen immediately and may take a while.<br>
- ![check_s3](img/troubleshooting/s3.png) 
+ ![check_s3](./images/athena-integration/troubleshooting/s3.png) 
 4. the final bit is the glue crawler. Its table is quite self-explanatory and has a link the logs with more details about the recent job.
- ![check_crawler](img/troubleshooting/crawler.png) 
+ ![check_crawler](./images/athena-integration/troubleshooting/crawler.png) 
  
 # Glue Crawler 
 The glue crawler serves several purposes:
@@ -228,7 +228,7 @@ Crawlers can become expensive, some things to keep in mind:
  1) if schema is not changing and no partitions being added there is no need to run the crawler.
 The following cli command can pause the schedule execution, so you can run it whenever required.
     ```
-    aws --profile=your_profile glue  stop-crawler-schedule --crawler-name etolbakov-dynamo-export-s3
+    aws --profile=your_profile glue  stop-crawler-schedule --crawler-name your_crawler_name
     ```
  2) Partitions managing also can be done through glue APIs. 
 For example, a lambda function that triggers create partition API will give the same end result.
