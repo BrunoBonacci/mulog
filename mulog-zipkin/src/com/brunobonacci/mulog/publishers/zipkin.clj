@@ -82,7 +82,6 @@
     url
     {:content-type "application/json"
      :accept :json
-     :as     :json
      :socket-timeout     publish-delay
      :connection-timeout publish-delay
      :body (json/to-json (prepare-records config records))}))

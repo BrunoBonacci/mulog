@@ -12,7 +12,8 @@
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [com.brunobonacci/mulog #=(ver)]
                  [com.brunobonacci/mulog-json #=(ver)]
-                 [org.apache.kafka/kafka-clients "2.6.0"]]
+                 [org.apache.kafka/kafka-clients "2.6.0"]
+                 [com.taoensso/nippy "3.1.1"]]
 
   :global-vars {*warn-on-reflection* true}
 
