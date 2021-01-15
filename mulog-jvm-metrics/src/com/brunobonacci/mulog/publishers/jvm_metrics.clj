@@ -66,9 +66,18 @@
 
 
 
+(defn div
+  "If denominator is zero it returns 0, instead of an exception"
+  [num den]
+  (if (== den 0)
+    0
+    (/ num den)))
+
+
+
 (defn- get-usage-ratio [^MemoryUsage usage]
   (fix-precision-ratio
-    (/ (.getUsed usage)
+    (div (.getUsed usage)
       (if (= (.getMax usage) -1)
         (.getCommitted usage)
         (.getMax usage)))))
@@ -140,11 +149,7 @@
           :let [pname (get-bean-name pool)
                 usage (.getUsage pool)]]
       [(keyword (str pname "-usage"))
-       (fix-precision-ratio
-         (/ (.getUsed usage)
-           (if (= (.getMax usage) -1)
-             (.getCommitted usage)
-             (.getMax usage))))])))
+       (get-usage-ratio usage)])))
 
 
 
@@ -353,3 +358,9 @@
                    (max sampling-interval 1000)))]
     ;; create the metrics publisher
     (JvmMetricsPublisher. config (rb/agent-buffer 1))))
+
+
+
+(comment
+  (jvm-sample {:memory true :gc true :threads true :jvm-attrs true})
+  )
