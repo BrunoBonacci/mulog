@@ -17,6 +17,15 @@
 
 
 
+(defn try-parse-long
+  [^String value]
+  (try
+    (Long/parseLong value)
+    (catch Exception _
+      0)))
+
+
+
 (defmacro os-java-pid
   "it returns the OS pid for the current java process."
   []
@@ -27,7 +36,7 @@
        (.getName)
        (str/split #"@")
        (first)
-       (Long/parseLong))))
+       (try-parse-long))))
 
 
 
