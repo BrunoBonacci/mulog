@@ -11,7 +11,7 @@
   "It returns the current Java major version as a number"
   []
   (as->  (System/getProperty "java.version") $
-    (str/split $ #"\.")
+    (str/split $ #"\.|-")
     (if (= "1" (first $)) (second $) (first $))
     (Integer/parseInt $)))
 
