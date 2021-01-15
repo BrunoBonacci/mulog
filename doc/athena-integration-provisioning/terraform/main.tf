@@ -37,7 +37,7 @@ resource "aws_s3_bucket" "mulog_events_bucket" {
       }
     }
   }
-  lifecycle_rule {
+  lifecycle_rule {  # consider overriding configuration for the particular use case
     id      = "ObjectExpiry_Day"
     enabled = true
     prefix = "${var.bucket_name}-${var.stage}/${var.glue_table}"

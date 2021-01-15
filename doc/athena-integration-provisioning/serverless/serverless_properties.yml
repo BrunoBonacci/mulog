@@ -1,6 +1,6 @@
 default_vars: &default_vars
   defaultProfile: dev
-  region: eu-west-1
+  region: # TODO. SET VALUE
   deploymentBucket:  # TODO. SET VALUE
 
   mulogStreamName: # TODO. SET VALUE

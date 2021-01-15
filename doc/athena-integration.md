@@ -15,13 +15,15 @@ One simple command and everything that is required for analytics will be created
 
 # Architecture
 The analytics pipeline architecture is built with serverless components that follow the standard “pay-as-you-go” models.
-You are paying only when you are sending or storing events.
-![architecture](./images/athena-integration/architecture.png)
+You are paying only when you are sending or storing events.<br>
+![architecture](./images/athena-integration/architecture.png)<br>
 An application publishes events via `mulog-kinesis` to the Kinesis stream(`MulogStream`) that is connected to Kinesis Firehose(`MulogEventsFirehoseDeliveryStream`). 
 Amazon Kinesis Firehose batches the data and stores it in S3 based on either buffer size (1–128 MB) or buffer interval (60–900 seconds). 
-The criterion that is met first triggers the data delivery to Amazon S3 bucket(`MulogEventsBucket`). 
-From that point a scheduled crawler task(`MulogEventsCrawler`) examines an S3 data source, determines its schema and records metadata concerning the data source in the AWS Glue Data Catalog(`MulogEventsDatabase`).
-Once it's all done the actual data will be placed in AWS Glue table(`MulogEventsTable`) and becomes available for running queries with `Amazon Athena` (serverless analytics service) or creating visualization with `Amazon QuickSight`.
+The criterion that is met first triggers the data delivery to Amazon S3 bucket(`MulogEventsBucket`). This is where your raw data is being stored. 
+`Lifecycle rules` can help to define actions you'd like to take on your data: transition objects to another storage class, archive them, or delete them after a specified period of time.
+The latter option is chosen for the current solution.<br>
+A scheduled crawler task(`MulogEventsCrawler`) examines an S3 data source, determines its schema and records metadata concerning the data source in the AWS Glue Data Catalog(`MulogEventsDatabase`).
+Once it's all done the actual data will be placed in AWS Glue table(`MulogEventsTable`) and become9 available for running queries with `Amazon Athena` (serverless analytics service) or creating visualization with `Amazon QuickSight`.
 
 # Setup
 The analytics pipeline can be provisioned either with [Terraform](#Terraform setup) or [Serverless](#Serverless setup) frameworks.

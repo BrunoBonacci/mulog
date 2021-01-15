@@ -28,7 +28,7 @@ resources:
           ServerSideEncryptionConfiguration:
             - ServerSideEncryptionByDefault:
                 SSEAlgorithm: aws:kms
-        LifecycleConfiguration:
+        LifecycleConfiguration: # consider overriding configuration for the particular use case
           Rules:
             - Id: ObjectExpiry_Day
               Prefix: ${self:custom.reporting.bucket}/${self:custom.reporting.tableName}
