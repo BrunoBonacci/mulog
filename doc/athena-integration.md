@@ -23,7 +23,7 @@ The criterion that is met first triggers the data delivery to Amazon S3 bucket(`
 `Lifecycle rules` can help to define actions you'd like to take on your data: transition objects to another storage class, archive them, or delete them after a specified period of time.
 The latter option is chosen for the current solution.<br>
 A scheduled crawler task(`MulogEventsCrawler`) examines an S3 data source, determines its schema and records metadata concerning the data source in the AWS Glue Data Catalog(`MulogEventsDatabase`).
-Once it's all done the actual data will be placed in AWS Glue table(`MulogEventsTable`) and become9 available for running queries with `Amazon Athena` (serverless analytics service) or creating visualization with `Amazon QuickSight`.
+Once it's all done the actual data will be placed in AWS Glue table(`MulogEventsTable`) and become available for running SQL queries with `Amazon Athena` (serverless analytics service) or creating visualization with `Amazon QuickSight` for further evaluation of your data.
 
 # Setup
 The analytics pipeline can be provisioned either with [Terraform](#Terraform setup) or [Serverless](#Serverless setup) frameworks.
@@ -32,7 +32,7 @@ Please, follow the instructions of the relevant section below.
 ### Terraform setup
 *Please, make sure the [Terraform](https://www.terraform.io/) framework has already been installed.*
 
- 1. navigate to the [`terraform`](./athena-integration-provisioning/terraform) folder inside `mulog-athena` module.
+ 1. navigate to the [`terraform`](./athena-integration-provisioning/terraform) folder inside [`athena-integration-provisioning`](./athena-integration-provisioning) module.
  2. assign the **name of your Kinesis stream** to the **`mulog_stream_name`** property in [`terraform.tfvars`](./athena-integration-provisioning/terraform/terraform.tfvars) file.<br/>
  Also set `profile`, `region`, `account_id` and `stage`. The scheduled crawler task is configured by `glue_crawler_schedule` variable.<br/>
  3. **customize** glue table **columns** to match your events: `"aws_glue_catalog_table" "mulog_events_table"s` resource in the [`main.tf`](./athena-integration-provisioning/terraform/main.tf) file.<br/>
@@ -95,7 +95,7 @@ Please, follow the instructions of the relevant section below.
 ### Serverless setup
 *Please, make sure the [Serverless](https://www.serverless.com/framework/docs/) framework has already been installed.*
 
- 1. navigate to the [`serverless`](./athena-integration-provisioning/serverless) folder inside `mulog-athena` module.
+ 1. navigate to the [`serverless`](./athena-integration-provisioning/serverless) folder inside [`athena-integration-provisioning`](./athena-integration-provisioning) module.
  2. assign the **name of your Kinesis stream** to the **`mulogStreamName`** property in the [`serverless_properties.yml`](./athena-integration-provisioning/serverless/serverless_properties.yml) file.<br>
  Also set `region` and `deploymentBucket` (any S3 bucket that serverless can use to store deployment meta-data). 
  The scheduled crawler task is configured by `crawler.schedule` variable.<br/>
