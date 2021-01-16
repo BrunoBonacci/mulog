@@ -1,4 +1,4 @@
-# How to query `µ/log` events via Amazon Athena
+# How to query `µ/log` events using Amazon Athena
 
 If you are already using **[`mulog-kinesis`
 publisher](./publishers/kinesis-publisher.md)** and would like to **go
