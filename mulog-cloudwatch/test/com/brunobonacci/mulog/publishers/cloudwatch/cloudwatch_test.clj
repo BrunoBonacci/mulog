@@ -19,18 +19,19 @@
 
 
 
-(fact "publish nested traces"
+(fact "publish nested traces (events must be published in timestamp order)"
 
   (->>
     (tp/with-local-cloudwatch-publisher
       (u/trace ::level1
         []
+        (Thread/sleep 1)
         (u/trace ::level2
           []
+          (Thread/sleep 1)
           (u/log ::level3 :to "cloudwatch test message"))))
     (map :mulog/event-name))
 
-  => (just
-       ["com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test/level1"
-        "com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test/level2"
-        "com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test/level3"]))
+  => ["com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test/level1"
+      "com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test/level2"
+      "com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test/level3"])
