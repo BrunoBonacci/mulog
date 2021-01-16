@@ -30,7 +30,8 @@
    ["How to write custom publishers" {:file "doc/custom-publishers.md"}]
    ["How to transfer the local-context" {:file "doc/transfer-context.md"}]
    ["How to JSON encode custom Java classes" {:file "doc/json-encode.md"}]
-   ["How to write a tracking Ring middleware" {:file "doc/ring-tracking.md"}]]
+   ["How to write a tracking Ring middleware" {:file "doc/ring-tracking.md"}]
+   ["How to query `µ/log` events via Amazon Athena" {:file "doc/athena-integration.md"}]]
 
   ["Other topics"
    ["Attribute name mangling on Elasticsearch" {:file "doc/els-name-mangling.md"}]]

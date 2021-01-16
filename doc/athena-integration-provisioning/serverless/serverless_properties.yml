@@ -1,0 +1,39 @@
+default_vars: &default_vars
+  defaultProfile: dev
+  region: # TODO. SET VALUE
+  deploymentBucket:  # TODO. SET VALUE
+
+  mulogStreamName: # TODO. SET VALUE
+
+  deliveryStream:
+    name: mulog-events-athena-${self:provider.stage}
+    logGroupName: mulog-events-athena-${self:provider.stage}
+    logStreamName: events-delivery
+
+  crawler:
+    name: mulog_events_crawler_${self:provider.stage}
+    schedule: cron(45 0/1 * * ? *) # At 45 minutes past the hour
+    role: mulog-events-crawler-${self:provider.stage}-role
+
+  reporting:
+    tableName: events
+    dbName: mulog_events_db_${self:provider.stage}
+    bucket: mulog-events-${self:provider.stage}
+    location: s3://mulog-events-${self:provider.stage}/reports
+    ower: mulog-events-reporting-${self:provider.stage}
+    columns:
+      - Name: mulog/timestamp
+        Type: string
+      - Name: mulog/trace-id
+        Type: string
+      - Name: mulog/event-name
+        Type: string
+      - Name: mulog/namespace
+        Type: string
+      - Name: message
+        Type: string
+
+dev: *default_vars
+
+your_stage: *default_vars
+
