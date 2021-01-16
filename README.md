@@ -106,10 +106,10 @@ In order to use the library add the dependency to your `project.clj`
 
 ``` clojure
 ;; Leiningen project
-[com.brunobonacci/mulog "0.6.2"]
+[com.brunobonacci/mulog "0.6.3"]
 
 ;; deps.edn format
-{:deps { com.brunobonacci/mulog {:mvn/version "0.6.2"}}}
+{:deps { com.brunobonacci/mulog {:mvn/version "0.6.3"}}}
 ```
 
 Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog.svg)](https://clojars.org/com.brunobonacci/mulog)
@@ -547,11 +547,6 @@ accept changes in the core module. However, there is loads of work
 to be done on supporting libraries and publishers for various systems,
 Here your help if welcome, you can have a look at the list of open issues
 marked as [help wanted](https://github.com/BrunoBonacci/mulog/labels/help%20wanted).
-
-For example:
-
-  - [ ] InfluxDB publisher
-  - [ ] Advanced File publisher
 
 *PRs are welcome `;-)`*
 
