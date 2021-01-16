@@ -2,6 +2,10 @@
 
 ## v0.7.0 - (under development)
 
+## v0.6.4 - (2021-01-16)
+
+  - Fix issue with configuration of `jvm-metrics` when `:sampling-interval` isn't provided
+
 ## v0.6.3 - (2021-01-16)
 
   - [**NEW**] Added documentation and scripts on how to use ***μ/log*** with Amazon Athena (thanks to @etolbakov)
