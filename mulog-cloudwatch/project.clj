@@ -12,8 +12,14 @@
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [com.brunobonacci/mulog #=(ver)]
                  [com.brunobonacci/mulog-json #=(ver)]
-                 [com.cognitect.aws/api "0.8.484"]
-                 [com.cognitect.aws/endpoints "1.1.11.926"]
+
+                 ;; FIX for: https://github.com/cognitect-labs/aws-api/issues/173
+                 [org.eclipse.jetty/jetty-client "9.4.35.v20201120"]
+                 [org.eclipse.jetty/jetty-http   "9.4.35.v20201120"]
+                 [org.eclipse.jetty/jetty-util   "9.4.35.v20201120"]
+
+                 [com.cognitect.aws/api "0.8.498"]
+                 [com.cognitect.aws/endpoints "1.1.11.946"]
                  [com.cognitect.aws/logs "809.2.784.0"]]
 
   :global-vars {*warn-on-reflection* true}

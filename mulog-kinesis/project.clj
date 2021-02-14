@@ -15,8 +15,13 @@
                  [clj-http "3.11.0"]
                  [clj-time "0.15.2"]
 
-                 [com.cognitect.aws/api "0.8.484"]
-                 [com.cognitect.aws/endpoints "1.1.11.926"]
+                 ;; FIX for: https://github.com/cognitect-labs/aws-api/issues/173
+                 [org.eclipse.jetty/jetty-client "9.4.35.v20201120"]
+                 [org.eclipse.jetty/jetty-http   "9.4.35.v20201120"]
+                 [org.eclipse.jetty/jetty-util   "9.4.35.v20201120"]
+
+                 [com.cognitect.aws/api "0.8.498"]
+                 [com.cognitect.aws/endpoints "1.1.11.946"]
                  [com.cognitect.aws/kinesis "809.2.784.0"]
                  [com.cognitect.aws/sts "809.2.784.0"]]
 
