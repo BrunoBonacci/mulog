@@ -10,13 +10,14 @@
 
 (defn colorize
   [thing color]
-  (apply style (if (or (string? thing)
-                      (flake? thing))
-                (wrap-quotes thing)
-                thing)
-              (if (keyword? color)
-                [color]
-                color)))
+  (apply style
+         (if (or (string? thing)
+                 (flake? thing))
+           (wrap-quotes thing)
+           thing)
+         (if (keyword? color)
+           [color]
+           color)))
 
 (defn colorize-item
   [item color]
@@ -51,34 +52,22 @@
   [rules entry]
   (mapcat (partial find-format rules) entry))
 
-(defn extract-format
-  [format-type all-formats matching-formats]
-  (->> matching-formats
-       (keep
-        (fn [fmt]
-          (case format-type
-            :pair  (hash-map fmt (get-in all-formats [fmt]))
-            :event (get-in all-formats [fmt format-type])
-            (throw (Exception. "Format type not supported")))))
-       (into [])))
-
-(defn format-for
-  [entry rules formats format-type]
-  (->> entry
-       (match-formats-for rules)
-       (extract-format format-type formats)))
-
 (defn entry-format
   [entry rules formats]
-  (->> (format-for entry rules formats :event)
+  (->> entry
+       (match-formats-for rules)
+       (keep (fn [fmt]
+               (get-in formats [fmt :event])))
        (cons (:default-formatter formats))
        last))
 
 (defn pair-formats
   [entry rules formats]
-  (->> (format-for entry rules formats :pair)
-       (filter #(:pair (-> % vals first)))
-       (apply merge)))
+  (->> entry
+       (match-formats-for rules)
+       (keep (fn [fmt]
+               (get-in formats [fmt :pair])))
+       (into {})))
 
 (deftype AnsiConsolePublisher
          [config buffer]
@@ -100,7 +89,7 @@
                   item-output (->> event-pairs
                                    (map (fn [[k v]]
                                           (colorize-item (hash-map k v)
-                                                         (get-in pair-formats [k :pair]))))
+                                                         (pair-formats k))))
                                    (apply merge
                                           (colorize-item event-without-pair-fmt event-fmt)))]]
       (println (if pretty?
