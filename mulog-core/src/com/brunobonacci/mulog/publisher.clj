@@ -240,10 +240,10 @@
     "com.brunobonacci.mulog.publishers.console-json/json-console-publisher"
     config))
 
-(defmethod publisher-factory :advanced-console
+(defmethod publisher-factory :ansi-console
   [config]
   (load-dynamic-publisher
-   "com.brunobonacci.mulog.publishers.advanced-console/advanced-console-publisher"
+   "com.brunobonacci.mulog.publishers.ansi-console/ansi-console-publisher"
    config))
 
 
