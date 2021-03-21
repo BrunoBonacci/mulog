@@ -2,19 +2,26 @@
 
 ## v0.7.0 - (under development)
 
+  - [**NEW**] Added JMX MBean sampler to capture/sample the value of MBeans.
+  - [**NEW**] Added Kafka metrics sampler to sample metrics from Kafka apps
+
+
 ## v0.6.5 - (2021-02-14)
 
   - [**SECURITY**] Fix security vulnerabilities found in transitive dependencies (#59) [cloudwatch, kinesis]
 
+
 ## v0.6.4 - (2021-01-16)
 
   - Fix issue with configuration of `jvm-metrics` when `:sampling-interval` isn't provided
+
 
 ## v0.6.3 - (2021-01-16)
 
   - [**NEW**] Added documentation and scripts on how to use ***μ/log*** with Amazon Athena (thanks to @etolbakov)
   - Fix issue with `os-java-pid` and JDK EarlyAdopters versions
   - Fix issue with `jvm-metrics` sampling `divide-by-zero` error (#57).
+
 
 ## v0.6.2 - (2021-01-08)
 
