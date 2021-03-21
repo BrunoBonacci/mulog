@@ -9,19 +9,14 @@
 
   :scm {:name "git" :url "https://github.com/BrunoBonacci/mulog.git"}
 
-  :dependencies [[org.clojure/clojure "1.10.1"]
+  :dependencies [[org.clojure/clojure "1.10.3"]
                  [com.brunobonacci/mulog #=(ver)]
                  [com.brunobonacci/mulog-json #=(ver)]
-                 [clj-http "3.11.0"]
+                 [clj-http "3.12.1"]
                  [clj-time "0.15.2"]
 
-                 ;; FIX for: https://github.com/cognitect-labs/aws-api/issues/173
-                 [org.eclipse.jetty/jetty-client "9.4.35.v20201120"]
-                 [org.eclipse.jetty/jetty-http   "9.4.35.v20201120"]
-                 [org.eclipse.jetty/jetty-util   "9.4.35.v20201120"]
-
-                 [com.cognitect.aws/api "0.8.498"]
-                 [com.cognitect.aws/endpoints "1.1.11.946"]
+                 [com.cognitect.aws/api "0.8.505"]
+                 [com.cognitect.aws/endpoints "1.1.11.976"]
                  [com.cognitect.aws/kinesis "809.2.784.0"]
                  [com.cognitect.aws/sts "809.2.784.0"]]
 
@@ -29,7 +24,7 @@
 
   :jvm-opts ["-server"]
 
-  :profiles {:dev {:dependencies [[midje "1.9.9"]
+  :profiles {:dev {:dependencies [[midje "1.9.10"]
                                   [org.clojure/test.check "1.1.0"]
                                   [criterium "0.4.6"]
                                   [org.slf4j/slf4j-log4j12 "2.0.0-alpha1"]]

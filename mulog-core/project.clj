@@ -15,7 +15,7 @@
   :javac-options ["-target" "1.8" "-source" "1.8" "-Xlint:-options"]
   :java-source-paths ["java"]
 
-  :dependencies [[org.clojure/clojure "1.10.1" :scope "provided"]
+  :dependencies [[org.clojure/clojure "1.10.3" :scope "provided"]
                  [amalloy/ring-buffer "1.3.1"]]
 
   :global-vars {*warn-on-reflection* true}
@@ -23,7 +23,7 @@
   :jvm-opts ["-server"]
 
   :profiles {:dev {:source-paths ["perf"]
-                   :dependencies [[midje "1.9.9"]
+                   :dependencies [[midje "1.9.10"]
                                   [org.clojure/test.check "1.1.0"]
                                   [criterium "0.4.6"]
                                   [com.clojure-goes-fast/clj-async-profiler "0.5.0"]
@@ -36,15 +36,14 @@
              ;; compatibility with 1.8+ for the core.
              :1.8    {:dependencies [[org.clojure/clojure "1.8.0"]]}
              :1.9    {:dependencies [[org.clojure/clojure "1.9.0"]]}
-             :1.10.0 {:dependencies [[org.clojure/clojure "1.10.0"]]}
-             :1.10.1 {:dependencies [[org.clojure/clojure "1.10.1"]]}
-             :1.10.2 {:dependencies [[org.clojure/clojure "1.10.2-alpha1"]]}}
+             :1.10.3 {:dependencies [[org.clojure/clojure "1.10.3"]]}
+             :1.11.0 {:dependencies [[org.clojure/clojure "1.11.0-alpha1"]]}}
 
   :auto    {"javac" {:file-pattern #"\.java$"}}
 
   :aliases
   {"test"
-   ["with-profile" "+1.8:+1.9:+1.10.0:+1.10.1:+1.10.2" "midje"]
+   ["with-profile" "+1.8:+1.9:+1.10.3:+1.11.0" "midje"]
 
    "perf-quick"
    ["with-profile" "dev" "jmh"

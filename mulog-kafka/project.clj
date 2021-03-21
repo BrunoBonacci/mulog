@@ -9,17 +9,17 @@
 
   :scm {:name "git" :url "https://github.com/BrunoBonacci/mulog.git"}
 
-  :dependencies [[org.clojure/clojure "1.10.1"]
+  :dependencies [[org.clojure/clojure "1.10.3"]
                  [com.brunobonacci/mulog #=(ver)]
                  [com.brunobonacci/mulog-json #=(ver)]
-                 [org.apache.kafka/kafka-clients "2.6.0"]
+                 [org.apache.kafka/kafka-clients "2.7.0"]
                  [com.taoensso/nippy "3.1.1"]]
 
   :global-vars {*warn-on-reflection* true}
 
   :jvm-opts ["-server"]
 
-  :profiles {:dev {:dependencies [[midje "1.9.9"]
+  :profiles {:dev {:dependencies [[midje "1.9.10"]
                                   [org.clojure/test.check "1.1.0"]
                                   [criterium "0.4.6"]
                                   [org.slf4j/slf4j-log4j12 "2.0.0-alpha1"]]
