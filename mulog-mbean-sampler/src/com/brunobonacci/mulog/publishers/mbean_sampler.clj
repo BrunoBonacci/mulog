@@ -44,7 +44,7 @@
      - `*:type=Foo,name=Bar,*` to match names in any domain that has
         the keys `type=Foo,name=Bar` plus zero or more other keys.
      - `d:type=F?o,name=Bar` will match e.g. `d:type=Foo,name=Bar` and
-       `d:type=Fro,name=Bar``.
+       `d:type=Fro,name=Bar`.
      - `d:type=F*o,name=Bar` will match e.g. `d:type=Fo,name=Bar` and
        `d:type=Frodo,name=Bar`.
      - `d:type=Foo,name=\"B*\"` will match
@@ -121,5 +121,6 @@
 (comment
 
   (sample-mbeans ["java.lang:type=Memory"] identity)
+  (sample-mbeans ["java.nio:*"] identity)
 
   )

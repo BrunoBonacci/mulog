@@ -1,4 +1,4 @@
-### Multi publisher
+## Multi publisher
 ![since v0.1.8](https://img.shields.io/badge/since-v0.1.8-brightgreen)
 
 The multi publisher allows you to define multiple publishers

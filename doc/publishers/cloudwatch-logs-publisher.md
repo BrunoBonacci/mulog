@@ -1,4 +1,4 @@
-### Cloudwatch Logs publisher
+## Cloudwatch Logs publisher
 ![since v0.4.0](https://img.shields.io/badge/since-v0.4.0-brightgreen)
 
 In order to use the library add the dependency to your `project.clj`

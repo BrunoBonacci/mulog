@@ -1,4 +1,4 @@
-### Custom publishers
+## Custom publishers
 ![since v0.1.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)
 
 To use your own publisher create a function which take a configuration

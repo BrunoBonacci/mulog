@@ -1,4 +1,4 @@
-### Advanced console publisher
+## Advanced console publisher
 ![since v0.6.0](https://img.shields.io/badge/since-v0.6.0-brightgreen)
 
 It outputs the events into the standard output in JSON format

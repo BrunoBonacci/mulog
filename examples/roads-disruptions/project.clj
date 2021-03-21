@@ -10,6 +10,7 @@
   :scm {:name "git" :url "https://github.com/BrunoBonacci/mulog.git"}
 
   :dependencies [[org.clojure/clojure "1.10.3"]
+                 [metosin/jsonista "0.3.1"]
                  [cheshire "5.10.0"]
                  [compojure "1.6.2"]
                  [ring/ring-jetty-adapter "1.9.2"]
@@ -23,8 +24,8 @@
                  [com.brunobonacci/mulog-elasticsearch #=(ver)]
                  [com.brunobonacci/mulog-kafka #=(ver)]
                  [com.brunobonacci/mulog-zipkin #=(ver)]
-                 [com.brunobonacci/mulog-prometheus #=(ver)]
-                 [com.brunobonacci/mulog-slack #=(ver)]
+                 ;;[com.brunobonacci/mulog-prometheus #=(ver)]
+                 ;;[com.brunobonacci/mulog-slack #=(ver)]
                  [org.slf4j/slf4j-log4j12 "1.7.30"]]
 
   :main com.brunobonacci.disruptions.main

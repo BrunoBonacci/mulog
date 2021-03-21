@@ -1,4 +1,4 @@
-### Elasticsearch publisher
+## Elasticsearch publisher
 ![since v0.1.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)
 
 In order to use the library add the dependency to your `project.clj`

@@ -1,4 +1,4 @@
-### Jaeger publisher
+## Jaeger publisher
 ![since v0.2.0](https://img.shields.io/badge/since-v0.2.0-brightgreen)
 
 [Jaeger Tracing](https://www.jaegertracing.io/) is a OpenZipkin
