@@ -4,6 +4,8 @@
 
   - [**NEW**] Added JMX MBean sampler to capture/sample the value of MBeans.
   - [**NEW**] Added Kafka metrics sampler to sample metrics from Kafka apps
+  - [**NEW**] Fixed GraalVM native compilation
+  - Delayed initialisation of thread-pools until first publisher is initialised.
 
 
 ## v0.6.5 - (2021-02-14)
