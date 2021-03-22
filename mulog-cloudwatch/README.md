@@ -7,7 +7,7 @@ This project contains the `publisher` for [Amazon CloudWatch Logs](https://docs.
 ## Usage
 A μ/log publisher for Amazon CloudWatch Logs.
 
-Please see [README](../README.md#cloudwatch-publisher) on main page.
+Please see [Documentation page](../doc/publishers/cloudwatch-logs-publisher.md).
 
 ## Testing
 

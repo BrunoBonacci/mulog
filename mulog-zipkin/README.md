@@ -7,7 +7,7 @@ This project contains the `publisher` for [OpenZipkin](https://zipkin.io/)
 
 ## Usage
 
-Please see [README](../README.md) on main page.
+Please see [Documentation page](../doc/publishers/zipkin-publisher.md).
 
 ## Testing
 

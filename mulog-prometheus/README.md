@@ -7,7 +7,7 @@ This project contains the `publisher` for [Prometheus](https://prometheus.io/)
 
 ## Usage
 
-Please see [README](../README.md#prometheus-publisher) on main page.
+Please see [Documentation page](../doc/publishers/prometheus-publisher.md).
 
 ## Testing
 

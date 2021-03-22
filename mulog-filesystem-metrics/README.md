@@ -5,7 +5,7 @@ This project contains a utility to sample Filesystem metrics and publish the sam
 
 ## Usage
 
-Please see [README](../README.md#filesystem-metrics-sampling) on main page.
+Please see [Documentation page](../doc/publishers/filesystem-metrics-sampling.md).
 
 ## Testing
 

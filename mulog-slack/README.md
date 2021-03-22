@@ -8,7 +8,7 @@ This project contains the `publisher` for [Slack](https://slack.com/)
 
 A μ/log publisher for Slack.
 
-Please see [README](../README.md#slack-publisher) on main page.
+Please see [Documentation page](../doc/publishers/slack-publisher.md).
 
 
 ## License

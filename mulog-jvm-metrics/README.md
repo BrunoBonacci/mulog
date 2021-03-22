@@ -5,7 +5,7 @@ This project contains a utility to sample JVM metrics and publish the samples as
 
 ## Usage
 
-Please see [README](../README.md#jvm-metrics-sampling) on main page.
+Please see [Documentation page](../doc/publishers/jvm-metrics-sampling.md).
 
 ## Testing
 

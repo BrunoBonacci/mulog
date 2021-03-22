@@ -4,7 +4,7 @@ This project contains a utility to sample MBeans and publish the samples as ***Î
 
 ## Usage
 
-Please see [README](../README.md#) on main page.
+Please see [Documentation page](../doc/publishers/mbean-metrics-sampling.md).
 
 ## Testing
 

@@ -8,7 +8,7 @@ advanced formatting options.
 
 ## Usage
 
-Please see [README](../README.md#advanced-console-publisher) on main page.
+Please see [Documentation page](../doc/publishers/advanced-console-publisher.md).
 
 
 ## License

@@ -7,7 +7,7 @@ This project contains the `publisher` for [Apache Kafka](https://kafka.apache.or
 
 ## Usage
 
-Please see [README](../README.md#apache-kafka-publisher) on main page.
+Please see [Documentation page](../doc/publishers/kafka-publisher.md).
 
 ## Testing
 

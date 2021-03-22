@@ -7,7 +7,7 @@ This project contains the `publisher` for [Kinesis](https://aws.amazon.com/kines
 ## Usage
 A μ/log publisher for Kinesis.
 
-Please see [README](../README.md#kinesis-publisher) on main page.
+Please see [Documentation page](../doc/publishers/kinesis-publisher.md).
 
 ## Testing
 
