@@ -27,21 +27,19 @@ and dispatched to third-party systems.
 To capture everything:
 
 ``` clojure
-(def publisher
-  (u/start-publisher!
-    {:type :mbean
-     :mbeans-patterns ["kafka.*:*"]})
+(μ/start-publisher!
+  {:type :mbean
+   :mbeans-patterns ["kafka.*:*"]})
 ```
 
 Or pick & choose:
 
 ``` clojure
-(def publisher
-  (u/start-publisher!
-    {:type :mbean
-     :mbeans-patterns ["kafka.producer:*"
-                       "kafka.consumer:*"
-                       "kafka.streams:*"]})
+(μ/start-publisher!
+  {:type :mbean
+   :mbeans-patterns ["kafka.producer:*"
+                     "kafka.consumer:*"
+                     "kafka.streams:*"]})
 ```
 
 

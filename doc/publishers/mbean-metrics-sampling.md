@@ -55,11 +55,10 @@ Example:
 
 
 ``` clojure
-(def publisher
-  (u/start-publisher!
-    {:type :mbean
-     :mbeans-patterns ["java.lang:type=Memory"
-                       "java.nio:*"]})
+(μ/start-publisher!
+  {:type :mbean
+   :mbeans-patterns ["java.lang:type=Memory"
+                     "java.nio:*"]})
 ```
 
 Here an example of the metrics sampled:
