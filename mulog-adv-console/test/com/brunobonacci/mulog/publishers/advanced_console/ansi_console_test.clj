@@ -51,6 +51,25 @@
   (let [entry {:mulog/trace-id #mulog/flake "4acMM4C1AMa4u6YoHDxKsBsLLs7EMhZi"
                :mulog/timestamp 1615129101667
                :mulog/event-name :line-test
+               :mulog/namespace "ansi-console-test"
+               :some-value 40}
+
+        rules  [(where :mulog/event-name :is? :line-test) :event-format
+                (where [:and
+                        [:some-value :is-not? nil]
+                        [:some-value >= 20]]) :more-specific-format]
+
+        formats {:event-format          {:event :green}
+                 :more-specific-format  {:event :blue}
+                 :default-formatter     :magenta}]
+    (pick-entry-format entry rules formats) => :blue))
+
+
+
+(fact "entry picker selects the last entry format in which matches the rules in the order they apply"
+  (let [entry {:mulog/trace-id #mulog/flake "4acMM4C1AMa4u6YoHDxKsBsLLs7EMhZi"
+               :mulog/timestamp 1615129101667
+               :mulog/event-name :line-test
                :mulog/namespace "ansi-console-test"}
         entry-with-more-specific-rules
         {:mulog/trace-id #mulog/flake "4acMM4C1AMa4u6YoHDxKsBsLLs7EMhZi"

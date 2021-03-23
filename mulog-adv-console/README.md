@@ -1,6 +1,4 @@
 # μ/log -> Advanced Console publisher
-[![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog.svg)](https://clojars.org/com.brunobonacci/mulog)  [![cljdoc badge](https://cljdoc.org/badge/com.brunobonacci/mulog)](https://cljdoc.org/d/com.brunobonacci/mulog/CURRENT) ![CircleCi](https://img.shields.io/circleci/project/BrunoBonacci/mulog.svg) ![last-commit](https://img.shields.io/github/last-commit/BrunoBonacci/mulog.svg)
-
 
 This project contains the `publisher` for terminal and consoles with
 advanced formatting options.
@@ -40,26 +38,28 @@ There are two types of formatters:
 - `pair` - it overrides the event color and colors a specific key-value pair.
   - when there are two or more matches it will pick the last rule
 
+here the `formats` example:
 
 ```clojure
-(advanced-console/register-formatters
-  :http-format           {:event :yellow}
-  :event-format          {:event :green}
-  :http-error-format     {:pair :red}
-  :override-pair-format  {:pair :blue}
-  :underline-pair-format {:pair [:cyan :underline :bg-red :inverse]}
-  :default-formatter     :magenta})
+:formats
+{:http-format           {:event :yellow}
+ :event-format          {:event :green}
+ :http-error-format     {:pair :red}
+ :override-pair-format  {:pair :blue}
+ :underline-pair-format {:pair [:cyan :underline :bg-red :inverse]}
+ :default-formatter     :magenta}
 ```
 
 In order to apply multiple formatting effects you need to wrap them in a vector.
 
 #### Example for setting up the rules
 
-To make use of the rules setup you need `where` to be included in your project: `[com.brunobonacci/where "0.5.5"]`
+To make use of the rules setup you need `where` to be included in your
+project: `[com.brunobonacci/where "0.5.5"]`
 
 ```clojure
 ;; notice that the matching values are used to match the formatter.
-(def format-rules
+  :rules
   [(where :mulog/event-name :is? :line-test)
    {:line-test :event-format}
 
@@ -76,14 +76,39 @@ To make use of the rules setup you need `where` to be included in your project: 
    {:http-error :underline-pair-format}])
 ```
 
-The rules need to be passed onto the publisher. The publisher supports simple pretty printing for the event. Key-value pairs in the event are displayed on separate line.
+The rules need to be passed onto the publisher. The publisher supports
+simple pretty printing for the event. Key-value pairs in the event are
+displayed on separate line.
 
 When the values are nested data structures they are displayed as one line.
 
 ```clojure
-(mu/start-publisher!
+(μ/start-publisher!
    {:type :advanced-console
-    :rules format-rules
+
+    :formats
+    {:http-format           {:event :yellow}
+     :event-format          {:event :green}
+     :http-error-format     {:pair :red}
+     :override-pair-format  {:pair :blue}
+     :underline-pair-format {:pair [:cyan :underline :bg-red :inverse]}
+     :default-formatter     :magenta}
+
+    :rules
+    [(where :mulog/event-name :is? :line-test)
+     {:line-test :event-format}
+
+     (where contains? :http-test)
+     {:http-test :http-format}
+
+     (where contains? :http-error)
+     {:http-error :http-error-format}
+
+     (where :http-error :is? 500)
+     {:http-error :override-pair-format}
+
+     (where :http-error :is? 503)
+     {:http-error :underline-pair-format}]
     :pretty? true})
 ```
 
