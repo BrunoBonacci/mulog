@@ -97,8 +97,10 @@
 (def ^:const DEFAULT-CONFIG
   {;; Interval in milliseconds between two samples
    :sampling-interval 60000
+
    ;; list of MBean patterns to sample
    :mbeans-patterns []
+
    ;; Transformation to apply to the sample before publishing
    ;; this is applied to the `:mbean`
    :transform identity})
