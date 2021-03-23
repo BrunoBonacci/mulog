@@ -1,4 +1,5 @@
 # MBeans sampler for μ/log
+[![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog-mbean-sampler.svg)](https://clojars.org/com.brunobonacci/mulog-mbean-sampler)
 
 This project contains a utility to sample MBeans and publish the samples as ***μ/log*** events.
 
