@@ -253,8 +253,7 @@
   (u/log ::hello :to "World!" :v (rand-int 1000))
 
   (def x (u/start-publisher!
-           {:type :custom
-            :fqn-function "com.brunobonacci.mulog.publishers.mbean-sampler/mbean-sampler-publisher"
+           {:type :mbean
             :mbeans-patterns ["java.lang:type=Memory"]
             :sampling-interval 10000}))
 

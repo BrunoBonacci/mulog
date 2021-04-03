@@ -1,5 +1,8 @@
 # μ/log
-[![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog.svg)](https://clojars.org/com.brunobonacci/mulog)  [![cljdoc badge](https://cljdoc.org/badge/com.brunobonacci/mulog)](https://cljdoc.org/d/com.brunobonacci/mulog/CURRENT) [![CircleCi](https://img.shields.io/circleci/project/BrunoBonacci/mulog.svg)](https://circleci.com/gh/BrunoBonacci/mulog) ![last-commit](https://img.shields.io/github/last-commit/BrunoBonacci/mulog.svg)
+[![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog.svg)](https://clojars.org/com.brunobonacci/mulog)
+[![cljdoc badge](https://cljdoc.org/badge/com.brunobonacci/mulog)](https://cljdoc.org/d/com.brunobonacci/mulog/)
+[![CircleCi](https://img.shields.io/circleci/project/BrunoBonacci/mulog.svg)](https://circleci.com/gh/BrunoBonacci/mulog)
+![last-commit](https://img.shields.io/github/last-commit/BrunoBonacci/mulog.svg)
 
 ![mulog](./doc/images/mulog.png)
 
@@ -106,10 +109,10 @@ In order to use the library add the dependency to your `project.clj`
 
 ``` clojure
 ;; Leiningen project
-[com.brunobonacci/mulog "0.6.5"]
+[com.brunobonacci/mulog "0.7.1"]
 
 ;; deps.edn format
-{:deps { com.brunobonacci/mulog {:mvn/version "0.6.5"}}}
+{:deps { com.brunobonacci/mulog {:mvn/version "0.7.1"}}}
 ```
 
 Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog.svg)](https://clojars.org/com.brunobonacci/mulog)

@@ -20,8 +20,10 @@ and dispatched to third-party systems.
 ;; Configuration options
 {;; Interval in milliseconds between two samples (Default: 60s)
  ;; :sampling-interval 60000
+
  ;; list of MBean patterns to sample
  :mbeans-patterns []  ;; REQUIRED
+
  ;; Transformation to apply to the sample before publishing
  ;; this is applied to the `:mbean`
  ;; :transform identity
@@ -53,11 +55,10 @@ Example:
 
 
 ``` clojure
-(def publisher
-  (u/start-publisher!
-    {:type :mbean
-     :mbeans-patterns ["java.lang:type=Memory"
-                       "java.nio:*"]})
+(μ/start-publisher!
+  {:type :mbean
+   :mbeans-patterns ["java.lang:type=Memory"
+                     "java.nio:*"]})
 ```
 
 Here an example of the metrics sampled:

@@ -1,6 +1,9 @@
 # Changelog
 
-## v0.7.0 - (under development)
+## v0.8.0 - (under development)
+
+
+## v0.7.1 - (2021-03-23)
 
   - [**NEW**] Added JMX MBean sampler to capture/sample the value of MBeans.
   - [**NEW**] Added Kafka metrics sampler to sample metrics from Kafka apps

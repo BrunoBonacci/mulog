@@ -58,9 +58,9 @@ Here is an example of how the traces look like:
 `set-global-context` to define one**, like:
 
 ``` clojure
-  ;; set global context
-  (μ/set-global-context!
-    {:app-name "my-app", :version "0.1.0", :env "local"})
+;; set global context
+(μ/set-global-context!
+  {:app-name "my-app", :version "0.1.0", :env "local"})
 ```
 
 see [example here](https://github.com/BrunoBonacci/mulog/blob/master/examples/roads-disruptions/src/com/brunobonacci/disruptions/main.clj#L44-L46).

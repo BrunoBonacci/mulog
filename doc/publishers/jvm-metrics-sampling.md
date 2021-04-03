@@ -15,18 +15,18 @@ collector, threads, etc** using a special publisher.
 
 
 ``` clojure
-(def publisher
-  (u/start-publisher!
-    {:type :jvm-metrics
-     ;; the interval in millis between two samples (default: 60s)
-     :sampling-interval 60000
-     ;; which metrics are you interested in sampling
-     ;; (default: `{:all true}`)
-     :jvm-metrics
-     {:memory true
-      :gc true
-      :threads true
-      :jvm-attrs true}}))
+(μ/start-publisher!
+  {:type :jvm-metrics
+   ;; the interval in millis between two samples (default: 60s)
+   :sampling-interval 60000
+
+   ;; which metrics are you interested in sampling
+   ;; (default: `{:all true}`)
+   :jvm-metrics
+   {:memory true
+    :gc true
+    :threads true
+    :jvm-attrs true}})
 ```
 
 Here an example of the metrics sampled
@@ -91,6 +91,5 @@ Here an example of the metrics sampled
 Usage example:
 
 ``` clojure
-(def publisher
-  (u/start-publisher! {:type :jvm-metrics}))
+(μ/start-publisher! {:type :jvm-metrics})
 ```
