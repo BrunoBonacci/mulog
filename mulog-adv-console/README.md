@@ -25,7 +25,7 @@ The current setup supports 8 colors:
 
 You can add a background using `:bg-` in front of the color - e.g. `:bg-red` will make the background red.
 
-In addition to these you can use `:bright` to achieve a similar effect to bold. Use `:underline` to underline.
+In addition to these you can use `:bright` to achieve a similar effect to bold. Use `:bright` to bright.
 
 `:inverse` will inverse the font color and the background color.
 
@@ -46,7 +46,7 @@ here the `formats` example:
  :event-format          {:event :green}
  :http-error-format     {:pair :red}
  :override-pair-format  {:pair :blue}
- :underline-pair-format {:pair [:cyan :underline :bg-red :inverse]}
+ :bright-pair-format {:pair [:cyan :bright :bright :bg-red :inverse]}
  :default-formatter     :magenta}
 ```
 
@@ -60,20 +60,11 @@ project: `[com.brunobonacci/where "0.5.5"]`
 ```clojure
 ;; notice that the matching values are used to match the formatter.
   :rules
-  [(where :mulog/event-name :is? :line-test)
-   {:line-test :event-format}
-
-   (where contains? :http-test)
-   {:http-test :http-format}
-
-   (where contains? :http-error)
-   {:http-error :http-error-format}
-
-   (where :http-error :is? 500)
-   {:http-error :override-pair-format}
-
-   (where :http-error :is? 503)
-   {:http-error :underline-pair-format}])
+   [(where :mulog/event-name :is? :line-test) :event-format
+    (where contains? :http-test) :http-format
+    (where contains? :http-error) :http-error-format
+    (where :http-error :is? 500) :override-pair-format
+    (where :http-error :is? 503) :bright-pair-format])
 ```
 
 The rules need to be passed onto the publisher. The publisher supports
@@ -89,26 +80,17 @@ When the values are nested data structures they are displayed as one line.
     :formats
     {:http-format           {:event :yellow}
      :event-format          {:event :green}
-     :http-error-format     {:pair :red}
-     :override-pair-format  {:pair :blue}
-     :underline-pair-format {:pair [:cyan :underline :bg-red :inverse]}
+     :http-error-format     {:pair {:http-error :red}}
+     :override-pair-format  {:pair {:http-error :blue}}
+     :bright-pair-format {:pair {:http-error [:cyan :bright :bg-red :inverse]}}
      :default-formatter     :magenta}
 
     :rules
-    [(where :mulog/event-name :is? :line-test)
-     {:line-test :event-format}
-
-     (where contains? :http-test)
-     {:http-test :http-format}
-
-     (where contains? :http-error)
-     {:http-error :http-error-format}
-
-     (where :http-error :is? 500)
-     {:http-error :override-pair-format}
-
-     (where :http-error :is? 503)
-     {:http-error :underline-pair-format}]
+    [(where :mulog/event-name :is? :line-test) :event-format
+     (where contains? :http-test) :http-format
+     (where contains? :http-error) :http-error-format
+     (where :http-error :is? 500) :override-pair-format
+     (where :http-error :is? 503) :bright-pair-format]
     :pretty? true})
 ```
 

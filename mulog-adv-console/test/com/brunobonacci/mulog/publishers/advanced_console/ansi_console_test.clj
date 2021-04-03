@@ -148,5 +148,4 @@
         (find-pair-formats entry-with-pair-override rules formats) => {:http-error :blue}
         
         (pick-entry-format entry-with-deeper-entry-and-pair-override rules formats) => :yellow
-        (find-pair-formats entry-with-deeper-entry-and-pair-override rules formats) => {:http-error [:white :bright]}
-        ))
+        (find-pair-formats entry-with-deeper-entry-and-pair-override rules formats) => {:http-error [:white :bright]}))
