@@ -1,5 +1,7 @@
 # μ/log -> Advanced Console publisher
 
+[![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog-adv-console.svg)](https://clojars.org/com.brunobonacci/mulog-adv-console)
+
 This project contains the `publisher` for terminal and consoles with
 advanced formatting options.
 

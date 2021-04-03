@@ -101,7 +101,7 @@ How to use it:
 * Example with PushGateway:
 
 ``` clojure
-(u/start-publisher!
+(μ/start-publisher!
   {:type :prometheus
    :push-gateway {:job "mulog-demo"
                   :endpoint "http://localhost:9091"}})
@@ -119,7 +119,7 @@ metrics in a Ring (or Compojure) application.
 ;; create your publisher
 (def pub (prom/prometheus-publisher {:type :prometheus}))
 ;; start the publisher
-(def px (u/start-publisher! {:type :inline :publisher pub}))
+(def px (μ/start-publisher! {:type :inline :publisher pub}))
 
 ;; now it is possible to access the registry
 (prom/registry pub)  ;; => registry

@@ -325,3 +325,11 @@
   (load-dynamic-publisher
     "com.brunobonacci.mulog.publishers.prometheus/prometheus-publisher"
     config))
+
+
+
+(defmethod publisher-factory :mbean
+  [config]
+  (load-dynamic-publisher
+    "com.brunobonacci.mulog.publishers.mbean-sampler/mbean-sampler-publisher"
+    config))

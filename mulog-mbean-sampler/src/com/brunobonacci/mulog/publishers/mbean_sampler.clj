@@ -18,7 +18,9 @@
   [value]
   (as-> value $
     ;; Turns ObjectName into strings with canonical represtantion
-    (update $ :ObjectName #(and % (.getCanonicalName ^ObjectName %)))
+    (if (and (contains? $ :ObjectName) (instance? ObjectName (get $ :ObjectName)))
+      (update $ :ObjectName #(.getCanonicalName ^ObjectName %))
+      $)
     ;; remove exception
     (walk/postwalk
       (fn [v]
@@ -53,9 +55,11 @@
   "
   [pattern]
   (->> (jmx/mbean-names pattern)
-    (map (juxt (memfn ^ObjectName getDomain) (memfn  ^ObjectName getKeyPropertyList) jmx/mbean))
-    (map (fn [[domain keys attrs]]
-           {:domain domain
+    (map (juxt (memfn ^ObjectName getCanonicalName) (memfn ^ObjectName getDomain)
+           (memfn  ^ObjectName getKeyPropertyList) jmx/mbean))
+    (map (fn [[canonical-name domain keys attrs]]
+           {:canonical-name canonical-name
+            :domain domain
             :keys (into {} keys)
             :attributes (sanitize-values attrs)}))))
 
@@ -93,8 +97,10 @@
 (def ^:const DEFAULT-CONFIG
   {;; Interval in milliseconds between two samples
    :sampling-interval 60000
+
    ;; list of MBean patterns to sample
    :mbeans-patterns []
+
    ;; Transformation to apply to the sample before publishing
    ;; this is applied to the `:mbean`
    :transform identity})
@@ -114,7 +120,6 @@
   [config]
   ;; create the metrics publisher
   (MBeanSamplerPublisher. (apply-defaults config) (rb/agent-buffer 100)))
-
 
 
 

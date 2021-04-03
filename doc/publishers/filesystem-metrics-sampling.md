@@ -10,19 +10,20 @@
 ```
 Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog-filesystem-metrics.svg)](https://clojars.org/com.brunobonacci/mulog-filesystem-metrics)
 
-It is possible to sample filesystem metrics such as **total and available disk space** for each mounted filesystem using a special publisher.
+It is possible to sample filesystem metrics such as **total and
+available disk space** for each mounted filesystem using a special
+publisher.
 
 
 ``` clojure
-(def publisher
-  (u/start-publisher!
-    {:type :filesystem-metrics
-     ;; the interval in millis between two samples (default: 60s)
-     :sampling-interval 60000
-     ;; transform metrics (e.g. filter only volumes over 1 GB)
-     ;; (default: `nil` leaves metrics unchanged)
-     :transform
-     (partial filter #(> (:total-bytes %) 1e9)}))
+(μ/start-publisher!
+  {:type :filesystem-metrics
+   ;; the interval in millis between two samples (default: 60s)
+   :sampling-interval 60000
+   ;; transform metrics (e.g. filter only volumes over 1 GB)
+   ;; (default: `nil` leaves metrics unchanged)
+   :transform
+   (partial filter #(> (:total-bytes %) 1e9))})
 ```
 
 Here an example of the metrics sampled for one filesystem
