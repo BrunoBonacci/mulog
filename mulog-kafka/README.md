@@ -7,32 +7,15 @@ This project contains the `publisher` for [Apache Kafka](https://kafka.apache.or
 
 ## Usage
 
-Please see [README](../README.md#apache-kafka-publisher) on main page.
+Please see [Documentation page](../doc/publishers/kafka-publisher.md).
 
 ## Testing
 
-Create an alias with
-
-``` shell
-# on linux
-sudo ip addr add 192.168.200.200/32 dev wlan0
-
-# on Mac OSX
-sudo ifconfig en0 alias 192.168.200.200/32 up
-
-# to remove alias
-# sudo ifconfig en0 -alias 192.168.200.200/32
-```
-
-Alternatively, edit the `docker-compose.yaml` and add your local ip (non 127.0.0.1).
-This is necessary for the producer to connect to the broker.
-
-
 ``` shell
 docker-compose rm -f && docker-compose up -d
-docker exec -ti mulog-kafka_kafka_1 /opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server kafka:9092 --topic mulog
+docker exec -ti mulog-kafka_kafka_1 /opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mulog
 ```
 
 ## License
 
-Copyright © 2019-2020 Bruno Bonacci - Distributed under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0)
+Copyright © 2019-2021 Bruno Bonacci - Distributed under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0)

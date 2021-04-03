@@ -1,22 +1,33 @@
-version: '3'
+version: "3.8"
+
 services:
 
   zookeeper:
-    # image: wurstmeister/zookeeper
-    image: zookeeper:3.5.5
+    image: zookeeper:3.6
     ports:
-      - "2181:2181"
+      - 2181:2181
+    networks:
+      - kafkanet
 
   kafka:
-    image: wurstmeister/kafka:2.12-2.3.0
+    image: wurstmeister/kafka:2.12-2.5.0
     depends_on:
       - zookeeper
     ports:
-      - "9092:9092"
+      - 9092:9092
+    networks:
+      - kafkanet
+    links:
+      - zookeeper:zookeeper
     environment:
-      # REPLACE with your machine IP (non 127.0.0.1) if necessary
-      KAFKA_ADVERTISED_HOST_NAME: 192.168.200.200
       KAFKA_CREATE_TOPICS: "mulog:1:1"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      KAFKA_ADVERTISED_LISTENERS: OUTSIDE://localhost:9092, INSIDE://:9094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: OUTSIDE:PLAINTEXT,INSIDE:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_LISTENERS: INSIDE://:9094,OUTSIDE://:9092
+
+
+networks:
+  kafkanet:
+    name: kafka-network

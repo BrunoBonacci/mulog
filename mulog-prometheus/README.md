@@ -7,7 +7,7 @@ This project contains the `publisher` for [Prometheus](https://prometheus.io/)
 
 ## Usage
 
-Please see [README](../README.md#prometheus-publisher) on main page.
+Please see [Documentation page](../doc/publishers/prometheus-publisher.md).
 
 ## Testing
 
@@ -18,4 +18,4 @@ docker-compose rm -f && docker-compose up -d
 
 ## License
 
-Copyright © 2019-2020 Bruno Bonacci - Distributed under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0)
+Copyright © 2019-2021 Bruno Bonacci - Distributed under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0)

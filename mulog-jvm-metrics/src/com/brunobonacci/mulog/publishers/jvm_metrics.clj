@@ -66,9 +66,18 @@
 
 
 
+(defn div
+  "If denominator is zero it returns 0, instead of an exception"
+  [num den]
+  (if (== den 0)
+    0
+    (/ num den)))
+
+
+
 (defn- get-usage-ratio [^MemoryUsage usage]
   (fix-precision-ratio
-    (/ (.getUsed usage)
+    (div (.getUsed usage)
       (if (= (.getMax usage) -1)
         (.getCommitted usage)
         (.getMax usage)))))
@@ -140,11 +149,7 @@
           :let [pname (get-bean-name pool)
                 usage (.getUsage pool)]]
       [(keyword (str pname "-usage"))
-       (fix-precision-ratio
-         (/ (.getUsed usage)
-           (if (= (.getMax usage) -1)
-             (.getCommitted usage)
-             (.getMax usage))))])))
+       (get-usage-ratio usage)])))
 
 
 
@@ -174,12 +179,14 @@
 
 
 (defn- capture-jvm-attrs [^RuntimeMXBean runtime]
-  {:name (.getName runtime)
-   :vendor (format "%s (%s)"
-             (.getVmVendor runtime)
-             (.getSpecVersion runtime))
-   :version (.getVmVersion runtime)
-   :process-id (os-java-pid)})
+  {:name       (.getName runtime)
+   :vendor     (format "%s (%s)" (.getVmVendor runtime) (.getSpecVersion runtime))
+   :version    (.getVmVersion runtime)
+   :process-id (os-java-pid)
+   :os-name    (System/getProperty "os.name" "n/a")
+   :os-arch    (System/getProperty "os.arch" "n/a")
+   :os-version (System/getProperty "os.version" "n/a")})
+
 
 
 (s/fdef capture-jvx-attrs
@@ -349,7 +356,13 @@
   [{:keys [sampling-interval jvm-metrics] :as config}]
   (let [config (as-> config $
                  (merge DEFAULT-CONFIG $)
-                 (assoc $ :sampling-interval
-                   (max sampling-interval 1000)))]
+                 ;; sampling interval shouldn't be too small
+                 (update $ :sampling-interval max  1000))]
     ;; create the metrics publisher
-    (JvmMetricsPublisher. config (rb/agent-buffer 1))))
+    (JvmMetricsPublisher. config (rb/agent-buffer 500))))
+
+
+
+(comment
+  (jvm-sample {:memory true :gc true :threads true :jvm-attrs true})
+  )

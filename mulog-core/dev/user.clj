@@ -61,6 +61,17 @@
 
 
 
+(comment
+
+  ;; stop publisher
+  (core/registered-publishers)
+  ;; STOPLAST
+  (core/stop-publisher! (->> (core/registered-publishers) last :id))
+
+  )
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
 ;;                       ----==| μ / T R A C E |==----                        ;;
@@ -154,18 +165,6 @@
 
 
 
-(comment
-
-  ;; stop publisher
-  (core/registered-publishers)
-  ;; STOPLAST
-  (core/stop-publisher! (->> (core/registered-publishers) last :id))
-
-
-  )
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
 ;;                  ----==| C O N S O L E - J S O N |==----                   ;;
@@ -187,6 +186,7 @@
   )
 
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
 ;;                 ----==| E L A S T I C S E A R C H |==----                  ;;
@@ -203,6 +203,10 @@
   (u/log ::hello :to "World!" :v "ciao")
   (def x (u/start-publisher! {:type :elasticsearch
                               :url "http://localhost:9200/"}))
+
+  (def x (u/start-publisher! {:type :elasticsearch
+                              :url "http://localhost:9200/"
+                              :data-stream "mulog-stream"}))
 
   (x)
 
@@ -236,6 +240,32 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
+;;                 ----==| M B E A N - S A M P L E R |==----                  ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(comment
+
+  (u/log ::hello :to "World!")
+
+  (u/start-publisher! {:type :console :pretty? true})
+  (u/log ::hello :to "World!" :v (rand-int 1000))
+
+  (def x (u/start-publisher!
+           {:type :custom
+            :fqn-function "com.brunobonacci.mulog.publishers.mbean-sampler/mbean-sampler-publisher"
+            :mbeans-patterns ["java.lang:type=Memory"]
+            :sampling-interval 10000}))
+
+  (x)
+
+  )
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
 ;;                         ----==| K A F K A |==----                          ;;
 ;;                                                                            ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -249,7 +279,8 @@
   (u/log ::hello :to "World!" :v (rand-int 1000))
 
   (def x (u/start-publisher! {:type :kafka
-                              :kafka {:bootstrap.servers "192.168.200.200:9092"}}))
+                              :format :nippy
+                              :kafka {:bootstrap.servers "localhost:9092"}}))
 
   (x)
 
@@ -467,7 +498,6 @@
 
   (u/log ::example :foo :baz, :bar 1)
   )
-
 
 
 

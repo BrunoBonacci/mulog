@@ -1,4 +1,4 @@
-### Advanced console publisher
+## Advanced console publisher
 ![since v0.6.0](https://img.shields.io/badge/since-v0.6.0-brightgreen)
 
 It outputs the events into the standard output in JSON format
@@ -14,7 +14,7 @@ In order to use the library add the dependency to your `project.clj`
 ```
 Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog-adv-console.svg)](https://clojars.org/com.brunobonacci/mulog-adv-console)
 
-The events must be serializeable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
+The events must be serializeable in JSON format (see [How to JSON encode custom Java classes](../json-encode.md) for more info.)
 
 The available configuration options:
 

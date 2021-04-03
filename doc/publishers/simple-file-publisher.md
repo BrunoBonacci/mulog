@@ -1,4 +1,4 @@
-### Simple file publisher
+## Simple file publisher
 ![since v0.1.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)
 
 It is bundled with the core module, no extra dependencies required.

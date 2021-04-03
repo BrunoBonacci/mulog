@@ -1,4 +1,4 @@
-### Prometheus publisher
+## Prometheus publisher
 ![since v0.5.0](https://img.shields.io/badge/since-v0.5.0-brightgreen)
 
 In order to use the library add the dependency to your `project.clj`

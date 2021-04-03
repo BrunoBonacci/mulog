@@ -5,6 +5,11 @@
             [com.brunobonacci.mulog.common.json :as json]
             [cognitect.aws.client.api :as aws]))
 
+;;
+;; On CloudWatchLogs, the following constrain must be respected.
+;; "Log events in a single PutLogEvents request must be in chronological order."
+;;
+;;
 
 
 (defn- has-invalid-token?
@@ -66,7 +71,8 @@
   [cw-client stream-name {:keys [group-name] :as config} records  next-token]
   (let [request  (->> records
                    (map (juxt #(get % :mulog/timestamp) json/to-json))
-                   (map (fn [[k v]] {:timestamp k :message v})))]
+                   (map (fn [[k v]] {:timestamp k :message v}))
+                   (sort-by :timestamp))]
     (publish! cw-client group-name stream-name request  next-token)))
 
 

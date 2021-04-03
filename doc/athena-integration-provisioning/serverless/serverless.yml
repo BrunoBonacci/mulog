@@ -1,0 +1,256 @@
+service: mulog-athena-setup
+
+frameworkVersion: ">=1.78.0"
+
+plugins:
+  - serverless-pseudo-parameters
+
+custom: ${file(./serverless_properties.yml):${opt:stage, 'dev'}}
+
+provider:
+  name: aws
+  region: ${self:custom.region}
+  runtime: java11
+  timeout: 300
+  stage: ${opt:stage}
+  deploymentBucket: ${self:custom.deploymentBucket}
+  logRetentionInDays: 14
+
+resources:
+  Description: Mulog (${self:provider.stage}) - Athena setup
+  Resources:
+    MulogEventsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.reporting.bucket}
+        AccessControl: Private
+        BucketEncryption:
+          ServerSideEncryptionConfiguration:
+            - ServerSideEncryptionByDefault:
+                SSEAlgorithm: aws:kms
+        LifecycleConfiguration: # consider overriding configuration for the particular use case
+          Rules:
+            - Id: ObjectExpiry_Day
+              Prefix: ${self:custom.reporting.bucket}/${self:custom.reporting.tableName}
+              Status: Enabled
+              ExpirationInDays: 1
+            - Id: ObjectExpiry_3Days
+              Prefix: ${self:custom.reporting.bucket}/Unsaved
+              Status: Enabled
+              ExpirationInDays: 3
+
+    FirehoseDeliveryRole:
+      Type: AWS::IAM::Role
+      Properties:
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/AmazonKinesisAnalyticsReadOnly
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Sid: ""
+              Effect: Allow
+              Principal:
+                Service: firehose.amazonaws.com
+              Action:
+                - sts:AssumeRole
+              Condition:
+                StringEquals:
+                  "sts:ExternalId": !Ref AWS::AccountId
+        Policies:
+          - PolicyName: GlueTableReadOnlyAccess
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - glue:GetTable
+                    - glue:GetTableVersions
+                    - glue:GetTables
+                  Resource: "*"
+          - PolicyName: CloudWatchWriteAccess
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                  Resource: "*"
+          - PolicyName: S3BucketWriteAccess
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - s3:AbortMultipartUpload
+                    - s3:GetBucketLocation
+                    - s3:GetObject
+                    - s3:ListBucket
+                    - s3:ListBucketMultipartUploads
+                    - s3:PutObject
+                  Resource:
+                    - arn:aws:s3:::${self:custom.reporting.bucket}
+                    - arn:aws:s3:::${self:custom.reporting.bucket}/*
+          - PolicyName: KinesisStreamReadAccess
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - kinesis:DescribeStream
+                    - kinesis:GetShardIterator
+                    - kinesis:GetRecords
+                  Resource: "arn:aws:kinesis:#{AWS::Region}:#{AWS::AccountId}:stream/${self:custom.mulogStreamName}"
+          - PolicyName: KmsDecryptAccess
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - kms:Decrypt
+                    - kms:GenerateDataKey
+                  Resource: "*"
+                  Condition:
+                    StringEquals:
+                      "kms:ViaService": "s3.region.amazonaws.com"
+                    StringLike:
+                      "kms:EncryptionContext:aws:s3:arn": arn:aws:s3:::${self:custom.reporting.bucket}/*
+
+    MulogEventsFirehoseDeliveryStream:
+      Type: AWS::KinesisFirehose::DeliveryStream
+      DependsOn:
+        - FirehoseDeliveryRole
+      Properties:
+        DeliveryStreamName: ${self:custom.deliveryStream.name}
+        DeliveryStreamType: KinesisStreamAsSource
+        KinesisStreamSourceConfiguration:
+          KinesisStreamARN: "arn:aws:kinesis:#{AWS::Region}:#{AWS::AccountId}:stream/${self:custom.mulogStreamName}"
+          RoleARN: !GetAtt FirehoseDeliveryRole.Arn
+        ExtendedS3DestinationConfiguration:
+          BucketARN: !GetAtt MulogEventsBucket.Arn
+          BufferingHints:
+            IntervalInSeconds: 900
+            SizeInMBs: 64
+          CompressionFormat: UNCOMPRESSED
+          DataFormatConversionConfiguration:
+            Enabled: true
+            InputFormatConfiguration:
+              Deserializer:
+                OpenXJsonSerDe:
+                  CaseInsensitive: true
+            OutputFormatConfiguration:
+              Serializer:
+                ParquetSerDe:
+                  Compression: SNAPPY
+                  EnableDictionaryCompression: false
+            SchemaConfiguration:
+              CatalogId: !Ref AWS::AccountId
+              DatabaseName:  ${self:custom.reporting.dbName}
+              Region: !Ref AWS::Region
+              RoleARN: !GetAtt FirehoseDeliveryRole.Arn
+              TableName: ${self:custom.reporting.tableName}
+              VersionId: LATEST
+          CloudWatchLoggingOptions:
+            Enabled: true
+            LogGroupName: !Ref FirehoseLogGroup
+            LogStreamName: !Ref FirehoseLogStream
+          Prefix: "${self:custom.reporting.tableName}/dt=!{timestamp:yyyy-MM-dd}/hour=!{timestamp:HH}/"
+          ErrorOutputPrefix: "errors/errtype=!{firehose:error-output-type}/dt=!{timestamp:yyyy-MM-dd}/hour=!{timestamp:HH}/"
+          RoleARN: !GetAtt FirehoseDeliveryRole.Arn
+
+    MulogEventsDatabase:
+      Type: AWS::Glue::Database
+      Properties:
+        DatabaseInput:
+          Name: ${self:custom.reporting.dbName}
+        CatalogId: !Ref AWS::AccountId
+
+    MulogEventsCrawlerRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: ${self:custom.crawler.role}
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            Effect: Allow
+            Principal:
+              Service: glue.amazonaws.com
+            Action:
+              - sts:AssumeRole
+            Condition:
+              StringEquals:
+                "sts:ExternalId": !Ref AWS::AccountId
+        Policies:
+          - PolicyName: GlueTableReadWriteAccess
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - s3:GetObject
+                    - s3:PutObject
+                  Resource:
+                    - arn:aws:s3:::${self:custom.reporting.bucket}/${self:custom.reporting.tableName}/*
+
+    MulogEventsCrawler:
+      Type: AWS::Glue::Crawler
+      DependsOn:
+        - MulogEventsCrawlerRole
+      Properties:
+        Description: builds and keeps up-to-date data catalog.
+        Role: !GetAtt MulogEventsCrawlerRole.Arn
+        DatabaseName: ${self:custom.reporting.dbName}
+        Name: ${self:custom.crawler.name}
+        Schedule:
+          ScheduleExpression: ${self:custom.crawler.schedule}
+        SchemaChangePolicy:
+          UpdateBehavior: "UPDATE_IN_DATABASE"
+          DeleteBehavior: "LOG"
+        Targets:
+          S3Targets:
+            - Path: s3://${self:custom.reporting.bucket}/${self:custom.reporting.tableName}/
+
+    FirehoseLogGroup:
+      Type: AWS::Logs::LogGroup
+      Properties:
+        LogGroupName: ${self:custom.deliveryStream.logGroupName}
+        RetentionInDays: 14
+    FirehoseLogStream:
+      Type: AWS::Logs::LogStream
+      Properties:
+        LogGroupName: !Ref FirehoseLogGroup
+        LogStreamName: ${self:custom.deliveryStream.logStreamName}
+
+    MulogEventsTable:
+      Type: AWS::Glue::Table
+      Properties:
+        DatabaseName: !Ref MulogEventsDatabase
+        CatalogId: !Ref AWS::AccountId
+        TableInput:
+          Name: ${self:custom.reporting.tableName}
+          Description: mulog events table
+          Owner: ${self:custom.reporting.owner}
+          TableType: EXTERNAL_TABLE
+          StorageDescriptor:
+            StoredAsSubDirectories: false
+            Location: s3://${self:custom.reporting.bucket}/${self:custom.reporting.tableName}/
+            InputFormat: org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat
+            OutputFormat: org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat
+            SerdeInfo:
+              SerializationLibrary: org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe
+              Parameters:
+                serialization.format: "1"
+            Columns: ${self:custom.reporting.columns}
+            Compressed: true
+          Parameters:
+            EXTERNAL: "TRUE"
+            has_encrypted_data: true
+            classification: parquet
+          PartitionKeys:
+            - Name: dt
+              Type: string
+            - Name: hour
+              Type: tinyint

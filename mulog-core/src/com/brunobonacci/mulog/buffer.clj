@@ -109,7 +109,8 @@ to the downstream systems by the publishers.
 
 
 (defonce timer-pool
-  (scheduled-thread-pool 2))
+  (delay ;; Delay the thread pool initialisation at runtime (GraalVM)
+    (scheduled-thread-pool 2)))
 
 
 
@@ -119,7 +120,7 @@ to the downstream systems by the publishers.
   ([delay-millis task error-logger]
    (let [^ScheduledFuture ftask
          (.scheduleAtFixedRate
-           ^ScheduledThreadPoolExecutor timer-pool
+           ^ScheduledThreadPoolExecutor @timer-pool
            (fn []
              (try
                (task)

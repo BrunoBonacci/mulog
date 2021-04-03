@@ -8,9 +8,9 @@ This project contains the `publisher` for [Slack](https://slack.com/)
 
 A μ/log publisher for Slack.
 
-Please see [README](../README.md#slack-publisher) on main page.
+Please see [Documentation page](../doc/publishers/slack-publisher.md).
 
 
 ## License
 
-Copyright © 2019-2020 Bruno Bonacci - Distributed under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0)
+Copyright © 2019-2021 Bruno Bonacci - Distributed under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0)

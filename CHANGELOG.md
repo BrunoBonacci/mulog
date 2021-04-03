@@ -1,9 +1,52 @@
 # Changelog
 
-## v0.6.0 - (unreleased)
+## v0.7.0 - (under development)
+
+  - [**NEW**] Added JMX MBean sampler to capture/sample the value of MBeans.
+  - [**NEW**] Added Kafka metrics sampler to sample metrics from Kafka apps
+  - [**NEW**] Fixed GraalVM native compilation
+  - Delayed initialisation of thread-pools until first publisher is initialised.
+
+
+## v0.6.5 - (2021-02-14)
+
+  - [**SECURITY**] Fix security vulnerabilities found in transitive dependencies (#59) [cloudwatch, kinesis]
+
+
+## v0.6.4 - (2021-01-16)
+
+  - Fix issue with configuration of `jvm-metrics` when `:sampling-interval` isn't provided
+
+
+## v0.6.3 - (2021-01-16)
+
+  - [**NEW**] Added documentation and scripts on how to use ***μ/log*** with Amazon Athena (thanks to @etolbakov)
+  - Fix issue with `os-java-pid` and JDK EarlyAdopters versions
+  - Fix issue with `jvm-metrics` sampling `divide-by-zero` error (#57).
+
+
+## v0.6.2 - (2021-01-08)
+
+  - Fix order of events in Cloudwatch publisher
+
+
+## v0.6.1 - (2021-01-05)
+
+  - Fix Json pretty printing
+  - Bumped Jasonista version
+  - Fix Elasticsearch custom http-options #56 (thanks @ozimos)
+
+
+## v0.6.0 - (2020-12-19)
 
   - [**NEW**] Added Filesystem metrics sampler (thanks to @emlyn)
   - [**NEW**] Added Advanced Console Publisher with JSON formatting.
+  - [**NEW**] Added support for Elasticsearch data-streams. (thanks to @ozimos)
+  - [**NEW**] Added support for Nippy encoding to the Kafka publisher
+  - [**POTENTIALLY BREAKING**] Migrated to JSON encoding from Cheshire
+    to Jasonista (thanks to @ozimos).  It is potentially breaking if
+    you have custom JSON encoders setup for Cheshire you will need to
+    add them as described into [How to JSON encode custom Java classes](./doc/json-encode.md)
   - Fixed issue in SlackPublisher trying to send empty messages #41 (thanks @ak-coram)
   - Fixed issue in `simple-file-publisher` not handling files without parent dir #43 (thanks to @emlyn)
 

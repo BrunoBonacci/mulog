@@ -1,7 +1,7 @@
 (ns com.brunobonacci.mulog.publishers.cloudwatch.test-publisher
   (:require [com.brunobonacci.mulog :as μ]
             [com.brunobonacci.mulog.utils :as ut]
-            [cheshire.core :as json]
+            [com.brunobonacci.mulog.common.json :refer [from-json]]
             [cognitect.aws.client.api :as aws])
   (:import (java.util.concurrent TimeUnit)))
 
@@ -26,12 +26,11 @@
 
 
 (defn parse-events
-  [events]
-  (some-> events
+  [response]
+  (->> response
     (:events)
-    first
-    (:message)
-    (json/parse-string true)))
+    (map :message)
+    (map from-json)))
 
 
 
@@ -70,7 +69,5 @@
                                                            :logStreamName stream-exact-name#}})
              remove-lg#         (aws/invoke lc# {:op  :DeleteLogGroup
                                                  :request {:logGroupName lg-exact-name#}})]
-         (do
-           (println (operation-status "remove log-group" remove-lg#))
-           (if (seq (:events log-events#))
-             (parse-events log-events#) {}))))))
+         (println (operation-status "remove log-group" remove-lg#))
+         (parse-events log-events#)))))

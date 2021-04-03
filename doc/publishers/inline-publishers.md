@@ -1,4 +1,4 @@
-### Inline publishers
+## Inline publishers
 ![since v0.2.0](https://img.shields.io/badge/since-v0.2.0-brightgreen)
 
 Custom publisher can be loaded dynamically via the [Custom Publishers](./custom-publishers.md)

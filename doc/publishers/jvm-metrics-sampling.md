@@ -87,3 +87,10 @@ Here an example of the metrics sampled
 ```
 
 *NOTE: values and keys will change depending on JVM/GC settings.*
+
+Usage example:
+
+``` clojure
+(def publisher
+  (u/start-publisher! {:type :jvm-metrics}))
+```

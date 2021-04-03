@@ -8,7 +8,7 @@
 
 > From the Greek letter **μ**, **mu** *(Pronunciation: /mjuː/)* <br/>
 > The twelfth letter of the
-> Greek alphabet (Μ, μ), often used as a prefix for *mirco-* which is
+> Greek alphabet (Μ, μ), often used as a prefix for *micro-* which is
 > 10<sup>-6</sup> in the SI (System of Unis). Lowercase letter "`u`" is often
 > substituted for "`μ`" when the Greek character is not typographically
 > available.<p/>
@@ -28,7 +28,7 @@ Here some features and key design decisions that make ***μ/log*** special:
   * Ability to add contextual logging.
   * Adding publishers won't affect logging performances
   * Extremely easy to create *stateful* publishers for new systems
-  * Wide range of publishers available ([see available list](#table-of-contents))
+  * Wide range of publishers available ([see available list](./doc/publishers))
   * *Event logs are useful, but not as important as process flow
     (therefore preferable to drop events rather than crashing the
     process)*
@@ -76,6 +76,9 @@ event loggers, *not message loggers*, which are designed for dynamic
 distributed systems living in cloud and using centralized log
 aggregators. *So here is ***μ/log*** designed for this very purpose.*
 
+Watch my talk on ***μ/log*** at the *London Clojurians Meetup*:
+
+[![μ/log and the next 100 logging systems](https://img.youtube.com/vi/P1149dWnl3k/0.jpg)](https://www.youtube.com/watch?v=P1149dWnl3k)
 
 ## Table of contents
 
@@ -103,10 +106,10 @@ In order to use the library add the dependency to your `project.clj`
 
 ``` clojure
 ;; Leiningen project
-[com.brunobonacci/mulog "0.5.0"]
+[com.brunobonacci/mulog "0.6.5"]
 
 ;; deps.edn format
-{:deps { com.brunobonacci/mulog {:mvn/version "0.5.0"}}}
+{:deps { com.brunobonacci/mulog {:mvn/version "0.6.5"}}}
 ```
 
 Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog.svg)](https://clojars.org/com.brunobonacci/mulog)
@@ -322,7 +325,7 @@ Here some best practices to follow while logging events:
 ![mutrace](./doc/images/mutrace.png)
 
 ***μ/trace*** *(Pronounced: /mjuːtrace/)* is a micro distributed
-tracing library that with the focus on tracking data.
+tracing library with the focus on tracking data with custom attributes.
 
 ***μ/trace*** is a subsystem of ***μ/log*** and it relies heavily on
 it.  While the objective of ***μ/log*** is to record and publish a
@@ -545,11 +548,6 @@ to be done on supporting libraries and publishers for various systems,
 Here your help if welcome, you can have a look at the list of open issues
 marked as [help wanted](https://github.com/BrunoBonacci/mulog/labels/help%20wanted).
 
-For example:
-
-  - [ ] InfluxDB publisher
-  - [ ] Advanced File publisher
-
 *PRs are welcome `;-)`*
 
 To contribute:
@@ -558,6 +556,12 @@ To contribute:
   - drop a message to the issue so that I know someone else is working on it
   - follow the guidelines in the ticket
   - in doubt, just ask!
+
+## Need help?
+
+If you have questions or you need help please open an issue or post
+your questions into [Github Discussions](https://github.com/BrunoBonacci/mulog/discussions)
+board.
 
 ## Related projects
 
@@ -572,4 +576,4 @@ Here there are some other open-source projects which are related to ***μ/log***
 
 ## License
 
-Copyright © 2019-2020 Bruno Bonacci - Distributed under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0)
+Copyright © 2019-2021 Bruno Bonacci - Distributed under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0)

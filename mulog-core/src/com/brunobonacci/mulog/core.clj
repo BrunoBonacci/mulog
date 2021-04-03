@@ -140,39 +140,43 @@
 
 
 (defonce dispatch-publishers
-  (rb/recurring-task
-    PUBLISH-INTERVAL
-    (fn []
-      (let [pubs @publishers
-            ;;    group-by buffer
-            pubs (group-by :buffer (map second pubs))]
+  (delay ;; Delay the task initialisation at runtime (GraalVM)
+    (rb/recurring-task
+      PUBLISH-INTERVAL
+      (fn []
+        (let [pubs @publishers
+              ;;    group-by buffer
+              pubs (group-by :buffer (map second pubs))]
 
-        (doseq [[buf dests] pubs]   ;; for every buffer
-          (let [items (rb/items @buf)
-                offset (-> items last first)]
-            (when (seq items)
-              (doseq [{pub :publisher} dests]  ;; and each destination
-                ;; send to the agent-buffer
-                (send (p/agent-buffer pub)
-                  (partial reduce rb/enqueue)
-                  (->> items
-                    (map second)
-                    (map (partial apply merge-pairs)))))
-              ;; remove items up to the offset
-              (swap! buf rb/dequeue offset))))))
-    ;; this shouldn't happen,
-    (fn [exception]
-      (log* *default-logger* :mulog/internal-error
-        (list ;; pairs
-          :mulog/namespace (str *ns*)
-          :mulog/action    :event-dispatch
-          :mulog/origin    :mulog/core
-          :exception       exception)))))
+          (doseq [[buf dests] pubs]   ;; for every buffer
+            (let [items (rb/items @buf)
+                  offset (-> items last first)]
+              (when (seq items)
+                (doseq [{pub :publisher} dests]  ;; and each destination
+                  ;; send to the agent-buffer
+                  (send (p/agent-buffer pub)
+                    (partial reduce rb/enqueue)
+                    (->> items
+                      (map second)
+                      (map (partial apply merge-pairs)))))
+                ;; remove items up to the offset
+                (swap! buf rb/dequeue offset))))))
+      ;; this shouldn't happen,
+      (fn [exception]
+        (log* *default-logger* :mulog/internal-error
+          (list ;; pairs
+            :mulog/namespace (str *ns*)
+            :mulog/action    :event-dispatch
+            :mulog/origin    :mulog/core
+            :exception       exception))))))
 
 
 
 (defn start-publisher!
   [buffer config]
+  ;; force the initialisation on the first start-publisher! call
+  (deref dispatch-publishers)
+  ;; now register and start the publisher
   (let [^PPublisher publisher (p/publisher-factory config)
         period (p/publish-delay publisher)
         period (max (or period PUBLISH-INTERVAL) PUBLISH-INTERVAL)

@@ -9,18 +9,19 @@
 
   :scm {:name "git" :url "https://github.com/BrunoBonacci/mulog.git"}
 
-  :dependencies [[org.clojure/clojure "1.10.1"]
+  :dependencies [[org.clojure/clojure "1.10.3"]
                  [com.brunobonacci/mulog #=(ver)]
                  [com.brunobonacci/mulog-json #=(ver)]
-                 [com.cognitect.aws/api "0.8.474"]
-                 [com.cognitect.aws/endpoints "1.1.11.842"]
-                 [com.cognitect.aws/logs "798.2.672.0"]]
+
+                 [com.cognitect.aws/api "0.8.505"]
+                 [com.cognitect.aws/endpoints "1.1.11.976"]
+                 [com.cognitect.aws/logs "809.2.784.0"]]
 
   :global-vars {*warn-on-reflection* true}
 
   :jvm-opts ["-server"]
 
-  :profiles {:dev {:dependencies [[midje "1.9.9"]
+  :profiles {:dev {:dependencies [[midje "1.9.10"]
                                   [org.clojure/test.check "1.1.0"]
                                   [criterium "0.4.6"]
                                   [org.slf4j/slf4j-log4j12 "2.0.0-alpha1"]]

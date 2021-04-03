@@ -7,13 +7,22 @@
 
 
 
+(defn try-parse-long
+  [^String value]
+  (try
+    (Long/parseLong value)
+    (catch Exception _
+      0)))
+
+
+
 (defn java-version
   "It returns the current Java major version as a number"
   []
-  (as->  (System/getProperty "java.version") $
-    (str/split $ #"\.")
+  (as->  (System/getProperty "java.specification.version") $
+    (str/split $ #"[^\d]")
     (if (= "1" (first $)) (second $) (first $))
-    (Integer/parseInt $)))
+    (try-parse-long $)))
 
 
 
@@ -27,7 +36,7 @@
        (.getName)
        (str/split #"@")
        (first)
-       (Long/parseLong))))
+       (try-parse-long))))
 
 
 

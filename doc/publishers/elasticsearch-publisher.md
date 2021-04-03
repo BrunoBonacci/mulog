@@ -1,4 +1,4 @@
-### Elasticsearch publisher
+## Elasticsearch publisher
 ![since v0.1.0](https://img.shields.io/badge/since-v0.1.0-brightgreen)
 
 In order to use the library add the dependency to your `project.clj`
@@ -12,7 +12,7 @@ In order to use the library add the dependency to your `project.clj`
 ```
 Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog-elasticsearch.svg)](https://clojars.org/com.brunobonacci/mulog-elasticsearch)
 
-The events must be serializeable in JSON format ([Cheshire](https://github.com/dakrone/cheshire))
+The events must be serializeable in JSON format (see [How to JSON encode custom Java classes](./doc/json-encode.md) for more info.)
 
 The available configuration options:
 
@@ -36,8 +36,18 @@ The available configuration options:
  ;; with the interval specified.
  :publish-delay 5000
 
+ ;; Choose an indexing strategy:
+ ;; between `:index-pattern` or `:data-stream`, the default is `:index-pattern`
+
  ;; The index pattern to use for the events
- :index-pattern "'mulog-'yyyy.MM.dd"
+ ;; :index-pattern "'mulog-'yyyy.MM.dd"
+
+ ;; data streams are available since Elasticsearch 7.9
+ ;; :data-stream   "mulog-stream"
+
+ ;; extra http options to pass to the HTTP client
+ :http-opts {}
+
 
  ;; Whether or not to change the attribute names
  ;; to facilitate queries and avoid type clashing

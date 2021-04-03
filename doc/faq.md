@@ -10,6 +10,7 @@ Here a summary of frequently asked questions.
     - [Q: Can I use ***μ/log*** as the sole logging library and send my traditional logging to it?](#q-can-i-use-μlog-as-the-sole-logging-library-and-send-my-traditional-logging-to-it)
     - [Q: How do I get ***μ/log*** to send the `:mulog/duration` in milliseconds?](#q-how-do-i-get-μlog-to-send-the-mulogduration-in-milliseconds)
     - [Q: Why do I get `No reader function for tag mulog/flake`?](#q-why-do-i-get-no-reader-function-for-tag-mulogflake)
+    - [Q: How do I flush the logs currently in the buffer?](#q-how-do-i-flush-the-logs-currently-in-the-buffer)
 
 <!-- markdown-toc end -->
 
@@ -262,3 +263,61 @@ com.brunobonacci.mulog.core.Flake
 (type #mulog/flake "4XQ_3fpCt2-dxDHzqGNjJOub2qZGBmhR")
 clojure.lang.TaggedLiteral
 ```
+
+
+## Q: How do I flush the logs currently in the buffer?
+
+*When you stop a publisher it automatically attempt to flush the buffer.*
+
+When you start a publisher it will return a function with no arguments
+which when invoked it will stop the given publisher:
+
+for example
+
+``` clojure
+;; start publisher
+(def pub (μ/start-publisher! {:type :console}))
+
+;; stop publisher and flush the buffer.
+(pub)
+```
+
+When you call the /stopping function/, ***μ/log*** will call one last
+time the `publish` function and then the `close` function if your
+publisher is `java.io.Closeable` (see [source code](https://github.com/BrunoBonacci/mulog/blob/53c531866401f29652c098a3a538133518c187c9/mulog-core/src/com/brunobonacci/mulog/core.clj#L210-L224)).
+
+Therefore to flush the events in the publisher inbox you only need to
+call the stop function.
+
+The only caveat is that if you log something right before closing the
+publisher you might have the situation that the event hasn't been
+dispatched to the publisher yet (see [internals](https://cljdoc.org/d/com.brunobonacci/mulog/0.5.0/doc/%CE%BC-log-internals))
+
+``` clojure
+;; start publisher
+(def pub (μ/start-publisher! {:type :console}))
+
+;; THIS EVENT MIGHT NOT MAKE IT to the publisher in time
+(μ/log ::some-event)
+;; stop publisher and flush the buffer.
+(pub)
+```
+
+If you have such a scenario, I would suggest adding a small wait
+before stopping to allow the dispatcher to deliver the events to the
+publisher.
+
+``` clojure
+;; start publisher
+(def pub (μ/start-publisher! {:type :console}))
+
+(μ/log ::some-event)
+
+;; stop publisher
+(Thread/sleep 250) ;; Wait for dispatcher
+(pub)
+```
+
+This small wait should suffice to get all the events into their
+destination systems given that the `publish` function succeeds and
+completes before the application termination.
