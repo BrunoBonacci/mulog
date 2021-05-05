@@ -4,20 +4,19 @@
             [com.brunobonacci.mulog.utils :as ut]
             [com.brunobonacci.mulog.common.json :as json]
             [clj-http.client :as http]
-            [clj-time.format :as tf]
-            [clj-time.coerce :as tc]
-            [clojure.string :as str]))
+            [clojure.string :as str])
+  (:import [java.time Instant ZoneId]
+           [java.time.format DateTimeFormatter]))
 
 
+
+(def iso-8601-fmt
+  (-> (DateTimeFormatter/ofPattern "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+      (.withZone (ZoneId/of "UTC"))))
 
 (defn- unix-ms-to-iso8601
   [unix-ms]
-  (let [iso-8601-fmt (tf/formatters :date-time)]
-    (->> unix-ms
-      (tc/from-long)
-      (tf/unparse iso-8601-fmt))))
-
-
+  (.format iso-8601-fmt (Instant/ofEpochMilli unix-ms)))
 
 (defn- default-render-message
   "Timestamp and event name with the log content in a code block"

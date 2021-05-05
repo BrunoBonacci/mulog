@@ -13,7 +13,6 @@
                  [com.brunobonacci/mulog #=(ver)]
                  [com.brunobonacci/mulog-json #=(ver)]
                  [clj-http "3.12.1"]
-                 [clj-time "0.15.2"]
 
                  [com.cognitect.aws/api "0.8.505"]
                  [com.cognitect.aws/endpoints "1.1.11.976"]

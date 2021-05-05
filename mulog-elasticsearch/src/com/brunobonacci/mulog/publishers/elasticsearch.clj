@@ -6,23 +6,24 @@
             [com.brunobonacci.mulog.common.json :as json]
             [clj-http.client :as http]
             [clojure.string :as str]
-            [clj-time.format :as tf]
-            [clj-time.coerce :as tc]
-            [clojure.walk :as w]))
+            [clojure.walk :as w])
+  (:import [java.time Instant ZoneId]
+           [java.time.format DateTimeFormatter]))
 
 
+(defn utc-formatter [format]
+  (-> (DateTimeFormatter/ofPattern format)
+      (.withZone (ZoneId/of "UTC"))))
 
 (def date-time-formatter
   "the ISO8601 date format with milliseconds"
-  (tf/formatters :date-time))
+  (utc-formatter "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"))
 
 
 
 (defn format-date-from-long
   [timestamp]
-  (->> timestamp
-    (tc/from-long)
-    (tf/unparse date-time-formatter)))
+  (.format rfc3339-formatter (Instant/ofEpochMilli timestamp)))
 
 
 
@@ -51,8 +52,8 @@
 
 
 (defmethod index-name :index-pattern [[_ v]]
-  (let [fmt (tf/formatter v)]
-    {:op :index :index* (fn [ts] (tf/unparse fmt (tc/from-long ts)))}))
+  (let [fmt (utc-formatter v)]
+    {:op :index :index* (fn [ts] (.format fmt (Instant/ofEpochMilli ts)))}))
 
 
 
