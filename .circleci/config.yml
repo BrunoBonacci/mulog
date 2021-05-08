@@ -14,9 +14,9 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Dependencies list
-        command: |
-          cat $(find . -name project.clj | sort) > /tmp/all-projects.clj
+          name: Dependencies list
+          command: |
+            cat $(find . -name project.clj | sort) > /tmp/all-projects.clj
 
       - restore_cache:
           keys:
