@@ -156,9 +156,8 @@
       (ex-info
         (str "Unable to load appropriate publisher."
           " Please ensure you have the following dependency "
-          "[com.brunobonacci/mulog-"
-          (some-> info :config :type name) " \"x.y.z\"]"
-          " in your project.clj")
+          "[" (some-> info :jar-name) " \"x.y.z\"]"
+          " in your project.clj or deps.edn")
         info cause))
 
     :init
@@ -176,12 +175,12 @@
 
 
 (defn- load-dynamic-publisher
-  [publisher-name config]
+  [publisher-name jar-name config]
   (let [;; load publisher factory function
         publisher* (try
                      (load-function-from-name publisher-name)
                      (catch Exception x
-                       (loading-error :loading {:config config} x)))
+                       (loading-error :loading {:jar-name jar-name :config config} x)))
         ;; initialize publisher
         publisher  (try (publisher* config)
                         (catch Exception x
@@ -213,7 +212,7 @@
 
 (defmethod publisher-factory :custom
   [{:keys [fqn-function] :as cfg}]
-  (load-dynamic-publisher fqn-function cfg))
+  (load-dynamic-publisher fqn-function "your-publisher-jar" cfg))
 
 
 
@@ -238,6 +237,7 @@
   [config]
   (load-dynamic-publisher
     "com.brunobonacci.mulog.publishers.console-json/json-console-publisher"
+    "com.brunobonacci/mulog-adv-console"
     config))
 
 
@@ -252,6 +252,7 @@
   [config]
   (load-dynamic-publisher
     "com.brunobonacci.mulog.publishers.elasticsearch/elasticsearch-publisher"
+    "com.brunobonacci/mulog-elasticsearch"
     config))
 
 
@@ -260,6 +261,7 @@
   [config]
   (load-dynamic-publisher
     "com.brunobonacci.mulog.publishers.jvm-metrics/jvm-metrics-publisher"
+    "com.brunobonacci/mulog-jvm-metrics"
     config))
 
 
@@ -268,6 +270,7 @@
   [config]
   (load-dynamic-publisher
     "com.brunobonacci.mulog.publishers.filesystem-metrics/filesystem-metrics-publisher"
+    "com.brunobonacci/mulog-filesystem-metrics"
     config))
 
 
@@ -276,6 +279,7 @@
   [config]
   (load-dynamic-publisher
     "com.brunobonacci.mulog.publishers.kafka/kafka-publisher"
+    "com.brunobonacci/mulog-kafka"
     config))
 
 
@@ -284,6 +288,7 @@
   [config]
   (load-dynamic-publisher
     "com.brunobonacci.mulog.publishers.zipkin/zipkin-publisher"
+    "com.brunobonacci/mulog-zipkin"
     config))
 
 
@@ -292,6 +297,7 @@
   [config]
   (load-dynamic-publisher
     "com.brunobonacci.mulog.publishers.kinesis/kinesis-publisher"
+    "com.brunobonacci/mulog-kinesis"
     config))
 
 
@@ -300,6 +306,7 @@
   [config]
   (load-dynamic-publisher
     "com.brunobonacci.mulog.publishers.cloudwatch/cloudwatch-publisher"
+    "com.brunobonacci/mulog-cloudwatch"
     config))
 
 
@@ -308,6 +315,7 @@
   [config]
   (load-dynamic-publisher
     "com.brunobonacci.mulog.publishers.slack/slack-publisher"
+    "com.brunobonacci/mulog-slack"
     config))
 
 
@@ -316,6 +324,7 @@
   [config]
   (load-dynamic-publisher
     "com.brunobonacci.mulog.publishers.prometheus/prometheus-publisher"
+    "com.brunobonacci/mulog-prometheus"
     config))
 
 
@@ -324,4 +333,5 @@
   [config]
   (load-dynamic-publisher
     "com.brunobonacci.mulog.publishers.mbean-sampler/mbean-sampler-publisher"
+    "com.brunobonacci/mulog-mbean-sampler"
     config))
