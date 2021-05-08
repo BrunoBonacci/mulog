@@ -1,4 +1,12 @@
-version: 2
+version: 2.1
+variables:
+  multi_hash_args:
+    in-files: file1.txt file2.yml
+    out-file: /tmp/infiles_checksum
+    cache-prefix: dep-v1
+  cache_name: 'maven-repo-v1-{{ .Branch }}-{{ checksum "/tmp/infiles_checksum" }}'
+orbs:
+  multi_file_hash_cache: cobli/multi-file-hash-cache@0.0.4
 jobs:
   build:
     machine:
@@ -13,12 +21,10 @@ jobs:
 
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            # when lock file changes, use increasingly general patterns to restore cache
-            #- maven-repo-v1-{{ .Branch }}-{{ checksum "pom.xml" }}
-            - maven-repo-v1-{{ .Branch }}-
-            - maven-repo-v1-
+      - multi_file_hash_cache/restore:
+          in-files: ./mulog-kinesis/project.clj ./mulog-filesystem-metrics/project.clj ./mulog-elasticsearch/project.clj ./mulog-cloudwatch/project.clj ./mulog-json/project.clj ./mulog-zipkin/project.clj ./mulog-mbean-sampler/project.clj ./examples/usage/project.clj ./examples/roads-disruptions/project.clj ./mulog-slack/project.clj ./mulog-jvm-metrics/project.clj ./mulog-kafka/project.clj ./mulog-adv-console/project.clj ./mulog-core/project.clj ./mulog-prometheus/project.clj
+          out-file: /tmp/infiles_checksum
+          cache-prefix: maven-repo-v1
 
       - run: make all
 
@@ -28,5 +34,5 @@ jobs:
       - save_cache:
           paths:
             - ~/.m2
-          ##key: maven-repo-v1-{{ .Branch }}-{{ checksum "pom.xml" }}
+          key: maven-repo-v1-{{ .Branch }}-{{ checksum "/tmp/infiles_checksum" }}
           key: maven-repo-v1-{{ .Branch }}-
