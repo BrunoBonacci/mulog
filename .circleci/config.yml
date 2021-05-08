@@ -20,7 +20,7 @@ jobs:
             - maven-repo-v1-{{ .Branch }}-
             - maven-repo-v1-
 
-      - run: make deps
+      - run: make all
 
       # don't cache local artifacts
       - run: rm -fr ~/.m2/repository/com/brunobonacci/
@@ -30,5 +30,3 @@ jobs:
             - ~/.m2
           ##key: maven-repo-v1-{{ .Branch }}-{{ checksum "pom.xml" }}
           key: maven-repo-v1-{{ .Branch }}-
-
-      - run: make all
