@@ -13,6 +13,11 @@ jobs:
 
     steps:
       - checkout
+      - run:
+        name: Dependencies list
+        command: |
+          cat $(find . -name project.clj | sort) > /tmp/all-projects.clj
+
       - restore_cache:
           keys:
             # when lock file changes, use increasingly general patterns to restore cache
@@ -28,5 +33,4 @@ jobs:
       - save_cache:
           paths:
             - ~/.m2
-          ##key: maven-repo-v1-{{ .Branch }}-{{ checksum "pom.xml" }}
-          key: maven-repo-v1-{{ .Branch }}-
+          key: maven-repo-v1-{{ .Branch }}-{{ checksum "/tmp/all-projects.clj" }}
