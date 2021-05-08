@@ -35,4 +35,3 @@ jobs:
           paths:
             - ~/.m2
           key: maven-repo-v1-{{ .Branch }}-{{ checksum "/tmp/infiles_checksum" }}
-          key: maven-repo-v1-{{ .Branch }}-
