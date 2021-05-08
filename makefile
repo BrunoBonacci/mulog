@@ -244,6 +244,27 @@ deploy:
 
 
 #
+# Download dependencies from Clojars and Maven
+#
+.PHONY: deps
+deps:
+- @printf "#\n# Downloading Dependencies \n#\n"
+- (cd mulog-core;                 lein deps)
+- (cd mulog-json;                 lein deps)
+- (cd mulog-elasticsearch;        lein deps)
+- (cd mulog-jvm-metrics;          lein deps)
+- (cd mulog-filesystem-metrics;   lein deps)
+- (cd mulog-mbean-sampler;        lein deps)
+- (cd mulog-adv-console;          lein deps)
+- (cd mulog-kafka;                lein deps)
+- (cd mulog-kinesis;              lein deps)
+- (cd mulog-cloudwatch;           lein deps)
+- (cd mulog-slack;                lein deps)
+- (cd mulog-zipkin;               lein deps)
+- (cd mulog-prometheus;           lein deps)
+
+
+#
 # update dependencies in project.clj
 #
 .PHONY: ancient
