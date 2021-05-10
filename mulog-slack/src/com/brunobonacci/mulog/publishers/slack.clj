@@ -10,13 +10,13 @@
 
 
 
-(def iso-8601-fmt
+(def ^:private iso-8601-fmt
   (-> (DateTimeFormatter/ofPattern "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
       (.withZone (ZoneId/of "UTC"))))
 
 (defn- unix-ms-to-iso8601
   [unix-ms]
-  (.format iso-8601-fmt (Instant/ofEpochMilli unix-ms)))
+  (.format ^DateTimeFormatter iso-8601-fmt (Instant/ofEpochMilli unix-ms)))
 
 (defn- default-render-message
   "Timestamp and event name with the log content in a code block"

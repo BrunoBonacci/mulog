@@ -11,19 +11,21 @@
            [java.time.format DateTimeFormatter]))
 
 
-(defn utc-formatter [format]
+(defn- utc-formatter [format]
   (-> (DateTimeFormatter/ofPattern format)
       (.withZone (ZoneId/of "UTC"))))
 
-(def date-time-formatter
+(def ^:private date-time-formatter
   "the ISO8601 date format with milliseconds"
   (utc-formatter "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"))
 
+(defn- with-format [^DateTimeFormatter formatter date-time]
+  (.format formatter date-time))
 
 
-(defn format-date-from-long
+(defn- format-date-from-long
   [timestamp]
-  (.format rfc3339-formatter (Instant/ofEpochMilli timestamp)))
+  (with-format date-time-formatter (Instant/ofEpochMilli timestamp)))
 
 
 
@@ -53,7 +55,7 @@
 
 (defmethod index-name :index-pattern [[_ v]]
   (let [fmt (utc-formatter v)]
-    {:op :index :index* (fn [ts] (.format fmt (Instant/ofEpochMilli ts)))}))
+    {:op :index :index* (fn [ts] (with-format fmt (Instant/ofEpochMilli ts)))}))
 
 
 
