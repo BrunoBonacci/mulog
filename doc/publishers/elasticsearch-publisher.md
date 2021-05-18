@@ -40,6 +40,8 @@ The available configuration options:
  ;; between `:index-pattern` or `:data-stream`, the default is `:index-pattern`
 
  ;; The index pattern to use for the events
+ ;; The pattern uses the Java DateTimeFormatter format:
+ ;; see: https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/format/DateTimeFormatter.html
  ;; :index-pattern "'mulog-'yyyy.MM.dd"
 
  ;; data streams are available since Elasticsearch 7.9
@@ -62,6 +64,10 @@ The available configuration options:
  }
 
 ```
+
+For more information about the index patterns check the
+[DateTimeFormatter](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/format/DateTimeFormatter.html)
+documentation.
 
 How to use it:
 

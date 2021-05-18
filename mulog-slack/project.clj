@@ -12,8 +12,7 @@
   :dependencies [[org.clojure/clojure "1.10.3"]
                  [com.brunobonacci/mulog #=(ver)]
                  [com.brunobonacci/mulog-json #=(ver)]
-                 [clj-http "3.12.1"]
-                 [clj-time "0.15.2"]]
+                 [clj-http "3.12.1"]]
 
   :global-vars {*warn-on-reflection* true}
 

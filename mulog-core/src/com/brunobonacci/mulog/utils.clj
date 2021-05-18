@@ -208,3 +208,10 @@
     (if (every? map? maps)
       (apply merge-with deep-merge maps)
       (last maps))))
+
+
+
+(defn iso-datetime-from-millis
+  "Returns a ISO 8601 formatted string of the given UTC timestamp in milliseconds"
+  [^long millis]
+  (.format java.time.format.DateTimeFormatter/ISO_INSTANT (java.time.Instant/ofEpochMilli millis)))

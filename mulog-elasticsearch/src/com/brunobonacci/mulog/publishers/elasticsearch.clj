@@ -6,23 +6,20 @@
             [com.brunobonacci.mulog.common.json :as json]
             [clj-http.client :as http]
             [clojure.string :as str]
-            [clj-time.format :as tf]
-            [clj-time.coerce :as tc]
-            [clojure.walk :as w]))
+            [clojure.walk :as w])
+  (:import [java.time Instant ZoneId]
+           [java.time.format DateTimeFormatter]))
 
 
 
-(def date-time-formatter
-  "the ISO8601 date format with milliseconds"
-  (tf/formatters :date-time))
-
-
-
-(defn format-date-from-long
-  [timestamp]
-  (->> timestamp
-    (tc/from-long)
-    (tf/unparse date-time-formatter)))
+(defn- utc-formatter
+  "Given a pattern returns a function which takes a timestamp in milliseconds
+   and returns a formatted string with the given pattern in UTC time."
+  [pattern]
+  (let [formatter (-> (DateTimeFormatter/ofPattern pattern)
+                    (.withZone (ZoneId/of "UTC")))]
+    (fn [^long timestamp]
+      (.format formatter (Instant/ofEpochMilli timestamp)))))
 
 
 
@@ -51,8 +48,7 @@
 
 
 (defmethod index-name :index-pattern [[_ v]]
-  (let [fmt (tf/formatter v)]
-    {:op :index :index* (fn [ts] (tf/unparse fmt (tc/from-long ts)))}))
+  {:op :index :index* (utc-formatter v)})
 
 
 
@@ -101,7 +97,7 @@
                    (-> r
                      (mangler)
                      (dissoc :mulog/timestamp)
-                     (assoc "@timestamp" (format-date-from-long timestamp))
+                     (assoc "@timestamp" (ut/iso-datetime-from-millis timestamp))
                      (ut/remove-nils)
                      (json/to-json)
                      (#(str % \newline)))]))))))
@@ -221,7 +217,10 @@
    :publish-delay 5000
    :name-mangling true
    ;; Choose between `:index-pattern` or `:data-stream`, the default is `:index-pattern`
+   ;; The pattern uses the Java DateTimeFormatter format:
+   ;; see: https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/format/DateTimeFormatter.html
    ;; :index-pattern "'mulog-'yyyy.MM.dd"
+   ;;
    ;; data streams are available since Elasticsearch 7.9
    ;; :data-stream   "mulog-stream"
    ;; extra http options
