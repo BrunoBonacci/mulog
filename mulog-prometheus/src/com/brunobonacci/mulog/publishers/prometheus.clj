@@ -204,7 +204,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (deftype PrometheusPublisher
-         [config buffer registry transform push-ts]
+         [config buffer prom-registry transform push-ts]
 
   com.brunobonacci.mulog.publisher.PPublisher
   (agent-buffer [_]
@@ -223,13 +223,13 @@
 
   com.brunobonacci.mulog.publishers.prometheus.ReadRegistry
   (registry [_]
-    (registry registry))
+    (registry prom-registry))
 
   (write-out [_ out]
-    (write-out registry out))
+    (write-out prom-registry out))
 
   (write-str [_]
-    (write-str registry))
+    (write-str prom-registry))
 
   java.io.Closeable
   (close [_]))
