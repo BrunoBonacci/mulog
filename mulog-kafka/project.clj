@@ -22,7 +22,17 @@
   :profiles {:dev {:dependencies [[midje "1.9.10"]
                                   [org.clojure/test.check "1.1.0"]
                                   [criterium "0.4.6"]
-                                  [org.slf4j/slf4j-log4j12 "2.0.0-alpha1"]]
+                                  [org.slf4j/slf4j-log4j12 "2.0.0-alpha1"]
+
+                                  ; slf4j -> mulog
+                                  [nonseldiha/slf4j-mulog "0.2.1"]
+
+                                  ; Clojure Kafka client
+                                  [com.appsflyer/ketu "0.6.0"]
+
+                                  ; Kafka docker-in-docker
+                                  [org.testcontainers/kafka "1.15.3"]
+                                  [clj-test-containers "0.4.0"]]
                    :resource-paths ["dev-resources"]
                    :plugins      [[lein-midje "3.2.2"]]}}
 
