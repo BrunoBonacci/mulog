@@ -5,6 +5,7 @@
   - Dropped dependency to clj-time (deprecated) in favour of java.time (thanks @frankitox)
   - Bumped jasonista to 0.3.3 with jackson 2.12.13
   - Fixed name shadowing issue with registry in Prometheus publisher (#68) (thanks @piotr-yuxuan)
+  - Added integration tests for Kafka publisher (#71) (thanks @evg-tso)
 
 
 ## v0.7.1 - (2021-03-23)
