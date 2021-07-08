@@ -18,16 +18,20 @@ and dispatched to third-party systems.
 
 ``` clojure
 ;; Configuration options
-{;; Interval in milliseconds between two samples (Default: 60s)
+{:type :mbean
+ ;; Interval in milliseconds between two samples (Default: 60s)
  ;; :sampling-interval 60000
 
  ;; list of MBean patterns to sample
  :mbeans-patterns []  ;; REQUIRED
 
- ;; Transformation to apply to the sample before publishing
- ;; this is applied to the `:mbean`
- ;; :transform identity
- }
+ ;; Transformation to apply to the samples before publishing.
+ ;;
+ ;; It is a function that takes a sequence of samples and
+ ;; returns and updated sequence of samples:
+ ;; `transform-samples -> sample-seq -> sample-seq`
+ :transform-samples identity
+}
 ```
 
 An ObjectName can be written as a String with the following elements in order:

@@ -5,7 +5,8 @@
             [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.utils :as ut]
             [com.brunobonacci.mulog.flakes :refer [flake]]
-            [com.brunobonacci.mulog.core :as core]))
+            [com.brunobonacci.mulog.core :as core]
+            [clojure.walk :as walk]))
 
 
 
@@ -225,12 +226,45 @@
 
   (u/log ::hello :to "World!")
 
-  (u/start-publisher! {:type :console})
+  (u/start-publisher! {:type :console :pretty? true})
 
   (u/log ::hello :to "World!" :v (rand-int 1000))
   (u/log ::hello :to "World!" :v "ciao")
   (def x (u/start-publisher! {:type :jvm-metrics
-                              :sampling-interval 3000}))
+                              :sampling-interval 3000
+                              ;;:transform-samples (partial map walk/stringify-keys)
+                              }))
+
+  (x)
+
+  )
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;            ----==| F I L E S Y S T E M   M E T R I C S |==----             ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(comment
+
+  (u/log ::hello :to "World!")
+
+  (u/start-publisher! {:type :console :pretty? true})
+
+  (u/log ::hello :to "World!" :v (rand-int 1000))
+
+  (def x (u/start-publisher!
+           {:type :filesystem-metrics
+            ;; the interval in millis between two samples (default: 60s)
+            :sampling-interval 5000
+            ;; transform metrics (e.g. filter only volumes over 1 GB)
+            ;; (default: `nil` leaves metrics unchanged)
+            ;;:transform (partial map walk/stringify-keys)
+            ;;:transform-samples (partial map walk/stringify-keys)
+            }))
 
   (x)
 
@@ -254,8 +288,11 @@
 
   (def x (u/start-publisher!
            {:type :mbean
-            :mbeans-patterns ["java.lang:type=Memory"]
-            :sampling-interval 10000}))
+            :mbeans-patterns ["java.lang:type=Memory" "java.nio:*"]
+            :sampling-interval 5000
+            ;;:transform walk/stringify-keys
+            ;;:transform-samples (partial map walk/stringify-keys)
+            }))
 
   (x)
 

@@ -65,10 +65,10 @@
 
 
 
-(defn sample-mbeans [mbeans-patterns transform]
+(defn sample-mbeans [mbeans-patterns transform-samples]
   (doseq [pattern mbeans-patterns
-          mbean   (mbeans-sample pattern)]
-    (u/log :mulog/mbean-sampled :search-pattern pattern :mbean (transform mbean))))
+          mbean   (transform-samples (mbeans-sample pattern))]
+    (u/log :mulog/mbean-sampled :search-pattern pattern :mbean mbean)))
 
 
 
@@ -90,7 +90,7 @@
 
   (publish [_ buffer]
     ;; sampling MBeans
-    (sample-mbeans (:mbeans-patterns config) (:transform config))))
+    (sample-mbeans (:mbeans-patterns config) (:transform-samples config))))
 
 
 
@@ -101,23 +101,32 @@
    ;; list of MBean patterns to sample
    :mbeans-patterns []
 
-   ;; Transformation to apply to the sample before publishing
-   ;; this is applied to the `:mbean`
-   :transform identity})
+   ;; Transformation to apply to the samples before publishing.
+   ;;
+   ;; It is a function that takes a sequence of samples and
+   ;; returns and updated sequence of samples:
+   ;; `transform-samples -> sample-seq -> sample-seq`
+   :transform-samples identity})
 
 
 
 (defn- apply-defaults
-  [config]
+  [{:keys [transform-samples transform] :as config}]
   (as-> config $
     (merge DEFAULT-CONFIG $)
     (update $ :sampling-interval #(max (or % 1000) 1000))
-    (update $ :transform #(or % identity))))
+    (assoc  $ :transform-samples (or transform-samples (partial map transform) identity))))
 
 
 
 (defn mbean-sampler-publisher
-  [config]
+  [{:keys [transform] :as config}]
+  (when transform
+    (println
+      "[μ/log] DEPRECATION WARNING: on `:mbean` sampler,"
+      "please update config key `:transform` to `:transform-samples`")
+    (println
+      "[μ/log] DEPRECATION WARNING: for more info: https://github.com/BrunoBonacci/mulog/issues/75"))
   ;; create the metrics publisher
   (MBeanSamplerPublisher. (apply-defaults config) (rb/agent-buffer 100)))
 
