@@ -68,8 +68,8 @@
 
 
 (defn publish-fs-metrics
-  [^FileSystem fs transform]
-  (doseq [metrics (->> fs .getFileStores (map capture-fs-metrics) transform)]
+  [^FileSystem fs transform-samples]
+  (doseq [metrics (->> fs .getFileStores (map capture-fs-metrics) transform-samples)]
     (u/log :mulog/filesystem-metrics-sampled
       :filesystem-metrics metrics)))
 
@@ -92,21 +92,34 @@
 
   (publish [_ buffer]
     ;; sampling the file system metrics
-    (publish-fs-metrics (FileSystems/getDefault) (or (:transform config) identity))))
+    (publish-fs-metrics (FileSystems/getDefault) (:transform-samples config))))
 
 
 
 (def ^:const DEFAULT-CONFIG
   {;; Interval in milliseconds between two samples
    :sampling-interval 60000
-   :transform nil})
+
+   ;; Transformation to apply to the samples before publishing.
+   ;;
+   ;; It is a function that takes a sequence of samples and
+   ;; returns and updated sequence of samples:
+   ;; `transform-samples -> sample-seq -> sample-seq`
+   :transform-samples identity})
 
 
 
 (defn filesystem-metrics-publisher
-  [{:keys [sampling-interval] :as config}]
+  [{:keys [sampling-interval transform-samples transform] :as config}]
+  (when transform
+    (println
+      "[μ/log] DEPRECATION WARNING: on `:filesystem-metrics` sampler,"
+      "please update config key `:transform` to `:transform-samples`")
+    (println
+      "[μ/log] DEPRECATION WARNING: for more info: https://github.com/BrunoBonacci/mulog/issues/74"))
   (let [config (as-> config $
                  (merge DEFAULT-CONFIG $)
+                 (assoc $ :transform-samples (or transform-samples transform identity))
                  (assoc $ :sampling-interval
                    (max sampling-interval 1000)))]
     ;; create the metrics publisher

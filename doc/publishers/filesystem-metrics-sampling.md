@@ -16,15 +16,28 @@ publisher.
 
 
 ``` clojure
-(μ/start-publisher!
-  {:type :filesystem-metrics
-   ;; the interval in millis between two samples (default: 60s)
-   :sampling-interval 60000
-   ;; transform metrics (e.g. filter only volumes over 1 GB)
-   ;; (default: `nil` leaves metrics unchanged)
-   :transform
-   (partial filter #(> (:total-bytes %) 1e9))})
+;; configuration options
+{:type :filesystem-metrics
+
+ ;; the interval in millis between two samples (default: 60s)
+ :sampling-interval 60000
+
+ ;; Transformation to apply to the samples before publishing.
+ ;;
+ ;; It is a function that takes a sequence of samples and
+ ;; returns and updated sequence of samples:
+ ;; `transform-samples -> sample-seq -> sample-seq`
+ ;; (e.g. filter only volumes over 1 GB)
+ :transform-samples
+ (partial filter #(> (:total-bytes %) 1e9))}
 ```
+
+Sample usage:
+
+``` clojure
+(μ/start-publisher! {:type :filesystem-metrics})
+```
+
 
 Here an example of the metrics sampled for one filesystem
 
