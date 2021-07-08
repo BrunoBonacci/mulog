@@ -15,19 +15,33 @@ collector, threads, etc** using a special publisher.
 
 
 ``` clojure
-(μ/start-publisher!
-  {:type :jvm-metrics
-   ;; the interval in millis between two samples (default: 60s)
-   :sampling-interval 60000
+;; configuration options
+{:type :jvm-metrics
+ ;; the interval in millis between two samples (default: 60s)
+ :sampling-interval 60000
 
-   ;; which metrics are you interested in sampling
-   ;; (default: `{:all true}`)
-   :jvm-metrics
-   {:memory true
-    :gc true
-    :threads true
-    :jvm-attrs true}})
+ ;; which metrics are you interested in sampling
+ ;; (default: `{:all true}`)
+ :jvm-metrics
+ {:memory true
+  :gc true
+  :threads true
+  :jvm-attrs true}
+
+ ;; Transformation to apply to the samples before publishing.
+ ;;
+ ;; It is a function that takes a sequence of samples and
+ ;; returns and updated sequence of samples:
+ ;; `transform-samples -> sample-seq -> sample-seq`
+ :transform-samples identity}
 ```
+
+Usage example:
+
+``` clojure
+(μ/start-publisher! {:type :jvm-metrics})
+```
+
 
 Here an example of the metrics sampled
 
@@ -87,9 +101,3 @@ Here an example of the metrics sampled
 ```
 
 *NOTE: values and keys will change depending on JVM/GC settings.*
-
-Usage example:
-
-``` clojure
-(μ/start-publisher! {:type :jvm-metrics})
-```

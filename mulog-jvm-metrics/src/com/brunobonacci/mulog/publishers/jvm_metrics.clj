@@ -322,6 +322,18 @@
 
 
 
+(defn publish-sample
+  [{:keys [jvm-metrics transform-samples] :as config}]
+  (let [;; collect the sample
+        raw-sample (jvm-sample jvm-metrics)
+        ;; apply custom transformation
+        samples (transform-samples [raw-sample])]
+    ;; publish the sample
+    (doseq [sample samples]
+      (u/log :mulog/jvm-metrics-sampled :jvm-metrics sample))))
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
 ;;                     ----==| P U B L I S H E R |==----                      ;;
@@ -339,8 +351,7 @@
 
   (publish [_ buffer]
     ;; sampling the jvm metrics
-    (u/log :mulog/jvm-metrics-sampled
-      :jvm-metrics (jvm-sample (:jvm-metrics config)))))
+    (publish-sample config)))
 
 
 
@@ -348,7 +359,14 @@
   {;; Interval in milliseconds between two samples
    :sampling-interval 60000
    ;; metrics to sample
-   :jvm-metrics {:memory true :gc true :threads true :jvm-attrs true}})
+   :jvm-metrics {:memory true :gc true :threads true :jvm-attrs true}
+
+   ;; Transformation to apply to the samples before publishing.
+   ;;
+   ;; It is a function that takes a sequence of samples and
+   ;; returns and updated sequence of samples:
+   ;; `transform-samples -> sample-seq -> sample-seq`
+   :transform-samples identity})
 
 
 
@@ -356,6 +374,7 @@
   [{:keys [sampling-interval jvm-metrics] :as config}]
   (let [config (as-> config $
                  (merge DEFAULT-CONFIG $)
+                 (update $ :transform-samples #(or % identity))
                  ;; sampling interval shouldn't be too small
                  (update $ :sampling-interval max  1000))]
     ;; create the metrics publisher
