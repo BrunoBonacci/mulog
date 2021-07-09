@@ -150,7 +150,7 @@
 
   (u/log ::hello :to "World!")
 
-  (u/start-publisher! {:type :console})
+  (u/start-publisher! {:type :console :pretty? true})
 
   (u/log ::hello :to "World!" :v (rand-int 1000))
   (def x (u/start-publisher!
@@ -162,7 +162,28 @@
 
   (x)
 
+  (u/start-publisher!
+    {:type :console
+     :pretty? true
+     :transform
+     (fn [events]
+       (filter #(or (= (:mulog/event-name %) :myapp/payment-done )
+                  (= (:mulog/event-name %) :myapp/transaction-closed ))
+         events))})
+
+  (require '[where.core :refer [where]])
+
+  (u/start-publisher!
+    {:type :console
+     :pretty? true
+     :transform
+     (partial filter (where :mulog/event-name :in? [:myapp/payment-done :myapp/transaction-closed]))})
+
+  (u/log :myapp/payment-done :amount 150.30)
+
+  (core/stop-publisher! (->> (core/registered-publishers) last :id))
   )
+
 
 
 
@@ -269,7 +290,6 @@
   (x)
 
   )
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

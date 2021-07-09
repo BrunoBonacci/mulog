@@ -3,6 +3,7 @@
   ["Changelog" {:file "CHANGELOG.md"}]
   ["F.A.Q." {:file "doc/faq.md"}]
   ["μ/log internals" {:file "doc/mulog-internals.md"}]
+  ["Custom transformations" {:file "doc/custom-transform.md"}]
 
   ["Publishers"
    ["Simple Console Publisher" {:file "doc/publishers/simple-console-publisher.md"}]
