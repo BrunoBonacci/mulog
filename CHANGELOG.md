@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.8.0 - (under development)
+## v0.8.0 - (2021-07-09)
 
   - Dropped dependency to clj-time (deprecated) in favour of java.time (thanks @frankitox)
   - Bumped jasonista to 0.3.3 with jackson 2.12.13
