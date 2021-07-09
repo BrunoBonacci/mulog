@@ -7,8 +7,8 @@
   - Fixed name shadowing issue with registry in Prometheus publisher (#68) (thanks @piotr-yuxuan)
   - Added integration tests for Kafka publisher (#71) (thanks @evg-tso)
   - Added `:transform-samples` for samplers and fix (#72)
-  - Added DEPRECATION WARNING: on `:filesystem-metrics` sampler (#74)
-  - Added DEPRECATION WARNING: on `:mbean` sampler (#75)
+  - Added DEPRECATION WARNING: on `:filesystem-metrics` sampler config option (#74)
+  - Added DEPRECATION WARNING: on `:mbean` sampler config option (#75)
 
 
 ## v0.7.1 - (2021-03-23)

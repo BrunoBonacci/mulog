@@ -97,7 +97,7 @@ Here an example of the metrics sampled
   :waiting-count 12,
   :count 25,
   :timed-waiting-count 6},
- :jvm-attrs {:name "20366@hostname.local",
+  :jvm-attrs {:name "20366@hostname.local",
   :vendor "AdoptOpenJDK (14)",
   :version "14+36",
   :process-id 20366}}}
