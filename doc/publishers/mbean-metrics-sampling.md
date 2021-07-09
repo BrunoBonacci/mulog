@@ -30,6 +30,9 @@ and dispatched to third-party systems.
  ;; It is a function that takes a sequence of samples and
  ;; returns and updated sequence of samples:
  ;; `transform-samples -> sample-seq -> sample-seq`
+ ;; This function takes in input a sequence of `:mbean` samples
+ ;; (eg filter a particular domain)
+ ;; `(partial filter #(= "java.lang" (:domain %)))`
  :transform-samples identity
 }
 ```

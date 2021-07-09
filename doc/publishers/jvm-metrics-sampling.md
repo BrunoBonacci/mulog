@@ -33,6 +33,9 @@ collector, threads, etc** using a special publisher.
  ;; It is a function that takes a sequence of samples and
  ;; returns and updated sequence of samples:
  ;; `transform-samples -> sample-seq -> sample-seq`
+ ;; This functions takes a sequence of `:jvm-metrics` samples
+ ;; (eg filter for head > 85%)
+ ;; `(partial filter #(> (get-in % [:memory :heap :usage-ratio] 0) 0.85))`
  :transform-samples identity}
 ```
 

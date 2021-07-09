@@ -64,9 +64,9 @@
 
 (comment
 
-  ;; stop publisher
+  ;; list registered publishers
   (core/registered-publishers)
-  ;; STOPLAST
+  ;; STOP LAST publisher
   (core/stop-publisher! (->> (core/registered-publishers) last :id))
 
   )
