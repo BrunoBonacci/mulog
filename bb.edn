@@ -1,0 +1,121 @@
+;; +----------------------------------------------------------------------------+
+;; |                                                                            |
+;; |                                 AW  ,,                                     |
+;; |                                ,M'`7MM                                     |
+;; |                                MV   MM                                     |
+;; |                  MM    MM     AW    MM  ,pW"Wq.   .P"Ybmmm                 |
+;; |                  MM    MM    ,M'    MM 6W'   `Wb :MI  I8                   |
+;; |                  MM    MM    MV     MM 8M     M8  WmmmP"                   |
+;; |                  MM    MM   AW      MM YA.   ,A9 8M                        |
+;; |                  MVbgd"'Mb ,M'    .JMML.`Ybmd9'   YMMMMMb                  |
+;; |                  M.        MV                    6'     dP                 |
+;; |                  M8       AW                     Ybmmmd'                   |
+;; |                                                                            |
+;; +----------------------------------------------------------------------------+
+;;
+;;
+;; It requires babashka 0.4.0+
+;;
+;; Install with:
+;;   brew install babashka
+;;
+;; Run with:
+;;   $ bb <task>
+;;
+;; Examples:
+;;   $ bb help
+;;   $ bb all
+;;   $ bb build:core
+;;   $ bb build:core :skip-tests
+;;
+;; See the list of available tasks with:
+;;   $ bb tasks
+
+
+{:min-bb-version "0.4.0"
+ :paths ["scripts"]
+
+ :tasks
+ {:requires ([babashka-helpers :as bh])
+  :init
+  (do
+
+    (bh/headline)
+
+    (def MODULES ["mulog-core"
+                  "mulog-json"
+                  "mulog-jvm-metrics"
+                  "mulog-filesystem-metrics"
+                  "mulog-mbean-sampler"
+                  "mulog-adv-console"
+                  "mulog-cloudwatch"
+                  "mulog-elasticsearch"
+                  "mulog-kafka"
+                  "mulog-kinesis"
+                  "mulog-prometheus"
+                  "mulog-slack"
+                  "mulog-zipkin"
+                  "examples/roads-disruptions"])
+
+    )
+  :enter (bh/print-public-task :enter)
+  :leave (bh/print-public-task :leave)
+
+  help    {:doc  "Prints help page"
+           :task (do (shell "bb tasks")
+                     (println "\n   On build tasks add `:skip-tests` to build without running the tests.\n"))}
+
+  all     {:doc  "Forces the build and test on all modules"
+           :task (do (run 'clean)
+                     (run 'build:all))}
+
+  clean   {:doc  "Removes build outputs and target folders"
+           :task (run! clean-target MODULES)}
+
+  format  {:doc  "Reformat code following project standards"
+           :task (run! format-source MODULES)}
+
+  ancient {:doc  "Updating dependencies"
+           :task (run! update-dependencies MODULES)}
+
+  build:all {:doc "Build and test all"
+             :depends [build:core build:samplers build:publishers build:examples]}
+
+  build:core {:doc "Build and test μ/log core"
+              :task (apply bh/build "mulog-core" *command-line-args*)}
+
+  build:samplers {:doc "Build and test μ/log samplers"
+                  :depends [-build:mbean-sampler -build:jvm-metrics-sampler -build:filesystem-metrics-sampler]}
+
+  build:publishers {:doc "Build and test μ/log publishers"
+                    :depends [-build:mulog-adv-console
+                              -build:mulog-cloudwatch
+                              -build:mulog-elasticsearch
+                              -build:mulog-kafka
+                              -build:mulog-kinesis
+                              -build:mulog-prometheus
+                              -build:mulog-slack
+                              -build:mulog-zipkin
+                              ]}
+
+  build:examples {:doc "Build and test μ/log examples projects"
+                  :depends [-build:examples-roads-disruptions]}
+
+  -build:mbean-sampler              {:depends [build:core] :task (apply bh/build "mulog-mbean-sampler" *command-line-args*)}
+  -build:jvm-metrics-sampler        {:depends [build:core] :task (apply bh/build "mulog-jvm-metrics" *command-line-args*)}
+  -build:filesystem-metrics-sampler {:depends [build:core] :task (apply bh/build "mulog-filesystem-metrics" *command-line-args*)}
+
+  -build:json                {:depends [build:core] :task (apply bh/build "mulog-json" *command-line-args*)}
+
+  -build:mulog-adv-console   {:depends [build:core -build:json] :task (apply bh/build "mulog-adv-console" *command-line-args*)}
+  -build:mulog-cloudwatch    {:depends [build:core -build:json] :task (apply bh/build "mulog-cloudwatch" *command-line-args*)}
+  -build:mulog-elasticsearch {:depends [build:core -build:json] :task (apply bh/build "mulog-elasticsearch" *command-line-args*)}
+  -build:mulog-kafka         {:depends [build:core -build:json] :task (apply bh/build "mulog-kafka" *command-line-args*)}
+  -build:mulog-kinesis       {:depends [build:core -build:json] :task (apply bh/build "mulog-kinesis" *command-line-args*)}
+  -build:mulog-prometheus    {:depends [build:core -build:json] :task (apply bh/build "mulog-prometheus" *command-line-args*)}
+  -build:mulog-slack         {:depends [build:core -build:json] :task (apply bh/build "mulog-slack" *command-line-args*)}
+  -build:mulog-zipkin        {:depends [build:core -build:json] :task (apply bh/build "mulog-zipkin" *command-line-args*)}
+
+  -build:examples-roads-disruptions {:depends [build:core build:publishers]
+                                     :task (apply bh/build "examples/roads-disruptions" *command-line-args*)}
+  }}
