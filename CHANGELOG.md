@@ -9,6 +9,7 @@
   - Added `:transform-samples` for samplers and fix (#72)
   - Added DEPRECATION WARNING: on `:filesystem-metrics` sampler config option (#74)
   - Added DEPRECATION WARNING: on `:mbean` sampler config option (#75)
+  - Fixed link to JSON encode custom Java classes (#80) (thanks @practicalli-john)
 
 
 ## v0.7.1 - (2021-03-23)
@@ -57,7 +58,7 @@
   - [**POTENTIALLY BREAKING**] Migrated to JSON encoding from Cheshire
     to Jasonista (thanks to @ozimos).  It is potentially breaking if
     you have custom JSON encoders setup for Cheshire you will need to
-    add them as described into [How to JSON encode custom Java classes](./doc/json-encode.md)
+    add them as described into [How to JSON encode custom Java classes](/doc/json-encode.md)
   - Fixed issue in SlackPublisher trying to send empty messages #41 (thanks @ak-coram)
   - Fixed issue in `simple-file-publisher` not handling files without parent dir #43 (thanks to @emlyn)
 

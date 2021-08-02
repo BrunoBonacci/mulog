@@ -13,7 +13,7 @@ In order to use the library add the dependency to your `project.clj`
 Current version: [![Clojars Project](https://img.shields.io/clojars/v/com.brunobonacci/mulog-kafka.svg)](https://clojars.org/com.brunobonacci/mulog-kafka)
 
 
-The events must be serializeable in JSON format (see [How to JSON encode custom Java classes](./doc/json-encode.md) for more info.)
+The events must be serializeable in JSON format (see [How to JSON encode custom Java classes](/doc/json-encode.md) for more info.)
 
 The available configuration options:
 
