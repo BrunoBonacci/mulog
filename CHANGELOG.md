@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.9.0 - (under development)
+
+  - Fixed link to JSON encode custom Java classes (#80) (thanks @practicalli-john)
+
+
 ## v0.8.0 - (2021-07-09)
 
   - Dropped dependency to clj-time (deprecated) in favour of java.time (thanks @frankitox)
@@ -9,7 +14,6 @@
   - Added `:transform-samples` for samplers and fix (#72)
   - Added DEPRECATION WARNING: on `:filesystem-metrics` sampler config option (#74)
   - Added DEPRECATION WARNING: on `:mbean` sampler config option (#75)
-  - Fixed link to JSON encode custom Java classes (#80) (thanks @practicalli-john)
 
 
 ## v0.7.1 - (2021-03-23)
