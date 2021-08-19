@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.9.0 - (under development)
+## v0.8.1 - (2021-08-19)
 
   - Fixed link to JSON encode custom Java classes (#80) (thanks @practicalli-john)
   - Fixed mbeans sampler error when no transformation function is provided.
