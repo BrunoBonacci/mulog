@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.8.2 - (under development)
+
+
 ## v0.8.1 - (2021-08-19)
 
   - Fixed link to JSON encode custom Java classes (#80) (thanks @practicalli-john)
