@@ -36,7 +36,8 @@
  :paths ["scripts"]
 
  :tasks
- {:requires ([babashka-helpers :as bh])
+ {:requires ([babashka-helpers :as bh]
+             [clojure.string :as str])
   :init
   (do
 
@@ -56,6 +57,8 @@
                   "mulog-slack"
                   "mulog-zipkin"
                   "examples/roads-disruptions"])
+
+    (def PUBLISH (remove (fn [m] (str/starts-with? m "examples")) MODULES))
 
     )
   :enter (bh/print-public-task :enter)
@@ -79,7 +82,7 @@
            :task (run! bh/update-dependencies MODULES)}
 
   publish {:doc  "Publish JARs to Clojars"
-           :task (run! bh/publish-jar MODULES)}
+           :task (run! bh/publish-jar PUBLISH)}
 
   build:all {:doc "Build and test all"
              :depends [build:core build:samplers build:publishers build:examples]}
