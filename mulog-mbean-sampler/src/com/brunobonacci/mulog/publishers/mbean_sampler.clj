@@ -115,7 +115,7 @@
   (as-> config $
     (merge DEFAULT-CONFIG $)
     (update $ :sampling-interval #(max (or % 1000) 1000))
-    (assoc  $ :transform-samples (or transform-samples (partial map transform) identity))))
+    (assoc  $ :transform-samples (or transform-samples (and transform (partial map transform)) identity))))
 
 
 
