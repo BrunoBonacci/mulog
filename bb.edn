@@ -70,13 +70,16 @@
                      (run 'build:all))}
 
   clean   {:doc  "Removes build outputs and target folders"
-           :task (run! clean-target MODULES)}
+           :task (run! bh/clean-target MODULES)}
 
   format  {:doc  "Reformat code following project standards"
-           :task (run! format-source MODULES)}
+           :task (run! bh/format-source MODULES)}
 
   ancient {:doc  "Updating dependencies"
-           :task (run! update-dependencies MODULES)}
+           :task (run! bh/update-dependencies MODULES)}
+
+  publish {:doc  "Publish JARs to Clojars"
+           :task (run! bh/publish-jar MODULES)}
 
   build:all {:doc "Build and test all"
              :depends [build:core build:samplers build:publishers build:examples]}
