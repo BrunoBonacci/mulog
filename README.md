@@ -12,7 +12,7 @@
 > From the Greek letter **μ**, **mu** *(Pronunciation: /mjuː/)* <br/>
 > The twelfth letter of the
 > Greek alphabet (Μ, μ), often used as a prefix for *micro-* which is
-> 10<sup>-6</sup> in the SI (System of Unis). Lowercase letter "`u`" is often
+> 10<sup>-6</sup> in the SI (System of Units). Lowercase letter "`u`" is often
 > substituted for "`μ`" when the Greek character is not typographically
 > available.<p/>
 > *(source: [https://en.wikipedia.org/wiki/Mu_(letter)](https://en.wikipedia.org/wiki/Mu_(letter)))*
@@ -35,7 +35,7 @@ Here some features and key design decisions that make ***μ/log*** special:
   * *Event logs are useful, but not as important as process flow
     (therefore preferable to drop events rather than crashing the
     process)*
-  * Because is cheap to log events, you can freely log plenty.
+  * Because it is cheap to log events, you can freely log plenty.
   * And events are **just data** so can process, enrich, filter,
     aggregate, visualise the data with your own tools.
 
@@ -131,7 +131,7 @@ Then require the namespace:
 
 Check the [online documentation](https://cljdoc.org/d/com.brunobonacci/mulog/CURRENT)
 
-The instrument your code with the log you deem useful. Then general structure is
+Then instrument your code with the log you deem useful. The general structure is
 
 ``` clojure
 (μ/log event-name, key1 value1, key2 value2, ... keyN valueN)
@@ -144,7 +144,7 @@ For example:
 ```
 
 However you will NOT be able to see any events until you add a
-publisher which it will take your events and send to a distributed
+publisher which will take your events and send them to a distributed
 logger of your local console (if you are developing).
 
 You can add as many key-value pairs as you deem useful to express the event in your system
@@ -159,7 +159,7 @@ REPL terminal and it will look as follows:
 {:mulog/trace-id #mulog/flake "4VTBeu2scrIEMle9us8StnmvRrj9ThWP", :mulog/timestamp 1587500402972, :mulog/event-name :your-ns/hello, :mulog/namespace "your-ns", :to "New World!"}
 ```
 
-Here some example of events you might want to log.
+Here are some example of events you might want to log.
 
 ``` clojure
 ;; The general form is
@@ -225,7 +225,7 @@ should consider adding in the global context are `app-name`,
 
 The second type of context is the (thread) local context. It can be
 used to inject information about the current processing and all the
-events withing the scope of the context will inherit the properties
+events within the scope of the context will inherit the properties
 and their values.
 
 For example the following line will contain all the properties of the
@@ -368,7 +368,7 @@ the reason. With ***μ/trace*** we can instrument the request as follow:
 ;; same require as mulog
 ;; (require '[com.brunobonacci.mulog :as μ])
 
-;; wrap the call to the `product-availablity` function with μ/trace
+;; wrap the call to the `product-availability` function with μ/trace
 (μ/trace ::availability
   []
   (product-availability product-id))
@@ -473,12 +473,12 @@ If we had the following set of nested calls:
 ``` clojure
 (process-order)
 └── (availability)
-    ├── (warehouse-availablity)
+    ├── (warehouse-availability)
     ├── (shopping-carts)
     └── (availability-estimator)
 ```
 
-Where `process-order` check the `avalability` of each product, and to
+Where `process-order` check the `availability` of each product, and to
 check the availability of each product you need to verify what is
 available in the `warehouse` as well as how many items are locked in
 in-flight shopping carts and have this information provided to an
@@ -555,7 +555,7 @@ marked as [help wanted](https://github.com/BrunoBonacci/mulog/labels/help%20want
 
 To contribute:
 
-  - pick a issue you would like to work on.
+  - pick an issue you would like to work on.
   - drop a message to the issue so that I know someone else is working on it
   - follow the guidelines in the ticket
   - in doubt, just ask!
