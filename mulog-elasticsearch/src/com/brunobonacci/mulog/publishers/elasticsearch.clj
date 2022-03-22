@@ -106,18 +106,27 @@
 
 (defn- post-records
   [{:keys [url publish-delay http-opts] :as config} records]
-  (-> (http/post
-        (normalize-endpoint-url url)
-        (merge
-          http-opts
-          {:content-type "application/x-ndjson"
-           :accept :json
-           :socket-timeout publish-delay
-           :connection-timeout publish-delay
-           :body
-           (->> (prepare-records config records)
-             (apply str))}))
-    (update :body json/from-json)))
+  (let [response
+        (-> (http/post
+             (normalize-endpoint-url url)
+             (merge
+               http-opts
+               {:content-type "application/x-ndjson"
+                :accept :json
+                :socket-timeout publish-delay
+                :connection-timeout publish-delay
+                :body
+                (->> (prepare-records config records)
+                  (apply str))}))
+          (update :body json/from-json))]
+    ;; ELS BulkAPI respond with HTTP 200 even if there are failing
+    ;; items. See #79
+    (if (-> response :body :errors)
+      (throw (ex-info "Elasticsearch Bulk API reported errors"
+               {:errors (filter #(>= (-> % :index :status) 400)
+                          (-> response :body :items))}))
+      response)))
+
 
 
 
