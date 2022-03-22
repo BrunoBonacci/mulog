@@ -80,7 +80,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   plenty without impacting the application performances.
   "
   [event-name & pairs]
-  `(core/log* core/*default-logger* ~event-name (list :mulog/namespace (str *ns*) ~@pairs)))
+  `(core/log* core/*default-logger* ~event-name (list :mulog/namespace ~(str *ns*) ~@pairs)))
 
 
 
