@@ -37,7 +37,7 @@
              :1.8    {:dependencies [[org.clojure/clojure "1.8.0"]]}
              :1.9    {:dependencies [[org.clojure/clojure "1.9.0"]]}
              :1.10.3 {:dependencies [[org.clojure/clojure "1.10.3"]]}
-             :1.11.0 {:dependencies [[org.clojure/clojure "1.11.0-alpha1"]]}}
+             :1.11.0 {:dependencies [[org.clojure/clojure "1.11.0-rc1"]]}}
 
   :auto    {"javac" {:file-pattern #"\.java$"}}
 
