@@ -28,8 +28,8 @@
                                   [com.appsflyer/ketu "0.6.0"]
 
                                   ; Kafka docker-in-docker
-                                  [org.testcontainers/kafka "1.15.3"]
-                                  [clj-test-containers "0.4.0"]]
+                                  [org.testcontainers/kafka "1.16.3"]
+                                  [clj-test-containers "0.5.0"]]
                    :resource-paths ["dev-resources"]
                    :plugins      [[lein-midje "3.2.2"]]}}
 

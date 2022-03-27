@@ -21,7 +21,8 @@
 
 
 (defn start-container! []
-  (-> {:container     (KafkaContainer. (DockerImageName/parse "confluentinc/cp-kafka:6.1.0"))
+  (-> {:container     (KafkaContainer.
+                       (DockerImageName/parse "confluentinc/cp-kafka:6.2.1"))
        :exposed-ports [container-port]}
     tc/init
     tc/start!))
