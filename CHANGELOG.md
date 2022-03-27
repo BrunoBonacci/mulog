@@ -1,7 +1,9 @@
 # Changelog
 
-## v0.8.2 - (under development)
+## v0.8.2 - (2022-03-27)
 
+  - Fixed incorrect namespace captured by u/log #85
+  - Fixed Elasticsearch Bulk API soft-error responses being ignored #79
 
 ## v0.8.1 - (2021-08-19)
 
