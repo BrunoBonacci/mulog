@@ -3,6 +3,14 @@
             [com.brunobonacci.mulog.utils :as ut]))
 
 
+
+(defn- to-keyword
+  "turns the argument into a keyword and interns it"
+  {:inline (fn [x] `(clojure.lang.Keyword/intern ^String ~x))}
+  [^String x]
+  (clojure.lang.Keyword/intern x))
+
+
 ;;
 ;; Add encoders for various types
 ;;
@@ -13,14 +21,14 @@
   clojure.lang.Keyword
   (->json-data [item]
     (-> (.sym ^clojure.lang.Keyword item)
-            (.toString)))
+      (.toString)))
 
 
   java.util.Date
   (->json-data [item]
     (-> (.getTime ^java.util.Date item)
-            (java.time.Instant/ofEpochMilli)
-            (.toString)))
+      (java.time.Instant/ofEpochMilli)
+      (.toString)))
 
 
   java.lang.Throwable
@@ -46,9 +54,6 @@
 (defn from-json
   "Parses a JSON encoded string `s` into the representing data"
   ([s]
-   (json/read-json s :key-fn keyword))
-  ([s {:keys [keywordize]}]
-   (json/read-json s :key-fn
-     (if keywordize
-       (fn [^String x] (clojure.lang.Keyword/intern x) )
-       identity))))
+   (json/read-json s :key-fn to-keyword))
+  ([s {:keys [keywordize] :or {keywordize true}}]
+   (json/read-json s :key-fn (if keywordize to-keyword identity))))
