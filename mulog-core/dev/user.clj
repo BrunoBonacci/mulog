@@ -485,6 +485,42 @@
 
 
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                          ----==| J S O N |==----                           ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(comment
+
+  (def data {:color (java.awt.Color. 202 255 238)})
+
+  (require '[charred.api])
+
+  (extend-protocol charred.api/PToJSON
+
+    java.awt.Color
+    (->json-data [^java.awt.Color x]
+      (str/upper-case
+        (str "#"
+          (Integer/toHexString (.getRed x))
+          (Integer/toHexString (.getGreen x))
+          (Integer/toHexString (.getBlue x))))))
+
+
+  (require '[com.brunobonacci.mulog.common.json :refer [to-json]])
+
+  (to-json data)
+  ;; => "{\"color\": \"#CAFFEE\"}"
+
+
+  )
+
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
 ;;                    ----==| E V E N T S   D O C |==----                     ;;

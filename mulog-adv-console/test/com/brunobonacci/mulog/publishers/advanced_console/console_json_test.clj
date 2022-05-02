@@ -60,5 +60,5 @@
   (with-console-publisher {:type :console-json}
     (u/log :test :message "encoded" :format :json :vlaue 42 :datetime (java.util.Date. 1603909111875)))
   ;; datetimes are formatted to the millis
-  => #"\"datetime\":\"2020-10-28T18:18:31.875Z\""
+  => #"\"datetime\":\s*\"2020-10-28T18:18:31.875Z\""
   )

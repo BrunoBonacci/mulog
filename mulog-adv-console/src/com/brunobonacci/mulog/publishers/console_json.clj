@@ -1,5 +1,5 @@
 (ns com.brunobonacci.mulog.publishers.console-json
-  (:require [com.brunobonacci.mulog.publisher :as p]
+  (:require [com.brunobonacci.mulog.publisher]
             [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.common.json :as json]))
 

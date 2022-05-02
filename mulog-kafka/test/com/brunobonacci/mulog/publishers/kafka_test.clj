@@ -2,12 +2,9 @@
   (:require [midje.sweet :refer :all]
             [com.brunobonacci.mulog :as u]
             [com.brunobonacci.mulog.publishers.container.kafka-setup :as kafka-setup]
-            [clojure.core.async :as async]
-            [jsonista.core :as json]))
+            [com.brunobonacci.mulog.common.json :as json]
+            [clojure.core.async :as async]))
 
-
-
-(def ^:private json-mapper (json/object-mapper {:decode-key-fn true}))
 
 
 
@@ -27,7 +24,7 @@
       deref
       :channel
       (<!!? 10000)
-      (json/read-value json-mapper))
+      (json/from-json))
 
     => (contains
          {:int              1
@@ -44,7 +41,7 @@
       deref
       :channel
       (<!!? 10000)
-      (json/read-value json-mapper))
+      (json/from-json))
 
     => (contains
          {:int              2

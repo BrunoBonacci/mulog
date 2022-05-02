@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.9.0 - (unreleased)
+
+  - [**NEW**] Switch base JSON library to `com.cnuernber/charred`.
+    Potentially a **BREAKING CHANGE** if you have custom JSON
+    encoders.  Previously using
+    [Jasonista](https://github.com/metosin/jsonista) which it could
+    conflicts with [Cheshire](https://github.com/dakrone/cheshire) as
+    both libraries depend on
+    [FasterXML/jackson](https://github.com/FasterXML/jackson).
+    If you have custom JSON encoders update them to Charred as described
+    in [How to JSON encode custom Java classes](https://cljdoc.org/d/com.brunobonacci/mulog/CURRENT/doc/howtos/how-to-json-encode-custom-java-classes).
+
+
 ## v0.8.2 - (2022-03-27)
 
   - Fixed incorrect namespace captured by u/log #85
