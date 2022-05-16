@@ -58,10 +58,12 @@
 
 (fact "can serialize and parse keywords with namespace"
 
-  (->> {:one/a 1 :two.three/b "hello" :four/c {:foo true}}
+  (->> {:one/a 1 :two.three/b "hello" :four/c {:foo true}
+      :value :some.namespaced/keyword}
     to-json
     from-json)
-  => {:one/a 1 :two.three/b "hello" :four/c {:foo true}}
+  => {:one/a 1 :two.three/b "hello" :four/c {:foo true}
+     :value "some.namespaced/keyword"}
   )
 
 

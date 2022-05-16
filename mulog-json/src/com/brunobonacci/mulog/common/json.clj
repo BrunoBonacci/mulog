@@ -16,14 +16,6 @@
 ;;
 (extend-protocol json/PToJSON
 
-  ;; Clojure keywords are serialised without the namespace
-  ;; by default :-(
-  clojure.lang.Keyword
-  (->json-data [item]
-    (-> (.sym ^clojure.lang.Keyword item)
-      (.toString)))
-
-
   java.util.Date
   (->json-data [item]
     (-> (.getTime ^java.util.Date item)

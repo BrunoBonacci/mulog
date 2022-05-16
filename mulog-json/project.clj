@@ -11,7 +11,7 @@
 
   :dependencies [[org.clojure/clojure "1.10.3"]
                  [com.brunobonacci/mulog #=(ver)]
-                 [com.cnuernber/charred "1.004"]]
+                 [com.cnuernber/charred "1.005"]]
 
   :global-vars {*warn-on-reflection* true}
 
