@@ -106,7 +106,7 @@
     (make-parent-dirs (io/file f))
 
     java.io.File
-    (when-let [path (.getParentFile f)]
+    (when-let [path (.getParentFile ^java.io.File f)]
       (.mkdirs path))
 
     nil))
