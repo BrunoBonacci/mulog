@@ -100,23 +100,11 @@
 
 
 
-(defn- make-parent-dirs [f]
-  (condp instance? f
-    String
-    (make-parent-dirs (io/file f))
-
-    java.io.File
-    (when-let [path (.getParentFile ^java.io.File f)]
-      (.mkdirs path))
-
-    nil))
-
-
-
 (defn simple-file-publisher
   [{:keys [filename transform] :as config}]
   {:pre [filename]}
-  (make-parent-dirs filename)
+  (when (or (string? filename) (instance? java.io.File filename))
+    (io/make-parents filename))
   (SimpleFilePublisher.
     config
     (io/writer filename :append true)
