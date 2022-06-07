@@ -49,6 +49,7 @@
                   "mulog-filesystem-metrics"
                   "mulog-mbean-sampler"
                   "mulog-adv-console"
+                  "mulog-adv-file"
                   "mulog-cloudwatch"
                   "mulog-elasticsearch"
                   "mulog-kafka"
@@ -95,6 +96,7 @@
 
   build:publishers {:doc "Build and test μ/log publishers"
                     :depends [-build:mulog-adv-console
+                              -build:mulog-adv-file
                               -build:mulog-cloudwatch
                               -build:mulog-elasticsearch
                               -build:mulog-kafka
@@ -114,6 +116,7 @@
   -build:json                {:depends [build:core] :task (apply bh/build "mulog-json" *command-line-args*)}
 
   -build:mulog-adv-console   {:depends [build:core -build:json] :task (apply bh/build "mulog-adv-console" *command-line-args*)}
+  -build:mulog-adv-file      {:depends [build:core -build:json] :task (apply bh/build "mulog-adv-file" *command-line-args*)}
   -build:mulog-cloudwatch    {:depends [build:core -build:json] :task (apply bh/build "mulog-cloudwatch" *command-line-args*)}
   -build:mulog-elasticsearch {:depends [build:core -build:json] :task (apply bh/build "mulog-elasticsearch" *command-line-args*)}
   -build:mulog-kafka         {:depends [build:core -build:json] :task (apply bh/build "mulog-kafka" *command-line-args*)}

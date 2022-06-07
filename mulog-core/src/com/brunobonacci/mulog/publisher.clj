@@ -254,6 +254,13 @@
     config))
 
 
+(defmethod publisher-factory :file-json
+  [config]
+  (load-dynamic-publisher
+    "com.brunobonacci.mulog.publishers.file-json/json-file-publisher"
+    "com.brunobonacci/mulog-adv-file"
+    config))
+
 
 (defmethod publisher-factory :jvm-metrics
   [config]

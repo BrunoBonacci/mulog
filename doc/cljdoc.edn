@@ -9,6 +9,7 @@
    ["Simple Console Publisher" {:file "doc/publishers/simple-console-publisher.md"}]
    ["Simple File Publisher" {:file "doc/publishers/simple-file-publisher.md"}]
    ["Advanced Console Publisher" {:file "doc/publishers/advanced-console-publisher.md"}]
+   ["Advanced File Publisher" {:file "doc/publishers/advanced-file-publisher.md"}]
    ["Cloudwatch Logs Publisher" {:file "doc/publishers/cloudwatch-logs-publisher.md"}]
    ["Elasticsearch Publisher" {:file "doc/publishers/elasticsearch-publisher.md"}]
    ["Jaeger Publisher" {:file "doc/publishers/jaeger-publisher.md"}]
