@@ -566,6 +566,8 @@ If you have questions or you need help please open an issue or post
 your questions into [Github Discussions](https://github.com/BrunoBonacci/mulog/discussions)
 board.
 
+Alternatively you can post a question to the [#mulog channel in the Clojurians Slack team](https://clojurians.slack.com/channels/mulog).
+
 ## Related projects
 
 Here there are some other open-source projects which are related to ***μ/log***:
