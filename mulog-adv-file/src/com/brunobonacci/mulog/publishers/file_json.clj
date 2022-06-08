@@ -1,7 +1,8 @@
 (ns com.brunobonacci.mulog.publishers.file-json
   (:require [com.brunobonacci.mulog.publisher]
             [com.brunobonacci.mulog.buffer :as rb]
-            [com.brunobonacci.mulog.common.json :as json]))
+            [com.brunobonacci.mulog.common.json :as json]
+            [clojure.java.io :as io]))
 
 
 
@@ -11,7 +12,7 @@
 ;;                                                                            ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(deftype JsonFilePublisher [config buffer transform]
+(deftype JsonFilePublisher [config ^java.io.Writer filewriter buffer transform]
 
   com.brunobonacci.mulog.publisher.PPublisher
   (agent-buffer [_]
@@ -23,11 +24,21 @@
 
 
   (publish [_ buffer]
-    ;; FIXME:
-    ))
+    ;; items are pairs [offset <item>]
+    (doseq [item (transform (map second (rb/items buffer)))]
+      (.write filewriter ^String (str (json/to-json item) \newline)))
+    (.flush filewriter)
+    (rb/clear buffer)))
 
 
 
 (defn json-file-publisher
-  [{:keys [transform] :as config}]
-  (JsonFilePublisher. config (rb/agent-buffer 10000) (or transform identity)))
+  [{:keys [filename transform] :as config}]
+  {:pre [filename]}
+  (when (or (string? filename) (instance? java.io.File filename))
+    (io/make-parents filename))
+  (JsonFilePublisher.
+    config
+    (io/writer filename :append true)
+    (rb/agent-buffer 10000)
+    (or transform identity)))
