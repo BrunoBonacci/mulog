@@ -9,7 +9,7 @@ In order to use the library add the dependency to your `project.clj`
 
 ``` clojure
 ;; Leiningen project
-[com.brunobonacci/mulog-file-console "x.x.x"]
+[com.brunobonacci/mulog-adv-file "x.x.x"]
 
 ;; deps.edn format
 {:deps { com.brunobonacci/mulog-adv-file {:mvn/version "x.x.x"}}}
@@ -23,7 +23,11 @@ The available configuration options:
 ``` clojure
 {:type :file-json
 
- ;; FIXME: add config options
+ ;; the destination for the serialized JSON events.
+ ;; Can be a path as a String or java.io.File, in which case
+ ;; parent directories will be created before writing,
+ ;; or anything that is coercible to a java.io.Writer.
+ :filename "/path/to/file.json"
 
  ;; a function to apply to the sequence of events before publishing.
  ;; This transformation function can be used to filter, tranform,
@@ -36,5 +40,5 @@ The available configuration options:
 How to use it:
 
 ``` clojure
-(μ/start-publisher! {:type :file-json})
+(μ/start-publisher! {:type :file-json :filename "/path/to/file.json"})
 ```
