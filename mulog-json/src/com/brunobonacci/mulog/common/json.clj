@@ -4,11 +4,19 @@
 
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                      ----==| I N T E R N A L |==----                       ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
 (defn- to-keyword
   "turns the argument into a keyword and interns it"
   {:inline (fn [x] `(clojure.lang.Keyword/intern ^String ~x))}
   [^String x]
   (clojure.lang.Keyword/intern x))
+
 
 
 ;;
@@ -33,13 +41,33 @@
     (str item)))
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                        ----==| P U B L I C |==----                         ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn to-json
-  "It takes a map and return a JSON encoded string of the given map data."
-  ([m]
-   (json/write-json-str m :indent-str nil :escape-slash false))
-  ([m {:keys [pretty?]}]
-   (json/write-json-str m :indent-str (if pretty? "  " nil) :escape-slash false)))
+
+(let [with-output-to-str
+      (fn [writer]
+        (fn [m] (str (doto (java.io.StringWriter.) (writer m)))))
+
+      packed-writer
+      (with-output-to-str
+        (json/write-json-fn {:indent-str nil :escape-slash false}))
+
+      pretty-writer
+      (with-output-to-str
+        (json/write-json-fn {:indent-str "    " :escape-slash false}))]
+
+  (defn to-json
+    "It takes a map and return a JSON encoded string of the given map data."
+    ([m]
+     (packed-writer m))
+    ([m {:keys [pretty?]}]
+     (if pretty?
+       (pretty-writer m)
+       (packed-writer m)))))
 
 
 

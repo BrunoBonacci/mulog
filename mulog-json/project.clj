@@ -11,14 +11,14 @@
 
   :dependencies [[org.clojure/clojure "1.10.3"]
                  [com.brunobonacci/mulog #=(ver)]
-                 [com.cnuernber/charred "1.007"]]
+                 [com.cnuernber/charred "1.010"]]
 
   :global-vars {*warn-on-reflection* true}
 
   :jvm-opts ["-server"]
 
-  :profiles {:dev {:dependencies [[midje "1.9.10"]
-                                  [org.clojure/test.check "1.1.0"]
+  :profiles {:dev {:dependencies [[midje "1.10.5"]
+                                  [org.clojure/test.check "1.1.1"]
                                   [criterium "0.4.6"]]
                    :resource-paths ["dev-resources"]
                    :plugins      [[lein-midje "3.2.2"]]}}
