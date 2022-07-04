@@ -11,6 +11,7 @@
     [FasterXML/jackson](https://github.com/FasterXML/jackson).
     If you have custom JSON encoders update them to Charred as described
     in [How to JSON encode custom Java classes](https://cljdoc.org/d/com.brunobonacci/mulog/CURRENT/doc/howtos/how-to-json-encode-custom-java-classes).
+    [FIX] elasticsearch: strengthen handling of partial failures, fix #91
 
 
 ## v0.8.2 - (2022-03-27)
