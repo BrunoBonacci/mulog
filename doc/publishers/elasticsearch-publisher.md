@@ -45,6 +45,7 @@ The available configuration options:
  ;; :index-pattern "'mulog-'yyyy.MM.dd"
 
  ;; data streams are available since Elasticsearch 7.9
+ ;; IMPORTANT: the data stream must be created on Elasticsearch before publishing the data
  ;; :data-stream   "mulog-stream"
 
  ;; extra http options to pass to the HTTP client
@@ -65,11 +66,16 @@ The available configuration options:
 
 ```
 
+If you would like to use the [Elasticsearch Data Streams](https://www.elastic.co/guide/en/elasticsearch/reference/current/data-streams.html)
+**please make sure the data streams is created before starting to publish the data**.
+Here some info on [How to setup a data stream](https://www.elastic.co/guide/en/elasticsearch/reference/current/set-up-a-data-stream.html).
+
+
 For more information about the index patterns check the
 [DateTimeFormatter](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/format/DateTimeFormatter.html)
 documentation.
 
-How to use it:
+How to use the publisher:
 
 ``` clojure
 (μ/start-publisher!
@@ -77,6 +83,6 @@ How to use it:
    :url  "http://localhost:9200/"})
 ```
 
-Supported versions: `6.7+`, `7.x`
+Supported versions: `6.7+`, `7.x`, `8.x`
 
 Read more on [Elasticsearch name mangling](../els-name-mangling.md) here.
