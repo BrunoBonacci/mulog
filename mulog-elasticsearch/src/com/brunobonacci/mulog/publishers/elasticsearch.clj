@@ -121,9 +121,10 @@
           (update :body json/from-json))]
     ;; ELS BulkAPI respond with HTTP 200 even if there are failing
     ;; items. See #79
+    ;; see: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html
     (if (-> response :body :errors)
       (throw (ex-info "Elasticsearch Bulk API reported errors"
-               {:errors (filter #(>= (-> % :index :status) 400)
+               {:errors (remove #(< (-> % :index :status (or 999)) 400)
                           (-> response :body :items))}))
       response)))
 
