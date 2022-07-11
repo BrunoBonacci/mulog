@@ -52,11 +52,23 @@
 
 
 
-(defmethod index-name :data-stream [[_ v]] {:op :create :index* (constantly v)})
+;;
+;; Although when using data-stream the client should
+;; use the `create` action, we have experienced issues with it
+;; (see: https://github.com/BrunoBonacci/mulog/issues/92).
+;;
+;; The main problem is that the `create` action is not idempotent,
+;; thus in case of partial failure it won't accept an event with an
+;; `_id` which already exists.  Using the `index` operation solves
+;; this problem.
+;;
+(defmethod index-name :data-stream [[_ v]]
+  {:op :index :index* (constantly v)})
 
 
 
-(defmethod index-name :default [_] (index-name [:index-pattern "'mulog-'yyyy.MM.dd"]))
+(defmethod index-name :default [_]
+  (index-name [:index-pattern "'mulog-'yyyy.MM.dd"]))
 
 
 
