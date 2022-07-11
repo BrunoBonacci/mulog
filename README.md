@@ -204,13 +204,13 @@ For example:
 
 (μ/log ::system-started :init-time 32)
 ;; {:mulog/event-name :your-ns/system-started,
-;;  :mulog/timestamp 1587501375129,
-;;  :mulog/trace-id #mulog/flake "4VTCYUcCs5KRbiRibgulnns3l6ZW_yxk",
-;;  :mulog/namespace "your-ns",
-;;  :app-name "mulog-demo",
-;;  :env "local",
-;;  :init-time 32,
-;;  :version "0.1.0"}
+;;  :mulog/timestamp  1587501375129,
+;;  :mulog/trace-id   #mulog/flake "4VTCYUcCs5KRbiRibgulnns3l6ZW_yxk",
+;;  :mulog/namespace  "your-ns",
+;;  :app-name         "mulog-demo",
+;;  :env              "local",
+;;  :init-time        32,
+;;  :version          "0.1.0"}
 ```
 
 Typically, you will set the global context once in your main function
@@ -237,15 +237,15 @@ For example the following line will contain all the properties of the
   (μ/log ::item-processed :item-id "sku-123" :qt 2))
 
 ;; {:mulog/event-name :your-ns/process-item,
-;;  :mulog/timestamp 1587501473472,
-;;  :mulog/trace-id #mulog/flake "4VTCdCz6T_TTM9bS5LCwqMG0FhvSybkN",
-;;  :mulog/namespace "your-ns",
-;;  :app-name "mulog-demo",
-;;  :env "local",
-;;  :item-id "sku-123",
-;;  :order "abc123",
-;;  :qt 2,
-;;  :version "0.1.0"}
+;;  :mulog/timestamp  1587501473472,
+;;  :mulog/trace-id   #mulog/flake "4VTCdCz6T_TTM9bS5LCwqMG0FhvSybkN",
+;;  :mulog/namespace  "your-ns",
+;;  :app-name         "mulog-demo",
+;;  :env              "local",
+;;  :item-id          "sku-123",
+;;  :order            "abc123",
+;;  :qt               2,
+;;  :version          "0.1.0"}
 ```
 
 The local context can be nested:
@@ -256,16 +256,16 @@ The local context can be nested:
     (μ/log ::item-processed :item-id "sku-123" :qt 2)))
 
 ;; {:mulog/event-name :your-ns/process-item,
-;;  :mulog/timestamp 1587501492168,
-;;  :mulog/trace-id #mulog/flake "4VTCeIc_FNzCjegzQ0cMSLI09RqqC2FR",
-;;  :mulog/namespace "your-ns",
-;;  :app-name "mulog-demo",
-;;  :env "local",
-;;  :item-id "sku-123",
-;;  :order "abc123",
-;;  :qt 2,
-;;  :transaction-id "tx-098765",
-;;  :version "0.1.0"}
+;;  :mulog/timestamp  1587501492168,
+;;  :mulog/trace-id   #mulog/flake "4VTCeIc_FNzCjegzQ0cMSLI09RqqC2FR",
+;;  :mulog/namespace  "your-ns",
+;;  :app-name         "mulog-demo",
+;;  :env              "local",
+;;  :item-id          "sku-123",
+;;  :order            "abc123",
+;;  :qt               2,
+;;  :transaction-id   "tx-098765",
+;;  :version          "0.1.0"}
 ```
 
 Local context works across function boundaries:
@@ -281,15 +281,15 @@ Local context works across function boundaries:
     (process-item "sku-123" 2))
 
 ;; {:mulog/event-name :your-ns/item-processed,
-;;  :mulog/timestamp 1587501555926,
-;;  :mulog/trace-id #mulog/flake "4VTCi08XrCWQLrR8vS2nP8sG1zDTGuY_",
-;;  :mulog/namespace "your-ns",
-;;  :app-name "mulog-demo",
-;;  :env "local",
-;;  :item-id "sku-123",
-;;  :order "abc123",
-;;  :qt 2,
-;;  :version "0.1.0"}
+;;  :mulog/timestamp  1587501555926,
+;;  :mulog/trace-id   #mulog/flake "4VTCi08XrCWQLrR8vS2nP8sG1zDTGuY_",
+;;  :mulog/namespace  "your-ns",
+;;  :app-name         "mulog-demo",
+;;  :env              "local",
+;;  :item-id          "sku-123",
+;;  :order            "abc123",
+;;  :qt               2,
+;;  :version          "0.1.0"}
 
 ```
 
