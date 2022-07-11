@@ -61,6 +61,8 @@ rewrite the above predicate function as follow:
 As another example we might want to see only large transactions:
 
 ``` clojure
+(require '[where.core :refer [where]])
+
 (u/start-publisher!
   {:type :console
    :pretty? true
