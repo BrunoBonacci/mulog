@@ -1,5 +1,7 @@
 # Changelog
 
+## v0.10.0 - (unreleased)
+
 ## v0.9.0 - (2022-07-11)
 
   - [**NEW**] Switch base JSON library to `com.cnuernber/charred`.
