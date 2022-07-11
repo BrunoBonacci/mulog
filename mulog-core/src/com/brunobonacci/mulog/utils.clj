@@ -80,13 +80,21 @@
 
 
 
+(defn- ->namespace
+  "Return namespace for keyword or symbol, otherwise `nil`"
+  [x]
+  (when (or (keyword? x) (symbol? x))
+    (namespace x)))
+
+
+
 (defn pprint-event-str
   "pretty print event to a string"
   [m]
   (let [ids [:mulog/trace-id   :mulog/root-trace :mulog/parent-trace]
         top [:mulog/event-name :mulog/timestamp ]
-        mks (->> (keys m) (filter #(= "mulog" (namespace %))) (remove (set (concat ids top))) (sort))
-        oks (->> (keys m) (remove #(= "mulog" (namespace %))) (sort))
+        mks (->> (keys m) (filter #(= "mulog" (->namespace %))) (remove (set (concat ids top))) (sort))
+        oks (->> (keys m) (remove #(= "mulog" (->namespace %))) (sort-by str))
         get-value (fn [k] (get m k))]
     (->> (map (juxt identity get-value) (concat top ids mks oks))
       (remove (let [ids (set ids)]
