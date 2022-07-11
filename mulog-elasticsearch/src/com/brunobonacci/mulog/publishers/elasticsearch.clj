@@ -120,16 +120,16 @@
   [{:keys [url publish-delay http-opts] :as config} records]
   (let [response
         (-> (http/post
-             (normalize-endpoint-url url)
-             (merge
-               http-opts
-               {:content-type "application/x-ndjson"
-                :accept :json
-                :socket-timeout publish-delay
-                :connection-timeout publish-delay
-                :body
-                (->> (prepare-records config records)
-                  (apply str))}))
+              (normalize-endpoint-url url)
+              (merge
+                http-opts
+                {:content-type "application/x-ndjson"
+                 :accept :json
+                 :socket-timeout publish-delay
+                 :connection-timeout publish-delay
+                 :body
+                 (->> (prepare-records config records)
+                   (apply str))}))
           (update :body json/from-json))]
     ;; ELS BulkAPI respond with HTTP 200 even if there are failing
     ;; items. See #79
@@ -268,8 +268,8 @@
     ;; autodetect version when set to `:auto`
     (update $ :els-version
       (fn [v] (if (= v :auto)
-               (or (detect-els-version url (:http-opts $)) :v8.x)
-               v)))))
+                (or (detect-els-version url (:http-opts $)) :v8.x)
+                v)))))
 
 
 

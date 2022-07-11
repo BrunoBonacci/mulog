@@ -20,14 +20,14 @@
 
 (fact "testing file-json publisher valid-json"
 
-      (json/from-json
-       (with-file-publisher {:type :file-json}
-         (u/log :test :message "encoded" :format :json :value 42 :datetime (java.util.Date. 1603909111875))))
+  (json/from-json
+    (with-file-publisher {:type :file-json}
+      (u/log :test :message "encoded" :format :json :value 42 :datetime (java.util.Date. 1603909111875))))
 
-      => (contains
-          {:mulog/event-name "test",
-           :mulog/namespace "com.brunobonacci.mulog.publishers.advanced-file.file-json-test",
-           :message "encoded",
-           :format "json",
-           :value 42,
-           :datetime "2020-10-28T18:18:31.875Z"}))
+  => (contains
+       {:mulog/event-name "test",
+        :mulog/namespace "com.brunobonacci.mulog.publishers.advanced-file.file-json-test",
+        :message "encoded",
+        :format "json",
+        :value 42,
+        :datetime "2020-10-28T18:18:31.875Z"}))
