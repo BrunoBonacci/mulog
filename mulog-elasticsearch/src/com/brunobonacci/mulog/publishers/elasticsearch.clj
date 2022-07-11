@@ -120,16 +120,16 @@
   [{:keys [url publish-delay http-opts] :as config} records]
   (let [response
         (-> (http/post
-              (normalize-endpoint-url url)
-              (merge
-                http-opts
-                {:content-type "application/x-ndjson"
-                 :accept :json
-                 :socket-timeout publish-delay
-                 :connection-timeout publish-delay
-                 :body
-                 (->> (prepare-records config records)
-                   (apply str))}))
+             (normalize-endpoint-url url)
+             (merge
+               http-opts
+               {:content-type "application/x-ndjson"
+                :accept :json
+                :socket-timeout publish-delay
+                :connection-timeout publish-delay
+                :body
+                (->> (prepare-records config records)
+                  (apply str))}))
           (update :body json/from-json))]
     ;; ELS BulkAPI respond with HTTP 200 even if there are failing
     ;; items. See #79
@@ -139,7 +139,6 @@
                {:errors (remove #(< (-> % :index :status (or 999)) 400)
                           (-> response :body :items))}))
       response)))
-
 
 
 
@@ -170,12 +169,13 @@
 (comment
 
 
-  (apply-defaults {:url "http://localhost:9200" :data-stream "mulog-stream"})
+  (apply-defaults {:url "http://localhost:9200" :data-stream "mulog-stream" :els-version :v7.x})
 
 
   (prepare-records
     (apply-defaults
       {:url "http://localhost:9200/_bulk"
+       :els-version :v7.x
        :name-mangling true})
     [{:mulog/timestamp (System/currentTimeMillis) :event-name :hello :k 1}
      {:mulog/timestamp (System/currentTimeMillis) :event-name :hello :k nil}])
@@ -236,8 +236,11 @@
   {;; :url endpoint for Elasticsearch
    ;; :url "http://localhost:9200/" ;; REQUIRED
    :max-items     5000
+
    :publish-delay 5000
+
    :name-mangling true
+
    ;; Choose between `:index-pattern` or `:data-stream`, the default is `:index-pattern`
    ;; The pattern uses the Java DateTimeFormatter format:
    ;; see: https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/format/DateTimeFormatter.html
@@ -245,9 +248,12 @@
    ;;
    ;; data streams are available since Elasticsearch 7.9
    ;; :data-stream   "mulog-stream"
+
    ;; extra http options
    :http-opts {}
-   :els-version   :auto   ;; one of: `:v6.x`, `:v7.x`, `:auto`
+
+   :els-version   :auto   ;; one of: `:v6.x`, `:v7.x`, `:v8.x`, `:auto`
+
    ;; function to transform records
    :transform     identity})
 
@@ -262,8 +268,8 @@
     ;; autodetect version when set to `:auto`
     (update $ :els-version
       (fn [v] (if (= v :auto)
-                (or (detect-els-version url (:http-opts $)) :v7.x)
-                v)))))
+               (or (detect-els-version url (:http-opts $)) :v8.x)
+               v)))))
 
 
 

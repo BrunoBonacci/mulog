@@ -24,7 +24,7 @@ The available configuration options:
 
 
  ;; The Elasticsearch version family.
- ;; one of: `:auto` `:v6.x`  `:v7.x`
+ ;; one of: `:auto` `:v6.x`  `:v7.x` `:v8.x`
  :els-version   :auto
 
  ;; the maximum number of events which can be sent in a single
