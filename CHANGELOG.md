@@ -7,7 +7,7 @@
   - [**NEW**] Switch base JSON library to `com.cnuernber/charred`.
     Potentially a **BREAKING CHANGE** if you have custom JSON
     encoders.  Previously using
-    [Jasonista](https://github.com/metosin/jsonista) which it could
+    [Jsonista](https://github.com/metosin/jsonista) which it could
     conflicts with [Cheshire](https://github.com/dakrone/cheshire) as
     both libraries depend on
     [FasterXML/jackson](https://github.com/FasterXML/jackson).
