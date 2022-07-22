@@ -330,7 +330,7 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
   (u/trace ::availability
     {:pairs [:product-id product-id, :order order-id, :user user-id]
      :capture (fn [r] {:http-status (:status r)
-                       :etag (get-in r [:headers \"etag\"])})
+                       :etag (get-in r [:headers \"etag\"])})}
     (product-availability product-id))
   ```
 
