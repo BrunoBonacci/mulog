@@ -24,7 +24,7 @@ Here is how to do it:
        :request-method (get req :request-method)}
 
       ;; track the request duration and outcome
-      (u/trace :io.redefine.datawarp/http-request
+      (u/trace :my-app/http-request
         ;; add here all the key/value pairs for tracking event only
         {:pairs [:content-type     (get-in req [:headers "content-type"])
                  :content-encoding (get-in req [:headers "content-encoding"])]
@@ -83,7 +83,7 @@ In the follow example, further information is captured about the response.
 
       ;; track the request duration and outcome
       (mulog/trace 
-        :io.redefine.datawarp/http-request
+        :my-app/http-request
         ;; add key/value pairs for tracking event only
         {:pairs [:content-type     (get-in request [:headers "content-type"])
                  :content-encoding (get-in request [:headers "content-encoding"])
