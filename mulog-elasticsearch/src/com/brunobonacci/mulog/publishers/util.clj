@@ -44,6 +44,6 @@
     (boolean? v)    [(str k ".b") v]
     (keyword? v)    [(str k ".k") v]
     (instance? java.util.Date v) [(str k ".t") v]
-    (instance? Exception v) [(str k ".x") (ut/exception-stacktrace v)]
+    (instance? Throwable v) [(str k ".x") (ut/exception-stacktrace v)]
     :else e
     ))
