@@ -2,6 +2,8 @@
 
 ## v0.10.0 - (unreleased)
 
+  - Fixed issue on Elasticsearch while logging java *Error classes. #98
+
 ## v0.9.0 - (2022-07-11)
 
   - [**NEW**] Switch base JSON library to `com.cnuernber/charred`.
