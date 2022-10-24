@@ -145,7 +145,7 @@ For example:
 
 However you will NOT be able to see any events until you add a
 publisher which will take your events and send them to a distributed
-logger of your local console (if you are developing).
+logger or your local console (if you are developing).
 
 You can add as many key-value pairs as you deem useful to express the event in your system
 ``` clojure
