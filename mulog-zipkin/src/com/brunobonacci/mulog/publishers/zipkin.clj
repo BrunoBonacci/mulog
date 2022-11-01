@@ -72,7 +72,7 @@
             ;; tags values must be a string (can't be maps)
             ;; although numbers are accepted in zipkin, they're not
             ;; accepted in Jaeger (and maybe other).
-            :tags      (ut/map-values str (ut/remove-nils (flag-if-error e)))}))))
+            :tags      (ut/map-values ut/edn-str (ut/remove-nils (flag-if-error e)))}))))
 
 
 
