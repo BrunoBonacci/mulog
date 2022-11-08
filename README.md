@@ -531,7 +531,7 @@ Here the list of all available publishers:
     - [Custom Publishers](./doc/publishers/custom-publishers.md)
     - [Multi Publisher](./doc/publishers/multi-publisher.md)
   - Samplers
-    - [Jvm Metrics Sampling](./doc/publishers/jvm-metrics-sampling.md)
+    - [JVM Metrics Sampling](./doc/publishers/jvm-metrics-sampling.md)
     - [Filesystem Metrics Sampling](./doc/publishers/filesystem-metrics-sampling.md)
 
 
