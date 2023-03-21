@@ -1,4 +1,4 @@
-## Prometheus publisher
+# Prometheus publisher
 ![since v0.5.0](https://img.shields.io/badge/since-v0.5.0-brightgreen)
 
 In order to use the library add the dependency to your `project.clj`
@@ -150,4 +150,30 @@ Or if you are using Compojure then:
          :headers {"Content-Type" "text/plain; version=0.0.4"}
          :body    (prom/write-str pub)})
       (route/not-found "<h1>Page not found</h1>")))
+```
+
+
+## Controlling which metrics are published
+
+In some cases you might want to have fine control over which metrics are published
+and the names used. For this purpose you can provide a custom transformation function
+to the publisher configuration via the option `:transform-metrics`.
+
+This transformation is applied after the publisher inferred which metrics will
+be published given the set of events produced.
+
+This function receives a sequence of metrics must return a sequence of metrics.
+
+Here is an example of how the input looks like:
+
+``` clojure
+[
+
+{:metric/type        :counter ;; or :summary  or :gauge
+ :metric/value       1.0
+ :metric/name        "metric_name"
+ :metric/description "descriptions"
+ :metric/labels      {"label_key1" "label_value1",
+                      "label_key2" "label_value2"}}
+]
 ```
