@@ -236,7 +236,7 @@ For example the following line will contain all the properties of the
 (μ/with-context {:order "abc123"}
   (μ/log ::item-processed :item-id "sku-123" :qt 2))
 
-;; {:mulog/event-name :your-ns/process-item,
+;; {:mulog/event-name :your-ns/item-processed,
 ;;  :mulog/timestamp  1587501473472,
 ;;  :mulog/trace-id   #mulog/flake "4VTCdCz6T_TTM9bS5LCwqMG0FhvSybkN",
 ;;  :mulog/namespace  "your-ns",
@@ -255,7 +255,7 @@ The local context can be nested:
   (μ/with-context {:order "abc123"}
     (μ/log ::item-processed :item-id "sku-123" :qt 2)))
 
-;; {:mulog/event-name :your-ns/process-item,
+;; {:mulog/event-name :your-ns/item-processed,
 ;;  :mulog/timestamp  1587501492168,
 ;;  :mulog/trace-id   #mulog/flake "4VTCeIc_FNzCjegzQ0cMSLI09RqqC2FR",
 ;;  :mulog/namespace  "your-ns",

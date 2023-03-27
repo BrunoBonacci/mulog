@@ -64,10 +64,11 @@
 
 (comment
 
+  (require '[com.brunobonacci.mulog.core :as ucore])
   ;; list registered publishers
-  (core/registered-publishers)
+  (ucore/registered-publishers)
   ;; STOP LAST publisher
-  (core/stop-publisher! (->> (core/registered-publishers) last :id))
+  (ucore/stop-publisher! (->> (ucore/registered-publishers) last :id))
 
   )
 
