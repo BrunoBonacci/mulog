@@ -273,7 +273,7 @@ Local context works across function boundaries:
 ``` clojure
 (defn process-item [sku quantity]
     ;; ... do something
-    (u/log ::item-processed :item-id "sku-123" :qt quantity)
+    (μ/log ::item-processed :item-id sku :qt quantity)
     ;; ... do something
     )
 
