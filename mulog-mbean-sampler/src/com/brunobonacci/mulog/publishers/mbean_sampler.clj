@@ -5,7 +5,8 @@
             [com.brunobonacci.mulog.utils :as ut]
             [clojure.java.jmx :as jmx]
             [clojure.stacktrace :as stack]
-            [clojure.walk :as walk])
+            [clojure.walk :as walk]
+            [clojure.string :as str])
   (:import [javax.management ObjectName]))
 
 
@@ -21,16 +22,24 @@
     (if (and (contains? $ :ObjectName) (instance? ObjectName (get $ :ObjectName)))
       (update $ :ObjectName #(.getCanonicalName ^ObjectName %))
       $)
-    ;; remove exception
+
     (walk/postwalk
       (fn [v]
-        (if (instance? Exception v)
+        (cond
+
           ;; some values can't be retrieved
+          (instance? Exception v)
           (if (instance? java.lang.UnsupportedOperationException
                 (stack/root-cause v))
             nil
             (ut/exception-stacktrace v))
-          v))
+
+          ;; clojure.java.jmx/mbean might return invalid keywords
+          ;; with spaces
+          (and (keyword? v) (str/includes? (name v) " "))
+          (keyword (str/replace (name v) #" +" "-"))
+
+          :else v))
       $)))
 
 
@@ -136,5 +145,6 @@
 
   (sample-mbeans ["java.lang:type=Memory"] identity)
   (sample-mbeans ["java.nio:*"] identity)
+  (sample-mbeans ["java.lang:type=GarbageCollector,*"] identity)
 
   )
