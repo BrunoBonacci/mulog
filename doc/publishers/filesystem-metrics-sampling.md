@@ -38,6 +38,12 @@ Sample usage:
 (μ/start-publisher! {:type :filesystem-metrics})
 ```
 
+NOTE: with Java 16+ you need to add the following in your `project.clj`:
+```
+  :jvm-opts
+  ["--add-opens"   "java.base/sun.nio.fs=ALL-UNNAMED"]
+
+```
 
 Here an example of the metrics sampled for one filesystem
 
