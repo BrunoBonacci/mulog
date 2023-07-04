@@ -121,6 +121,6 @@
                  (merge DEFAULT-CONFIG $)
                  (assoc $ :transform-samples (or transform-samples transform identity))
                  (assoc $ :sampling-interval
-                   (max sampling-interval 1000)))]
+                   (max (:sampling-interval $) 1000)))]
     ;; create the metrics publisher
     (FilesystemMetricsPublisher. config (rb/agent-buffer 1))))
