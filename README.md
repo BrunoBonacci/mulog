@@ -578,6 +578,10 @@ Here there are some other open-source projects which are related to ***μ/log***
     projects via ***μ/log*** and leverage all ***μ/log***'s capability
     to filter/transform/enrich events before publishing.
 
+## Articles
+
+ - [***μ/log*** hidden superpower, by Bruno Bonacci](https://redefine.io/blog/mulog-hidden-superpower/)
+ - [Structured logging with mulog, by Francesco Pischedda](https://fpsd.codes/clojure-bites---structured-logging-with-mulog.html)
 
 ## License
 
