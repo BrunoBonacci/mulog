@@ -6,7 +6,7 @@ Here a summary of frequently asked questions.
 **Table of Contents**
 
 - [F.A.Q.](#faq)
-    - [Q: How does ***μ/log*** compare to Dropwizard's Metrics/Prometheus/Reimann?](#q-how-does-μlog-compare-to-dropwizards-metricsprometheusreimann)
+    - [Q: How does ***μ/log*** compare to Dropwizard's Metrics/Prometheus/Riemann?](#q-how-does-μlog-compare-to-dropwizards-metricsprometheusriemann)
     - [Q: Can I use ***μ/log*** as the sole logging library and send my traditional logging to it?](#q-can-i-use-μlog-as-the-sole-logging-library-and-send-my-traditional-logging-to-it)
     - [Q: How do I get ***μ/log*** to send the `:mulog/duration` in milliseconds?](#q-how-do-i-get-μlog-to-send-the-mulogduration-in-milliseconds)
     - [Q: Why do I get `No reader function for tag mulog/flake`?](#q-why-do-i-get-no-reader-function-for-tag-mulogflake)
@@ -16,13 +16,13 @@ Here a summary of frequently asked questions.
 
 
 
-## Q: How does ***μ/log*** compare to Dropwizard's Metrics/Prometheus/Reimann?
+## Q: How does ***μ/log*** compare to Dropwizard's Metrics/Prometheus/Riemann?
 
 There is some overlapping between Riemann's concepts and ***µ/log***,
 in fact both systems are _event-based systems_, although in Riemann the
 basic event is a _metric event_ (an event that describes or samples a
 metric) .  In ***µ/log***, each event is a free-form, pure, event
-which means that like in Reimann you have a bunch of categorical
+which means that like in Riemann you have a bunch of categorical
 properties (tags) which can be used to _"slice & dice"_ the events and
 group them the way you want, but, in opposition to Riemann,
 ***µ/log*** doesn't constrain the user to a single numerical field.
