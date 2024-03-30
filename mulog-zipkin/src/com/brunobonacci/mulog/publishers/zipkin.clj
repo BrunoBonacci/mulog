@@ -167,8 +167,8 @@
 
 
 (def ^:const DEFAULT-CONFIG
-  {;; :url endpoint for Elasticsearch
-   ;; :url "http://localhost:9200/" ;; REQUIRED
+  {;; :url endpoint for Zipkin/Jaeger
+   ;; :url  "http://localhost:9411/" ;; REQUIRED
    :max-items     5000
    :publish-delay 5000
    ;; function to transform records
