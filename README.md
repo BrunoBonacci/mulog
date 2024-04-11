@@ -137,6 +137,8 @@ Then instrument your code with the log you deem useful. The general structure is
 (μ/log event-name, key1 value1, key2 value2, ... keyN valueN)
 ```
 
+You can add as many key-value pairs as you deem useful to express the event in your system.
+
 For example:
 ``` clojure
 ;; good to use namespaced keywords for the event-name
@@ -147,7 +149,6 @@ However you will NOT be able to see any events until you add a
 publisher which will take your events and send them to a distributed
 logger or your local console (if you are developing).
 
-You can add as many key-value pairs as you deem useful to express the event in your system
 ``` clojure
 (μ/start-publisher! {:type :console})
 ```
