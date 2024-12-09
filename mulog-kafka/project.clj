@@ -9,7 +9,7 @@
 
   :scm {:name "git" :url "https://github.com/BrunoBonacci/mulog.git"}
 
-  :dependencies [[org.clojure/clojure "1.10.3"]
+  :dependencies [[org.clojure/clojure "1.12.0"]
                  [com.brunobonacci/mulog #=(ver)]
                  [com.brunobonacci/mulog-json #=(ver)]
                  [org.apache.kafka/kafka-clients "2.7.0"]
