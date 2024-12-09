@@ -34,16 +34,17 @@
                                   [lein-jmh "0.2.8"]]}
 
              ;; compatibility with 1.8+ for the core.
-             :1.8    {:dependencies [[org.clojure/clojure "1.8.0"]]}
-             :1.9    {:dependencies [[org.clojure/clojure "1.9.0"]]}
-             :1.10.3 {:dependencies [[org.clojure/clojure "1.10.3"]]}
-             :1.11.1 {:dependencies [[org.clojure/clojure "1.11.1"]]}}
+             :1.8  {:dependencies [[org.clojure/clojure "1.8.0"]]}
+             :1.9  {:dependencies [[org.clojure/clojure "1.9.0"]]}
+             :1.10 {:dependencies [[org.clojure/clojure "1.10.3"]]}
+             :1.11 {:dependencies [[org.clojure/clojure "1.11.4"]]}
+             :1.12 {:dependencies [[org.clojure/clojure "1.12.0"]]}}
 
   :auto    {"javac" {:file-pattern #"\.java$"}}
 
   :aliases
   {"test"
-   ["with-profile" "+1.8:+1.9:+1.10.3:+1.11.1" "midje"]
+   ["with-profile" "+1.8:+1.9:+1.10:+1.11:+1.12" "midje"]
 
    "perf-quick"
    ["with-profile" "dev" "jmh"
