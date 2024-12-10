@@ -13,26 +13,21 @@
                  [com.brunobonacci/mulog #=(ver)]
                  [com.brunobonacci/mulog-json #=(ver)]
 
-                 [com.cognitect.aws/api "0.8.505"]
-                 [com.cognitect.aws/endpoints "1.1.11.976"]
-                 [com.cognitect.aws/logs "809.2.784.0"]]
+                 [com.cognitect.aws/api "0.8.711"]
+                 [com.cognitect.aws/endpoints "1.1.12.772"]
+                 [com.cognitect.aws/logs "870.2.1691.0"]]
 
   :global-vars {*warn-on-reflection* true}
 
   :jvm-opts ["-server"]
 
-  :profiles {:dev {:dependencies [[midje "1.9.10"]
-                                  [org.clojure/test.check "1.1.0"]
-                                  [criterium "0.4.6"]
-                                  [org.slf4j/slf4j-log4j12 "2.0.0-alpha1"]]
+  :profiles {:dev {:dependencies [[com.brunobonacci/rdt "0.5.0-alpha6"]
+                                  [com.brunobonacci/where "0.5.6"]
+                                  [clj-test-containers "0.7.4"]
+                                  [org.slf4j/slf4j-log4j12 "2.0.16"]]
                    :resource-paths ["dev-resources"]
-                   :plugins      [[lein-midje "3.2.2"]
-                                  [lein-shell "0.5.0"]]}}
+                   :main com.brunobonacci.rdt.runner
+                   :plugins      [[lein-shell "0.5.0"]]}}
 
-  :aliases {"test" ["do"
-                    ["shell" "docker-compose" "up" "-d"]
-                    ["shell" "../scripts/wait_for.sh" "Localstack" "localhost" "4566"]
-                    ["midje"]
-                    ["shell" "docker-compose" "kill"]
-                    ["shell" "docker-compose" "rm" "-f"]]}
+  :aliases {"test" "run"}
   )
