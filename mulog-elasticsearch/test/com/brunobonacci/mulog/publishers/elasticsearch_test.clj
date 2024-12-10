@@ -8,14 +8,14 @@
 
 
 
-(defn wait-for-service
+(defn wait-for-condition
   "retries the execution of `f` until it succeeds or times out after 60sec"
   [service f]
   (let [f (fn [] (try (f) true (catch Exception _ false)))
         start (System/currentTimeMillis)]
     (loop [ready (f)]
       (if (> (System/currentTimeMillis) (+ start 60000))
-        (throw (ex-info (str "Waiting for " service " to become available, but timed out.") {}))
+        (throw (ex-info (str "Waiting for " service " to meet the required condition, but timed out.") {}))
         (when (not ready)
           (Thread/sleep 500)
           (recur (f)))))))
@@ -56,7 +56,7 @@
                         :headers {"content-type" "application/json; charset=UTF-8"}
                         :accept :json})
 
-  (wait-for-service "ELS" (service-ready? host port client-settings))
+  (wait-for-condition "ELS-ready" (service-ready? host port client-settings))
 
   (def publisher (u/start-publisher! {:type :elasticsearch
                                       :url (str "http://" host ":" port "/")
@@ -70,7 +70,7 @@
   (u/trace :test/trace [:wait 100] (Thread/sleep 100))
 
   ;; wait for publisher to push the events and the index to be created
-  (wait-for-service "index-created"
+  (wait-for-condition "index-created"
     (fn []
       (when (->> (http/get (str "http://" host ":" port "/_cat/indices")
                  client-settings)
@@ -94,7 +94,22 @@
   => {:status 200}
 
   ;; this depends on the publish-delay + index refresh interval
-  (Thread/sleep 1000)
+  (wait-for-condition "index-refreshed"
+    (fn []
+      (when-not
+          (pos?
+            (->>
+              (http/get (str "http://" host ":" port "/mulog-*/_search")
+                (merge client-settings
+                  {:body-encoding "UTF-8"
+                   :body
+                   (json/to-json {:query {:match_all {}}})}))
+              :body
+              json/from-json
+              :hits
+              :total
+              :value))
+        (throw (ex-info "Index not yet refreshed" {})))))
 
 
   ;; search: mulog.event_name.k:"test/event"
@@ -199,7 +214,7 @@
                         :headers {"content-type" "application/json; charset=UTF-8"}
                         :accept :json})
 
-  (wait-for-service "ELS" (service-ready? host port client-settings))
+  (wait-for-condition "ELS" (service-ready? host port client-settings))
 
   (def publisher (u/start-publisher! {:type :elasticsearch
                                       :url (str "https://" host ":" port "/")
@@ -213,7 +228,7 @@
   (u/trace :test/trace [:wait 100] (Thread/sleep 100))
 
   ;; wait for publisher to push the events and the index to be created
-  (wait-for-service "index-created"
+  (wait-for-condition "index-created"
     (fn []
       (when (->> (http/get (str "https://" host ":" port "/_cat/indices")
                  client-settings)
@@ -236,7 +251,22 @@
   => {:status 200}
 
   ;; this depends on the publish-delay + index refresh interval
-  (Thread/sleep 1000)
+  (wait-for-condition "index-refreshed"
+    (fn []
+      (when-not
+          (pos?
+            (->>
+              (http/get (str "https://" host ":" port "/mulog-*/_search")
+                (merge client-settings
+                  {:body-encoding "UTF-8"
+                   :body
+                   (json/to-json {:query {:match_all {}}})}))
+              :body
+              json/from-json
+              :hits
+              :total
+              :value))
+        (throw (ex-info "Index not yet refreshed" {})))))
 
 
   ;; search: mulog.event_name.k:"test/event"
