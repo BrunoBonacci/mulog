@@ -11,7 +11,7 @@
 (defn wait-for-condition
   "retries the execution of `f` until it succeeds or times out after 60sec"
   [service f]
-  (let [f (fn [] (try (f) true (catch Exception _ false)))
+  (let [f (fn [] (try (f) (catch Exception _ false)))
         start (System/currentTimeMillis)]
     (loop [ready (f)]
       (if (> (System/currentTimeMillis) (+ start 60000))
@@ -31,7 +31,7 @@
       :body
       json/from-json
       :tagline
-      count)))
+      string?)))
 
 
 (repl-test {:labels [:container]} "test elasticsearch publisher on elasticsearch service"
@@ -72,13 +72,12 @@
   ;; wait for publisher to push the events and the index to be created
   (wait-for-condition "index-created"
     (fn []
-      (when (->> (http/get (str "http://" host ":" port "/_cat/indices")
-                 client-settings)
-              :body
-              json/from-json
-              (filterv (where :index :starts-with? "mulog"))
-              (empty?))
-        (throw (ex-info "Index not created yet" {})))))
+      (->> (http/get (str "http://" host ":" port "/_cat/indices")
+           client-settings)
+        :body
+        json/from-json
+        (filterv (where :index :starts-with? "mulog"))
+        (not-empty))))
 
 
   ;; change the index refresh interval to 1s
@@ -96,20 +95,18 @@
   ;; this depends on the publish-delay + index refresh interval
   (wait-for-condition "index-refreshed"
     (fn []
-      (when-not
-          (pos?
-            (->>
-              (http/get (str "http://" host ":" port "/mulog-*/_search")
-                (merge client-settings
-                  {:body-encoding "UTF-8"
-                   :body
-                   (json/to-json {:query {:match_all {}}})}))
-              :body
-              json/from-json
-              :hits
-              :total
-              :value))
-        (throw (ex-info "Index not yet refreshed" {})))))
+      (>= (->>
+            (http/get (str "http://" host ":" port "/mulog-*/_search")
+              (merge client-settings
+                {:body-encoding "UTF-8"
+                 :body
+                 (json/to-json {:query {:match_all {}}})}))
+            :body
+            json/from-json
+            :hits
+            :total
+            :value)
+        3)))
 
 
   ;; search: mulog.event_name.k:"test/event"
@@ -230,13 +227,12 @@
   ;; wait for publisher to push the events and the index to be created
   (wait-for-condition "index-created"
     (fn []
-      (when (->> (http/get (str "https://" host ":" port "/_cat/indices")
-                 client-settings)
-              :body
-              json/from-json
-              (filterv (where :index :starts-with? "mulog"))
-              (empty?))
-        (throw (ex-info "Index not created yet" {})))))
+      (->> (http/get (str "https://" host ":" port "/_cat/indices")
+           client-settings)
+        :body
+        json/from-json
+        (filterv (where :index :starts-with? "mulog"))
+        (not-empty))))
 
   ;; change the index refresh interval to 1s
   (http/put (str "https://" host ":" port "/mulog-*/_settings")
@@ -253,20 +249,19 @@
   ;; this depends on the publish-delay + index refresh interval
   (wait-for-condition "index-refreshed"
     (fn []
-      (when-not
-          (pos?
-            (->>
-              (http/get (str "https://" host ":" port "/mulog-*/_search")
-                (merge client-settings
-                  {:body-encoding "UTF-8"
-                   :body
-                   (json/to-json {:query {:match_all {}}})}))
-              :body
-              json/from-json
-              :hits
-              :total
-              :value))
-        (throw (ex-info "Index not yet refreshed" {})))))
+      (>=
+        (->>
+          (http/get (str "https://" host ":" port "/mulog-*/_search")
+            (merge client-settings
+              {:body-encoding "UTF-8"
+               :body
+               (json/to-json {:query {:match_all {}}})}))
+          :body
+          json/from-json
+          :hits
+          :total
+          :value)
+        3)))
 
 
   ;; search: mulog.event_name.k:"test/event"
