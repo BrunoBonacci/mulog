@@ -3,6 +3,8 @@
 ## v0.10.0 - (unreleased)
 
   - Fixed issue on Elasticsearch while logging java *Error classes. #98
+  - Fixed issue on CloudWatch Logs when publishing empty payloads. #125
+  - Added integration tests with testcontainers for ELS, CloudWatch
 
 ## v0.9.0 - (2022-07-11)
 

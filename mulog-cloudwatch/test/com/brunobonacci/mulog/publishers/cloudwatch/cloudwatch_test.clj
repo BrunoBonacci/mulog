@@ -4,6 +4,7 @@
    [com.brunobonacci.mulog.flakes :as f]
    [com.brunobonacci.mulog.common.json :as json]
    [com.brunobonacci.rdt :refer [repl-test]]
+   [where.core :refer [where]]
    [clj-test-containers.core :as tc]
    [cognitect.aws.client.api :as aws]))
 
@@ -182,7 +183,7 @@
     (u/start-publisher!
       {:type                     :cloudwatch
        :group-name               log-group
-       :publish-delay            1500
+       :publish-delay            1000
        :cloudwatch-client-config aws}))
 
   (u/trace ::level1
@@ -228,6 +229,118 @@
   => ["com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test/level1"
       "com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test/level2"
       "com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test/level3"]
+
+  :rdt/finalize
+  ;; stop publisher
+  (publisher)
+  (tc/stop! container)
+  )
+
+
+
+
+(repl-test {:labels [:container]} "publish to cloudwatch shouldn't fail if transform function filters all events"
+
+  (def container
+    (tc/create
+      { ;; locking version - see https://github.com/localstack/localstack/issues/6786
+       :image-name "localstack/localstack:0.14.0"
+       :exposed-ports [4566]
+       :env-vars {"SERVICES" "logs"
+                  "DEBUG"    "1"
+                  "DEFAULT_REGION" "eu-west-1"}
+       ;; wait until container is ready
+       :wait-for {:strategy :port :startup-timeout 60}}))
+
+
+  (def container (tc/start! container))
+
+  (def aws {:api    :logs
+            :auth              :basic
+            :region            "eu-west-1"
+            :access-key-id     "foo"
+            :secret-access-key "secret"
+            :endpoint-override
+            {:protocol :http
+             :hostname (:host container)
+             :port     (-> container :mapped-ports (get 4566))}})
+
+
+  (def log-group (format "mulog-test-%s" (f/snowflake)))
+
+
+  (def cwl (aws/client aws))
+
+  (wait-for-condition "cloudwatch-logs service is ready"
+    (fn []
+      (aws/invoke cwl {:op :DescribeLogGroups :request {}})))
+
+
+  ;; create log group
+  (aws/invoke cwl {:op      :CreateLogGroup
+                   :request {:logGroupName log-group}})
+  => {}
+
+  ;; verify log group is present
+  (->> (aws/invoke cwl {:op :DescribeLogGroups :request {:logGroupNamePrefix log-group}})
+    :logGroups
+    first)
+  => {:logGroupName log-group}
+
+
+  ;; start publisher
+  (def publisher
+    (u/start-publisher!
+      {:type                     :cloudwatch
+       :transform                (fn [events] (filter (where :foo :is-not? "ignore-this") events))
+       :group-name               log-group
+       :publish-delay            500
+       :cloudwatch-client-config aws}))
+
+  (u/log ::hello :to "cloudwatch test message1" :foo "ignore-this")
+  (u/log ::hello :to "cloudwatch test message2" :foo "ignore-this")
+  (u/log ::hello :to "cloudwatch test message3" :foo "ignore-this")
+
+  (Thread/sleep 3000)
+
+  (u/log ::hello :to "cloudwatch test message")
+
+  ;; retrieve log stram name
+  (def log-stream
+    (->> (aws/invoke cwl {:op  :DescribeLogStreams
+                        :request {:logGroupName log-group}})
+      :logStreams
+      first
+      :logStreamName))
+
+
+  (wait-for-condition "events are published"
+    (fn []
+      (->>
+        (aws/invoke cwl {:op :GetLogEvents
+                         :request {:logGroupName log-group
+                                   :logStreamName log-stream}})
+        :events
+        not-empty)))
+
+  ;; retrie events
+  (def events
+    (->> (aws/invoke cwl {:op :GetLogEvents
+                        :request {:logGroupName log-group
+                                  :logStreamName log-stream}})
+      :events
+      (map :message)
+      (map json/from-json)))
+
+  (count events)
+  => 1
+
+  (first events)
+  => {:mulog/trace-id string?
+     :mulog/timestamp number?
+     :mulog/event-name "com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test/hello",
+     :mulog/namespace "com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test",
+     :to "cloudwatch test message"}
 
   :rdt/finalize
   ;; stop publisher
