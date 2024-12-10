@@ -19,6 +19,7 @@
   :jvm-opts ["-server"]
 
   :profiles {:dev {:dependencies [[com.brunobonacci/rdt "0.5.0-alpha6"]
+                                  [com.brunobonacci/where "0.5.6"]
                                   [clj-test-containers "0.7.4"]
                                   [org.slf4j/slf4j-log4j12 "2.0.16"]]
                    :resource-paths ["dev-resources"]

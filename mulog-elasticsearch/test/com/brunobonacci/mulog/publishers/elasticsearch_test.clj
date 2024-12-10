@@ -3,7 +3,8 @@
             [com.brunobonacci.mulog.common.json :as json]
             [com.brunobonacci.rdt :refer [repl-test]]
             [clj-test-containers.core :as tc]
-            [clj-http.client :as http]))
+            [clj-http.client :as http]
+            [where.core :refer [where]]))
 
 
 
@@ -68,7 +69,17 @@
 
   (u/trace :test/trace [:wait 100] (Thread/sleep 100))
 
-  (Thread/sleep 1000)
+  ;; wait for publisher to push the events and the index to be created
+  (wait-for-service "index-created"
+    (fn []
+      (when (->> (http/get (str "http://" host ":" port "/_cat/indices")
+                 client-settings)
+              :body
+              json/from-json
+              (filterv (where :index :starts-with? "mulog"))
+              (empty?))
+        (throw (ex-info "Index not created yet" {})))))
+
 
   ;; change the index refresh interval to 1s
   (http/put (str "http://" host ":" port "/mulog-*/_settings")
@@ -201,7 +212,16 @@
 
   (u/trace :test/trace [:wait 100] (Thread/sleep 100))
 
-  (Thread/sleep 1000)
+  ;; wait for publisher to push the events and the index to be created
+  (wait-for-service "index-created"
+    (fn []
+      (when (->> (http/get (str "https://" host ":" port "/_cat/indices")
+                 client-settings)
+              :body
+              json/from-json
+              (filterv (where :index :starts-with? "mulog"))
+              (empty?))
+        (throw (ex-info "Index not created yet" {})))))
 
   ;; change the index refresh interval to 1s
   (http/put (str "https://" host ":" port "/mulog-*/_settings")
