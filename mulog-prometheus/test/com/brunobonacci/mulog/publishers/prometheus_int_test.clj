@@ -67,8 +67,11 @@
              ;; logging test event
         (u/log event-name :version "1.2.3"))
 
-      => [;; a counter for each event
-          [full-name "{instance=\"\",job=\"mulog-test\",version=\"1.2.3\"}" 1]]))
+      => (just
+          [ ;;
+           (just [(str full-name "_created") "{instance=\"\",job=\"mulog-test\",version=\"1.2.3\"}" number?])
+           ;; a counter for each event
+           (just [(str full-name "_total") "{instance=\"\",job=\"mulog-test\",version=\"1.2.3\"}" 1])])))
 
 
 
@@ -82,10 +85,13 @@
              ;; logging test event
         (u/log event-name :version "1.2.3" :number 123))
 
-      => [;; a counter for each event
-          [full-name "{instance=\"\",job=\"mulog-test\",version=\"1.2.3\"}" 1]
-              ;; a gauge with the value of the number
-          [(str full-name "_number") "{instance=\"\",job=\"mulog-test\",version=\"1.2.3\"}" 123]]))
+      => (just
+          [;;
+           (just [(str full-name "_created") "{instance=\"\",job=\"mulog-test\",version=\"1.2.3\"}" number?])
+           ;; a gauge with the value of the number
+           (just [(str full-name "_number") "{instance=\"\",job=\"mulog-test\",version=\"1.2.3\"}" 123])
+           ;; a counter for each event
+           (just [(str full-name "_total") "{instance=\"\",job=\"mulog-test\",version=\"1.2.3\"}" 1])])))
 
 
 
@@ -103,16 +109,18 @@
               [:version "1.2.3"]
               (+ 1 1)))]
 
-      (count metrics) => 8 ;; 1 counter + 5 quantiles + 1 total sum + 1 count
-      (map first metrics)
-      => [full-name
+      (count metrics) => 10 ;; 1 counter + 5 quantiles + 1 sum + 1 count + 1 total sum + 1 total
+      (mapv first metrics)
+      => [(str full-name "_created")
           (str full-name "_timer_nanos")
           (str full-name "_timer_nanos")
           (str full-name "_timer_nanos")
           (str full-name "_timer_nanos")
           (str full-name "_timer_nanos")
           (str full-name "_timer_nanos_sum")
-          (str full-name "_timer_nanos_count")])
+          (str full-name "_timer_nanos_count")
+          (str full-name "_timer_nanos_created")
+          (str full-name "_total")])
     )
 
   )

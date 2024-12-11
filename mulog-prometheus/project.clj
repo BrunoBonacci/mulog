@@ -11,18 +11,16 @@
 
   :dependencies [[org.clojure/clojure "1.12.0"]
                  [com.brunobonacci/mulog #=(ver)]
-                 [io.prometheus/simpleclient             "0.9.0"]
-                 [io.prometheus/simpleclient_common      "0.9.0"]
-                 [io.prometheus/simpleclient_pushgateway "0.9.0"]]
+                 [io.prometheus/simpleclient             "0.16.0"]
+                 [io.prometheus/simpleclient_common      "0.16.0"]
+                 [io.prometheus/simpleclient_pushgateway "0.16.0"]]
 
   :global-vars {*warn-on-reflection* true}
 
   :jvm-opts ["-server"]
 
-  :profiles {:dev {:dependencies [[midje "1.9.9"]
-                                  [org.clojure/test.check "1.1.0"]
-                                  [criterium "0.4.6"]
-                                  [org.slf4j/slf4j-log4j12 "2.0.0-alpha1"]]
+  :profiles {:dev {:dependencies [[midje "1.10.10"]
+                                  [org.slf4j/slf4j-log4j12 "2.0.16"]]
                    :resource-paths ["dev-resources"]
                    :plugins      [[lein-midje "3.2.2"]
                                   [lein-shell "0.5.0"]]}}
