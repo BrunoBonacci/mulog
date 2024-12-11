@@ -28,18 +28,18 @@
   (def container
     (tc/create
       { ;; locking version - see https://github.com/localstack/localstack/issues/6786
-       :image-name "localstack/localstack:0.14.0"
+       :image-name    "localstack/localstack:0.14.0"
        :exposed-ports [4566]
-       :env-vars {"SERVICES" "logs"
-                  "DEBUG"    "1"
-                  "DEFAULT_REGION" "eu-west-1"}
+       :env-vars      {"SERVICES"       "logs"
+                       "DEBUG"          "1"
+                       "DEFAULT_REGION" "eu-west-1"}
        ;; wait until container is ready
-       :wait-for {:strategy :port :startup-timeout 60}}))
+       :wait-for      {:strategy :port :startup-timeout 60}}))
 
 
   (def container (tc/start! container))
 
-  (def aws {:api    :logs
+  (def aws {:api               :logs
             :auth              :basic
             :region            "eu-west-1"
             :access-key-id     "foo"
@@ -85,7 +85,7 @@
 
   ;; retrieve log stram name
   (def log-stream
-    (->> (aws/invoke cwl {:op  :DescribeLogStreams
+    (->> (aws/invoke cwl {:op      :DescribeLogStreams
                         :request {:logGroupName log-group}})
       :logStreams
       first
@@ -95,16 +95,16 @@
   (wait-for-condition "events are published"
     (fn []
       (->>
-        (aws/invoke cwl {:op :GetLogEvents
-                         :request {:logGroupName log-group
+        (aws/invoke cwl {:op      :GetLogEvents
+                         :request {:logGroupName  log-group
                                    :logStreamName log-stream}})
         :events
         not-empty)))
 
   ;; retrie events
   (def events
-    (->> (aws/invoke cwl {:op :GetLogEvents
-                        :request {:logGroupName log-group
+    (->> (aws/invoke cwl {:op      :GetLogEvents
+                        :request {:logGroupName  log-group
                                   :logStreamName log-stream}})
       :events
       (map :message)
@@ -114,11 +114,11 @@
   => 1
 
   (first events)
-  => {:mulog/trace-id string?
-     :mulog/timestamp number?
+  => {:mulog/trace-id   string?
+     :mulog/timestamp  number?
      :mulog/event-name "com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test/hello",
-     :mulog/namespace "com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test",
-     :to "cloudwatch test message"}
+     :mulog/namespace  "com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test",
+     :to               "cloudwatch test message"}
 
   :rdt/finalize
   ;; stop publisher
