@@ -22,7 +22,7 @@
 
 (defn start-container! []
   (-> {:container     (KafkaContainer.
-                        (DockerImageName/parse "confluentinc/cp-kafka:6.2.1"))
+                        (DockerImageName/parse "confluentinc/cp-kafka:7.8.0"))
        :exposed-ports [container-port]}
     tc/init
     tc/start!))
