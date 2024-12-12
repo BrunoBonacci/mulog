@@ -44,6 +44,22 @@
 
 
 
+;; tags values must be a string (can't be maps)
+;; although numbers are accepted in zipkin, they're not
+;; accepted in Jaeger (and maybe other).
+(defn- convert-tags
+  [event]
+  (ut/map-values
+    (fn [v]
+      (cond
+        (string? v) v
+        (keyword? v) (if (namespace v) (str (namespace v) "/" (name v)) (name v))
+        (f/flake? v) (str v)
+        :else
+        (ut/edn-str v)))
+    (ut/remove-nils (flag-if-error event))))
+
+
 ;;
 ;; Converts μ/trace events into Zipkin traces and spans
 ;;
@@ -55,8 +71,8 @@
   (->> events
     (filter #(and (:mulog/root-trace %) (:mulog/duration %)))
     (map (fn [{:keys [mulog/trace-id mulog/parent-trace mulog/root-trace
-                      mulog/duration mulog/event-name mulog/timestamp
-                      app-name] :as e}]
+                     mulog/duration mulog/event-name mulog/timestamp
+                     app-name] :as e}]
            ;; zipkin IDs are much lower bits than flakes
            {:id        (hexify trace-id 16)
             :traceId   (if (f/flake? root-trace)   (hexify root-trace 32)   root-trace)
@@ -69,22 +85,21 @@
             :duration  (quot duration 1000)
             ;; use app-name as localEndpoint if available
             :localEndpoint {:serviceName (or app-name "unknown")}
-            ;; tags values must be a string (can't be maps)
-            ;; although numbers are accepted in zipkin, they're not
-            ;; accepted in Jaeger (and maybe other).
-            :tags      (ut/map-values ut/edn-str (ut/remove-nils (flag-if-error e)))}))))
+            :tags      (convert-tags e)}))))
 
 
 
 (defn- post-records
-  [{:keys [url publish-delay] :as config} records]
+  [{:keys [url publish-delay http-opts] :as config} records]
   (http/post
     url
-    {:content-type "application/json"
-     :accept :json
-     :socket-timeout     publish-delay
-     :connection-timeout publish-delay
-     :body (json/to-json (prepare-records config records))}))
+    (merge
+      http-opts
+      {:content-type       "application/json; charset=UTF-8"
+       :accept             :json
+       :socket-timeout     publish-delay
+       :connection-timeout publish-delay
+       :body               (json/to-json (prepare-records config records))})))
 
 
 
@@ -173,6 +188,9 @@
    :publish-delay 5000
    ;; function to transform records
    :transform identity
+
+   ;; extra http options
+   :http-opts {}
    })
 
 
