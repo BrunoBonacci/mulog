@@ -5,6 +5,8 @@
   - Bumping dependencies on all modules
   - Fixed issue on Elasticsearch while logging java *Error classes. #98
   - Fixed issue on CloudWatch Logs when publishing empty payloads. #125
+  - Improved tags serialization for zipkin publisher
+  - Zipkin publisher now supports custom `:http-opts` for auth
   - Added integration tests with testcontainers for ELS, CloudWatch, Kinesis
 
 ## v0.9.0 - (2022-07-11)

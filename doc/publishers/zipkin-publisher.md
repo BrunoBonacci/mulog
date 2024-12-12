@@ -37,6 +37,9 @@ The available configuration options:
  ;; anonymise events before they are published to a external system.
  ;; by defatult there is no transformation.  (since v0.1.8)
  :transform identity
+
+ ;; extra http options to pass to the HTTP client
+ :http-opts {}
  }
 
 ```

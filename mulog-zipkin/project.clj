@@ -12,18 +12,19 @@
   :dependencies [[org.clojure/clojure "1.12.0"]
                  [com.brunobonacci/mulog #=(ver)]
                  [com.brunobonacci/mulog-json #=(ver)]
-                 [clj-http "3.12.1"]]
+                 [clj-http "3.13.0"]]
 
   :global-vars {*warn-on-reflection* true}
 
   :jvm-opts ["-server"]
 
-  :profiles {:dev {:dependencies [[midje "1.9.10"]
-                                  [org.clojure/test.check "1.1.0"]
-                                  [criterium "0.4.6"]
-                                  [org.slf4j/slf4j-log4j12 "2.0.0-alpha1"]]
+  :profiles {:dev {:dependencies [[com.brunobonacci/rdt "0.5.0-alpha6"]
+                                  [com.brunobonacci/where "0.5.6"]
+                                  [clj-test-containers "0.7.4"]
+                                  [org.slf4j/slf4j-log4j12 "2.0.16"]]
                    :resource-paths ["dev-resources"]
-                   :plugins      [[lein-midje "3.2.2"]]}}
+                   :main com.brunobonacci.rdt.runner
+                   :plugins      []}}
 
-  :aliases {"test" "midje"}
+  :aliases {"test" "run"}
   )
