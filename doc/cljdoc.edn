@@ -15,6 +15,7 @@
    ["Jaeger Publisher" {:file "doc/publishers/jaeger-publisher.md"}]
    ["Kafka Publisher" {:file "doc/publishers/kafka-publisher.md"}]
    ["Kinesis Publisher" {:file "doc/publishers/kinesis-publisher.md"}]
+   ["OpenTelemetry Publisher" {:file "doc/publishers/open-telemetry-publisher.md"}]
    ["Prometheus Publisher" {:file "doc/publishers/prometheus-publisher.md"}]
    ["Slack Publisher" {:file "doc/publishers/slack-publisher.md"}]
    ["Zipkin Publisher" {:file "doc/publishers/zipkin-publisher.md"}]

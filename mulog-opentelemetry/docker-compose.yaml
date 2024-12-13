@@ -1,0 +1,14 @@
+version: '3'
+#
+# For the UI go to http://localhost:16686/
+#
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:1.64.0
+    container_name: jaeger
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    ports:
+      - 16686:16686  # UI
+      - 4317:4317
+      - 4318:4318    # HTTP/JSON Collector

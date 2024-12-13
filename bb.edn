@@ -54,6 +54,7 @@
                   "mulog-elasticsearch"
                   "mulog-kafka"
                   "mulog-kinesis"
+                  "mulog-opentelemetry"
                   "mulog-prometheus"
                   "mulog-slack"
                   "mulog-zipkin"
@@ -102,6 +103,7 @@
                               -build:mulog-kafka
                               -build:mulog-kinesis
                               -build:mulog-prometheus
+                              -build:mulog-opentelemetry
                               -build:mulog-slack
                               -build:mulog-zipkin
                               ]}
@@ -122,6 +124,7 @@
   -build:mulog-kafka         {:depends [build:core -build:json] :task (apply bh/build "mulog-kafka" *command-line-args*)}
   -build:mulog-kinesis       {:depends [build:core -build:json] :task (apply bh/build "mulog-kinesis" *command-line-args*)}
   -build:mulog-prometheus    {:depends [build:core -build:json] :task (apply bh/build "mulog-prometheus" *command-line-args*)}
+  -build:mulog-opentelemetry {:depends [build:core -build:json] :task (apply bh/build "mulog-opentelemetry" *command-line-args*)}
   -build:mulog-slack         {:depends [build:core -build:json] :task (apply bh/build "mulog-slack" *command-line-args*)}
   -build:mulog-zipkin        {:depends [build:core -build:json] :task (apply bh/build "mulog-zipkin" *command-line-args*)}
 

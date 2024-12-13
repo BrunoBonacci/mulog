@@ -524,6 +524,7 @@ Here the list of all available publishers:
     - [Jaeger Publisher](./doc/publishers/jaeger-publisher.md)
     - [Kafka Publisher](./doc/publishers/kafka-publisher.md)
     - [Kinesis Publisher](./doc/publishers/kinesis-publisher.md)
+    - [OpenTelemetry Publisher](./doc/publishers/open-telemetry-publisher.md)
     - [Prometheus Publisher](./doc/publishers/prometheus-publisher.md)
     - [Slack Publisher](./doc/publishers/slack-publisher.md)
     - [Zipkin Publisher](./doc/publishers/zipkin-publisher.md)
