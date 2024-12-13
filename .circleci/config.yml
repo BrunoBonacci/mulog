@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     machine:
-      image: ubuntu-2204:2024.01.2
+      image: ubuntu-2404:2024.11.1
     working_directory: ~/repo
 
     environment:
@@ -13,6 +13,8 @@ jobs:
 
     steps:
       - checkout
+      - run: curl https://mise.run | sh
+      - run: mise use --global babashka@latest
       - run:
           name: Dependencies list
           command: |
@@ -25,7 +27,7 @@ jobs:
             - maven-repo-v1-{{ .Branch }}-
             - maven-repo-v1-
 
-      - run: make all
+      - run: bb all
 
       # don't cache local artifacts
       - run: rm -fr ~/.m2/repository/com/brunobonacci/
