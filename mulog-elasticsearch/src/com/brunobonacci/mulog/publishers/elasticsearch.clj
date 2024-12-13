@@ -226,8 +226,8 @@
         buffer
         ;; else send to ELS
         (do
-          (some->> (seq (transform (map second items)))
-            (post-records config))
+          (when-let [records (not-empty (transform (map second items)))]
+            (post-records config records))
           (rb/dequeue buffer last-offset))))))
 
 
