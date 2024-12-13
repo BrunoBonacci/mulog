@@ -18,6 +18,7 @@ jobs:
           command: |
             curl https://mise.run | sh
             echo "eval \"\$(/home/circleci/.local/bin/mise activate bash)\"" >> ~/.bashrc
+            eval "\$(/home/circleci/.local/bin/mise activate bash)"
             mise use --global babashka@latest
       - run:
           name: Dependencies list
