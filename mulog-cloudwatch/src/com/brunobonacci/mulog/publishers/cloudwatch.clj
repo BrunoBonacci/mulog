@@ -99,9 +99,9 @@
       (if-not (seq items)
         buffer
         ;; else send to cloudwatch
-        (let [items' (transform (map second items))]
-          (when (not-empty items')
-            (put-log-events cw-client stream-name config items' next-token))
+        (do
+          (when-let [records (not-empty (transform (map second items)))]
+            (put-log-events cw-client stream-name config records next-token))
           (rb/dequeue buffer last-offset))))))
 
 
