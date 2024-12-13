@@ -16,9 +16,9 @@ jobs:
       - run:
           name: Install Babashka
           command: |
-          curl https://mise.run | sh
-          echo "eval \"\$(/home/circleci/.local/bin/mise activate bash)\"" >> ~/.bashrc
-          mise use --global babashka@latest
+            curl https://mise.run | sh
+            echo "eval \"\$(/home/circleci/.local/bin/mise activate bash)\"" >> ~/.bashrc
+            mise use --global babashka@latest
       - run:
           name: Dependencies list
           command: |
