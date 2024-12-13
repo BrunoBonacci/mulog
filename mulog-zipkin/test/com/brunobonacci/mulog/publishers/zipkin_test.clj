@@ -5,8 +5,7 @@
    [com.brunobonacci.mulog :as u]
    [com.brunobonacci.mulog.common.json :as json]
    [com.brunobonacci.mulog.flakes :as f]
-   [com.brunobonacci.rdt :refer [repl-test]]
-   [where.core :refer [where]]))
+   [com.brunobonacci.rdt :refer [repl-test]]))
 
 
 

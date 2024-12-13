@@ -30,11 +30,5 @@
                    :main com.brunobonacci.rdt.runner
                    :plugins      [[lein-shell "0.5.0"]]}}
 
-  :aliases {"test" "run"
-            #_["do"
-             ["shell" "docker-compose" "up" "-d"]
-             ["shell" "../scripts/wait_for.sh" "Localstack" "localhost" "4566"]
-             ["midje"]
-             ["shell" "docker-compose" "kill"]
-             ["shell" "docker-compose" "rm" "-f"]]}
+  :aliases {"test" "run"}
   )
