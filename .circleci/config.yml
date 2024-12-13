@@ -12,14 +12,14 @@ jobs:
       AWS_SECRET_ACCESS_KEY: "localstack"
 
     steps:
-      - checkout
       - run:
           name: Install Babashka
           command: |
             curl https://mise.run | sh
             echo "eval \"\$(/home/circleci/.local/bin/mise activate bash)\"" >> ~/.bashrc
-            eval "\$(/home/circleci/.local/bin/mise activate bash)"
+            eval "$(/home/circleci/.local/bin/mise activate bash)"
             mise use --global babashka@latest
+      - checkout
       - run:
           name: Dependencies list
           command: |
