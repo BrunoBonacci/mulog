@@ -43,10 +43,10 @@
 (repl-test {:labels [:container]} "test OpenTelemetry publisher on OTLP collector"
 
   (def container (tc/create
-                   {:image-name "jaegertracing/all-in-one:1.64.0"
+                   {:image-name    "jaegertracing/all-in-one:1.64.0"
                     :exposed-ports [4318 16686]
-                    :env-vars {"COLLECTOR_OTLP_ENABLED" "true"}
-                    :wait-for {:strategy :port :startup-timeout 60}}))
+                    :env-vars      {"COLLECTOR_OTLP_ENABLED" "true"}
+                    :wait-for      {:strategy :port :startup-timeout 60}}))
 
   (def container (tc/start! container))
 
@@ -61,18 +61,21 @@
   (wait-for-condition "opentelemetry service ready" (service-ready? host port2 {}))
 
   #_(def publisher (u/start-publisher!
-                     {:type :open-telemetry
-                      :url (str "http://" host ":" port "/")
+                     {:type           :open-telemetry
+                      :url            (str "http://" host ":" port "/")
                       "publish-delay" 500}))
 
   (def publisher (u/start-publisher!
                    {:type :inline
                     :publisher
                     (ot/open-telemetry-publisher
-                      {:type :open-telemetry
-                       :url (str "http://" host ":" port "/")
+                      {:type          :open-telemetry
+                       :url           (str "http://" host ":" port "/")
                        :publish-delay 500})}))
 
+  (def global (u/global-context))
+  (u/set-global-context!
+    {:app-name "test" :version "1.2.3" :env "test-container"})
 
   (def test-id (f/flake))
 
@@ -81,8 +84,21 @@
       (Thread/sleep 100)
       (u/trace :test/inner-trace [:wait 200 :level 1]
         (Thread/sleep 200)
-        (u/trace :test/inner-trace [:wait 300 :level 2]
-          (Thread/sleep 300)))))
+        (try
+          (u/trace :test/inner-trace
+            [:wait 300 :level 2
+             :factor1          3.5
+             :factor2          2/5
+             :test?            true
+             :missing          nil
+             :simplearray      ["one" "two" "three"]
+             :array            [1 "two" true {:four 5} nil "last"]
+             :obj              {:foo "bar" :baz nil}
+             :set              #{"blue" "green" 3}]
+            (Thread/sleep 300)
+            (throw (ex-info "BOOOM" {})))
+          (catch Exception _ nil)))))
+
 
   ;; wait for publisher to push the events and the index to be created
   (wait-for-condition "traces are indexed"
@@ -98,13 +114,15 @@
   ;; search: event
   (def result
     (->
-        (http/get (str "http://" host ":" port2 "/api/traces/" (#'ot/hexify test-id 32))
-          (merge client-settings
-            {:accept :json}))
-        :body
-        json/from-json
-        :data))
+      (http/get (str "http://" host ":" port2 "/api/traces/" (#'ot/hexify test-id 32))
+        (merge client-settings
+          {:accept :json}))
+      :body
+      json/from-json
+      :data))
 
+  ;; restore global context
+  (u/set-global-context! global)
 
   ;; one trace found
   (count result)
@@ -121,12 +139,67 @@
       :spans
       (sort-by :startTime)))
 
+  ;; testing order
   (mapv :operationName spans)
   => ["test/trace" "test/inner-trace" "test/inner-trace"]
 
-
   (mapv (comp :value first (partial filterv (where :key :is? "level")) :tags) spans)
   => ["root" 1 2]
+
+
+  ;; testing outcome
+  (mapv (comp :value first (partial filterv (where :key :is? "otel.status_code")) :tags) spans)
+  => ["OK" "OK" "ERROR"]
+
+  (mapv (comp :value first (partial filterv (where :key :is? "otel.status_description")) :tags) spans)
+  => [nil nil "BOOOM"]
+
+
+  ;; testing global-env
+  (mapv (comp :value first (partial filterv (where :key :is? "app-name")) :tags) spans)
+  => ["test" "test" "test"]
+
+  (mapv (comp :value first (partial filterv (where :key :is? "version")) :tags) spans)
+  => ["1.2.3" "1.2.3" "1.2.3"]
+
+  (mapv (comp :value first (partial filterv (where :key :is? "env")) :tags) spans)
+  => ["test-container" "test-container" "test-container"]
+
+
+  ;; testing types. (API doesn't return the actual types, but in the UI are diplayed correctly)
+  (->> spans
+    last
+    :tags
+    (map (juxt :key :type))
+    (into {}))
+  => {"test?"                   "bool",
+     "factor2"                 "float64",
+     "mulog/outcome"           "string",
+     "app-name"                "string",
+     "obj"                     "string",
+     "otel.scope.name"         "string",
+     "internal.span.format"    "string",
+     "exception"               "string",
+     "error"                   "bool",
+     "mulog/timestamp"         "int64",
+     "otel.scope.version"      "string",
+     "span.kind"               "string",
+     "mulog/namespace"         "string",
+     "level"                   "int64",
+     "simplearray"             "string",
+     "wait"                    "int64",
+     "mulog/root-trace"        "string",
+     "factor1"                 "float64",
+     "mulog/parent-trace"      "string",
+     "env"                     "string",
+     "version"                 "string",
+     "mulog/duration"          "int64",
+     "set"                     "string",
+     "mulog/event-name"        "string",
+     "mulog/trace-id"          "string",
+     "array"                   "string",
+     "otel.status_description" "string",
+     "otel.status_code"        "string"}
 
   :rdt/finalize
   ;; stop publisher

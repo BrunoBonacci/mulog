@@ -108,6 +108,28 @@
 ;; (ut/remove-nils (flag-if-error (first events))),
 
 
+(defn- convert-event-into-span
+  [{:keys [mulog/trace-id mulog/parent-trace mulog/root-trace
+           mulog/duration mulog/event-name mulog/timestamp] :as event}]
+  (let [timestampNano (* timestamp (long 1e6))
+        event         (flag-if-error event)]
+    ;; OpenTelemtry IDs have a much lower bits than flakes
+    (merge
+      (when parent-trace
+        {:parentSpanId  (if (f/flake? parent-trace) (hexify parent-trace 16) parent-trace)})
+      {:spanId        (hexify trace-id 16)
+       :traceId       (if (f/flake? root-trace)   (hexify root-trace 32)   root-trace)
+       :name          (convert-key-tag event-name)
+       :kind          1
+       ;; timestamp in ns
+       :startTimeUnixNano timestampNano
+       :endTimeUnixNano   (+ timestampNano duration)
+       ;; status
+       :status (if (:error event) {:code 2 :message (str (:error event))} {:code 1})
+       ;; use app-name as localEndpoint if available
+       ;;              :localEndpoint {:serviceName (or app-name "unknown")}
+       :attributes  (convert-tags event)})))
+
 
 
 ;;
@@ -118,35 +140,16 @@
   [config events]
   (->> events
     (filter #(and (:mulog/root-trace %) (:mulog/duration %)))
-    (mapv (fn [{:keys [mulog/trace-id mulog/parent-trace mulog/root-trace
-                      mulog/duration mulog/event-name mulog/timestamp
-                      app-name] :as event}]
-            (let [timestampNano (* timestamp (long 1e6))
-                  event         (flag-if-error event)]
-              ;; OpenTelemtry IDs have a much lower bits than flakes
-              (merge
-                (when parent-trace
-                  {:parentSpanId  (if (f/flake? parent-trace) (hexify parent-trace 16) parent-trace)})
-                {:spanId        (hexify trace-id 16)
-                 :traceId       (if (f/flake? root-trace)   (hexify root-trace 32)   root-trace)
-                 :name          (convert-key-tag event-name)
-                 :kind          1
-                 ;; timestamp in ns
-                 :startTimeUnixNano timestampNano
-                 :endTimeUnixNano   (+ timestampNano duration)
-                 ;; status
-                 :status (if (:error event) {:code 2 :message (str (:error event))} {:code 1})
-                 ;; use app-name as localEndpoint if available
-                 ;;              :localEndpoint {:serviceName (or app-name "unknown")}
-                 :attributes  (convert-tags event)}))))
+    (group-by :app-name)
+    (mapv (fn [[app-name events]]
+            {:resource
+             {:attributes
+              [{:key "service.name" :value {:stringValue (or app-name "unknown")}}]}
+             :scopeSpans
+             [{:scope {:name "mulog" :version @mulog-version}
+               :spans (mapv convert-event-into-span events)}]}))
     ((fn [spans]
-       {:resourceSpans
-        [{:resource
-          {:attributes
-           [{:key "service.name" :value {:stringValue (or #_app-name "unknown")}}]}
-          :scopeSpans
-          [{:scope {:name "mulog" :version @mulog-version}
-            :spans spans}]}]}))))
+       {:resourceSpans spans}))))
 
 
 
@@ -188,7 +191,7 @@
       :array            [1 "two" true {:four 5} nil "last"]
       :obj              {:foo "bar" :baz nil}
       :set              #{"blue" "green" 3}
-      ;; :exception        (RuntimeException. "Something bad happened")
+      ;; :exception        (RuntimeException. "Something bad happened"),
       :app-name         "sample",
       :env              "local1",
       :version          "0.1.0"}])
@@ -236,7 +239,7 @@
 
 
 (def ^:const DEFAULT-CONFIG
-  {;; OpenTelemetry Collector endpoint for OTLP HTTP/JSON (REQUIRED)
+  {;; OpenTelemetry Collector endpoint for OTLP HTTP/JSON (REQUIRED),
    ;; :url  "http://localhost:4318/" ;; REQUIRED
    :max-items     5000
    :publish-delay 5000
