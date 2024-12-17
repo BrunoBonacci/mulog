@@ -70,6 +70,7 @@
                     :publisher
                     (ot/open-telemetry-publisher
                       {:type          :open-telemetry
+                       :send          [:traces]
                        :url           (str "http://" host ":" port "/")
                        :publish-delay 500})}))
 
@@ -166,7 +167,7 @@
   => ["test-container" "test-container" "test-container"]
 
 
-  ;; testing types. (API doesn't return the actual types, but in the UI are diplayed correctly)
+  ;; testing types. (API doesn't return the actual types, but in the UI are displayed correctly)
   (->> spans
     last
     :tags
