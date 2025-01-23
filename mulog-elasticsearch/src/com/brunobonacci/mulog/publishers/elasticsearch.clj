@@ -2,7 +2,7 @@
   (:require [com.brunobonacci.mulog.publisher :as p]
             [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.utils :as ut]
-            [com.brunobonacci.mulog.publishers.util :as u]
+            [com.brunobonacci.mulog.publishers.elasticsearch.util :as u]
             [com.brunobonacci.mulog.common.json :as json]
             [clj-http.client :as http]
             [clojure.string :as str]
@@ -72,20 +72,6 @@
 
 
 
-(defn mangle-map
-  [m]
-  (let [mangler (comp u/type-mangle u/snake-case-mangle)]
-    (w/postwalk
-      (fn [i]
-        (if (map? i)
-          (->> i
-            (map (fn [entry] (mangler entry)))
-            (into {}))
-          i))
-      m)))
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
 ;;         ----==| P O S T   T O   E L A S T I C S E A R C H |==----          ;;
@@ -96,7 +82,7 @@
 
 (defn- prepare-records
   [{:keys [op index* name-mangling els-version]} records]
-  (let [mangler (if name-mangling mangle-map identity)]
+  (let [mangler (if name-mangling u/mangle-map identity)]
     (->> records
       (mapcat (fn [{:keys [mulog/timestamp mulog/trace-id] :as r}]
                 (let [metaidx (merge

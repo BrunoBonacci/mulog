@@ -9,6 +9,7 @@
   - Improved tags serialization for zipkin publisher
   - [NEW] Zipkin publisher now supports custom `:http-opts` for auth
   - Added integration tests with testcontainers for ELS, CloudWatch, Kinesis
+  - Fixed issue on Elasticsearch publisher with heterogeneous arrays #129
 
 ## v0.9.0 - (2022-07-11)
 
