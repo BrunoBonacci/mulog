@@ -2,7 +2,7 @@
 
 ## v0.10.0 - (unreleased)
 
-  - [NEW] Added new OpenTelemetry publisher (no wrappers required) #108
+  - [**NEW**] Added new OpenTelemetry publisher (no wrappers required) #108
   - Bumping dependencies on all modules
   - Fixed issue on Elasticsearch while logging java *Error classes. #98
   - Fixed issue on CloudWatch Logs when publishing empty payloads. #125

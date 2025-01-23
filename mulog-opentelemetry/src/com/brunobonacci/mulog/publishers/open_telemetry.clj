@@ -107,7 +107,7 @@
 ;; (convert-tags (first events)),
 ;; (ut/remove-nils (flag-if-error (first events))),
 
-
+;; https://github.com/open-telemetry/opentelemetry-proto/blob/main/opentelemetry/proto/trace/v1/trace.proto
 (defn- convert-event-into-span
   [{:keys [mulog/trace-id mulog/parent-trace mulog/root-trace
            mulog/duration mulog/event-name mulog/timestamp] :as event}]
@@ -131,7 +131,7 @@
        :attributes  (convert-tags event)})))
 
 
-
+;; https://github.com/open-telemetry/opentelemetry-proto/blob/main/opentelemetry/proto/logs/v1/logs.proto
 (defn- convert-event-into-log
   [{:keys [mulog/parent-trace mulog/root-trace
            mulog/event-name mulog/timestamp] :as event}]
@@ -148,7 +148,7 @@
        :observedTimeUnixNano timestampNano
        :event_name           (convert-key-tag event-name)
        ;; body
-       :body                 (convert-key-tag event-name)
+       :body                 {:stringValue (convert-key-tag event-name)}
        ;; use app-name as localEndpoint if available
        ;;              :localEndpoint {:serviceName (or app-name "unknown")}
        :attributes           (convert-tags event)}
@@ -174,7 +174,8 @@
              [{:scope {:name "mulog" :version @mulog-version}
                :spans (mapv convert-event-into-span events)}]}))
     ((fn [spans]
-       {:resourceSpans spans}))))
+       (when-not (empty? spans)
+         {:resourceSpans spans})))))
 
 
 
@@ -194,8 +195,9 @@
              :scopeLogs
              [{:scope {:name "mulog" :version @mulog-version}
                :logRecords (mapv convert-event-into-log events)}]}))
-    ((fn [spans]
-       {:resourceSpans spans}))))
+    ((fn [logs]
+       (when-not (empty? logs)
+         {:resourceLogs logs})))))
 
 
 
@@ -218,8 +220,9 @@
   (let [records (if (= send :logs)
                   (prepare-log-records   config records)
                   (prepare-trace-records config records))]
-    (post-to-collector (str url (name send)) config
-      (json/to-json records))))
+    (when-not (empty? records)
+      (post-to-collector (str url (name send)) config
+        (json/to-json records)))))
 
 
 
