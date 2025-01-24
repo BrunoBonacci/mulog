@@ -45,6 +45,10 @@
 
   => {"exception.x" string?}
 
+
+  (ut/mangle-map
+    {:exception-in-list [(ex-info "error" {:foo :bar})]})
+   => {"exception_in_list.a" [{"_aVal.x" string?}]}
   )
 
 
