@@ -1,0 +1,22 @@
+# run with:
+# mkdir -p /tmp/optel && cp test-config.yml /tmp/optel/config.yml
+# docker run -p 127.0.0.1:4318:4318 -v /tmp/optel:/out otel/opentelemetry-collector-contrib:0.118.0 --config=/out/config.yml
+#
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+
+exporters:
+  file:
+    path: /out/optel.json
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [file]
+    logs:
+      receivers: [otlp]
+      exporters: [file]
