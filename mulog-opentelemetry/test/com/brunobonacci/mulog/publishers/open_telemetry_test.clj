@@ -243,8 +243,7 @@
   (def container (-> (tc/create
                       {:image-name    "otel/opentelemetry-collector-contrib:0.118.0"
                        :exposed-ports [4318]
-                       :command       ["--config=/out/config.yml"]
-                       :wait-for      {:strategy :port :startup-timeout 60}})
+                       :command       ["--config=/out/config.yml"]})
                    (tc/bind-filesystem! {:host-path      test-dir
                                          :container-path "/out"
                                          :mode           :read-write})))
@@ -396,8 +395,7 @@
   (def container (-> (tc/create
                       {:image-name    "otel/opentelemetry-collector-contrib:0.118.0"
                        :exposed-ports [4318]
-                       :command       ["--config=/out/config.yml"]
-                       :wait-for      {:strategy :port :startup-timeout 60}})
+                       :command       ["--config=/out/config.yml"]})
                    (tc/bind-filesystem! {:host-path      test-dir
                                          :container-path "/out"
                                          :mode           :read-write})))
