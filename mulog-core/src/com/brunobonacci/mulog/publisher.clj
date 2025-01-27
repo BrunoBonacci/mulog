@@ -340,3 +340,12 @@
     "com.brunobonacci.mulog.publishers.mbean-sampler/mbean-sampler-publisher"
     "com.brunobonacci/mulog-mbean-sampler"
     config))
+
+
+
+(defmethod publisher-factory :open-telemetry
+  [config]
+  (load-dynamic-publisher
+    "com.brunobonacci.mulog.publishers.open-telemetry/open-telemetry-publisher"
+    "com.brunobonacci/mulog-opentelemetry"
+    config))

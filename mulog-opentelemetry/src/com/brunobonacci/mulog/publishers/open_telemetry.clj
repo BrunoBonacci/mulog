@@ -306,8 +306,8 @@
    ;; function to transform records
    :transform identity
 
-   ;; send only traces, only logs or both
-   :send [:traces :logs]
+   ;; send traces or logs, REQUIRED
+   ;; :send :traces
 
    ;; extra http options
    :http-opts {}
@@ -366,33 +366,15 @@
 ;; one for each.
 ;;
 (defn open-telemetry-publisher
-  [{:keys [url max-items] :as config}]
-  {:pre [url]}
-  (let [config (merge DEFAULT-CONFIG config)
-        send (:send config)]
+  [{:keys [url send max-items] :as config}]
+  {:pre [url send]}
+  (let [config (merge DEFAULT-CONFIG config)]
 
-    (when-not (coll? send)
+    (when-not (#{:traces :logs} send)
       (throw
-        (ex-info "Invalid config. `:send` must be a collection."
+        (ex-info "Invalid config. `:send` must be either `:traces` or `:logs`"
           {:config config})))
 
-    (when-not (#{#{:traces} #{:logs} #{:traces :logs}}
-                (set send))
-      (throw
-        (ex-info "Invalid config. `:send` must be either `[:traces]` or `[:logs]` or both: `[:traces :logs]`"
-          {:config config})))
-
-    (let [send (set send)
-
-          traces (when (:traces send)
-                   (open-telemetry-trace-publisher config))
-
-          logs (when (:logs send)
-                 (open-telemetry-log-publisher config))]
-
-      (if (and traces logs)
-        {:type :multi
-         :publishers
-         [{:type :inline :publisher traces}
-          {:type :inline :publisher logs}]}
-        (or traces logs)))))
+    (case send
+      :traces (open-telemetry-trace-publisher config)
+      :logs   (open-telemetry-log-publisher config))))

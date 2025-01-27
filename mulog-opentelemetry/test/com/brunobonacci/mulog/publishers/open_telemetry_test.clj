@@ -39,13 +39,6 @@
 
 
 
-(defn system-temp-dir []
-  (->
-    (java.lang.System/getProperty "java.io.tmpdir")
-    (str/replace #"/$" "")))
-
-
-
 (defn service-ready?
   [host port client-settings]
   (fn []
@@ -82,19 +75,12 @@
 
   (wait-for-condition "opentelemetry service ready" (service-ready? host port2 {}))
 
-  #_(def publisher (u/start-publisher!
-                     {:type           :open-telemetry
-                      :url            (str "http://" host ":" port "/")
-                      "publish-delay" 500}))
 
   (def publisher (u/start-publisher!
-                   {:type :inline
-                    :publisher
-                    (ot/open-telemetry-publisher
-                      {:type          :open-telemetry
-                       :send          [:traces]
-                       :url           (str "http://" host ":" port "/")
-                       :publish-delay 500})}))
+                   {:type          :open-telemetry
+                    :send          :traces
+                    :url           (str "http://" host ":" port "/")
+                    :publish-delay 500}))
 
   (def global (u/global-context))
   (u/set-global-context!
@@ -250,7 +236,7 @@
 (repl-test {:labels [:container]} "test OpenTelemetry publisher to OTLP collector [traces]"
 
   (def test-id (f/flake))
-  (def test-dir (str "./tmp/optel-" test-id))
+  (def test-dir (str "/tmp/optel-" test-id))
   (io/make-parents (io/file (str test-dir "/test")))
   (io/copy (io/file "./test-config.yml") (io/file (str test-dir "/config.yml")))
 
@@ -281,13 +267,10 @@
                       "publish-delay" 500}))
 
   (def publisher (u/start-publisher!
-                   {:type :inline
-                    :publisher
-                    (ot/open-telemetry-publisher
-                      {:type          :open-telemetry
-                       :send          [:traces]
-                       :url           (str "http://" host ":" port "/")
-                       :publish-delay 500})}))
+                   {:type          :open-telemetry
+                    :send          :traces
+                    :url           (str "http://" host ":" port "/")
+                    :publish-delay 500}))
 
   (def global (u/global-context))
   (u/set-global-context!
@@ -406,7 +389,7 @@
 (repl-test {:labels [:container]} "test OpenTelemetry publisher to OTLP collector [logs]"
 
   (def test-id (f/flake))
-  (def test-dir (str "./tmp/optel-" test-id))
+  (def test-dir (str "/tmp/optel-" test-id))
   (io/make-parents (io/file (str test-dir "/test")))
   (io/copy (io/file "./test-config.yml") (io/file (str test-dir "/config.yml")))
 
@@ -431,19 +414,11 @@
       (try (.exists (io/file (str test-dir "/optel.json")))
            (catch Exception _ false))))
 
-  #_(def publisher (u/start-publisher!
-                     {:type           :open-telemetry
-                      :url            (str "http://" host ":" port "/")
-                      "publish-delay" 500}))
-
   (def publisher (u/start-publisher!
-                   {:type :inline
-                    :publisher
-                    (ot/open-telemetry-publisher
-                      {:type          :open-telemetry
-                       :send          [:logs]
-                       :url           (str "http://" host ":" port "/")
-                       :publish-delay 500})}))
+                   {:type          :open-telemetry
+                    :send          :logs
+                    :url           (str "http://" host ":" port "/")
+                    :publish-delay 500}))
 
   (def global (u/global-context))
   (u/set-global-context!

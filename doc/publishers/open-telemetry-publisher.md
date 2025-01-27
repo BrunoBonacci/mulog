@@ -1,5 +1,5 @@
 ## OpenTelemetry (OTLP) publisher
-![since v0.10.0](https://img.shields.io/badge/since-v0.2.0-brightgreen)
+![since v0.10.0](https://img.shields.io/badge/since-v0.10.0-brightgreen)
 
 This publisher doesn't require java/clojure instrumentation libraries.
 It relies on existing ***μ/trace*** forms to capture and publish traces.
@@ -31,6 +31,8 @@ The available configuration options:
  ;; OpenTelemetry Collector endpoint for OTLP HTTP/JSON (REQUIRED)
  :url  "http://localhost:4318/"
 
+ ;; Whether to send traces or logs (metrics in mulog are just logs)
+ :send :traces
 
  ;; the maximum number of events which can be sent in a single
  ;; batch request to Zipkin
@@ -55,11 +57,35 @@ The available configuration options:
 
 How to use it:
 
+In order to send **traces** and **logs** use:
+``` clojure
+(μ/start-publisher!
+  {:type :multi
+   :publishers
+   [{:type :open-telemetry
+     :send :traces
+     :url  "http://localhost:4318/"}
+    {:type :open-telemetry
+     :send :logs
+     :url  "http://localhost:4318/"}]})
+```
+
+In order to send **traces** only use:
 ``` clojure
 (μ/start-publisher!
   {:type :open-telemetry
+   :send :traces
    :url  "http://localhost:4318/"})
 ```
+
+In order to send **logs** only use:
+``` clojure
+(μ/start-publisher!
+  {:type :open-telemetry
+   :send :logs
+   :url  "http://localhost:4318/"})
+```
+
 
 Here is an example of how the traces look like:
 

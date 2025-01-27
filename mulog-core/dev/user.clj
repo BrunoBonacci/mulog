@@ -155,18 +155,15 @@
 
   (def st2
     (u/start-publisher!
-      {:type :zipkin :url "http://localhost:9411/"}))
+      {:type :multi
+       :publishers
+       [{:type :open-telemetry
+         :send :traces
+         :url  "http://localhost:4318/"}
+        {:type :open-telemetry
+         :send :logs
+         :url  "http://localhost:4318/"}]}))
 
-  (comment
-    (require '[com.brunobonacci.mulog.publishers.open-telemetry :as ot])
-
-    (def otp (ot/open-telemetry-publisher
-               {:type :open-telemetry
-                :url  "http://localhost:4318/"}))
-
-    (def st2
-      (u/start-publisher! {:type :inline :publisher otp}))
-    )
 
   (u/set-global-context! {:app "demo" :version 1 :env "local"})
 
