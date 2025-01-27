@@ -65,7 +65,7 @@
                        "DEBUG"          "1"
                        "DEFAULT_REGION" "eu-west-1"}
        ;; wait until container is ready
-       :wait-for      {:strategy :port :startup-timeout 60}}))
+       :wait-for      {:wait-strategy :port :startup-timeout 60}}))
 
 
   (def container (tc/start! container))
@@ -150,7 +150,7 @@
                        "DEBUG"          "1"
                        "DEFAULT_REGION" "eu-west-1"}
        ;; wait until container is ready
-       :wait-for      {:strategy :port :startup-timeout 60}}))
+       :wait-for      {:wait-strategy :port :startup-timeout 60}}))
 
 
   (def container (tc/start! container))

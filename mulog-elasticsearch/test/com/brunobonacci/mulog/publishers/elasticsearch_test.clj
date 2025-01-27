@@ -45,7 +45,7 @@
                     :env-vars {"node.name" "node1"
                                "discovery.type" "single-node"
                                "ELASTICSEARCH_PASSWORD" password}
-                    :wait-for {:strategy :port :startup-timeout 60}}))
+                    :wait-for {:wait-strategy :port :startup-timeout 60}}))
 
   (def container (tc/start! container))
 
@@ -200,7 +200,7 @@
                     :env-vars {"node.name" "node1"
                                "discovery.type" "single-node"
                                "OPENSEARCH_INITIAL_ADMIN_PASSWORD" password}
-                    :wait-for {:strategy :port :startup-timeout 60}}))
+                    :wait-for {:wait-strategy :port :startup-timeout 60}}))
 
   (def container (tc/start! container))
 

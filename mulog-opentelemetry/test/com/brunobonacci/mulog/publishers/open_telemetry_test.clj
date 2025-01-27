@@ -61,7 +61,7 @@
                    {:image-name    "jaegertracing/all-in-one:1.64.0"
                     :exposed-ports [4318 16686]
                     :env-vars      {"COLLECTOR_OTLP_ENABLED" "true"}
-                    :wait-for      {:strategy :port :startup-timeout 60}}))
+                    :wait-for      {:wait-strategy :port :startup-timeout 60}}))
 
   (def container (tc/start! container))
 
@@ -243,7 +243,10 @@
   (def container (-> (tc/create
                       {:image-name    "otel/opentelemetry-collector-contrib:0.118.0"
                        :exposed-ports [4318]
-                       :command       ["--config=/out/config.yml"]})
+                       :command       ["--config=/out/config.yml"]
+                       :wait-for      {:wait-strategy :log
+                                       :message "Everything is ready."
+                                       :startup-timeout 60}})
                    (tc/bind-filesystem! {:host-path      test-dir
                                          :container-path "/out"
                                          :mode           :read-write})))
@@ -259,11 +262,6 @@
     (fn []
       (try (.exists (io/file (str test-dir "/optel.json")))
            (catch Exception _ false))))
-
-  #_(def publisher (u/start-publisher!
-                     {:type           :open-telemetry
-                      :url            (str "http://" host ":" port "/")
-                      "publish-delay" 500}))
 
   (def publisher (u/start-publisher!
                    {:type          :open-telemetry
@@ -395,7 +393,10 @@
   (def container (-> (tc/create
                       {:image-name    "otel/opentelemetry-collector-contrib:0.118.0"
                        :exposed-ports [4318]
-                       :command       ["--config=/out/config.yml"]})
+                       :command       ["--config=/out/config.yml"]
+                       :wait-for      {:wait-strategy :log
+                                       :message "Everything is ready."
+                                       :startup-timeout 60}})
                    (tc/bind-filesystem! {:host-path      test-dir
                                          :container-path "/out"
                                          :mode           :read-write})))

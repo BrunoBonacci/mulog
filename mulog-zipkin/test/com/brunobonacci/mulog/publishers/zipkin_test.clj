@@ -39,7 +39,7 @@
                    {:image-name "openzipkin/zipkin:latest"
                     :exposed-ports [9411]
                     :env-vars {"STORAGE_TYPE" "mem"}
-                    :wait-for {:strategy :port :startup-timeout 60}}))
+                    :wait-for {:wait-strategy :port :startup-timeout 60}}))
 
   (def container (tc/start! container))
 
