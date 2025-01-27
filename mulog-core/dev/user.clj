@@ -58,6 +58,8 @@
   ;; stop publishers
   (p1)
   (p2)
+
+  (u/stop-all-publishers!)
   )
 
 

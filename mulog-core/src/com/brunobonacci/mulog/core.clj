@@ -238,6 +238,14 @@
   ((get-in @publishers [publisher-id :stopper] (constantly :stopped))))
 
 
+(defn stop-all-publishers!
+  []
+  (->> (registered-publishers)
+    (map :id)
+    (run! stop-publisher!))
+  :stopped)
+
+
 
 (defmacro on-error
   "internal utility macro"

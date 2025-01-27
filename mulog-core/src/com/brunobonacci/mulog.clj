@@ -149,6 +149,14 @@ For more information, please visit: https://github.com/BrunoBonacci/mulog
 
 
 
+(defn stop-all-publishers!
+  "It stops all registered publisher, useful before application shutdown
+   or when the publisher handle is lost."
+  []
+  (core/stop-all-publishers!))
+
+
+
 (defn global-context
   "Return the current value of the `global-context`.
   The global logging context is used to add properties which are valid
