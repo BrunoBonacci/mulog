@@ -39,6 +39,23 @@
 
 
 
+(defn- change-permissions
+  "Grant access to all, required because optel process starts with a different user
+   in the docker container. The userid inside the container is 10001"
+  [f]
+  (java.nio.file.Files/setPosixFilePermissions
+    (.toPath (io/file f))
+    #{java.nio.file.attribute.PosixFilePermission/OWNER_READ
+      java.nio.file.attribute.PosixFilePermission/OWNER_WRITE
+      java.nio.file.attribute.PosixFilePermission/OWNER_EXECUTE
+      java.nio.file.attribute.PosixFilePermission/GROUP_READ
+      java.nio.file.attribute.PosixFilePermission/GROUP_WRITE
+      java.nio.file.attribute.PosixFilePermission/GROUP_EXECUTE
+      java.nio.file.attribute.PosixFilePermission/OTHERS_READ
+      java.nio.file.attribute.PosixFilePermission/OTHERS_WRITE
+      java.nio.file.attribute.PosixFilePermission/OTHERS_EXECUTE }))
+
+
 (defn service-ready?
   [host port client-settings]
   (fn []
@@ -238,6 +255,7 @@
   (def test-id (f/flake))
   (def test-dir (str "/tmp/optel-" test-id))
   (io/make-parents (io/file (str test-dir "/test")))
+  (change-permissions test-dir)
   (io/copy (io/file "./test-config.yml") (io/file (str test-dir "/config.yml")))
 
   (def container (-> (tc/create
@@ -378,8 +396,8 @@
   :rdt/finalize
   ;; stop publisher
   (publisher)
-  (tc/stop! container)
-  (rm-fr test-dir))
+  (rm-fr test-dir)
+  (tc/stop! container))
 
 
 
@@ -388,6 +406,7 @@
   (def test-id (f/flake))
   (def test-dir (str "/tmp/optel-" test-id))
   (io/make-parents (io/file (str test-dir "/test")))
+  (change-permissions test-dir)
   (io/copy (io/file "./test-config.yml") (io/file (str test-dir "/config.yml")))
 
   (def container (-> (tc/create
@@ -514,5 +533,5 @@
   :rdt/finalize
   ;; stop publisher
   (publisher)
-  (tc/stop! container)
-  (rm-fr test-dir))
+  (rm-fr test-dir)
+  (tc/stop! container))
