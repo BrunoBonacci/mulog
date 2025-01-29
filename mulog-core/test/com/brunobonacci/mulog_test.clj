@@ -506,6 +506,21 @@
              :mulog/capture    :error})]))
 
 
+  (fact "success case but failing extraction with wrong type returned"
+    (tp/with-test-publisher
+      (u/trace :test
+        {:pairs   [:key1 "value1"]
+         :capture (constantly 1)}
+        {:http-status 200 :body "OK"}))
+
+    => (just
+        [(contains
+           {:mulog/event-name :test
+            :key1             "value1"
+            :mulog/capture    :error
+            :mulog/capture-message "Invalid type returned, :capture fn must return a map!"})]))
+
+
   (fact "extraction can redefine internal properties such as :outcome and :exception"
     (tp/with-test-publisher
       (u/trace :test

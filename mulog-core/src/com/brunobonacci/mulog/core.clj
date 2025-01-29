@@ -143,7 +143,7 @@
   (delay ;; Delay the task initialisation at runtime (GraalVM)
     (rb/recurring-task
       PUBLISH-INTERVAL
-      (fn []
+      (fn dispatch-publishers-task []
         (let [pubs @publishers
               ;;    group-by buffer
               pubs (group-by :buffer (map second pubs))]
