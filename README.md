@@ -469,6 +469,32 @@ One important difference between `with-context` and the `μ/trace`
 all nested calls* while the `μ/trace` pairs will be only added to that
 specific trace event and not the nested ones.
 
+We can also trace the output of the function call using `µ/trace` using the `:capture` parameter:
+
+```
+(μ/trace ::availability
+  {:pairs [:product-id product-id] 
+   :capture 
+    (fn [{:keys [inventory ordered shipped] :as a}]
+     {:availability a})}
+  (product-availability product-id))
+
+;; {:mulog/event-name :your-ns/availability,
+;;  :mulog/timestamp 1587504242983,
+;;  :mulog/trace-id #mulog/flake "4VTF9QBbnef57vxVy-b4uKzh7dG7r7y4",
+;;  :mulog/root-trace #mulog/flake "4VTF9QBbnef57vxVy-b4uKzh7dG7r7y4",
+;;  :mulog/duration 254402837,
+;;  :mulog/namespace "your-ns",
+;;  :mulog/outcome :ok,
+;;  :app-name "mulog-demo",
+;;  :env "local",
+;;  :product_id "2345-23-545",
+;;  :availability {:inventory 10,
+;;                 :ordered 5,
+;;                 :shipped 2},
+;;  :version "0.1.0"}
+```
+
 If we had the following set of nested calls:
 
 ``` clojure
