@@ -473,7 +473,7 @@ We can also trace the output of the function call using `µ/trace` using the `:c
 
 ```
 (μ/trace ::availability
-  {:pairs [:product-id product-id] 
+  {:pairs [:product/id product-id] 
    :capture 
     (fn [{:keys [inventory ordered shipped] :as a}]
      {:availability a})}
@@ -488,8 +488,8 @@ We can also trace the output of the function call using `µ/trace` using the `:c
 ;;  :mulog/outcome :ok,
 ;;  :app-name "mulog-demo",
 ;;  :env "local",
-;;  :product_id "2345-23-545",
-;;  :availability {:inventory 10,
+;;  :product/id "2345-23-545",
+;;  :product/availability {:inventory 10,
 ;;                 :ordered 5,
 ;;                 :shipped 2},
 ;;  :version "0.1.0"}
