@@ -1,12 +1,11 @@
 (ns com.brunobonacci.mulog.publishers.elasticsearch
-  (:require [com.brunobonacci.mulog.publisher :as p]
+  (:require [com.brunobonacci.mulog.publisher]
             [com.brunobonacci.mulog.buffer :as rb]
             [com.brunobonacci.mulog.utils :as ut]
             [com.brunobonacci.mulog.publishers.elasticsearch.util :as u]
             [com.brunobonacci.mulog.common.json :as json]
             [clj-http.client :as http]
-            [clojure.string :as str]
-            [clojure.walk :as w])
+            [clojure.string :as str])
   (:import [java.time Instant ZoneId]
            [java.time.format DateTimeFormatter]))
 

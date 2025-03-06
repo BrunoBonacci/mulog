@@ -87,7 +87,7 @@
 
   (def st
     (u/start-publisher!
-      {:type :console}))
+      {:type :console :pretty? true}))
 
   (def st2
     (u/start-publisher!
@@ -296,7 +296,7 @@
 
   (u/log ::hello :to "World!")
 
-  (u/start-publisher! {:type :console})
+  (u/start-publisher! {:type :console :pretty? true})
 
   (u/log ::hello :to "World!" :v (rand-int 1000))
   (u/log ::hello :to "World!" :v "ciao")
