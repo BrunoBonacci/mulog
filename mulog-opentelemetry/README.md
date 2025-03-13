@@ -6,7 +6,7 @@ This project contains the `publisher` for [OpenTelemetry](https://opentelemetry.
 
 ## Usage
 
-Please see [Documentation page](../doc/publishers/opentelemetry-publisher.md).
+Please see [Documentation page](../doc/publishers/open-telemetry-publisher.md).
 
 ## Testing
 
