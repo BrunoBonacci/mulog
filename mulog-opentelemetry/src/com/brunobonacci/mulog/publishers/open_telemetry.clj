@@ -146,7 +146,8 @@
       { ;; timestamp in ns
        :timeUnixNano         timestampNano
        :observedTimeUnixNano timestampNano
-       :event_name           (convert-key-tag event-name)
+       ;; currently under development, not supported by all platforms
+       ;;:event_name           (convert-key-tag event-name)
        ;; body
        :body                 {:stringValue (convert-key-tag event-name)}
        ;; use app-name as localEndpoint if available
