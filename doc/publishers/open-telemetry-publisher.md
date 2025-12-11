@@ -92,7 +92,7 @@ Here is an example of how the traces look like:
 ![traces](../images/nested-traces.png)
 
 
-**NOTE: OpenTelemetry requires an application name for the traces, use
+**NOTE: OpenTelemetry requires an application name (`:app-name`) for the traces, use
 `set-global-context` to define one**, like:
 
 ``` clojure
@@ -102,3 +102,30 @@ Here is an example of how the traces look like:
 ```
 
 see [example here](https://github.com/BrunoBonacci/mulog/blob/master/examples/roads-disruptions/src/com/brunobonacci/disruptions/main.clj#L44-L46).
+
+
+Mulog's OpenTelemetry Publisher doesn't require, nor depends on, a OpenTelemetry wrapper library,
+however if you are already using the Java OpenTelemetry wrapper and you wish to attach the traces to an existing OTEL span then use the `with-context` as follow:
+
+
+``` clojure
+;; import (io.opentelemetry.api.trace Span)
+
+(defn otel-context
+  "Extract the current OTEL trace-id and span-id from the active span.
+   Returns a map with :trace-id and :span-id, or nil if no active span."
+  []
+  (let [span (Span/fromContext (Context/current))
+        span-ctx (.getSpanContext span)]
+    (when (.isValid span-ctx)
+      {:mulog/root-trace (.getTraceId span-ctx)
+       :mulog/parent-trace  (.getSpanId span-ctx)})))
+
+
+;; attach the mulog context to the OTEL context
+(u/with-context (otel-context)
+   (u/log ::event-name ,,,)
+   (u/trace ::trace-name [] ,,,))
+```
+
+This typically would only be required at the edge of a system (such API endpoint or similar).
