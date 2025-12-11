@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.10.0 - (unreleased)
+## v0.10.0 - (2025-12-11)
 
   - [**NEW**] Added new OpenTelemetry publisher (no wrappers required) #108
   - Bumping dependencies on all modules
