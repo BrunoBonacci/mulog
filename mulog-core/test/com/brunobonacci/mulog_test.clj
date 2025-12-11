@@ -514,11 +514,11 @@
         {:http-status 200 :body "OK"}))
 
     => (just
-        [(contains
-           {:mulog/event-name :test
-            :key1             "value1"
-            :mulog/capture    :error
-            :mulog/capture-message "Invalid type returned, :capture fn must return a map!"})]))
+         [(contains
+            {:mulog/event-name :test
+             :key1             "value1"
+             :mulog/capture    :error
+             :mulog/capture-message "Invalid type returned, :capture fn must return a map!"})]))
 
 
   (fact "extraction can redefine internal properties such as :outcome and :exception"

@@ -73,7 +73,7 @@
   (wait-for-condition "index-created"
     (fn []
       (->> (http/get (str "http://" host ":" port "/_cat/indices")
-           client-settings)
+             client-settings)
         :body
         json/from-json
         (filterv (where :index :starts-with? "mulog"))
@@ -111,14 +111,14 @@
 
   ;; search: mulog.event_name.k:"test/event"
   (-> (http/post (str "http://" host ":" port "/mulog-*/_search")
-       (merge
-         client-settings
-         {:body-encoding "UTF-8"
-          :body
-          (json/to-json
-            {:query
-             {:query_string
-              {:query "mulog.event_name.k:\"test/event\""}}})}))
+        (merge
+          client-settings
+          {:body-encoding "UTF-8"
+           :body
+           (json/to-json
+             {:query
+              {:query_string
+               {:query "mulog.event_name.k:\"test/event\""}}})}))
     :body
     json/from-json
     :hits)
@@ -133,14 +133,14 @@
 
   ;; search: mulog.event_name.k:"test/event2"
   (-> (http/post (str "http://" host ":" port "/mulog-*/_search")
-       (merge
-         client-settings
-         {:body-encoding "UTF-8"
-          :body
-          (json/to-json
-            {:query
-             {:query_string
-              {:query "mulog.event_name.k:\"test/event2\""}}})}))
+        (merge
+          client-settings
+          {:body-encoding "UTF-8"
+           :body
+           (json/to-json
+             {:query
+              {:query_string
+               {:query "mulog.event_name.k:\"test/event2\""}}})}))
     :body
     json/from-json
     :hits)
@@ -154,28 +154,28 @@
 
   ;; search: mulog.event_name.k:"test/trace"
   (-> (http/post (str "http://" host ":" port "/mulog-*/_search")
-       (merge
-         client-settings
-         {:body-encoding "UTF-8"
-          :body
-          (json/to-json
-            {:query
-             {:query_string
-              {:query "mulog.event_name.k:\"test/trace\""}}})}))
+        (merge
+          client-settings
+          {:body-encoding "UTF-8"
+           :body
+           (json/to-json
+             {:query
+              {:query_string
+               {:query "mulog.event_name.k:\"test/trace\""}}})}))
     :body
     json/from-json
     :hits)
 
   => {:total {:value 1},
-     :hits
-     [{:_source
-       {:wait.i 100,
-        :mulog.duration.i number?
-        :mulog.trace_id string?
-        :mulog.event_name.k "test/trace",
-        :mulog.root_trace string?,
-        :mulog.namespace.s string?
-        :mulog.outcome.k "ok"}}]}
+      :hits
+      [{:_source
+        {:wait.i 100,
+         :mulog.duration.i number?
+         :mulog.trace_id string?
+         :mulog.event_name.k "test/trace",
+         :mulog.root_trace string?,
+         :mulog.namespace.s string?
+         :mulog.outcome.k "ok"}}]}
 
 
   :rdt/finalize
@@ -228,7 +228,7 @@
   (wait-for-condition "index-created"
     (fn []
       (->> (http/get (str "https://" host ":" port "/_cat/indices")
-           client-settings)
+             client-settings)
         :body
         json/from-json
         (filterv (where :index :starts-with? "mulog"))
@@ -266,14 +266,14 @@
 
   ;; search: mulog.event_name.k:"test/event"
   (-> (http/post (str "https://" host ":" port "/mulog-*/_search")
-       (merge
-         client-settings
-         {:body-encoding "UTF-8"
-          :body
-          (json/to-json
-            {:query
-             {:query_string
-              {:query "mulog.event_name.k:\"test/event\""}}})}))
+        (merge
+          client-settings
+          {:body-encoding "UTF-8"
+           :body
+           (json/to-json
+             {:query
+              {:query_string
+               {:query "mulog.event_name.k:\"test/event\""}}})}))
     :body
     json/from-json
     :hits)
@@ -288,14 +288,14 @@
 
   ;; search: mulog.event_name.k:"test/event2"
   (-> (http/post (str "https://" host ":" port "/mulog-*/_search")
-       (merge
-         client-settings
-         {:body-encoding "UTF-8"
-          :body
-          (json/to-json
-            {:query
-             {:query_string
-              {:query "mulog.event_name.k:\"test/event2\""}}})}))
+        (merge
+          client-settings
+          {:body-encoding "UTF-8"
+           :body
+           (json/to-json
+             {:query
+              {:query_string
+               {:query "mulog.event_name.k:\"test/event2\""}}})}))
     :body
     json/from-json
     :hits)
@@ -309,28 +309,28 @@
 
   ;; search: mulog.event_name.k:"test/trace"
   (-> (http/post (str "https://" host ":" port "/mulog-*/_search")
-       (merge
-         client-settings
-         {:body-encoding "UTF-8"
-          :body
-          (json/to-json
-            {:query
-             {:query_string
-              {:query "mulog.event_name.k:\"test/trace\""}}})}))
+        (merge
+          client-settings
+          {:body-encoding "UTF-8"
+           :body
+           (json/to-json
+             {:query
+              {:query_string
+               {:query "mulog.event_name.k:\"test/trace\""}}})}))
     :body
     json/from-json
     :hits)
 
   => {:total {:value 1},
-     :hits
-     [{:_source
-       {:wait.i 100,
-        :mulog.duration.i number?
-        :mulog.trace_id string?
-        :mulog.event_name.k "test/trace",
-        :mulog.root_trace string?,
-        :mulog.namespace.s string?
-        :mulog.outcome.k "ok"}}]}
+      :hits
+      [{:_source
+        {:wait.i 100,
+         :mulog.duration.i number?
+         :mulog.trace_id string?
+         :mulog.event_name.k "test/trace",
+         :mulog.root_trace string?,
+         :mulog.namespace.s string?
+         :mulog.outcome.k "ok"}}]}
 
 
   :rdt/finalize

@@ -86,7 +86,7 @@
   ;; retrieve log stram name
   (def log-stream
     (->> (aws/invoke cwl {:op      :DescribeLogStreams
-                        :request {:logGroupName log-group}})
+                          :request {:logGroupName log-group}})
       :logStreams
       first
       :logStreamName))
@@ -104,8 +104,8 @@
   ;; retrie events
   (def events
     (->> (aws/invoke cwl {:op      :GetLogEvents
-                        :request {:logGroupName  log-group
-                                  :logStreamName log-stream}})
+                          :request {:logGroupName  log-group
+                                    :logStreamName log-stream}})
       :events
       (map :message)
       (map json/from-json)))
@@ -115,10 +115,10 @@
 
   (first events)
   => {:mulog/trace-id   string?
-     :mulog/timestamp  number?
-     :mulog/event-name "com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test/hello",
-     :mulog/namespace  "com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test",
-     :to               "cloudwatch test message"}
+      :mulog/timestamp  number?
+      :mulog/event-name "com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test/hello",
+      :mulog/namespace  "com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test",
+      :to               "cloudwatch test message"}
 
   :rdt/finalize
   ;; stop publisher
@@ -198,7 +198,7 @@
   ;; retrieve log stram name
   (def log-stream
     (->> (aws/invoke cwl {:op  :DescribeLogStreams
-                        :request {:logGroupName log-group}})
+                          :request {:logGroupName log-group}})
       :logStreams
       first
       :logStreamName))
@@ -216,8 +216,8 @@
   ;; retrie events
   (def events
     (->> (aws/invoke cwl {:op :GetLogEvents
-                        :request {:logGroupName log-group
-                                  :logStreamName log-stream}})
+                          :request {:logGroupName log-group
+                                    :logStreamName log-stream}})
       :events
       (map :message)
       (map json/from-json)))
@@ -308,7 +308,7 @@
   ;; retrieve log stram name
   (def log-stream
     (->> (aws/invoke cwl {:op  :DescribeLogStreams
-                        :request {:logGroupName log-group}})
+                          :request {:logGroupName log-group}})
       :logStreams
       first
       :logStreamName))
@@ -326,8 +326,8 @@
   ;; retrie events
   (def events
     (->> (aws/invoke cwl {:op :GetLogEvents
-                        :request {:logGroupName log-group
-                                  :logStreamName log-stream}})
+                          :request {:logGroupName log-group
+                                    :logStreamName log-stream}})
       :events
       (map :message)
       (map json/from-json)))
@@ -337,10 +337,10 @@
 
   (first events)
   => {:mulog/trace-id string?
-     :mulog/timestamp number?
-     :mulog/event-name "com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test/hello",
-     :mulog/namespace "com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test",
-     :to "cloudwatch test message"}
+      :mulog/timestamp number?
+      :mulog/event-name "com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test/hello",
+      :mulog/namespace "com.brunobonacci.mulog.publishers.cloudwatch.cloudwatch-test",
+      :to "cloudwatch test message"}
 
   :rdt/finalize
   ;; stop publisher

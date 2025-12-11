@@ -35,18 +35,18 @@
 
         shard-iterator
         (->> (aws/invoke kin {:op      :GetShardIterator
-                            :request {:StreamName             stream-name
-                                      :ShardId                "shardId-000000000000"
-                                      :ShardIteratorType      "AT_SEQUENCE_NUMBER"
-                                      :StartingSequenceNumber starting-sequence-number}})
+                              :request {:StreamName             stream-name
+                                        :ShardId                "shardId-000000000000"
+                                        :ShardIteratorType      "AT_SEQUENCE_NUMBER"
+                                        :StartingSequenceNumber starting-sequence-number}})
           :ShardIterator)
 
         ;; in theory this could return empty and we should use NextShardIterator
         ;; and keep scrolling the shard for new records
         kinesis-records
         (->> (aws/invoke kin {:op      :GetRecords
-                            :request {:StreamName    stream-name
-                                      :ShardIterator shard-iterator}})
+                              :request {:StreamName    stream-name
+                                        :ShardIterator shard-iterator}})
           :Records)
 
         records (mapv (comp json/from-json slurp :Data) kinesis-records)]
@@ -125,10 +125,10 @@
 
   (first records)
   => {:mulog/trace-id string?
-     :mulog/timestamp number?
-     :mulog/event-name "com.brunobonacci.mulog.publishers.kinesis.kinesis-test/hello",
-     :mulog/namespace "com.brunobonacci.mulog.publishers.kinesis.kinesis-test",
-     :to "kinesis test message"}
+      :mulog/timestamp number?
+      :mulog/event-name "com.brunobonacci.mulog.publishers.kinesis.kinesis-test/hello",
+      :mulog/namespace "com.brunobonacci.mulog.publishers.kinesis.kinesis-test",
+      :to "kinesis test message"}
 
   :rdt/finalize
   ;; stop publisher
@@ -210,10 +210,10 @@
 
   (first records)
   => {:mulog/trace-id nil?
-     :mulog/timestamp number?
-     :mulog/event-name "com.brunobonacci.mulog.publishers.kinesis.kinesis-test/hello",
-     :mulog/namespace "com.brunobonacci.mulog.publishers.kinesis.kinesis-test",
-     :to "kinesis message without partition key"}
+      :mulog/timestamp number?
+      :mulog/event-name "com.brunobonacci.mulog.publishers.kinesis.kinesis-test/hello",
+      :mulog/namespace "com.brunobonacci.mulog.publishers.kinesis.kinesis-test",
+      :to "kinesis message without partition key"}
 
   :rdt/finalize
   ;; stop publisher

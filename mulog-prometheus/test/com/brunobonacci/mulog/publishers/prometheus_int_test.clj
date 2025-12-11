@@ -68,10 +68,10 @@
         (u/log event-name :version "1.2.3"))
 
       => (just
-          [ ;;
-           (just [(str full-name "_created") "{instance=\"\",job=\"mulog-test\",version=\"1.2.3\"}" number?])
+           [ ;;
+            (just [(str full-name "_created") "{instance=\"\",job=\"mulog-test\",version=\"1.2.3\"}" number?])
            ;; a counter for each event
-           (just [(str full-name "_total") "{instance=\"\",job=\"mulog-test\",version=\"1.2.3\"}" 1])])))
+            (just [(str full-name "_total") "{instance=\"\",job=\"mulog-test\",version=\"1.2.3\"}" 1])])))
 
 
 
@@ -86,12 +86,12 @@
         (u/log event-name :version "1.2.3" :number 123))
 
       => (just
-          [;;
-           (just [(str full-name "_created") "{instance=\"\",job=\"mulog-test\",version=\"1.2.3\"}" number?])
+           [;;
+            (just [(str full-name "_created") "{instance=\"\",job=\"mulog-test\",version=\"1.2.3\"}" number?])
            ;; a gauge with the value of the number
-           (just [(str full-name "_number") "{instance=\"\",job=\"mulog-test\",version=\"1.2.3\"}" 123])
+            (just [(str full-name "_number") "{instance=\"\",job=\"mulog-test\",version=\"1.2.3\"}" 123])
            ;; a counter for each event
-           (just [(str full-name "_total") "{instance=\"\",job=\"mulog-test\",version=\"1.2.3\"}" 1])])))
+            (just [(str full-name "_total") "{instance=\"\",job=\"mulog-test\",version=\"1.2.3\"}" 1])])))
 
 
 

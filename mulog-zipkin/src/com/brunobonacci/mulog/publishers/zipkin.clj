@@ -71,8 +71,8 @@
   (->> events
     (filter #(and (:mulog/root-trace %) (:mulog/duration %)))
     (map (fn [{:keys [mulog/trace-id mulog/parent-trace mulog/root-trace
-                     mulog/duration mulog/event-name mulog/timestamp
-                     app-name] :as e}]
+                      mulog/duration mulog/event-name mulog/timestamp
+                      app-name] :as e}]
            ;; zipkin IDs are much lower bits than flakes
            {:id        (hexify trace-id 16)
             :traceId   (if (f/flake? root-trace)   (hexify root-trace 32)   root-trace)

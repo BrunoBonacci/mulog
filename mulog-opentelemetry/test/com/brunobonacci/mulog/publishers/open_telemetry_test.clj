@@ -199,33 +199,33 @@
     (map (juxt :key :type))
     (into {}))
   => {"test?"                   "bool",
-     "factor2"                 "float64",
-     "mulog/outcome"           "string",
-     "app-name"                "string",
-     "obj"                     "string",
-     "otel.scope.name"         "string",
-     "internal.span.format"    "string",
-     "exception"               "string",
-     "error"                   "bool",
-     "mulog/timestamp"         "int64",
-     "otel.scope.version"      "string",
-     "span.kind"               "string",
-     "mulog/namespace"         "string",
-     "level"                   "int64",
-     "simplearray"             "string",
-     "wait"                    "int64",
-     "mulog/root-trace"        "string",
-     "factor1"                 "float64",
-     "mulog/parent-trace"      "string",
-     "env"                     "string",
-     "version"                 "string",
-     "mulog/duration"          "int64",
-     "set"                     "string",
-     "mulog/event-name"        "string",
-     "mulog/trace-id"          "string",
-     "array"                   "string",
-     "otel.status_description" "string",
-     "otel.status_code"        "string"}
+      "factor2"                 "float64",
+      "mulog/outcome"           "string",
+      "app-name"                "string",
+      "obj"                     "string",
+      "otel.scope.name"         "string",
+      "internal.span.format"    "string",
+      "exception"               "string",
+      "error"                   "bool",
+      "mulog/timestamp"         "int64",
+      "otel.scope.version"      "string",
+      "span.kind"               "string",
+      "mulog/namespace"         "string",
+      "level"                   "int64",
+      "simplearray"             "string",
+      "wait"                    "int64",
+      "mulog/root-trace"        "string",
+      "factor1"                 "float64",
+      "mulog/parent-trace"      "string",
+      "env"                     "string",
+      "version"                 "string",
+      "mulog/duration"          "int64",
+      "set"                     "string",
+      "mulog/event-name"        "string",
+      "mulog/trace-id"          "string",
+      "array"                   "string",
+      "otel.status_description" "string",
+      "otel.status_code"        "string"}
 
   :rdt/finalize
   ;; stop publisher
@@ -259,12 +259,12 @@
   (io/copy (io/file "./test-config.yml") (io/file (str test-dir "/config.yml")))
 
   (def container (-> (tc/create
-                      {:image-name    "otel/opentelemetry-collector-contrib:0.118.0"
-                       :exposed-ports [4318]
-                       :command       ["--config=/out/config.yml"]
-                       :wait-for      {:wait-strategy :log
-                                       :message "Everything is ready."
-                                       :startup-timeout 60}})
+                       {:image-name    "otel/opentelemetry-collector-contrib:0.118.0"
+                        :exposed-ports [4318]
+                        :command       ["--config=/out/config.yml"]
+                        :wait-for      {:wait-strategy :log
+                                        :message "Everything is ready."
+                                        :startup-timeout 60}})
                    (tc/bind-filesystem! {:host-path      test-dir
                                          :container-path "/out"
                                          :mode           :read-write})))
@@ -370,27 +370,27 @@
     (map (juxt :key (comp first keys :value)))
     (into {}))
   => {"test?"              :boolValue,
-     "factor2"            :doubleValue,
-     "mulog/outcome"      :stringValue,
-     "app-name"           :stringValue,
-     "obj"                :kvlistValue,
-     "exception"          :stringValue,
-     "error"              :stringValue,
-     "mulog/timestamp"    :intValue,
-     "mulog/namespace"    :stringValue,
-     "level"              :intValue,
-     "simplearray"        :arrayValue,
-     "wait"               :intValue,
-     "mulog/root-trace"   :stringValue,
-     "factor1"            :doubleValue,
-     "mulog/parent-trace" :stringValue,
-     "env"                :stringValue,
-     "version"            :stringValue,
-     "mulog/duration"     :intValue,
-     "set"                :arrayValue,
-     "mulog/event-name"   :stringValue,
-     "mulog/trace-id"     :stringValue,
-     "array"              :arrayValue}
+      "factor2"            :doubleValue,
+      "mulog/outcome"      :stringValue,
+      "app-name"           :stringValue,
+      "obj"                :kvlistValue,
+      "exception"          :stringValue,
+      "error"              :stringValue,
+      "mulog/timestamp"    :intValue,
+      "mulog/namespace"    :stringValue,
+      "level"              :intValue,
+      "simplearray"        :arrayValue,
+      "wait"               :intValue,
+      "mulog/root-trace"   :stringValue,
+      "factor1"            :doubleValue,
+      "mulog/parent-trace" :stringValue,
+      "env"                :stringValue,
+      "version"            :stringValue,
+      "mulog/duration"     :intValue,
+      "set"                :arrayValue,
+      "mulog/event-name"   :stringValue,
+      "mulog/trace-id"     :stringValue,
+      "array"              :arrayValue}
 
 
   :rdt/finalize
@@ -410,12 +410,12 @@
   (io/copy (io/file "./test-config.yml") (io/file (str test-dir "/config.yml")))
 
   (def container (-> (tc/create
-                      {:image-name    "otel/opentelemetry-collector-contrib:0.118.0"
-                       :exposed-ports [4318]
-                       :command       ["--config=/out/config.yml"]
-                       :wait-for      {:wait-strategy :log
-                                       :message "Everything is ready."
-                                       :startup-timeout 60}})
+                       {:image-name    "otel/opentelemetry-collector-contrib:0.118.0"
+                        :exposed-ports [4318]
+                        :command       ["--config=/out/config.yml"]
+                        :wait-for      {:wait-strategy :log
+                                        :message "Everything is ready."
+                                        :startup-timeout 60}})
                    (tc/bind-filesystem! {:host-path      test-dir
                                          :container-path "/out"
                                          :mode           :read-write})))
@@ -478,56 +478,56 @@
 
   (update log-entry :attributes (partial sort-by :key))
   => {:timeUnixNano string?
-     :observedTimeUnixNano string?
-     :body {:stringValue "test/event"},
-     :attributes
-     [{:key "app-name", :value {:stringValue "test"}}
-      {:key "array",
-       :value
-       {:arrayValue
-        {:values
-         [{:intValue "1"}
-          {:stringValue "two"}
-          {:boolValue true}
-          {:kvlistValue
-           {:values [{:key "four", :value {:intValue "5"}}]}}
-          {:stringValue "null"}
-          {:stringValue "last"}]}}}
-      {:key "env", :value {:stringValue "test-container"}}
-      {:key "factor1", :value {:doubleValue 3.5}}
-      {:key "factor2", :value {:doubleValue 0.4}}
-      {:key "mulog/event-name", :value {:stringValue "test/event"}}
-      {:key "mulog/namespace",
-       :value
-       {:stringValue
-        "com.brunobonacci.mulog.publishers.open-telemetry-test"}}
-      {:key "mulog/timestamp", :value {:intValue string?}}
-      {:key "mulog/trace-id",
-       :value {:stringValue string?}}
-      {:key "obj",
-       :value
-       {:kvlistValue
-        {:values [{:key "foo", :value {:stringValue "bar"}}]}}}
-      {:key "set",
-       :value
-       {:arrayValue
-        {:values
-         [{:stringValue "blue"}
-          {:stringValue "green"}
-          {:intValue "3"}]}}}
-      {:key "simplearray",
-       :value
-       {:arrayValue
-        {:values
-         [{:stringValue "one"}
-          {:stringValue "two"}
-          {:stringValue "three"}]}}}
-      {:key "test-id",
-       :value {:stringValue (str test-id)}}
-      {:key "test?", :value {:boolValue true}}
-      {:key "version", :value {:stringValue "1.2.3"}}],
-     :traceId "",
-     :spanId ""}
+      :observedTimeUnixNano string?
+      :body {:stringValue "test/event"},
+      :attributes
+      [{:key "app-name", :value {:stringValue "test"}}
+       {:key "array",
+        :value
+        {:arrayValue
+         {:values
+          [{:intValue "1"}
+           {:stringValue "two"}
+           {:boolValue true}
+           {:kvlistValue
+            {:values [{:key "four", :value {:intValue "5"}}]}}
+           {:stringValue "null"}
+           {:stringValue "last"}]}}}
+       {:key "env", :value {:stringValue "test-container"}}
+       {:key "factor1", :value {:doubleValue 3.5}}
+       {:key "factor2", :value {:doubleValue 0.4}}
+       {:key "mulog/event-name", :value {:stringValue "test/event"}}
+       {:key "mulog/namespace",
+        :value
+        {:stringValue
+         "com.brunobonacci.mulog.publishers.open-telemetry-test"}}
+       {:key "mulog/timestamp", :value {:intValue string?}}
+       {:key "mulog/trace-id",
+        :value {:stringValue string?}}
+       {:key "obj",
+        :value
+        {:kvlistValue
+         {:values [{:key "foo", :value {:stringValue "bar"}}]}}}
+       {:key "set",
+        :value
+        {:arrayValue
+         {:values
+          [{:stringValue "blue"}
+           {:stringValue "green"}
+           {:intValue "3"}]}}}
+       {:key "simplearray",
+        :value
+        {:arrayValue
+         {:values
+          [{:stringValue "one"}
+           {:stringValue "two"}
+           {:stringValue "three"}]}}}
+       {:key "test-id",
+        :value {:stringValue (str test-id)}}
+       {:key "test?", :value {:boolValue true}}
+       {:key "version", :value {:stringValue "1.2.3"}}],
+      :traceId "",
+      :spanId ""}
 
 
   :rdt/finalize

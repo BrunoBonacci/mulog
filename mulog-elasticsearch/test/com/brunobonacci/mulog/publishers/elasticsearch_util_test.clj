@@ -16,12 +16,12 @@
      :boolean true})
 
   => {"keyword.k" :test,
-     "symbol.k" "symbol",
-     "string.s" "bar",
-     "integer.i" 23,
-     "double.f" 23.3,
-     "float.f" (float 23.3),
-     "boolean.b" true}
+      "symbol.k" "symbol",
+      "string.s" "bar",
+      "integer.i" 23,
+      "double.f" 23.3,
+      "float.f" (float 23.3),
+      "boolean.b" true}
 
   )
 
@@ -48,7 +48,7 @@
 
   (ut/mangle-map
     {:exception-in-list [(ex-info "error" {:foo :bar})]})
-   => {"exception_in_list.a" [{"_aVal.x" string?}]}
+  => {"exception_in_list.a" [{"_aVal.x" string?}]}
   )
 
 
@@ -62,24 +62,24 @@
      :set    #{1 "2" true {:foo 1 :bar 2} [1]}})
 
   => {"map.o" {"foo.i" 1, "bar.i" 2},
-     "vector.a"
-     [{"_aVal.i" 1}
-      {"_aVal.s" "2"}
-      {"_aVal.b" true}
-      {"_aVal.o" {"foo.i" 1, "bar.i" 2}}
-      {"_aVal.a" [{"_aVal.i" 1}]}],
-     "list.a"
-     [{"_aVal.i" 1}
-      {"_aVal.s" "2"}
-      {"_aVal.b" true}
-      {"_aVal.o" {"foo.i" 1, "bar.i" 2}}
-      {"_aVal.a" [{"_aVal.i" 1}]}],
-     "set.a"
-     [{"_aVal.i" 1}
-      {"_aVal.o" {"foo.i" 1, "bar.i" 2}}
-      {"_aVal.b" true}
-      {"_aVal.s" "2"}
-      {"_aVal.a" [{"_aVal.i" 1}]}]}
+      "vector.a"
+      [{"_aVal.i" 1}
+       {"_aVal.s" "2"}
+       {"_aVal.b" true}
+       {"_aVal.o" {"foo.i" 1, "bar.i" 2}}
+       {"_aVal.a" [{"_aVal.i" 1}]}],
+      "list.a"
+      [{"_aVal.i" 1}
+       {"_aVal.s" "2"}
+       {"_aVal.b" true}
+       {"_aVal.o" {"foo.i" 1, "bar.i" 2}}
+       {"_aVal.a" [{"_aVal.i" 1}]}],
+      "set.a"
+      [{"_aVal.i" 1}
+       {"_aVal.o" {"foo.i" 1, "bar.i" 2}}
+       {"_aVal.b" true}
+       {"_aVal.s" "2"}
+       {"_aVal.a" [{"_aVal.i" 1}]}]}
 
   )
 
