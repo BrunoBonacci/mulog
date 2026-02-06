@@ -40,7 +40,7 @@
   (def password "bitnami")
 
   (def container (tc/create
-                   {:image-name "bitnami/elasticsearch:8.16.1"
+                   {:image-name "bitnamilegacy/elasticsearch:8.16.1"
                     :exposed-ports [9200]
                     :env-vars {"node.name" "node1"
                                "discovery.type" "single-node"
