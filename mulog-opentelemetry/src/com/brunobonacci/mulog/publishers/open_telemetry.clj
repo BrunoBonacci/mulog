@@ -108,6 +108,7 @@
 ;; (ut/remove-nils (flag-if-error (first events))),
 
 ;; https://github.com/open-telemetry/opentelemetry-proto/blob/main/opentelemetry/proto/trace/v1/trace.proto
+;; https://protobuf.dev/programming-guides/json/#field-representation
 (defn- convert-event-into-span
   [{:keys [mulog/trace-id mulog/parent-trace mulog/root-trace
            mulog/duration mulog/event-name mulog/timestamp] :as event}]
@@ -122,8 +123,8 @@
        :name          (convert-key-tag event-name)
        :kind          1
        ;; timestamp in ns
-       :startTimeUnixNano timestampNano
-       :endTimeUnixNano   (+ timestampNano duration)
+       :startTimeUnixNano (str timestampNano) ;; ProtoBuf/Json mandates a string
+       :endTimeUnixNano   (str (+ timestampNano duration)) ;; ProtoBuf/Json mandates a string
        ;; status
        :status (if (:error event) {:code 2 :message (str (:error event))} {:code 1})
        ;; use app-name as localEndpoint if available
@@ -132,6 +133,7 @@
 
 
 ;; https://github.com/open-telemetry/opentelemetry-proto/blob/main/opentelemetry/proto/logs/v1/logs.proto
+;; https://protobuf.dev/programming-guides/json/#field-representation
 (defn- convert-event-into-log
   [{:keys [mulog/parent-trace mulog/root-trace
            mulog/event-name mulog/timestamp] :as event}]
@@ -144,8 +146,8 @@
       (when root-trace
         {:traceId (if (f/flake? root-trace)   (hexify root-trace 32)   root-trace)})
       { ;; timestamp in ns
-       :timeUnixNano         timestampNano
-       :observedTimeUnixNano timestampNano
+       :timeUnixNano         (str timestampNano) ;; ProtoBuf/Json mandates a string
+       :observedTimeUnixNano (str timestampNano) ;; ProtoBuf/Json mandates a string
        ;; currently under development, not supported by all platforms
        ;;:event_name           (convert-key-tag event-name)
        ;; body
