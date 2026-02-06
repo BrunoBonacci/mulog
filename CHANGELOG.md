@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.10.1 - (2026-02-06)
+
+  - Fixed OpenTelemetry publisher issue with OpenObserve receiver #135
+
 ## v0.10.0 - (2025-12-11)
 
   - [**NEW**] Added new OpenTelemetry publisher (no wrappers required) #108
