@@ -15,7 +15,9 @@
   :javac-options ["-target" "1.8" "-source" "1.8" "-Xlint:-options"]
   :java-source-paths ["java"]
 
-  :dependencies [[org.clojure/clojure "1.12.0" :scope "provided"]
+  :resource-paths ["../ver"]
+
+  :dependencies [[org.clojure/clojure "1.12.4" :scope "provided"]
                  [amalloy/ring-buffer "1.3.1"]]
 
   :global-vars {*warn-on-reflection* true}
@@ -38,7 +40,7 @@
              :1.9  {:dependencies [[org.clojure/clojure "1.9.0"]]}
              :1.10 {:dependencies [[org.clojure/clojure "1.10.3"]]}
              :1.11 {:dependencies [[org.clojure/clojure "1.11.4"]]}
-             :1.12 {:dependencies [[org.clojure/clojure "1.12.0"]]}}
+             :1.12 {:dependencies [[org.clojure/clojure "1.12.4"]]}}
 
   :auto    {"javac" {:file-pattern #"\.java$"}}
 

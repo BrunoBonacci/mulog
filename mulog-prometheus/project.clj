@@ -20,7 +20,7 @@
   :jvm-opts ["-server"]
 
   :profiles {:dev {:dependencies [[midje "1.10.10"]
-                                  [org.slf4j/slf4j-log4j12 "2.0.16"]]
+                                  [org.apache.logging.log4j/log4j-slf4j-impl "2.20.0"]]
                    :resource-paths ["dev-resources"]
                    :plugins      [[lein-midje "3.2.2"]
                                   [lein-shell "0.5.0"]]}}

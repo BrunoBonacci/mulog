@@ -20,14 +20,15 @@
   :jvm-opts ["-server"]
 
   :profiles {:dev {:dependencies [[midje "1.10.10"]
-                                  [org.slf4j/slf4j-log4j12 "2.0.16"]
-
                                   ; Clojure Kafka client
                                   [com.appsflyer/ketu "2.0.0"]
 
                                   ; Kafka docker-in-docker
                                   [org.testcontainers/kafka "1.20.4"]
-                                  [clj-test-containers "0.7.4"]]
+                                  [clj-test-containers "0.7.4"]
+                                  ;; clj-test-containers is outdated.
+                                  [org.testcontainers/testcontainers "1.21.4"]
+                                  [org.apache.logging.log4j/log4j-slf4j-impl "2.20.0"]]
                    :resource-paths ["dev-resources"]
                    :plugins      [[lein-midje "3.2.2"]]}}
 

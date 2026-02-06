@@ -21,7 +21,9 @@
   :profiles {:dev {:dependencies [[com.brunobonacci/rdt "0.5.0-alpha6"]
                                   [com.brunobonacci/where "0.5.6"]
                                   [clj-test-containers "0.7.4"]
-                                  [org.slf4j/slf4j-log4j12 "2.0.16"]]
+                                  ;; clj-test-containers is outdated.
+                                  [org.testcontainers/testcontainers "1.21.4"]
+                                  [org.apache.logging.log4j/log4j-slf4j-impl "2.20.0"]]
                    :resource-paths ["dev-resources"]
                    :main com.brunobonacci.rdt.runner
                    :plugins      []}}
