@@ -52,7 +52,7 @@ index, search, augment, aggregate and visualise therefore can easily
 replace traditional logs, metrics and traces.
 
 Existing logging libraries are based on a design from the 80s and
-early 90s.  Most of the systems at the time where developed in
+early 90s.  Most of the systems at the time were developed in
 standalone servers where logging messages to console or file was the
 predominant thing to do. Logging was mostly providing debugging
 information and system behavioural introspection.
